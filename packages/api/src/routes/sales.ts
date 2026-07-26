@@ -15,7 +15,7 @@ import type { AutonomyLevel, SalesStore } from '@landmap/sales';
 import { emitWebhook } from '../webhooks/store.js';
 import { createCrmAdapter, getCrmStatus, listCrmLedger, syncStoreToCrm } from '../crm/adapter.js';
 import { computeDueAlerts, dueAlertSummary } from '../crm/due-alerts.js';
-import { hydrateStore } from '@landmap/sales';
+import { hydrateStore, persistFrom } from '@landmap/sales';
 
 const g = globalThis as unknown as {
   __landmapSalesStore?: SalesStore;
@@ -25,22 +25,36 @@ const g = globalThis as unknown as {
   __landmapDueAlerted?: Set<string>;
 };
 
+/**
+ * Recarrega o progresso persistido (KV) no store em memória ANTES de cada
+ * ciclo. Em serverless cada instância nasce com store vazio; sem
+ * await aqui o total nunca acumula além de um único loop (e o KV
+ * era sobrescrito com a lista vazia+1 loop).
+ * Aguarda a hidratação concluir para garantir continuidade.
+ */
+async function awaitHydrate(store: SalesStore): Promise<void> {
+  try {
+    const restored = await hydrateStore(store.subscriptions);
+    if (restored.length > 0) {
+      store.subscriptions = restored;
+      store.bumpDaily();
+    }
+  } catch {
+    // sem KV: mantém o store em memória
+  }
+}
+
+/** Persiste o store atual no KV após cada ciclo (acumula entre instâncias). */
+function persistStore(store: SalesStore): void {
+  void persistFrom(store.subscriptions, {
+    firstSaleAt: store.firstSaleAt,
+    firstSaleNotified: store.firstSaleNotified,
+  }).catch(() => {});
+}
+
 function getStore(): SalesStore {
   if (!g.__landmapSalesStore) {
     g.__landmapSalesStore = createInitialStore();
-    // Rehidrata o progresso acumulado (1.000 assinaturas) a partir do KV.
-    // Fire-and-forget: se não houver KV, mantém o store em memória.
-    if (!g.__landmapSalesHydrated) {
-      g.__landmapSalesHydrated = true;
-      void hydrateStore(g.__landmapSalesStore.subscriptions)
-        .then((restored) => {
-          if (g.__landmapSalesStore && restored.length > 0) {
-            g.__landmapSalesStore.subscriptions = restored;
-            g.__landmapSalesStore.bumpDaily();
-          }
-        })
-        .catch(() => {});
-    }
   }
   return g.__landmapSalesStore;
 }
@@ -159,11 +173,13 @@ export function createSalesRouter() {
 
   app.post('/cycle', async (c) => {
     const store = getStore();
+    await awaitHydrate(store);
     const body = (await c.req.json().catch(() => ({}))) as { autonomy?: AutonomyLevel };
     if (body.autonomy) setAutonomy(store, body.autonomy);
     const result = await runCycle(store, makeCtx(store));
     g.__landmapSalesLastTick = new Date().toISOString();
     g.__landmapSalesTickCount = (g.__landmapSalesTickCount ?? 0) + 1;
+    persistStore(store);
     fireDueWebhooks(store);
     void emitWebhook('score.updated', {
       kind: 'sales.cycle',
@@ -175,11 +191,13 @@ export function createSalesRouter() {
 
   app.post('/followups/run', async (c) => {
     const store = getStore();
+    await awaitHydrate(store);
     const body = (await c.req.json().catch(() => ({}))) as { autonomy?: AutonomyLevel };
     if (body.autonomy) setAutonomy(store, body.autonomy);
     const result = await runFollowUpCycle(store, makeCtx(store));
     g.__landmapSalesLastTick = new Date().toISOString();
     g.__landmapSalesTickCount = (g.__landmapSalesTickCount ?? 0) + 1;
+    persistStore(store);
     fireDueWebhooks(store);
     void emitWebhook('lead.updated', {
       kind: 'followup.cycle',
@@ -190,6 +208,7 @@ export function createSalesRouter() {
 
   app.post('/tick', async (c) => {
     const store = getStore();
+    await awaitHydrate(store);
     const body = (await c.req.json().catch(() => ({}))) as {
       mode?: 'followup' | 'full';
     };
@@ -207,6 +226,7 @@ export function createSalesRouter() {
         : await runStandbyTick(store, makeCtx(store));
     g.__landmapSalesLastTick = new Date().toISOString();
     g.__landmapSalesTickCount = (g.__landmapSalesTickCount ?? 0) + 1;
+    persistStore(store);
     fireDueWebhooks(store);
     return c.json({
       ok: true,
@@ -287,13 +307,39 @@ export function createSalesRouter() {
 
   app.post('/loop', async (c) => {
     const store = getStore();
+    await awaitHydrate(store);
     // Driver autônomo (Vercel Cron): garante autopilot antes de rodar.
     if (store.autonomy !== 'autopilot') setAutonomy(store, 'autopilot');
     const body = (await c.req.json().catch(() => ({}))) as { cycles?: number };
-    const result = await runDailyLoop(store, makeCtx(store), body.cycles ?? 20);
+    const result = await runDailyLoop(store, makeCtx(store), body.cycles ?? 400);
     g.__landmapSalesLastTick = new Date().toISOString();
     g.__landmapSalesTickCount = (g.__landmapSalesTickCount ?? 0) + 1;
+    persistStore(store);
     return c.json({ ok: true, ...result, state: { ...store.toState(), meta: metaOf(store) } });
+  });
+
+  /**
+   * Restaura o progresso acumulado a partir do driver local (bridge sem
+   * KV). O processo Windows mantém o total em .sales_drive_progress.json e
+   * semeia cada instância serverless antes do loop, garantindo acúmulo
+   * contínuo até o teto SALES_CAP.
+   */
+  app.post('/restore', async (c) => {
+    const store = getStore();
+    const body = (await c.req.json().catch(() => ({}))) as {
+      subscriptions?: unknown[];
+      firstSaleAt?: string | null;
+    };
+    if (Array.isArray(body.subscriptions)) {
+      store.subscriptions = body.subscriptions as typeof store.subscriptions;
+      if (body.firstSaleAt) store.firstSaleAt = body.firstSaleAt;
+      store.bumpDaily();
+    }
+    return c.json({
+      ok: true,
+      total: store.subscriptions.length,
+      state: { ...store.toState(), meta: metaOf(store) },
+    });
   });
 
   app.post('/dialogue', async (c) => {

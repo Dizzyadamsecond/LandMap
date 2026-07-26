@@ -71,14 +71,14 @@ export class SalesStore {
   /** Primeira venda convertida (para notificar o dono uma única vez). */
   firstSaleAt: string | null = null;
   firstSaleNotified = false;
-  /** Teto de assinaturas do objetivo (1.000). O loop para ao bater. */
+  /** Teto de assinaturas do objetivo (200.000). O loop para ao bater. */
   readonly cap = SALES_CAP;
   analytics: SalesAnalytics = emptyAnalytics();
   /** Meta diária de assinaturas (default 5000 em modo ambicioso/autônomo; override via DAILY_GOAL). */
-  dailyGoal = Number(process.env.DAILY_GOAL ?? 5000);
+  dailyGoal = Number(process.env.DAILY_GOAL ?? 200000);
   daily: DailyCounter = {
     date: todayISO(),
-    goal: Number(process.env.DAILY_GOAL ?? 5000),
+    goal: Number(process.env.DAILY_GOAL ?? 200000),
     subs: 0,
     trials: 0,
     paid: 0,
@@ -216,7 +216,7 @@ export class SalesStore {
    * Caminho rápido de venda em massa (autopilot): gera leads/negócios e converte
    * negócios ganhos em assinaturas sem o diálogo completo de 14 agentes, de modo
    * que a meta de 1.000 assinaturas seja atingível dentro de uma única invocação
-   * quente do serverless. Respeita o teto SALES_CAP.
+   * quente do serverless. Respeita o teto SALES_CAP (200.000).
    */
   fastSellStep(ctx: AgentContext, batch = 12): void {
     // 1) garante pipeline de negócios em aberto

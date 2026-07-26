@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     const r = await fetch(`${base}/api/sales/loop`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cycles: 20 }),
+      body: JSON.stringify({ cycles: 400 }),
     });
     loop = await r.json();
   } catch {
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   const daily = loop?.daily ?? null;
   const total = loop?.totalSubs ?? 0;
   const newSubs = loop?.newSubs ?? 0;
-  const goal = daily?.goal ?? 1000;
+  const goal = daily?.goal ?? 200000;
   const firstSaleAt = loop?.state?.firstSaleAt ?? null;
 
   const pct = goal ? Math.round((total / goal) * 100) : 0;

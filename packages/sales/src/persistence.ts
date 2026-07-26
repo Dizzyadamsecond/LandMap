@@ -3,7 +3,7 @@ import type { Subscription } from './types.js';
 /**
  * Durable persistence for the autonomous sales engine.
  *
- * Goal: reach 1.000 assinaturas sem perder o progresso quando a função
+ * Goal: reach 200.000 assinaturas sem perder o progresso quando a função
  * serverless reinicia (cold start zera o store em memória).
  *
  * Backend: Vercel KV via REST (sem dependência extra). Se as env vars
@@ -13,7 +13,7 @@ import type { Subscription } from './types.js';
 
 const KEY = 'landmap:sales';
 
-export const SALES_CAP = 1000;
+export const SALES_CAP = 200000;
 
 export interface PersistedSales {
   subscriptions: Subscription[];

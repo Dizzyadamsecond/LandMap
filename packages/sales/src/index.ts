@@ -17,4 +17,4 @@ export { createInitialStore } from './seed.js';
 export { mulberry32, uid, pick, clamp } from './util.js';
 export { NoopCrm, CollectingCrm } from './crm.js';
 export { followupAgent, coldRecoveryAgent, wabaFollowupAgent, FOLLOWUP_SQUAD } from './agents.js';
-export { hydrateStore, SALES_CAP } from './persistence.js';
+export { hydrateStore, persistFrom, SALES_CAP } from './persistence.js';
