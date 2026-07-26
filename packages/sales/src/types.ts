@@ -294,6 +294,8 @@ export interface SalesState {
   events: AgentEvent[];
   subscriptions: Subscription[];
   messages: AgentMessage[];
+  firstSaleAt: string | null;
+  firstSaleNotified: boolean;
   daily: DailyCounter;
   analytics: SalesAnalytics;
   generatedAt: string;

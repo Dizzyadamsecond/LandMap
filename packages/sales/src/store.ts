@@ -286,6 +286,8 @@ export class SalesStore {
       events: this.events.map((e) => ({ ...e })),
       subscriptions: this.subscriptions.map((s) => ({ ...s })),
       messages: this.messages.map((m) => ({ ...m })),
+      firstSaleAt: this.firstSaleAt,
+      firstSaleNotified: this.firstSaleNotified,
       daily: { ...this.daily },
       analytics: this.analytics,
       generatedAt: new Date().toISOString(),
