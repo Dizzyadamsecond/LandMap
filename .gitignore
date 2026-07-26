@@ -88,3 +88,6 @@ __pycache__/
 # cached Lovable reference chunks (audit only)
 reference/assets/
 
+
+#waba-automate
+waba-data/
