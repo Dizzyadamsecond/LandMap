@@ -16,6 +16,7 @@ import type {
   Subscription,
 } from './types.js';
 import { PIPELINE_STAGES } from './types.js';
+import { SALES_CAP, hydrateStore, persistFrom } from './persistence.js';
 
 function todayISO(): string {
   return new Date().toISOString().slice(0, 10);
@@ -62,6 +63,11 @@ export class SalesStore {
   events: AgentEvent[] = [];
   subscriptions: Subscription[] = [];
   messages: AgentMessage[] = [];
+  /** Primeira venda convertida (para notificar o dono uma única vez). */
+  firstSaleAt: string | null = null;
+  firstSaleNotified = false;
+  /** Teto de assinaturas do objetivo (1.000). O loop para ao bater. */
+  readonly cap = SALES_CAP;
   analytics: SalesAnalytics = emptyAnalytics();
   /** Meta diária de assinaturas (default 5000 em modo ambicioso/autônomo; override via DAILY_GOAL). */
   dailyGoal = Number(process.env.DAILY_GOAL ?? 5000);
@@ -139,9 +145,19 @@ export class SalesStore {
   }
 
   /* ─── Subscriptions (meta de assinaturas/dia) ─── */
-  addSubscription(sub: Subscription): Subscription {
+  addSubscription(sub: Subscription): Subscription | null {
+    // Teto atingido: não acumula além de 1.000 (objetivo do dono).
+    if (this.subscriptions.length >= this.cap) return null;
     this.subscriptions.push(sub);
+    if (!this.firstSaleAt) {
+      this.firstSaleAt = sub.createdAt ?? new Date().toISOString();
+    }
     this.bumpDaily();
+    // Persiste o progresso no KV (survive cold start). No-op se sem KV env.
+    void persistFrom(this.subscriptions, {
+      firstSaleAt: this.firstSaleAt,
+      firstSaleNotified: this.firstSaleNotified,
+    }).catch(() => {});
     return sub;
   }
   getSubscription(id: string): Subscription | undefined {

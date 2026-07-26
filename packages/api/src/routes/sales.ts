@@ -15,16 +15,33 @@ import type { AutonomyLevel, SalesStore } from '@landmap/sales';
 import { emitWebhook } from '../webhooks/store.js';
 import { createCrmAdapter, getCrmStatus, listCrmLedger, syncStoreToCrm } from '../crm/adapter.js';
 import { computeDueAlerts, dueAlertSummary } from '../crm/due-alerts.js';
+import { hydrateStore } from '@landmap/sales/persistence.js';
 
 const g = globalThis as unknown as {
   __landmapSalesStore?: SalesStore;
   __landmapSalesLastTick?: string;
   __landmapSalesTickCount?: number;
+  __landmapSalesHydrated?: boolean;
   __landmapDueAlerted?: Set<string>;
 };
 
 function getStore(): SalesStore {
-  if (!g.__landmapSalesStore) g.__landmapSalesStore = createInitialStore();
+  if (!g.__landmapSalesStore) {
+    g.__landmapSalesStore = createInitialStore();
+    // Rehidrata o progresso acumulado (1.000 assinaturas) a partir do KV.
+    // Fire-and-forget: se não houver KV, mantém o store em memória.
+    if (!g.__landmapSalesHydrated) {
+      g.__landmapSalesHydrated = true;
+      void hydrateStore(g.__landmapSalesStore.subscriptions)
+        .then((restored) => {
+          if (g.__landmapSalesStore && restored.length > 0) {
+            g.__landmapSalesStore.subscriptions = restored;
+            g.__landmapSalesStore.bumpDaily();
+          }
+        })
+        .catch(() => {});
+    }
+  }
   return g.__landmapSalesStore;
 }
 

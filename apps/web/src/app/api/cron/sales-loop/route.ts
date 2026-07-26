@@ -33,13 +33,15 @@ export async function GET(request: Request) {
   const total = loop?.totalSubs ?? 0;
   const newSubs = loop?.newSubs ?? 0;
   const goal = daily?.goal ?? 1000;
+  const firstSaleAt = loop?.state?.firstSaleAt ?? null;
 
   const pct = goal ? Math.round((total / goal) * 100) : 0;
   const subject = `LandMap · Agentes ${new Date().toLocaleString('pt-BR')} · ${total}/${goal} (${pct}%)`;
   const text =
     `Relatório de agentes LandMap\n\n` +
-    `Assinaturas hoje (acumulado): ${total}/${goal} (${pct}%)\n` +
+    `Assinaturas (acumulado): ${total}/${goal} (${pct}%)\n` +
     `Novas neste ciclo: ${newSubs}\n` +
+    `Primeira venda: ${firstSaleAt ?? 'ainda não'}\n` +
     `Trial: ${daily?.trials ?? 0} · Pagas: ${daily?.paid ?? 0}\n` +
     `Leads: ${daily?.leads ?? 0} · Deals: ${daily?.deals ?? 0}\n\n` +
     `Próximo tick em 1h. Auto-loop server-side ativo.`;
