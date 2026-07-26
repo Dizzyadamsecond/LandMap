@@ -15,7 +15,7 @@ import type { AutonomyLevel, SalesStore } from '@landmap/sales';
 import { emitWebhook } from '../webhooks/store.js';
 import { createCrmAdapter, getCrmStatus, listCrmLedger, syncStoreToCrm } from '../crm/adapter.js';
 import { computeDueAlerts, dueAlertSummary } from '../crm/due-alerts.js';
-import { hydrateStore } from '@landmap/sales/persistence.js';
+import { hydrateStore } from '../../../sales/src/persistence.js';
 
 const g = globalThis as unknown as {
   __landmapSalesStore?: SalesStore;
