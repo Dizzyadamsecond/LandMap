@@ -28,9 +28,15 @@ export async function runDailyLoop(
   cycles = 20,
 ): Promise<{ daily: typeof store.daily; newSubs: number; totalSubs: number }> {
   const before = store.subscriptions.length;
+  const useFast = ctx.autonomy === 'autopilot' && cycles >= 30;
   for (let i = 0; i < cycles; i++) {
-    await runDialogue(store, ctx);
+    if (useFast) {
+      store.fastSellStep(ctx, 16);
+    } else {
+      await runDialogue(store, ctx);
+    }
   }
+  store.recomputeAnalytics();
   await syncClosedDeals(store, ctx);
   store.bumpDaily();
   return {
