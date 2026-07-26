@@ -209,6 +209,12 @@ export default function AdminAgentsPage() {
             <p className="mt-1 text-[var(--muted-foreground)]">
               {standbyCount}/{agents.length || '—'} em espera · squad follow-up · auto-loop opcional
             </p>
+            <a
+              href="/admin/subscriptions"
+              className="mt-1 inline-block text-xs text-[var(--primary)] underline underline-offset-2"
+            >
+              Ver assinaturas →
+            </a>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">

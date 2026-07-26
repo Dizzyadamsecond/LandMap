@@ -3,6 +3,43 @@ import { SalesStore } from './store.js';
 import { AGENTS, FOLLOWUP_SQUAD, followupAgent } from './agents.js';
 import { applyEffectsUnderAutonomy, syncClosedDeals } from './autonomy.js';
 
+/**
+ * Run one dialogue round: the full roster acts in order, but each agent can
+ * read `store.lastMessage()` (the AgentBus) and react — that's the
+ * "agents talking to each other" behaviour. Returns the combined result.
+ */
+export async function runDialogue(store: SalesStore, ctx: AgentContext): Promise<CycleResult> {
+  if (ctx.autonomy === 'off') {
+    return { events: [], tasks: [], leads: [], deals: [], subscriptions: [], messages: [], autonomy: 'off', generatedAt: ctx.now() };
+  }
+  const allEffects = await runAgentList(store, ctx, AGENTS);
+  store.recomputeAnalytics();
+  await syncClosedDeals(store, ctx);
+  return SalesStore.cycleResult(store, allEffects, ctx.autonomy);
+}
+
+/**
+ * Daily loop: bate a meta de assinaturas. Roda `cycles` ciclos completos de
+ * diálogo e devolve o progresso do dia (store.daily) + assinaturas novas.
+ */
+export async function runDailyLoop(
+  store: SalesStore,
+  ctx: AgentContext,
+  cycles = 20,
+): Promise<{ daily: typeof store.daily; newSubs: number; totalSubs: number }> {
+  const before = store.subscriptions.length;
+  for (let i = 0; i < cycles; i++) {
+    await runDialogue(store, ctx);
+  }
+  await syncClosedDeals(store, ctx);
+  store.bumpDaily();
+  return {
+    daily: { ...store.daily },
+    newSubs: store.subscriptions.length - before,
+    totalSubs: store.subscriptions.length,
+  };
+}
+
 function markStandby(store: SalesStore, autonomy: AgentContext['autonomy']) {
   for (const a of store.agents) {
     if (autonomy === 'off') {
@@ -61,15 +98,17 @@ async function runAgentList(
  */
 export async function runCycle(store: SalesStore, ctx: AgentContext): Promise<CycleResult> {
   if (ctx.autonomy === 'off') {
-    markStandby(store, 'off');
-    return {
-      events: [],
-      tasks: [],
-      leads: [],
-      deals: [],
-      autonomy: 'off',
-      generatedAt: ctx.now(),
-    };
+  markStandby(store, 'off');
+  return {
+    events: [],
+    tasks: [],
+    leads: [],
+    deals: [],
+    subscriptions: [],
+    messages: [],
+    autonomy: 'off',
+    generatedAt: ctx.now(),
+  };
   }
 
   const allEffects = await runAgentList(store, ctx, AGENTS);
@@ -94,6 +133,8 @@ export async function runFollowUpCycle(
       tasks: [],
       leads: [],
       deals: [],
+      subscriptions: [],
+      messages: [],
       autonomy: 'off',
       generatedAt: ctx.now(),
     };

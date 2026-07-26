@@ -27,6 +27,12 @@ export function applySalesEffect(store: SalesStore, effect: SalesEffect): void {
     case 'updateDeal':
       store.updateDeal(effect.id, effect.patch);
       break;
+    case 'subscription':
+      store.addSubscription(effect.subscription);
+      break;
+    case 'message':
+      store.addMessage(effect.message);
+      break;
   }
 }
 

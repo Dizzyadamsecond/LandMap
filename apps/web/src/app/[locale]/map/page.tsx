@@ -62,9 +62,18 @@ function MapPageInner() {
   const [mapReady, setMapReady] = useState(false);
   const [suggestOpen, setSuggestOpen] = useState(false);
 
+  /** Pontos de heatmap ao vivo (API /api/market/heatmap), dados do dataset real. */
+  const [heatPoints, setHeatPoints] = useState<
+    { lat: number; lng: number; weight: number; neighborhood: string; avgPrice: number }[]
+  >([]);
+  const heatDataRef = useRef<
+    { lat: number; lng: number; weight: number; neighborhood: string; avgPrice: number }[]
+  >([]);
+
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
+  const heatLayerRef = useRef<any>(null);
   const selectedRef = useRef(selectedId);
   const layerRef = useRef(activeLayer);
   const heatRef = useRef(showHeat);
@@ -205,6 +214,61 @@ function MapPageInner() {
   useEffect(() => {
     if (mapReady) paintMarkers();
   }, [mapReady, paintMarkers, activeLayer, showHeat, selectedId]);
+
+  // Busca o heatmap de densidade de preço ao vivo (dataset real, 3000 imóveis).
+  useEffect(() => {
+    let active = true;
+    fetch('/api/market/heatmap?city=Fortaleza')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!active || !data?.points?.length) return;
+        heatDataRef.current = data.points;
+        setHeatPoints(data.points);
+      })
+      .catch(() => {
+        /* heatmap opcional: falha silenciosa mantém os marcadores estáticos */
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Pinta uma camada de heat suave por bairro (dados vivos) sob os marcadores.
+  const paintHeat = useCallback(() => {
+    const map = mapInstance.current;
+    const L = (window as any).L;
+    if (!map || !L) return;
+
+    // limpa a camada anterior
+    if (heatLayerRef.current) {
+      map.removeLayer(heatLayerRef.current);
+      heatLayerRef.current = null;
+    }
+    if (!heatRef.current) return;
+
+    const pts = heatDataRef.current;
+    if (!pts.length) return;
+
+    const maxW = Math.max(...pts.map((p) => p.weight), 0.0001);
+    const circles = pts.map((p) => {
+      const w = p.weight / maxW;
+      return L.circleMarker([p.lat, p.lng], {
+        radius: 26 + w * 46,
+        stroke: false,
+        fillColor: resolveToken('--primary') || '#575ECF',
+        fillOpacity: 0.1 + w * 0.22,
+      }).bindPopup(
+        `<strong>${p.neighborhood}</strong><br/>Preço médio: <b>${fmtPriceSqm(p.avgPrice)}/m²</b>`,
+      );
+    });
+    const layer = L.layerGroup(circles);
+    layer.addTo(map);
+    heatLayerRef.current = layer;
+  }, []);
+
+  useEffect(() => {
+    if (mapReady) paintHeat();
+  }, [mapReady, paintHeat, heatPoints, showHeat]);
 
   const sparkData = selected?.priceHistory.map((p) => p.value) ?? [];
 

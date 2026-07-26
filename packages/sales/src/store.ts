@@ -1,7 +1,9 @@
 import type {
   AgentEvent,
+  AgentMessage,
   AutonomyLevel,
   CycleResult,
+  DailyCounter,
   Deal,
   Lead,
   PipelineStage,
@@ -11,8 +13,13 @@ import type {
   SalesEffect,
   SalesState,
   SalesTask,
+  Subscription,
 } from './types.js';
 import { PIPELINE_STAGES } from './types.js';
+
+function todayISO(): string {
+  return new Date().toISOString().slice(0, 10);
+}
 
 export interface ChannelStats {
   sent: number;
@@ -45,13 +52,28 @@ function emptyAnalytics(): SalesAnalytics {
  * analytics view the cockpit renders.
  */
 export class SalesStore {
-  autonomy: AutonomyLevel = 'copilot';
+  // Autonomia padrão = autopilot: o loop de vendas (Vercel Cron → /api/cron/sales-loop)
+  // roda e aplica efeitos (leads→deals→assinaturas→MRR) sem aprovação humana.
+  autonomy: AutonomyLevel = 'autopilot';
   agents: SalesAgent[] = [];
   leads: Lead[] = [];
   deals: Deal[] = [];
   tasks: SalesTask[] = [];
   events: AgentEvent[] = [];
+  subscriptions: Subscription[] = [];
+  messages: AgentMessage[] = [];
   analytics: SalesAnalytics = emptyAnalytics();
+  /** Meta diária de assinaturas (default 5000 em modo ambicioso/autônomo; override via DAILY_GOAL). */
+  dailyGoal = Number(process.env.DAILY_GOAL ?? 5000);
+  daily: DailyCounter = {
+    date: todayISO(),
+    goal: Number(process.env.DAILY_GOAL ?? 5000),
+    subs: 0,
+    trials: 0,
+    paid: 0,
+    leads: 0,
+    deals: 0,
+  };
   channelStats: Record<SalesChannel, ChannelStats> = {
     email: { sent: 0, replies: 0 },
     whatsapp: { sent: 0, replies: 0 },
@@ -114,6 +136,50 @@ export class SalesStore {
   }
   getAgent(id: string): SalesAgent | undefined {
     return this.agents.find((a) => a.id === id);
+  }
+
+  /* ─── Subscriptions (meta de assinaturas/dia) ─── */
+  addSubscription(sub: Subscription): Subscription {
+    this.subscriptions.push(sub);
+    this.bumpDaily();
+    return sub;
+  }
+  getSubscription(id: string): Subscription | undefined {
+    return this.subscriptions.find((s) => s.id === id);
+  }
+
+  /* ─── Agent dialogue bus ─── */
+  addMessage(message: AgentMessage): AgentMessage {
+    this.messages.unshift(message);
+    if (this.messages.length > 400) this.messages.length = 400;
+    return message;
+  }
+  /** Última fala da cadeia (para o próximo agente reagir). */
+  lastMessage(): AgentMessage | undefined {
+    return this.messages[0];
+  }
+
+  /** Recalcula o contador de hoje; zera ao virar o dia. */
+  bumpDaily(): void {
+    const today = todayISO();
+    if (this.daily.date !== today) {
+      this.daily = {
+        date: today,
+        goal: this.dailyGoal,
+        subs: 0,
+        trials: 0,
+        paid: 0,
+        leads: this.leads.length,
+        deals: this.deals.length,
+      };
+    }
+    this.daily.subs = this.subscriptions.length;
+    this.daily.trials = this.subscriptions.filter((s) => s.status === 'trial').length;
+    this.daily.paid = this.subscriptions.filter(
+      (s) => s.status === 'active' || s.status === 'past_due',
+    ).length;
+    this.daily.leads = this.leads.length;
+    this.daily.deals = this.deals.length;
   }
 
   pendingTasks(): SalesTask[] {
@@ -194,6 +260,7 @@ export class SalesStore {
   }
 
   toState(): SalesState {
+    this.bumpDaily();
     return {
       autonomy: this.autonomy,
       agents: this.agents.map((a) => ({ ...a })),
@@ -201,6 +268,9 @@ export class SalesStore {
       deals: this.deals.map((d) => ({ ...d })),
       tasks: this.tasks.map((t) => ({ ...t })),
       events: this.events.map((e) => ({ ...e })),
+      subscriptions: this.subscriptions.map((s) => ({ ...s })),
+      messages: this.messages.map((m) => ({ ...m })),
+      daily: { ...this.daily },
       analytics: this.analytics,
       generatedAt: new Date().toISOString(),
     };
@@ -221,6 +291,8 @@ export class SalesStore {
       tasks: pick('task'),
       leads: pick('lead'),
       deals: pick('deal'),
+      subscriptions: pick('subscription'),
+      messages: pick('message'),
       autonomy,
       generatedAt: new Date().toISOString(),
     };

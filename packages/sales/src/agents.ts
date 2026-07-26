@@ -7,6 +7,7 @@ import type {
   SalesAgent,
   SalesEffect,
   SalesTask,
+  Subscription,
 } from './types.js';
 import { SalesStore } from './store.js';
 import { clamp, pick, uid } from './util.js';
@@ -95,6 +96,7 @@ export function createRoster(): SalesAgent[] {
     ['market_intel', 'Analista de Mercado', 'Monitora preços/bairros e emite alertas.'],
     ['onboarding', 'Recepcionista', 'Recebe novos usuários e credita XP inicial.'],
     ['negotiator', 'Negociadora', 'Assistente de compra/venda (contraproposta).'],
+    ['subscriptor', 'Subscriptora', 'Converte negócio em assinatura (trial→pro) e credita MRR.'],
   ];
   return base.map(([role, name, description]) => ({
     id: `agent-${role}`,
@@ -441,7 +443,85 @@ export const closer: AgentDef = {
       } else if (deal.stage === 'negotiation' && deal.probability >= 0.7) {
         const task = buildDealTask(this.id, deal, 'review', 'closed_won', 1, ctx, lead, 'Fechar negócio e iniciar contrato.');
         effects.push({ type: 'task', task }, eventFor(this.id, 'stage', `Negócio fechado: ${deal.title}`, deal.id, ctx, 'success'));
+        // Diálogo: avisa a Subscriptora para converter em assinatura
+        effects.push({
+          type: 'message',
+          message: {
+            id: uid('msg'),
+            at: ctx.now(),
+            fromAgentId: this.id,
+            toAgentId: 'agent-subscriptor',
+            text: `Negócio ${deal.title} fechado (ganho). Preciso que você converta em assinatura e credite MRR.`,
+            intent: 'handoff',
+            dealId: deal.id,
+            leadId: deal.leadId,
+          },
+        });
       }
+    }
+    return effects;
+  },
+};
+
+/* ─── Subscriptor (converte closed_won → assinatura + MRR) ─── */
+
+const PLAN_MRR: Record<string, number> = {
+  free: 0,
+  trial: 0,
+  pro: 199,
+  enterprise: 999,
+};
+
+export const subscriptor: AgentDef = {
+  id: 'agent-subscriptor',
+  role: 'subscriptor',
+  name: 'Subscriptora',
+  description: 'Converte negócio em assinatura (trial→pro) e credita MRR.',
+  run(ctx, store) {
+    const effects: SalesEffect[] = [];
+    const last = store.lastMessage();
+
+    // Reage ao handoff da Fechadora (ou roda sobre negócios ganhos)
+    const won = store.deals.filter((d) => d.stage === 'closed_won');
+    for (const deal of won) {
+      if (store.subscriptions.some((s) => s.dealId === deal.id)) continue;
+      const lead = store.getLead(deal.leadId);
+      // Em diálogo, a Subscriptora lê a fala anterior e responde
+      const reply = last && last.toAgentId === this.id
+        ? `Recebido da Fechadora: "${last.text}". Convertendo ${deal.title} em assinatura Pro (trial 7d).`
+        : `Convertendo ${deal.title} em assinatura Pro (trial 7d).`;
+      if (last && last.toAgentId === this.id) {
+        effects.push({
+          type: 'message',
+          message: {
+            id: uid('msg'),
+            at: ctx.now(),
+            fromAgentId: this.id,
+            toAgentId: last.fromAgentId,
+            text: reply,
+            intent: 'info',
+            dealId: deal.id,
+            leadId: deal.leadId,
+          },
+        });
+      }
+      const plan: Subscription['plan'] = 'pro';
+      const sub: Subscription = {
+        id: uid('sub'),
+        leadId: deal.leadId,
+        dealId: deal.id,
+        plan,
+        status: plan === 'pro' ? 'active' : 'trial',
+        mrr: PLAN_MRR[plan] ?? 0,
+        currency: deal.currency || 'BRL',
+        closedByAgent: this.id,
+        source: lead?.source ?? 'landmap',
+        createdAt: ctx.now(),
+      };
+      effects.push(
+        { type: 'subscription', subscription: sub },
+        eventFor(this.id, 'stage', `Assinatura ${plan.toUpperCase()} criada: ${deal.title}`, deal.id, ctx, 'success'),
+      );
     }
     return effects;
   },
@@ -1005,6 +1085,7 @@ export const AGENTS: AgentDef[] = [
   coldRecoveryAgent,
   wabaFollowupAgent,
   closer,
+  subscriptor,
   accountManager,
   forecaster,
   seoAgent,

@@ -4,6 +4,8 @@ import {
   runCycle,
   runFollowUpCycle,
   runStandbyTick,
+  runDialogue,
+  runDailyLoop,
   approveTask,
   rejectTask,
   setAutonomy,
@@ -264,6 +266,49 @@ export function createSalesRouter() {
       count: approved.length,
       state: { ...store.toState(), meta: metaOf(store) },
     });
+  });
+
+  app.post('/loop', async (c) => {
+    const store = getStore();
+    // Driver autônomo (Vercel Cron): garante autopilot antes de rodar.
+    if (store.autonomy !== 'autopilot') setAutonomy(store, 'autopilot');
+    const body = (await c.req.json().catch(() => ({}))) as { cycles?: number };
+    const result = await runDailyLoop(store, makeCtx(store), body.cycles ?? 20);
+    g.__landmapSalesLastTick = new Date().toISOString();
+    g.__landmapSalesTickCount = (g.__landmapSalesTickCount ?? 0) + 1;
+    return c.json({ ok: true, ...result, state: { ...store.toState(), meta: metaOf(store) } });
+  });
+
+  app.post('/dialogue', async (c) => {
+    const store = getStore();
+    if (store.autonomy === 'off') {
+      return c.json({ ok: true, skipped: true, reason: 'autonomy_off', result: null, state: { ...store.toState(), meta: metaOf(store) } });
+    }
+    const result = await runDialogue(store, makeCtx(store));
+    g.__landmapSalesLastTick = new Date().toISOString();
+    g.__landmapSalesTickCount = (g.__landmapSalesTickCount ?? 0) + 1;
+    return c.json({ ok: true, result, state: { ...store.toState(), meta: metaOf(store) } });
+  });
+
+  app.get('/subscriptions', (c) => {
+    const store = getStore();
+    store.bumpDaily();
+    return c.json({
+      ok: true,
+      daily: store.daily,
+      total: store.subscriptions.length,
+      active: store.subscriptions.filter((s) => s.status === 'active' || s.status === 'past_due').length,
+      trials: store.subscriptions.filter((s) => s.status === 'trial').length,
+      mrr: store.subscriptions.reduce((sum, s) => sum + (s.status === 'active' || s.status === 'past_due' ? s.mrr : 0), 0),
+      items: store.subscriptions.slice(-50).reverse(),
+    });
+  });
+
+  app.get('/daily', (c) => {
+    const store = getStore();
+    store.bumpDaily();
+    void emitWebhook('daily.report', { ...store.daily, total: store.subscriptions.length }).catch(() => {});
+    return c.json({ ok: true, daily: store.daily, totalSubs: store.subscriptions.length });
   });
 
   return app;

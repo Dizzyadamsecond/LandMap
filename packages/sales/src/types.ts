@@ -141,7 +141,57 @@ export type AgentRole =
   | 'negotiator'
   | 'followup'
   | 'cold_recovery'
-  | 'waba_followup';
+  | 'waba_followup'
+  | 'subscriptor';
+
+/** Plano de assinatura LandMap (de graça a enterprise). */
+export type SubscriptionPlan = 'free' | 'trial' | 'pro' | 'enterprise';
+
+export type SubscriptionStatus = 'trial' | 'active' | 'canceled' | 'past_due';
+
+export interface Subscription {
+  id: string;
+  leadId: string;
+  dealId?: string;
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  /** Receita mensal recorrente em BRL. */
+  mrr: number;
+  currency: string;
+  /** Agente que converteu (fechou a assinatura). */
+  closedByAgent: string;
+  source: string;
+  createdAt: string;
+  renewedAt?: string;
+  canceledAt?: string;
+}
+
+/** Contador diário para a meta de assinaturas. */
+export interface DailyCounter {
+  date: string; // YYYY-MM-DD
+  goal: number;
+  subs: number;
+  trials: number;
+  paid: number;
+  leads: number;
+  deals: number;
+}
+
+/**
+ * Mensagem do diálogo agente→agente (o "papo" entre os bots).
+ * Permite que um agente reaja à fala anterior em vez de agir às cegas.
+ */
+export interface AgentMessage {
+  id: string;
+  at: string;
+  fromAgentId: string;
+  toAgentId?: string; // undefined = broadcast para a cadeia
+  text: string;
+  /** Intenção estruturada para o próximo agente agir. */
+  intent?: 'need_proof' | 'need_approval' | 'handoff' | 'escalate' | 'info';
+  dealId?: string;
+  leadId?: string;
+}
 
 export interface SalesAgent {
   id: string;
@@ -213,6 +263,8 @@ export type SalesEffect =
   | { type: 'deal'; deal: Deal }
   | { type: 'event'; event: AgentEvent }
   | { type: 'task'; task: SalesTask }
+  | { type: 'subscription'; subscription: Subscription }
+  | { type: 'message'; message: AgentMessage }
   | { type: 'updateLead'; id: string; patch: Partial<Lead> }
   | { type: 'updateDeal'; id: string; patch: Partial<Deal> };
 
@@ -240,6 +292,9 @@ export interface SalesState {
   deals: Deal[];
   tasks: SalesTask[];
   events: AgentEvent[];
+  subscriptions: Subscription[];
+  messages: AgentMessage[];
+  daily: DailyCounter;
   analytics: SalesAnalytics;
   generatedAt: string;
 }
@@ -249,6 +304,8 @@ export interface CycleResult {
   tasks: SalesTask[];
   leads: Lead[];
   deals: Deal[];
+  subscriptions: Subscription[];
+  messages: AgentMessage[];
   autonomy: AutonomyLevel;
   generatedAt: string;
 }

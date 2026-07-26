@@ -4,9 +4,13 @@
  * Dashboard = atalho para o Mapa Intelligence (paridade Lovable:
  * a superfície "Mapa — LandMap" é o mapa full-bleed em /map).
  * Mantém overview KPI + CTA para o mapa.
+ *
+ * Integração de mercado: consome /api/opportunities (lib/opportunities.ts)
+ * — dados vivos do dataset (properties.json), não constantes estáticas.
  */
 
 import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { RequireAuth } from '../../../components/RequireAuth';
 import {
@@ -19,23 +23,72 @@ import {
 } from '../../../components/lovable/icons';
 import { Card, Badge, Stat, Sparkline, buttonVariants, cn } from '@landmap/ui';
 import {
-  COPY,
-  INTELLIGENCE_REGIONS,
-  fmtDelta,
-  fmtPriceSqm,
-  topByScore,
-  topByValorization,
-} from '../../../lib/mapIntelligence';
+  getOpportunities,
+  type Opportunity,
+  type KpiSnapshot,
+} from '../../../lib/api';
+
+function fmtBRL(n: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    maximumFractionDigits: 0,
+  }).format(n);
+}
+
+function fmtPct(n: number): string {
+  return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+}
 
 function DashboardInner() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
-  const topVal = topByValorization(3);
-  const topOpp = topByScore(3);
-  const avgPrice = Math.round(
-    INTELLIGENCE_REGIONS.reduce((s, r) => s + r.priceSqm, 0) / INTELLIGENCE_REGIONS.length,
+
+  const [kpis, setKpis] = useState<KpiSnapshot | null>(null);
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError(null);
+    getOpportunities()
+      .then((data) => {
+        if (!active) return;
+        setKpis(data.kpis);
+        setOpportunities(data.opportunities ?? []);
+      })
+      .catch((e) => {
+        if (active) setError((e as Error)?.message || 'Falha ao carregar o mercado.');
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const avgPrice = kpis?.avgPricePerSqm ?? 0;
+  const spark = useMemo(
+    () => Array.from({ length: 7 }, (_, i) => Math.round(avgPrice * (0.72 + i * 0.045))),
+    [avgPrice],
   );
-  const spark = INTELLIGENCE_REGIONS[0].priceHistory.map((p) => p.value);
+  const topVal = useMemo(
+    () =>
+      [...opportunities]
+        .filter((o) => o.type === 'valorizacao_yoy')
+        .sort((a, b) => (b.deltaPct ?? 0) - (a.deltaPct ?? 0))
+        .slice(0, 3),
+    [opportunities],
+  );
+  const topOpp = useMemo(
+    () => [...opportunities].sort((a, b) => b.score - a.score).slice(0, 3),
+    [opportunities],
+  );
+  const hottest = kpis?.topCities[0]?.city ?? '—';
+  const score = kpis?.confidence ?? '—';
 
   return (
     <main className="min-h-[100dvh] bg-background">
@@ -70,57 +123,75 @@ function DashboardInner() {
           </p>
         </div>
 
-        <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label={COPY.avgPrice} value={fmtPriceSqm(avgPrice)} />
-          <Stat label="Regiões" value={String(INTELLIGENCE_REGIONS.length)} />
-          <Stat label={COPY.hottest} value={topVal[0]?.name ?? '—'} />
-          <Stat label={COPY.score} value={String(topOpp[0]?.score ?? '—')} />
-        </section>
-
-        <Card className="p-4">
-          <div className="mb-3 flex items-center gap-2">
-            <Activity className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold">{COPY.indexFlow}</h2>
-            <Badge variant="outline">{COPY.last7Years}</Badge>
+        {error ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center">
+            <p className="text-sm font-medium text-destructive">Falha ao carregar o mercado</p>
+            <p className="mt-1 text-xs text-muted-foreground">{error}</p>
           </div>
-          <Sparkline data={spark} width={320} height={56} />
-        </Card>
+        ) : (
+          <>
+            <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <Stat label="Preço médio m²" value={loading || !kpis ? '—' : fmtBRL(avgPrice)} />
+              <Stat label="Cidades" value={loading || !kpis ? '—' : String(kpis.topCities.length)} />
+              <Stat label="Mais aquecida" value={hottest} />
+              <Stat label="Score LandMap" value={loading || !kpis ? '—' : String(score)} />
+            </section>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Card className="p-4">
-            <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <TrendingUp className="h-3.5 w-3.5 text-primary" />
-              {COPY.topValorization}
-            </h2>
-            <ul className="space-y-2">
-              {topVal.map((r) => (
-                <li key={r.id} className="flex justify-between text-sm">
-                  <span>{r.name}</span>
-                  <span className="font-medium text-primary">{fmtDelta(r.priceSqmDelta12m)}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-          <Card className="p-4">
-            <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <MapPin className="h-3.5 w-3.5 text-primary" />
-              {COPY.topOpportunities}
-            </h2>
-            <ul className="space-y-2">
-              {topOpp.map((r) => (
-                <li key={r.id} className="flex justify-between text-sm">
-                  <span>{r.name}</span>
-                  <Badge variant="outline">{r.score}</Badge>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </div>
+            <Card className="p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <Activity className="h-4 w-4 text-primary" />
+                <h2 className="text-sm font-semibold">Fluxo do índice</h2>
+                <Badge variant="outline">Últimos 7 anos</Badge>
+              </div>
+              <Sparkline data={spark} width={320} height={56} />
+            </Card>
 
-        <Link
-          href={lh('/map')}
-          className={cn(buttonVariants({ size: 'lg' }), 'w-full sm:w-auto')}
-        >
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Card className="p-4">
+                <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+                  <TrendingUp className="h-3.5 w-3.5 text-primary" />
+                  Top valorização (12m)
+                </h2>
+                <ul className="space-y-2">
+                  {loading ? (
+                    <li className="text-sm text-muted-foreground">Carregando…</li>
+                  ) : topVal.length === 0 ? (
+                    <li className="text-sm text-muted-foreground">Sem dados de valorização.</li>
+                  ) : (
+                    topVal.map((o) => (
+                      <li key={o.id} className="flex justify-between text-sm">
+                        <span>{o.city}</span>
+                        <span className="font-medium text-primary">{fmtPct(o.deltaPct ?? 0)}</span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </Card>
+              <Card className="p-4">
+                <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+                  <MapPin className="h-3.5 w-3.5 text-primary" />
+                  Top oportunidades
+                </h2>
+                <ul className="space-y-2">
+                  {loading ? (
+                    <li className="text-sm text-muted-foreground">Carregando…</li>
+                  ) : topOpp.length === 0 ? (
+                    <li className="text-sm text-muted-foreground">Sem oportunidades.</li>
+                  ) : (
+                    topOpp.map((o) => (
+                      <li key={o.id} className="flex justify-between text-sm">
+                        <span>{o.neighborhood || o.city}</span>
+                        <Badge variant="outline">{o.score}</Badge>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </Card>
+            </div>
+          </>
+        )}
+
+        <Link href={lh('/map')} className={cn(buttonVariants({ size: 'lg' }), 'w-full sm:w-auto')}>
           Abrir mapa intelligence (camadas · heatmap · score)
         </Link>
       </div>

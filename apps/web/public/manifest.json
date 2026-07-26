@@ -1,21 +1,37 @@
 {
   "name": "LandMap",
   "short_name": "LandMap",
-  "description": "LandMap \u2014 Intelig\u00eancia de terrenos",
+  "description": "LandMap — Inteligência de terrenos e esquadrão de agentes de vendas",
   "start_url": "/",
   "display": "standalone",
   "background_color": "oklch(100% 0 0)",
   "theme_color": "oklch(34% .18 265)",
+  "categories": ["business", "productivity"],
   "icons": [
     {
       "src": "/icons/icon-192.svg",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512.svg",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "permissions": ["notifications"],
+  "shortcuts": [
+    {
+      "name": "Agentes",
+      "short_name": "Agentes",
+      "url": "/admin/agents"
+    },
+    {
+      "name": "Assinaturas",
+      "short_name": "Assinaturas",
+      "url": "/admin/subscriptions"
     }
   ]
 }

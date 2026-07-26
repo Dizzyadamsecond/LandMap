@@ -12,6 +12,18 @@
     "./platform": {
       "types": "./dist/platform.d.ts",
       "import": "./dist/platform.js"
+    },
+    "./push": {
+      "types": "./dist/push.d.ts",
+      "import": "./dist/push.js"
+    },
+    "./mailer": {
+      "types": "./dist/mailer.d.ts",
+      "import": "./dist/mailer.js"
+    },
+    "./routes/sales": {
+      "types": "./dist/routes/sales.d.ts",
+      "import": "./dist/routes/sales.js"
     }
   },
   "scripts": {

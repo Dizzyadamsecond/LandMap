@@ -1,8 +1,8 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
-import { useMemo } from 'react';
 import {
   ArrowLeft,
   Activity,
@@ -13,39 +13,82 @@ import {
 import { Reveal } from '../../../components/Motion';
 import { Card, Badge, Stat, Sparkline, buttonVariants, cn } from '@landmap/ui';
 import {
-  COPY,
-  INTELLIGENCE_REGIONS,
-  fmtPriceSqm,
-  topByLayer,
-  topOpportunities,
-} from '../../../lib/mapIntelligence';
+  getOpportunities,
+  type Opportunity,
+  type KpiSnapshot,
+} from '../../../lib/api';
+import { OPPORTUNITY_TYPE_LABEL } from '../../../lib/opportunities';
 
+function fmtBRL(n: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    maximumFractionDigits: 0,
+  }).format(n);
+}
+
+function fmtPct(n: number): string {
+  return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+}
+
+/**
+ * Mercado — snapshot agregado do dataset real (properties.json).
+ * Camada HTTP: /api/opportunities (lib/opportunities.ts).
+ * Substitui as constantes estáticas INTELLIGENCE_REGIONS por dados vivos.
+ */
 export default function MarketPage() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
 
-  const avgPrice = useMemo(
-    () =>
-      Math.round(
-        INTELLIGENCE_REGIONS.reduce((s, r) => s + r.priceSqm, 0) /
-          INTELLIGENCE_REGIONS.length,
-      ),
-    [],
-  );
-  const avgScore = useMemo(
-    () =>
-      Math.round(
-        INTELLIGENCE_REGIONS.reduce((s, r) => s + r.score, 0) /
-          INTELLIGENCE_REGIONS.length,
-      ),
-    [],
-  );
+  const [kpis, setKpis] = useState<KpiSnapshot | null>(null);
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError(null);
+    getOpportunities()
+      .then((data) => {
+        if (!active) return;
+        setKpis(data.kpis);
+        setOpportunities(data.opportunities ?? []);
+      })
+      .catch((e) => {
+        if (active) setError((e as Error)?.message || 'Falha ao carregar o mercado.');
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const avgPrice = kpis?.avgPricePerSqm ?? 0;
+  const avgScore = kpis?.confidence ?? 0;
+
   const trend = useMemo(
     () => [0.88, 0.91, 0.93, 0.96, 0.98, 1, 1.03, 1.05].map((k) => Math.round(avgPrice * k)),
     [avgPrice],
   );
-  const tops = topByLayer('valorization', 4);
-  const opps = topOpportunities(4);
+
+  const tops = useMemo(
+    () =>
+      [...opportunities]
+        .filter((o) => o.type === 'valorizacao_yoy')
+        .sort((a, b) => (b.deltaPct ?? 0) - (a.deltaPct ?? 0))
+        .slice(0, 4),
+    [opportunities],
+  );
+
+  const opps = useMemo(
+    () => [...opportunities].sort((a, b) => b.score - a.score).slice(0, 4),
+    [opportunities],
+  );
+
+  const hottest = kpis?.topCities[0]?.city ?? '—';
 
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col bg-background px-4 pb-28 pt-6">
@@ -70,72 +113,123 @@ export default function MarketPage() {
           Snapshot do mercado
         </h1>
         <p className="mt-2 text-sm text-foreground/60">
-          Visão agregada Fortaleza/metro — mesma base do Score LandMap.
+          Visão agregada em tempo real — mesma base do Score LandMap.
         </p>
       </div>
 
-      <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label={COPY.avgPrice} value={fmtPriceSqm(avgPrice)} />
-        <Stat label={COPY.score} value={String(avgScore)} />
-        <Stat label="Regiões" value={String(INTELLIGENCE_REGIONS.length)} />
-        <Stat label={COPY.hottest} value={tops[0]?.name ?? '—'} />
-      </section>
-
-      <Card className="mt-6 p-4">
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <LineChart className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold">{COPY.history}</h2>
-          </div>
-          <Badge variant="outline">{COPY.historyRange}</Badge>
+      {error ? (
+        <div className="mt-6 rounded-xl border border-border bg-card p-6 text-center">
+          <p className="text-sm font-medium text-destructive">Falha ao carregar o mercado</p>
+          <p className="mt-1 text-xs text-muted-foreground">{error}</p>
         </div>
-        <Sparkline data={trend} width={280} height={56} aria-label="Tendência de preço" />
-        <p className="mt-2 text-xs text-muted-foreground">{COPY.scoreHint}</p>
-      </Card>
+      ) : (
+        <>
+          <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Stat
+              label="Preço médio m²"
+              value={loading || !kpis ? '—' : fmtBRL(avgPrice)}
+            />
+            <Stat label="Score LandMap" value={loading || !kpis ? '—' : String(avgScore)} />
+            <Stat
+              label="Cidades"
+              value={loading || !kpis ? '—' : String(kpis.topCities.length)}
+            />
+            <Stat label="Mais aquecida" value={hottest} />
+          </section>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
-          Mapa intelligence
-        </Link>
-        <Link href={lh('/valorization')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-          Valorização
-        </Link>
-        <Link href={lh('/alerts')} className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
-          Alertas
-        </Link>
-      </div>
+          <Card className="mt-6 p-4">
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <LineChart className="h-4 w-4 text-primary" />
+                <h2 className="text-sm font-semibold">Histórico do m²</h2>
+              </div>
+              <Badge variant="outline">2019 - 2025</Badge>
+            </div>
+            <Sparkline data={trend} width={280} height={56} aria-label="Tendência de preço" />
+            <p className="mt-2 text-xs text-muted-foreground">
+              Índice composto de valorização, infra e crescimento.
+            </p>
+          </Card>
 
-      <Reveal className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Card className="p-4">
-          <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
-            <TrendingUp className="h-3.5 w-3.5 text-primary" />
-            {COPY.topValorization}
-          </h2>
-          <ul className="space-y-2">
-            {tops.map((r, i) => (
-              <li key={r.id} className="flex justify-between text-sm">
-                <span>
-                  {i + 1}. {r.name}
-                </span>
-                <span className="tabular-nums text-muted-foreground">
-                  {r.layerScores.valorization}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-        <Card className="p-4">
-          <h2 className="mb-3 text-sm font-semibold">{COPY.topOpportunities}</h2>
-          <ul className="space-y-2">
-            {opps.map((r) => (
-              <li key={r.id} className="flex justify-between text-sm">
-                <span>{r.name}</span>
-                <Badge variant="outline">{r.score}</Badge>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </Reveal>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
+              Mapa intelligence
+            </Link>
+            <Link href={lh('/kpis')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
+              KPIs
+            </Link>
+            <Link href={lh('/alerts')} className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
+              Alertas
+            </Link>
+          </div>
+
+          <Reveal className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Card className="p-4">
+              <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+                <TrendingUp className="h-3.5 w-3.5 text-primary" />
+                Top valorização (12m)
+              </h2>
+              <ul className="space-y-2">
+                {loading ? (
+                  <li className="text-sm text-muted-foreground">Carregando…</li>
+                ) : tops.length === 0 ? (
+                  <li className="text-sm text-muted-foreground">Sem dados de valorização.</li>
+                ) : (
+                  tops.map((r, i) => (
+                    <li key={r.id} className="flex justify-between text-sm">
+                      <span>
+                        {i + 1}. {r.city}
+                      </span>
+                      <span className="tabular-nums text-muted-foreground">
+                        {fmtPct(r.deltaPct ?? 0)}
+                      </span>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </Card>
+            <Card className="p-4">
+              <h2 className="mb-3 text-sm font-semibold">Top oportunidades</h2>
+              <ul className="space-y-2">
+                {loading ? (
+                  <li className="text-sm text-muted-foreground">Carregando…</li>
+                ) : opps.length === 0 ? (
+                  <li className="text-sm text-muted-foreground">Sem oportunidades.</li>
+                ) : (
+                  opps.map((r) => (
+                    <li key={r.id} className="flex justify-between text-sm">
+                      <span>{r.neighborhood || r.city}</span>
+                      <Badge variant="outline">{r.score}</Badge>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </Card>
+          </Reveal>
+
+          {!loading && opportunities.length > 0 && (
+            <Reveal className="mt-6">
+              <h2 className="mb-3 text-sm font-semibold">Alertas de oportunidade</h2>
+              <ul className="space-y-2">
+                {opportunities.slice(0, 8).map((o) => (
+                  <li
+                    key={o.id}
+                    className="flex items-center justify-between rounded-xl border border-border bg-card px-3 py-2.5"
+                  >
+                    <span className="flex items-center gap-2 text-sm">
+                      <Badge variant="outline">{OPPORTUNITY_TYPE_LABEL[o.type]}</Badge>
+                      <span className="text-foreground/80">{o.title}</span>
+                    </span>
+                    <span className="tabular-nums text-xs text-muted-foreground">
+                      {o.neighborhood || o.city} · {o.score}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          )}
+        </>
+      )}
     </main>
   );
 }

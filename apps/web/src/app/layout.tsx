@@ -54,7 +54,9 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body>{children}<PwaRegister /></body>
     </html>
   );
 }
+
+import PwaRegister from './pwa-register';

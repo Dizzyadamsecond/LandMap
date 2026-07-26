@@ -41,13 +41,13 @@ describe('growth agents (Spec 04)', () => {
     const roster = createRoster();
     const roles = roster.map((a) => a.role);
     for (const r of NEW_ROLES) expect(roles).toContain(r);
-    expect(roster.length).toBe(14);
+    expect(roster.length).toBe(15);
   });
 
   it('adds growth + followup squad to the AGENTS array', () => {
     const roles = AGENTS.map((a) => a.role);
     for (const r of NEW_ROLES) expect(roles).toContain(r);
-    expect(AGENTS.length).toBe(14);
+    expect(AGENTS.length).toBe(15);
   });
 
   it('growth agents run and emit HITL tasks in copilot', async () => {

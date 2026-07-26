@@ -8,6 +8,8 @@ export const WEBHOOK_EVENTS = [
   'rag.query',
   'score.updated',
   'favorite.added',
+  'subscription.created',
+  'daily.report',
   'ping',
 ] as const;
 

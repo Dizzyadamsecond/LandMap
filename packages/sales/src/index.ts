@@ -12,7 +12,7 @@ export {
   applyEffectsUnderAutonomy,
   syncClosedDeals,
 } from './autonomy.js';
-export { runCycle, runFollowUpCycle, runStandbyTick } from './orchestrator.js';
+export { runCycle, runFollowUpCycle, runStandbyTick, runDialogue, runDailyLoop } from './orchestrator.js';
 export { createInitialStore } from './seed.js';
 export { mulberry32, uid, pick, clamp } from './util.js';
 export { NoopCrm, CollectingCrm } from './crm.js';
