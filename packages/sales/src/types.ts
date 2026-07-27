@@ -68,6 +68,8 @@ export interface Lead {
   tier?: LeadTier;
   /** Whether the lead has been promoted into the pipeline as a Deal. */
   worked?: boolean;
+  /** Perfil adaptativo (vetor de interesse + intenção) — ver packages/sales/conversion. */
+  profile?: import('./conversion.js').UserProfile;
 }
 
 export interface Deal {

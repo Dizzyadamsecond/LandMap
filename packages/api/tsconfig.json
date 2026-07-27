@@ -21,7 +21,8 @@
       "@landmap/llm": ["../llm/src/index.ts"],
       "@landmap/llm/*": ["../llm/src/*"],
       "@landmap/sales": ["../sales/src/index.ts"],
-      "@landmap/sales/*": ["../sales/src/*"]
+      "@landmap/sales/*": ["../sales/src/*"],
+      "@landmap/automation": ["../automation/src/index.ts"]
     }
   },
   "include": ["src/**/*"],

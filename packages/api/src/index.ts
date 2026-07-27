@@ -20,6 +20,7 @@ import { createSalesRouter } from './routes/sales.js';
 import { createFunnelRouter } from './routes/funnel.js';
 import { createInspectRouter } from './routes/inspect.js';
 import { createIntegrationsRouter } from './routes/integrations.js';
+import { createAutomationRouter } from './routes/automation.js';
 import { loadProperties } from './loadJson.js';
 const allPropertiesData = loadProperties();
 import { createGeoRouter, createGeoSource } from '@landmap/geo';
@@ -545,3 +546,7 @@ app.get('/kpi', (c) => {
 });
 
 export default app;
+
+/* ─── Automation (omnichannel anti-ban dispatch + lead intel) ─── */
+app.route('/automation', createAutomationRouter());
+

@@ -18,3 +18,10 @@ export { mulberry32, uid, pick, clamp } from './util.js';
 export { NoopCrm, CollectingCrm } from './crm.js';
 export { followupAgent, coldRecoveryAgent, wabaFollowupAgent, FOLLOWUP_SQUAD } from './agents.js';
 export { hydrateStore, persistFrom, SALES_CAP } from './persistence.js';
+export {
+  buildProfile,
+  conversionProbability,
+  decideFollowUp,
+  dealConversion,
+} from './conversion.js';
+export type { UserProfile, ConversionInputs, FollowUpDecision, FollowUpVerdict } from './conversion.js';
