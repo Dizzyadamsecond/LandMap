@@ -47,7 +47,7 @@ export default function OnboardingPage() {
 
   const onPrimary = () => {
     if (last) {
-      router.push(lh('/map'));
+      router.push(lh('/plans'));
       return;
     }
     setI((v) => Math.min(SLIDES.length - 1, v + 1));
@@ -108,7 +108,7 @@ export default function OnboardingPage() {
           onClick={onPrimary}
           className="inline-flex h-11 w-full items-center justify-center gap-1 rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
         >
-          {last ? 'Ver mapa' : 'Continuar'}
+          {last ? 'Ver planos' : 'Continuar'}
           <ArrowRight className="ml-1 h-4 w-4" />
         </button>
         <Link
