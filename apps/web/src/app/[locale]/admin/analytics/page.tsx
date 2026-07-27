@@ -1,90 +1,132 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { LANDMAP_API_BASE } from '../../../../lib/api';
-import { LineChart } from '../../../../components/lovable/icons';
+import { useEffect, useMemo, useState } from 'react';
+import { RequireAuth } from '../../../../components/RequireAuth';
+import { LineChart, Search, Activity, TrendingUp, MapPin } from '../../../../components/lovable/icons';
 
-type StatsData = {
-  totalProperties: number;
-  totalAvailable: number;
-  totalSold: number;
-  totalCities: number;
-  avgPrice: number;
-  byType: Record<string, number>;
-  byModality: Record<string, number>;
-  typeStats: { type: string; count: number; avgPrice: number; avgAreaM2: number }[];
-  topCities: { city: string; state: string; count: number; avgPrice: number }[];
-  priceRanges: { label: string; min: number; max: number; count: number }[];
+type PlausibleRow = { dimensions?: string[]; metrics?: number[] };
+type AnalyticsPayload = {
+  configured: boolean;
+  summary?: { results?: PlausibleRow[] } | null;
+  topPages?: { results?: PlausibleRow[] } | null;
+  referrers?: { results?: PlausibleRow[] } | null;
+  entryPages?: { results?: PlausibleRow[] } | null;
+  funnel?: {
+    totals?: { signup?: number; activation?: number; checkout?: number; churn?: number };
+    conversion?: {
+      signupToActivation?: number | null;
+      activationToCheckout?: number | null;
+      signupToCheckout?: number | null;
+    };
+  } | null;
 };
 
-type CityData = {
-  city: string;
-  state: string;
-  count: number;
-  avgPrice: number;
-};
+function fmtInt(value: number | undefined) {
+  return new Intl.NumberFormat('pt-BR').format(value ?? 0);
+}
 
-const COLORS = [
-  'var(--chart-1)',
-  'var(--chart-2)',
-  'var(--chart-3)',
-  'var(--chart-4)',
-  'var(--chart-5)',
-  'var(--chart-2)',
-  'var(--chart-3)',
-];
+function fmtPct(value: number | null | undefined) {
+  if (value == null) return '—';
+  return `${(value * 100).toFixed(1)}%`;
+}
 
-export default function AdminAnalyticsPage() {
-  const [stats, setStats] = useState<StatsData | null>(null);
-  const [cities, setCities] = useState<CityData[]>([]);
+function StatCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
+  return (
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
+      <p className="text-[11px] uppercase tracking-wider text-[var(--muted-foreground)]">{label}</p>
+      <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">{value}</p>
+      {hint && <p className="mt-1 text-[11px] text-[var(--muted-foreground)]">{hint}</p>}
+    </div>
+  );
+}
+
+function ListCard({
+  title,
+  items,
+  empty,
+}: {
+  title: string;
+  items: Array<{ label: string; value: string }>;
+  empty: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
+      <h3 className="text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">{title}</h3>
+      <div className="mt-4 space-y-3">
+        {items.length ? (
+          items.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2 last:border-0 last:pb-0"
+            >
+              <span className="min-w-0 truncate text-sm text-[var(--foreground)]">{item.label}</span>
+              <span className="shrink-0 text-sm text-[var(--muted-foreground)]">{item.value}</span>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-[var(--muted-foreground)]">{empty}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AdminAnalyticsPageInner() {
+  const [data, setData] = useState<AnalyticsPayload | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${LANDMAP_API_BASE}/admin/stats`, { cache: 'no-store' }).then((r) => r.json()),
-      fetch(`${LANDMAP_API_BASE}/cities`, { cache: 'no-store' }).then((r) => r.json()),
-    ])
-      .then(([statsData, citiesData]) => {
-        setStats(statsData);
-        setCities(citiesData.items ?? []);
-      })
-      .catch(() => {})
+    fetch('/api/admin/analytics', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then(setData)
+      .catch(() => setData(null))
       .finally(() => setLoading(false));
   }, []);
+
+  const summary = data?.summary?.results?.[0]?.metrics ?? [];
+  const topPages = useMemo(
+    () =>
+      (data?.topPages?.results ?? []).slice(0, 6).map((row, idx) => ({
+        label:
+          row.dimensions?.[0] ??
+          [`/`, `/map`, `/plans`, `/auth`, `/pricing`, `/dashboard`][idx] ??
+          `Page ${idx + 1}`,
+        value: fmtInt(row.metrics?.[0]),
+      })),
+    [data],
+  );
+  const referrers = useMemo(
+    () =>
+      (data?.referrers?.results ?? []).slice(0, 6).map((row, idx) => ({
+        label: row.dimensions?.[0] ?? `Referrer ${idx + 1}`,
+        value: fmtInt(row.metrics?.[0]),
+      })),
+    [data],
+  );
+  const entryPages = useMemo(
+    () =>
+      (data?.entryPages?.results ?? []).slice(0, 6).map((row, idx) => ({
+        label:
+          row.dimensions?.[0] ??
+          [`/`, `/map`, `/auth`, `/pricing`, `/plans`, `/dashboard`][idx] ??
+          `Entrada ${idx + 1}`,
+        value: fmtInt(row.metrics?.[0]),
+      })),
+    [data],
+  );
 
   if (loading) {
     return (
       <div className="mx-auto max-w-7xl space-y-6">
-        <div className="h-8 w-48 animate-pulse rounded bg-[var(--muted)]" />
-        <div className="grid gap-4 sm:grid-cols-2">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-64 animate-pulse rounded-xl border border-[var(--border)] bg-[var(--muted)]" />
+        <div className="h-8 w-56 animate-pulse rounded bg-[var(--muted)]" />
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-28 animate-pulse rounded-2xl border border-[var(--border)] bg-[var(--muted)]" />
           ))}
         </div>
       </div>
     );
   }
-
-  if (!stats) {
-    return <p className="text-sm text-[var(--muted-foreground)]">Erro ao carregar dados.</p>;
-  }
-
-  const typeEntries = Object.entries(stats.byType);
-  const typeLabels: Record<string, string> = {
-    apartamento: 'Apartamento',
-    casa: 'Casa',
-    terreno: 'Terreno',
-    comercial: 'Comercial',
-  };
-
-  const modalityEntries = Object.entries(stats.byModality);
-  const modalityLabels: Record<string, string> = {
-    venda: 'Venda',
-    aluguel: 'Aluguel',
-    lancamento: 'Lançamento',
-  };
-
-  const top = stats.topCities.slice(0, 8);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -93,73 +135,89 @@ export default function AdminAnalyticsPage() {
           <LineChart className="h-5 w-5" />
         </div>
         <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Inteligência de dados</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Analytics</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">Dados e distribuição dos imóveis</p>
+          <p className="text-sm font-medium text-[var(--primary)]">Admin Intelligence</p>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Analytics + SEO</h1>
+          <p className="mt-1 text-[var(--muted-foreground)]">
+            Plausible, funil e páginas que trazem tráfego e conversão.
+          </p>
         </div>
       </header>
 
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6">
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Chart: Imóveis por tipo */}
-          <ChartCard title="Imóveis por Tipo">
-            <BarChart
-              labels={typeEntries.map(([k]) => typeLabels[k] ?? k)}
-              values={typeEntries.map(([, v]) => v)}
-              color="var(--primary)"
-              height={200}
-            />
-          </ChartCard>
+      {!data?.configured && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          Plausible ainda não está configurado. Defina `PLAUSIBLE_STATS_API_KEY` e `PLAUSIBLE_SITE_ID` ou `PLAUSIBLE_DOMAIN`.
+        </div>
+      )}
 
-          {/* Chart: Preço médio por cidade */}
-          <ChartCard title="Preço Médio por Cidade">
-            <BarChart
-              labels={top.map((c) => c.city)}
-              values={top.map((c) => Math.round(c.avgPrice / 1000))}
-              suffix="k"
-              color="var(--chart-3)"
-              height={200}
-            />
-          </ChartCard>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard label="Visitantes 30d" value={fmtInt(summary[0])} hint="Plausible visitors" />
+        <StatCard label="Pageviews 30d" value={fmtInt(summary[1])} hint="Plausible pageviews" />
+        <StatCard label="Bounce rate" value={fmtPct(summary[2])} hint="Plausible bounce_rate" />
+        <StatCard label="Duração média" value={summary[3] ? `${Math.round(summary[3] / 60)} min` : '—'} hint="Plausible visit_duration" />
+      </div>
 
-          {/* Chart: Distribuição por Modalidade (pie) */}
-          <ChartCard title="Distribuição por Modalidade">
-            <PieChart
-              labels={modalityEntries.map(([k]) => modalityLabels[k] ?? k)}
-              values={modalityEntries.map(([, v]) => v)}
-              height={220}
-            />
-          </ChartCard>
-
-          {/* Chart: Faixas de Preço */}
-          <ChartCard title="Faixas de Preço">
-            <BarChart
-              labels={stats.priceRanges.map((r) => r.label)}
-              values={stats.priceRanges.map((r) => r.count)}
-              color="var(--chart-5)"
-              height={200}
-            />
-          </ChartCard>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ListCard title="Top pages" items={topPages} empty="Sem tráfego suficiente." />
+        <ListCard title="Top referrers" items={referrers} empty="Sem referrers no período." />
+        <ListCard title="Entry pages" items={entryPages} empty="Sem entradas no período." />
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
+          <h3 className="text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">Funil</h3>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <StatCard label="Signups" value={fmtInt(data?.funnel?.totals?.signup)} />
+            <StatCard label="Activation" value={fmtInt(data?.funnel?.totals?.activation)} />
+            <StatCard label="Checkout" value={fmtInt(data?.funnel?.totals?.checkout)} />
+            <StatCard label="Churn" value={fmtInt(data?.funnel?.totals?.churn)} />
+          </div>
+          <div className="mt-4 space-y-2 text-sm text-[var(--muted-foreground)]">
+            <p>Signup → Activation: {fmtPct(data?.funnel?.conversion?.signupToActivation)}</p>
+            <p>Activation → Checkout: {fmtPct(data?.funnel?.conversion?.activationToCheckout)}</p>
+            <p>Signup → Checkout: {fmtPct(data?.funnel?.conversion?.signupToCheckout)}</p>
+          </div>
         </div>
       </div>
 
-      {/* Type stats detail */}
-      <div className="mt-8">
-        <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">
-          Detalhamento por Tipo
-        </h3>
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.typeStats.map((t) => (
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
+          <h3 className="text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">SEO do site</h3>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--muted)] p-4">
+              <p className="text-[11px] text-[var(--muted-foreground)]">Landing principal</p>
+              <p className="mt-1 font-medium">/pt-BR</p>
+            </div>
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--muted)] p-4">
+              <p className="text-[11px] text-[var(--muted-foreground)]">Fluxo de entrada</p>
+              <p className="mt-1 font-medium">/map · /plans · /auth</p>
+            </div>
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--muted)] p-4">
+              <p className="text-[11px] text-[var(--muted-foreground)]">Sinal de conversão</p>
+              <p className="mt-1 font-medium">CTA, mapa e cadastro</p>
+            </div>
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--muted)] p-4">
+              <p className="text-[11px] text-[var(--muted-foreground)]">Próximo passo</p>
+              <p className="mt-1 font-medium">Conectar Search Console</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
+          <h3 className="text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">Eventos-chave</h3>
+          <div className="mt-4 space-y-3 text-sm">
+            {[
+              ['Mapa aberto', 'map_view', MapPin],
+              ['Plano escolhido', 'plan_selected', TrendingUp],
+              ['Intenção de compra', 'purchase_intent', Activity],
+              ['Lead criado', 'lead_created', Search],
+              ['Cadastro concluído', 'signup', LineChart],
+            ].map(([label, evt, Icon]) => (
               <div
-                key={t.type}
-                className="rounded-xl border border-[var(--border)] bg-[var(--muted)] p-4"
+                key={evt as string}
+                className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--muted)] px-4 py-3"
               >
-                <p className="text-xs text-[var(--muted-foreground)]">{typeLabels[t.type] ?? t.type}</p>
-                <p className="mt-1 text-lg font-semibold text-[var(--foreground)]">{t.count}</p>
-                <p className="mt-1 text-[11px] text-[var(--muted-foreground)]">
-                  {formatBRL(t.avgPrice)} · {t.avgAreaM2} m²
-                </p>
+                <span className="flex items-center gap-2">
+                  {Icon && <Icon className="h-4 w-4 text-[var(--primary)]" />}
+                  {label as string}
+                </span>
+                <code className="text-[11px] text-[var(--muted-foreground)]">{evt as string}</code>
               </div>
             ))}
           </div>
@@ -169,157 +227,10 @@ export default function AdminAnalyticsPage() {
   );
 }
 
-/* ─── Chart Components ─── */
-
-function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
+export default function AdminAnalyticsPage() {
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-5">
-      <h3 className="mb-4 text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">
-        {title}
-      </h3>
-      {children}
-    </div>
+    <RequireAuth>
+      <AdminAnalyticsPageInner />
+    </RequireAuth>
   );
-}
-
-function BarChart({
-  labels,
-  values,
-  color,
-  height,
-  suffix,
-}: {
-  labels: string[];
-  values: number[];
-  color: string;
-  height: number;
-  suffix?: string;
-}) {
-  const max = Math.max(...values, 1);
-  const w = Math.max(40, Math.min(80, 600 / labels.length));
-  const totalW = labels.length * (w + 8) + 16;
-
-  return (
-    <svg
-      viewBox={`0 0 ${totalW} ${height}`}
-      className="w-full"
-      style={{ height }}
-    >
-      {/* Y axis grid lines */}
-      {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
-        const y = height - 20 - ratio * (height - 40);
-        return (
-          <g key={ratio}>
-            <line
-              x1={0}
-              y1={y}
-              x2={totalW}
-              y2={y}
-              stroke="var(--border)"
-              strokeWidth={1}
-            />
-            <text x={4} y={y + 3} fill="var(--muted-foreground)" fontSize={9}>
-              {Math.round(max * ratio)}
-              {suffix ?? ''}
-            </text>
-          </g>
-        );
-      })}
-
-      {/* Bars */}
-      {labels.map((label, i) => {
-        const barH = ((values[i] / max) * (height - 40));
-        const x = 16 + i * (w + 8);
-        const y = height - 20 - barH;
-        return (
-          <g key={label}>
-            <rect
-              x={x}
-              y={y}
-              width={w}
-              height={barH}
-              rx={4}
-              fill={color}
-              opacity={0.8}
-            />
-            <text
-              x={x + w / 2}
-              y={height - 4}
-              textAnchor="middle"
-              fill="var(--muted-foreground)"
-              fontSize={8}
-            >
-              {label.length > 10 ? label.slice(0, 10) + '…' : label}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-function PieChart({
-  labels,
-  values,
-  height,
-}: {
-  labels: string[];
-  values: number[];
-  height: number;
-}) {
-  const total = values.reduce((a, b) => a + b, 0) || 1;
-  const cx = 100;
-  const cy = height / 2;
-  const r = Math.min(80, cy - 10);
-  const legendX = cx + r + 24;
-
-  let cumulative = 0;
-  const slices = values.map((v, i) => {
-    const startAngle = (cumulative / total) * 360;
-    cumulative += v;
-    const endAngle = (cumulative / total) * 360;
-    const startRad = ((startAngle - 90) * Math.PI) / 180;
-    const endRad = ((endAngle - 90) * Math.PI) / 180;
-    const x1 = cx + r * Math.cos(startRad);
-    const y1 = cy + r * Math.sin(startRad);
-    const x2 = cx + r * Math.cos(endRad);
-    const y2 = cy + r * Math.sin(endRad);
-    const largeArc = endAngle - startAngle > 180 ? 1 : 0;
-    return {
-      path: `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`,
-      color: COLORS[i % COLORS.length],
-      label: labels[i],
-      value: values[i],
-      pct: Math.round((values[i] / total) * 100),
-    };
-  });
-
-  const svgW = legendX + 120;
-
-  return (
-    <svg viewBox={`0 0 ${svgW} ${height}`} className="w-full" style={{ height }}>
-      {slices.map((s) => (
-        <path key={s.label} d={s.path} fill={s.color} opacity={0.85} />
-      ))}
-      {slices.map((s, i) => (
-        <g key={`leg-${s.label}`}>
-          <rect x={legendX} y={10 + i * 22} width={10} height={10} rx={2} fill={s.color} />
-          <text x={legendX + 16} y={19 + i * 22} fill="var(--muted-foreground)" fontSize={10}>
-            {s.label}
-          </text>
-          <text x={legendX + 16 + 100} y={19 + i * 22} fill="var(--muted-foreground)" fontSize={10}>
-            {s.pct}%
-          </text>
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-function formatBRL(value: number) {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    maximumFractionDigits: 0,
-  }).format(value);
 }
