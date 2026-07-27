@@ -57,16 +57,19 @@ const FEATURES: Record<string, string[]> = {
 };
 const HIGHLIGHT: Record<string, boolean> = { plus: true };
 
-/** Planos 1:1 com Lovable `lovable_chunk_plans.js` (sem Free no funil).
- *  Nome/tagline/preço vêm de lib/plans (fonte única); features são do funil. */
-const PLANS: Plan[] = PLAN_META.map((m) => ({
-  id: m.id,
-  name: m.name,
-  tag: m.tagline,
-  price: m.priceBRL,
-  features: FEATURES[m.id] ?? [],
-  highlight: HIGHLIGHT[m.id] ?? false,
-}));
+/** Planos 1:1 com Lovable `/plans` (chunk plans-DaZ4cK95.js): 4 tiers, sem Free.
+ *  Nome/tagline/preço vêm de lib/plans (fonte única); features são do funil.
+ *  `free` é mantido só em lib/plans.ts como baseline do gate demo (não aparece aqui). */
+const PLANS: Plan[] = PLAN_META
+  .filter((m) => m.id !== 'free')
+  .map((m) => ({
+    id: m.id,
+    name: m.name,
+    tag: m.tagline,
+    price: m.priceBRL,
+    features: FEATURES[m.id] ?? [],
+    highlight: HIGHLIGHT[m.id] ?? false,
+  }));
 
 export default function PlansPage() {
   const locale = useLocale();
@@ -74,7 +77,7 @@ export default function PlansPage() {
   const lh = (p: string) => `/${locale}${p}`;
 
   // Lovable default = Plus
-  const [selected, setSelected] = useState<string>('free');
+  const [selected, setSelected] = useState<string>('plus');
   const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[1];
 
   const handleSubscribe = () => {
@@ -112,7 +115,7 @@ export default function PlansPage() {
           Comece a analisar o mercado agora
         </h1>
         <p className="mt-2 text-sm text-foreground/60">
-          14 dias gratuitos com cartão de crédito. Cancele quando quiser.
+          Cancele quando quiser. Sem fidelidade.
         </p>
       </div>
 
@@ -132,12 +135,7 @@ export default function PlansPage() {
             >
               {p.highlight && (
                 <span className="absolute -top-2 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-primary-foreground">
-                  Mais popular
-                </span>
-              )}
-              {p.id === 'free' && (
-                <span className="absolute -top-2 left-4 rounded-full bg-[var(--success)] px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-[var(--success-foreground)]">
-                  14 dias grátis
+                  {p.tag}
                 </span>
               )}
 
@@ -162,11 +160,6 @@ export default function PlansPage() {
                 <span className="font-display text-2xl font-bold tracking-tight">{formatBRL(p.price)}</span>
                 <span className="text-sm text-foreground/50">/mês</span>
               </div>
-              {p.id === 'free' && (
-                <p className="mt-1 text-xs text-foreground/60">
-                  14 dias gratuitos. Cartão de crédito necessário para ativação.
-                </p>
-              )}
 
               {isSel && p.features.length > 0 && (
                 <ul className="mt-4 max-h-[40vh] space-y-2 overflow-y-auto border-t border-border/60 pt-4">
@@ -195,9 +188,7 @@ export default function PlansPage() {
           onClick={handleSubscribe}
           className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary/90"
         >
-          {selectedPlan.id === 'free'
-            ? 'Começar teste grátis por 14 dias'
-            : `Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.price)}/mês`}
+          {`Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.price)}/mês`}
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
           Pagamento não ativado — fluxo de demonstração.

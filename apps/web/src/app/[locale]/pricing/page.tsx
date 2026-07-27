@@ -6,39 +6,58 @@ import { Sparkles, Check } from '../../../components/lovable/icons';
 import { ProductPageShell } from '../../../components/ProductPageShell';
 import { Reveal } from '../../../components/Motion';
 import { Card, Badge, Stat, buttonVariants, cn } from '@landmap/ui';
+import { PLANS as PLAN_META, formatBRL } from '../../../lib/plans';
 
-const PLANS = [
-  {
-    name: 'Access',
-    price: 'R$ 69,90',
-    feats: ['Mapa intelligence (camadas)', 'Heatmap de valorização', 'Histórico m²', '10 favoritos'],
-    hl: false,
-  },
-  {
-    name: 'Plus',
-    price: 'R$ 119,90',
-    feats: [
-      'Tudo do Access',
-      'Radar de oportunidades',
-      'Alertas inteligentes',
-      'Comparação de regiões',
-      '25 favoritos',
-    ],
-    hl: true,
-  },
-  {
-    name: 'Pro',
-    price: 'R$ 249,90',
-    feats: ['Relatório mensal', 'Avaliação de terreno', 'Score detalhado', '50 regiões'],
-    hl: false,
-  },
-  {
-    name: 'Business',
-    price: 'R$ 699,90',
-    feats: ['API & webhooks', 'Multi-usuário', 'Exports admin', 'SLA comercial'],
-    hl: false,
-  },
-];
+// Features 1:1 com Lovable `/plans` (chunk plans-DaZ4cK95.js).
+const FEATURES: Record<string, string[]> = {
+  access: [
+    'Acesso a todas as cidades do Brasil',
+    'Mapa de valorização e desvalorização',
+    'Mapa de calor básico',
+    'Ranking das regiões mais valorizadas',
+    'Ranking das regiões em queda',
+    'Histórico de preço por m²',
+    'Busca por bairro, cidade e região',
+    'Salvar até 10 áreas favoritas',
+    'Tendência: subindo, estável ou caindo',
+  ],
+  plus: [
+    'Tudo do Access',
+    'Radar de oportunidades LandMap',
+    'Alertas inteligentes de valorização',
+    'Alertas de queda de preço',
+    'Ranking de oportunidades por cidade',
+    'Comparação entre regiões',
+    'Notas automáticas sobre potencial da área',
+    'Salvar até 25 áreas favoritas',
+  ],
+  pro: [
+    'Tudo do Plus',
+    'Acompanhar áreas monitoradas (salvas)',
+    'Salvar até 50 regiões favoritas',
+    'Histórico completo da área',
+    'Relatório mensal geral',
+    'Avaliação do seu terreno',
+  ],
+  business: [
+    'Tudo do Pro',
+    'Até 5 usuários',
+    'Painel de equipe',
+    'Relatório com marca da empresa',
+    'Histórico de análise da equipe',
+  ],
+};
+const HIGHLIGHT: Record<string, boolean> = { plus: true };
+
+// 4 tiers, sem Free (igual Lovable). Nome/preço vêm de lib/plans.
+const PLANS = PLAN_META.filter((m) => m.id !== 'free').map((m) => ({
+  id: m.id,
+  name: m.name,
+  tag: m.tagline,
+  price: m.priceBRL,
+  feats: FEATURES[m.id] ?? [],
+  hl: HIGHLIGHT[m.id] ?? false,
+}));
 
 export default function PricingPage() {
   const locale = useLocale();
@@ -66,7 +85,7 @@ export default function PricingPage() {
       <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {PLANS.map((pl) => (
           <Card
-            key={pl.name}
+            key={pl.id}
             variant={pl.hl ? 'highlight' : 'interactive'}
             className={cn(
               'flex flex-col p-4',
@@ -74,11 +93,11 @@ export default function PricingPage() {
             )}
           >
             <div className="flex items-center justify-between">
-              <p className="font-semibold">LandMap {pl.name}</p>
-              {pl.hl && <Badge variant="default">Mais popular</Badge>}
+              <p className="font-semibold">{pl.name}</p>
+              {pl.hl && <Badge variant="default">{pl.tag}</Badge>}
             </div>
             <p className="mt-2 font-display text-2xl font-bold">
-              {pl.price}
+              R$ {formatBRL(pl.price)}
               <span className="text-sm font-normal text-muted-foreground">/mês</span>
             </p>
             <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm">
@@ -96,7 +115,7 @@ export default function PricingPage() {
                 'mt-4 w-full',
               )}
             >
-              Assinar {pl.name}
+              Assinar {pl.name.replace('LandMap ', '')}
             </Link>
           </Card>
         ))}
