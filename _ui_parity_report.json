@@ -1,0 +1,855 @@
+{
+  "generatedAt": "2026-07-27T06:10:02Z",
+  "base": "http://localhost:3214",
+  "total": 65,
+  "passed": 65,
+  "failed": 0,
+  "weak": 0,
+  "details": [
+    {
+      "route": "(root)",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 36412
+    },
+    {
+      "route": "activity",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 50196
+    },
+    {
+      "route": "admin",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 56776
+    },
+    {
+      "route": "admin/agents",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 64452
+    },
+    {
+      "route": "admin/analytics",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55820
+    },
+    {
+      "route": "admin/audit",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 75150
+    },
+    {
+      "route": "admin/exports",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 57308
+    },
+    {
+      "route": "admin/leads",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 72362
+    },
+    {
+      "route": "admin/properties",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55693
+    },
+    {
+      "route": "admin/settings",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 57889
+    },
+    {
+      "route": "admin/subscriptions",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 57862
+    },
+    {
+      "route": "admin/webhooks",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 61450
+    },
+    {
+      "route": "agents",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 56629
+    },
+    {
+      "route": "alerts",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 62902
+    },
+    {
+      "route": "api-keys",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52162
+    },
+    {
+      "route": "assistant",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 60870
+    },
+    {
+      "route": "auth",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 38657
+    },
+    {
+      "route": "automations",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 56198
+    },
+    {
+      "route": "calculator",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 53435
+    },
+    {
+      "route": "chat",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52696
+    },
+    {
+      "route": "cities",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55498
+    },
+    {
+      "route": "cockpit",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 56910
+    },
+    {
+      "route": "compare",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 51065
+    },
+    {
+      "route": "dashboard",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 54865
+    },
+    {
+      "route": "developers",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 66639
+    },
+    {
+      "route": "developers/api-reference",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 61593
+    },
+    {
+      "route": "favorites",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 49895
+    },
+    {
+      "route": "glossary",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 83706
+    },
+    {
+      "route": "heatmap",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52582
+    },
+    {
+      "route": "insights",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 57660
+    },
+    {
+      "route": "inspect",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 68112
+    },
+    {
+      "route": "integrations",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 66960
+    },
+    {
+      "route": "knowledge",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 58297
+    },
+    {
+      "route": "kpis",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55366
+    },
+    {
+      "route": "launch",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 59465
+    },
+    {
+      "route": "leads",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 59394
+    },
+    {
+      "route": "live",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 56121
+    },
+    {
+      "route": "map",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52107
+    },
+    {
+      "route": "market",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55265
+    },
+    {
+      "route": "neighborhoods",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 67601
+    },
+    {
+      "route": "notifications",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52417
+    },
+    {
+      "route": "onboarding",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 36947
+    },
+    {
+      "route": "pipeline",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 58194
+    },
+    {
+      "route": "plans",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 42788
+    },
+    {
+      "route": "plans/manage",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 42030
+    },
+    {
+      "route": "portfolio",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 57079
+    },
+    {
+      "route": "pricing",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 66047
+    },
+    {
+      "route": "property/[id]",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 50174
+    },
+    {
+      "route": "radar",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52627
+    },
+    {
+      "route": "rag",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55116
+    },
+    {
+      "route": "recommendations",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 62281
+    },
+    {
+      "route": "regions",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 72314
+    },
+    {
+      "route": "reports",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52477
+    },
+    {
+      "route": "resources",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 61669
+    },
+    {
+      "route": "sales",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 59666
+    },
+    {
+      "route": "search",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52380
+    },
+    {
+      "route": "settings",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55533
+    },
+    {
+      "route": "status",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 59483
+    },
+    {
+      "route": "studio",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 60513
+    },
+    {
+      "route": "team",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 50439
+    },
+    {
+      "route": "valorization",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 62051
+    },
+    {
+      "route": "warroom",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 55162
+    },
+    {
+      "route": "watchlist",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 52451
+    },
+    {
+      "route": "workflows",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 59255
+    },
+    {
+      "route": "writer",
+      "status": 200,
+      "ok": true,
+      "score": 3,
+      "markers": {
+        "oklch_token": true,
+        "ui_component": false,
+        "font_dm_sans": true,
+        "font_space_grotesk": true
+      },
+      "bytes": 53551
+    }
+  ]
+}
