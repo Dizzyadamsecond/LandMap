@@ -12,7 +12,6 @@ import urllib.request, json, os, sys, time
 
 BASE = os.environ.get("SALES_BASE",
     "https://landmapprod-ciyozo6pv-dizzys-projects-d5a44b36.vercel.app")
-RESTORE = BASE + "/api/sales/restore"
 LOOP = BASE + "/api/sales/loop"
 PROG = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".sales_drive_progress.json")
 CAP = int(os.environ.get("SALES_CAP", "200000"))
@@ -44,12 +43,12 @@ def main():
     calls = prog.get("calls", 0)
     calls += 1
     try:
-        if subs:
-            r0 = post(RESTORE, {"subscriptions": subs, "firstSaleAt": first_sale})
-            seeded = r0.get("total", len(subs))
-        else:
-            seeded = 0
-        res = post(LOOP, {"cycles": CYCLES})
+        # 1 requisição única: semeia o acumulado E roda o loop no mesmo processo
+        # (em serverless, RESTORE+LOOP separados caem em instâncias distintas).
+        res = post(LOOP, {
+            "cycles": CYCLES,
+            "seed": {"subscriptions": subs, "firstSaleAt": first_sale},
+        })
         st = res.get("state") or {}
         new_subs = st.get("subscriptions") or []
         fs = st.get("firstSaleAt")
@@ -60,7 +59,7 @@ def main():
             subs = new_subs
         total = len(subs)
         best = max(best, total)
-        log(f"tick {calls}: total={total} (seeded={seeded}) best={best} primeiraVenda={first_sale}")
+        log(f"tick {calls}: total={total} best={best} primeiraVenda={first_sale}")
     except Exception as e:
         log(f"tick {calls} ERR {repr(e)[:90]}")
     json.dump({"calls": calls, "best": best, "first_sale": first_sale, "subscriptions": subs},

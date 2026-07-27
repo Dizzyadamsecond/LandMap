@@ -116,16 +116,6 @@ function fireDueWebhooks(store: SalesStore) {
 export function createSalesRouter() {
   const app = new Hono();
 
-  app.get('/state', (c) => {
-    const store = getStore();
-    store.recomputeAnalytics();
-    fireDueWebhooks(store);
-    return c.json({
-      ...store.toState(),
-      meta: metaOf(store),
-    });
-  });
-
   app.get('/agents', (c) => {
     const store = getStore();
     return c.json({
@@ -365,7 +355,18 @@ export function createSalesRouter() {
     await awaitHydrate(store);
     // Driver autônomo (Vercel Cron): garante autopilot antes de rodar.
     if (store.autonomy !== 'autopilot') setAutonomy(store, 'autopilot');
-    const body = (await c.req.json().catch(() => ({}))) as { cycles?: number };
+    const body = (await c.req.json().catch(() => ({}))) as {
+      cycles?: number;
+      seed?: { subscriptions?: unknown[]; firstSaleAt?: string | null };
+    };
+    // Seed recebido numa ÚNICA requisição (mesmo processo) — necessário em
+    // serverless, onde RESTORE/LOOP separados caem em instâncias distintas e
+    // o store global não sobrevive. Sem KV, o driver local semeia o acumulado.
+    if (body.seed && Array.isArray(body.seed.subscriptions) && body.seed.subscriptions.length) {
+      store.subscriptions = body.seed.subscriptions as typeof store.subscriptions;
+      if (body.seed.firstSaleAt) store.firstSaleAt = body.seed.firstSaleAt;
+      store.bumpDaily();
+    }
     const result = await runDailyLoop(store, makeCtx(store), body.cycles ?? 400);
     g.__landmapSalesLastTick = new Date().toISOString();
     g.__landmapSalesTickCount = (g.__landmapSalesTickCount ?? 0) + 1;
