@@ -10,8 +10,7 @@ honesto) — o dashboard war-room rotula isso.
 """
 import urllib.request, json, os, sys, time
 
-BASE = os.environ.get("SALES_BASE",
-    "https://landmapprod-ciyozo6pv-dizzys-projects-d5a44b36.vercel.app")
+BASE = os.environ.get("SALES_BASE", "https://landmap.us.kg")
 LOOP = BASE + "/api/sales/loop"
 PROG = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".sales_drive_progress.json")
 CAP = int(os.environ.get("SALES_CAP", "200000"))
