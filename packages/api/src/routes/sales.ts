@@ -171,6 +171,61 @@ export function createSalesRouter() {
     return c.json({ ok: true, ...result, ledger: listCrmLedger() });
   });
 
+  /** Snapshot público do motor p/ dashboard tempo real (war-room). */
+  app.get('/state', (c) => {
+    const store = getStore();
+    store.bumpDaily();
+    const subs = store.subscriptions;
+    const active = subs.filter((s) => s.status === 'active' || s.status === 'past_due').length;
+    const trials = subs.filter((s) => s.status === 'trial').length;
+    const mrr = subs.reduce(
+      (sum, s) => sum + (s.status === 'active' || s.status === 'past_due' ? s.mrr : 0),
+      0,
+    );
+    const realChannel =
+      !!process.env.RESEND_API_KEY || !!process.env.SMTP_HOST || !!process.env.TWILIO_ACCOUNT_SID;
+    const realPayments = !!process.env.STRIPE_SECRET_KEY;
+    const realLeads = subs.some((s) => s.leadId && !s.leadId.startsWith('lead'));
+    return c.json({
+      ok: true,
+      generatedAt: new Date().toISOString(),
+      autonomy: store.autonomy,
+      total: subs.length,
+      active,
+      trials,
+      mrr,
+      goal: store.daily.goal,
+      daily: store.daily,
+      firstSaleAt: store.firstSaleAt,
+      agents: store.agents.map((a) => ({
+        id: a.id,
+        name: a.name,
+        role: a.role,
+        status: a.status,
+        currentTask: a.currentTask,
+        actionsToday: a.actionsToday,
+        successToday: a.successToday,
+      })),
+      totals: {
+        leads: store.leads.length,
+        deals: store.deals.length,
+        tasks: store.tasks.length,
+        events: store.events.length,
+      },
+      channelStats: store.channelStats,
+      mode: {
+        simulated: !realChannel && !realPayments ? true : !realChannel || !realPayments,
+        realChannel,
+        realPayments,
+        realLeads,
+        note:
+          !realChannel && !realPayments
+            ? 'MODO SIMULADO: sem credenciais de envio/pagamento. Números são do motor (não vendas reais).'
+            : 'Parcial: algumas credenciais presentes.',
+      },
+    });
+  });
+
   app.post('/cycle', async (c) => {
     const store = getStore();
     await awaitHydrate(store);
