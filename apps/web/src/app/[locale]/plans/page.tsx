@@ -57,12 +57,9 @@ const FEATURES: Record<string, string[]> = {
 };
 const HIGHLIGHT: Record<string, boolean> = { plus: true };
 
-/** Planos 1:1 com Lovable `/plans` (chunk plans-DaZ4cK95.js): 4 tiers, sem Free.
- *  Nome/tagline/preço vêm de lib/plans (fonte única); features são do funil.
- *  `free` é mantido só em lib/plans.ts como baseline do gate demo (não aparece aqui). */
-const PLANS: Plan[] = PLAN_META
-  .filter((m) => m.id !== 'free')
-  .map((m) => ({
+/** Planos com `free` explícito na vitrine para refletir o acesso aberto.
+ *  Nome/tagline/preço vêm de lib/plans (fonte única); features são do funil. */
+const PLANS: Plan[] = PLAN_META.map((m) => ({
     id: m.id,
     name: m.name,
     tag: m.tagline,
@@ -76,8 +73,8 @@ export default function PlansPage() {
   const router = useRouter();
   const lh = (p: string) => `/${locale}${p}`;
 
-  // Lovable default = Plus
-  const [selected, setSelected] = useState<string>('plus');
+  // Default aberto = Free.
+  const [selected, setSelected] = useState<string>('free');
   const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[1];
 
   const handleSubscribe = () => {

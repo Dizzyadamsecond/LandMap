@@ -20,7 +20,7 @@ export type PlanMeta = {
 };
 
 export const PLANS: PlanMeta[] = [
-  { id: 'free', name: 'Free', priceBRL: 0, tagline: '14 dias gratuitos com cartão' },
+  { id: 'free', name: 'Gratuito', priceBRL: 0, tagline: 'Acesso aberto e sem cobrança' },
   { id: 'access', name: 'LandMap Access', priceBRL: 69.9, tagline: 'Comece com o essencial' },
   { id: 'plus', name: 'LandMap Plus', priceBRL: 119.9, tagline: 'Mais popular' },
   { id: 'pro', name: 'LandMap Pro', priceBRL: 249.9, tagline: 'Para profissionais' },

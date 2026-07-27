@@ -49,8 +49,7 @@ const FEATURES: Record<string, string[]> = {
 };
 const HIGHLIGHT: Record<string, boolean> = { plus: true };
 
-// 4 tiers, sem Free (igual Lovable). Nome/preço vêm de lib/plans.
-const PLANS = PLAN_META.filter((m) => m.id !== 'free').map((m) => ({
+const PLANS = PLAN_META.map((m) => ({
   id: m.id,
   name: m.name,
   tag: m.tagline,
@@ -76,7 +75,7 @@ export default function PricingPage() {
       maxWidth="5xl"
     >
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Planos" value="4" />
+        <Stat label="Planos" value="5" />
         <Stat label="Mais popular" value="Plus" />
         <Stat label="Mapa" value="incluído" />
         <Stat label="Fidelidade" value="0 dias" />
@@ -97,7 +96,7 @@ export default function PricingPage() {
               {pl.hl && <Badge variant="default">{pl.tag}</Badge>}
             </div>
             <p className="mt-2 font-display text-2xl font-bold">
-              R$ {formatBRL(pl.price)}
+              {pl.id === 'free' ? 'R$ 0,00' : `R$ ${formatBRL(pl.price)}`}
               <span className="text-sm font-normal text-muted-foreground">/mês</span>
             </p>
             <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm">
@@ -115,7 +114,7 @@ export default function PricingPage() {
                 'mt-4 w-full',
               )}
             >
-              Assinar {pl.name.replace('LandMap ', '')}
+              {pl.id === 'free' ? 'Começar grátis' : `Assinar ${pl.name.replace('LandMap ', '')}`}
             </Link>
           </Card>
         ))}
