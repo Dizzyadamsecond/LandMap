@@ -144,7 +144,8 @@ function MapPageInner() {
         if (cancelled || !mapRef.current || mapInstance.current) return;
         // Leaflet is imported dynamically: its module touches `window` at import
         // time, which breaks SSR. Loading it here (client-only) avoids that.
-        const L = (await import('leaflet')).default;
+        const leafletMod = await import('leaflet');
+        const L = (leafletMod as any).default ?? leafletMod;
         const map = L.map(mapRef.current, {
           center: MAP_CENTER,
           zoom: MAP_DEFAULT_ZOOM,

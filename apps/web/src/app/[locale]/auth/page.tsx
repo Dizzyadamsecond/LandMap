@@ -93,7 +93,7 @@ function AuthPageInner() {
       /* ignore */
     }
     signInGuest();
-    router.push(lh('/dashboard'));
+    router.push(lh('/map'));
   };
 
   const onLogin = async (e: React.FormEvent) => {
@@ -101,7 +101,7 @@ function AuthPageInner() {
     setLoginLoading(true);
     try {
       await signInEmail({ email: loginEmail || undefined });
-      router.push(lh('/dashboard'));
+      router.push(lh('/map'));
     } finally {
       setLoginLoading(false);
     }
@@ -128,10 +128,7 @@ function AuthPageInner() {
       userType: userType as UserType,
     })
       .then(() => {
-        // Lovable: após cadastro volta para tab login
-        setTab('login');
-        setLoginEmail(email.trim());
-        setError('');
+        router.push(lh('/map'));
       })
       .finally(() => setSignupLoading(false));
   };
