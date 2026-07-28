@@ -9,6 +9,7 @@ import { createNeighborhoodsRouter } from './neighborhoods.js';
 import { createMarketRouter } from './market.js';
 import { marketApp } from './routes/market.js';
 import { investApp } from './routes/invest.js';
+import { auctionsApp } from './routes/auctions.js';
 import { valuationApp } from './routes/valuation.js';
 import { createEmbeddingsRouter } from './routes/embeddings.js';
 import { createInsightsRouter } from './routes/insights.js';
@@ -29,6 +30,7 @@ import { createGeoRouter, createGeoSource } from '@landmap/geo';
 export type Env = {
   Bindings: {
     DATABASE_URL?: string;
+    AUCTION_INGEST_TOKEN?: string;
   };
 };
 
@@ -425,6 +427,7 @@ app.route('/market', createMarketRouter());
 /* â”€â”€â”€ Market intelligence (neighborhoods / price-trend / heatmap) â”€â”€â”€ */
 /* Investment intelligence: /invest/analyze, /invest/opportunities, /invest/score */
 app.route('/invest', investApp);
+app.route('/auctions', auctionsApp);
 app.route('/market', marketApp);
 app.route('/value', valuationApp);
 

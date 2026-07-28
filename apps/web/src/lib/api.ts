@@ -819,6 +819,34 @@ export function getTerrain(city: string) {
   return apiFetch<TerrainResponse>(`/market/terrain?city=${encodeURIComponent(city)}`);
 }
 
+export type AuctionOpportunity = {
+  id: string;
+  source: string;
+  sourceUrl?: string;
+  title: string;
+  city: string;
+  state: string;
+  type: string;
+  auctionDate?: string;
+  price?: number;
+  areaM2?: number;
+  latitude?: number;
+  longitude?: number;
+  status: 'open' | 'scheduled' | 'closed' | 'unknown';
+  updatedAt: string;
+};
+
+/** GET /auctions — oportunidades de leilão de todo o Brasil. */
+export function getAuctionOpportunities(opts: { state?: string; region?: 'NE'; limit?: number } = {}) {
+  const params = new URLSearchParams();
+  if (opts.state) params.set('state', opts.state);
+  if (opts.region) params.set('region', opts.region);
+  params.set('limit', String(opts.limit ?? 120));
+  return apiFetch<{ region: string; state: string | null; items: AuctionOpportunity[]; generatedAt: string }>(
+    `/auctions?${params.toString()}`,
+  );
+}
+
 /* ─── Investment underwriting ─────────────────────────────────────────── */
 
 export type InvestScoreRequest = {

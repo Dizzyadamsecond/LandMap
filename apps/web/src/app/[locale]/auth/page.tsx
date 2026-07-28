@@ -107,7 +107,7 @@ function AuthPageInner() {
     }
   };
 
-  const onSignup = (e: React.FormEvent) => {
+  const onSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     const phoneDigits = phone.replace(/\D/g, '');
@@ -122,15 +122,19 @@ function AuthPageInner() {
       return setError('A senha precisa de ao menos 8 caracteres e 1 caractere especial.');
     setSignupLoading(true);
     storeUserType(userType as UserType);
-    void signInEmail({
-      email: email.trim(),
-      name: fullName.trim(),
-      userType: userType as UserType,
-    })
-      .then(() => {
-        router.push(lh('/map'));
-      })
-      .finally(() => setSignupLoading(false));
+    try {
+      await signInEmail({
+        email: email.trim(),
+        name: fullName.trim(),
+        userType: userType as UserType,
+      });
+      router.replace(lh('/map'));
+      router.refresh();
+    } catch {
+      setError('Não foi possível concluir o cadastro. Tente novamente.');
+    } finally {
+      setSignupLoading(false);
+    }
   };
 
   const pwLenMet = signupPassword.length >= 8;

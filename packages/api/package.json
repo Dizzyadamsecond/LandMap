@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.19.14",
+    "@landmap/automation": "workspace:*",
     "@landmap/config": "workspace:*",
     "@landmap/db": "workspace:*",
     "@landmap/geo": "workspace:*",
@@ -43,12 +44,13 @@
     "@landmap/invest": "workspace:*",
     "@landmap/llm": "workspace:*",
     "@landmap/sales": "workspace:*",
-    "@landmap/automation": "workspace:*",
     "hono": "4.6.0",
+    "ws": "^8.21.1",
     "zod": "3.24.0"
   },
   "devDependencies": {
     "@types/node": "22.0.0",
+    "@types/ws": "^8.18.1",
     "tsx": "4.19.0",
     "typescript": "5.5.4"
   }

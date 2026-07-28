@@ -11,7 +11,13 @@ import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import 'leaflet/dist/leaflet.css';
 import { RequireAuth } from '../../../components/RequireAuth';
-import { geoAutocomplete, geoGeocode, type AutocompleteSuggestion } from '../../../lib/api';
+import {
+  geoAutocomplete,
+  geoGeocode,
+  getAuctionOpportunities,
+  type AuctionOpportunity,
+  type AutocompleteSuggestion,
+} from '../../../lib/api';
 import {
   LandMapWordmark,
   Search,
@@ -53,6 +59,16 @@ import {
   type LayerId,
 } from '../../../lib/mapIntelligence';
 
+function escapePopupText(value: string): string {
+  return value.replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[char] ?? char);
+}
+
 function MapPageInner() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
@@ -67,6 +83,7 @@ function MapPageInner() {
   const [suggestOpen, setSuggestOpen] = useState(false);
   const [remoteSuggestions, setRemoteSuggestions] = useState<AutocompleteSuggestion[]>([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [auctionPoints, setAuctionPoints] = useState<AuctionOpportunity[]>([]);
 
   /** Pontos de heatmap ao vivo (API /api/market/heatmap), dados do dataset real. */
   const [heatPoints, setHeatPoints] = useState<
@@ -80,6 +97,7 @@ function MapPageInner() {
   const mapInstance = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
   const heatLayerRef = useRef<any>(null);
+  const auctionLayerRef = useRef<any>(null);
   const selectedRef = useRef(selectedId);
   const layerRef = useRef(activeLayer);
   const heatRef = useRef(showHeat);
@@ -181,6 +199,34 @@ function MapPageInner() {
     markersRef.current = [group];
   }, []);
 
+  // Keep the Leaflet canvas sized correctly on mobile when the URL bar
+  // shows/hides or the device is rotated (avoids greyed/clipped tiles).
+  const onResize = useCallback(() => {
+    const map = mapInstance.current;
+    if (!map) return;
+    // debounce-ish: rAF coalesces bursts of resize events
+    if ((window as any).__mapResizeRAF) cancelAnimationFrame((window as any).__mapResizeRAF);
+    (window as any).__mapResizeRAF = requestAnimationFrame(() => {
+      try {
+        map.invalidateSize({ animate: false });
+      } catch {
+        /* ignore */
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
+    // initial pass in case the viewport changed before mount
+    const t = setTimeout(onResize, 250);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onResize);
+    };
+  }, [onResize]);
+
   useEffect(() => {
     if (!mapRef.current || mapInstance.current) return;
     let cancelled = false;
@@ -228,34 +274,6 @@ function MapPageInner() {
         mapInstance.current = null;
       }
     };
-  });
-
-  // Keep the Leaflet canvas sized correctly on mobile when the URL bar
-  // shows/hides or the device is rotated (avoids greyed/clipped tiles).
-  const onResize = useCallback(() => {
-    const map = mapInstance.current;
-    if (!map) return;
-    // debounce-ish: rAF coalesces bursts of resize events
-    if ((window as any).__mapResizeRAF) cancelAnimationFrame((window as any).__mapResizeRAF);
-    (window as any).__mapResizeRAF = requestAnimationFrame(() => {
-      try {
-        map.invalidateSize({ animate: false });
-      } catch {
-        /* ignore */
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('resize', onResize);
-    window.addEventListener('orientationchange', onResize);
-    // initial pass in case the viewport changed before mount
-    const t = setTimeout(onResize, 250);
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('orientationchange', onResize);
-    };
   }, [onResize]);
 
   useEffect(() => {
@@ -277,6 +295,73 @@ function MapPageInner() {
       });
     return () => {
       active = false;
+    };
+  }, []);
+
+  // Snapshot nacional leve; o WebSocket complementa a lista quando o endpoint
+  // de stream estiver configurado no ambiente da API.
+  useEffect(() => {
+    let active = true;
+    const refreshAuctions = () => getAuctionOpportunities({ limit: 120 })
+      .then((data) => {
+        if (active) setAuctionPoints(data.items);
+      })
+      .catch(() => {
+        /* oportunidades são uma camada opcional do mapa */
+      });
+    refreshAuctions();
+    // Serverless não mantém conexões WebSocket; este intervalo garante que a
+    // experiência continue atualizada mesmo sem um servidor Node persistente.
+    const poll = setInterval(refreshAuctions, 10000);
+
+    const wsUrl = process.env.NEXT_PUBLIC_AUCTIONS_WS_URL;
+    if (!wsUrl || typeof WebSocket === 'undefined') {
+      return () => {
+        active = false;
+        clearInterval(poll);
+      };
+    }
+
+    let socket: WebSocket | null = null;
+    let retry: ReturnType<typeof setTimeout> | undefined;
+    let stopped = false;
+    const connect = () => {
+      if (stopped) return;
+      try {
+        socket = new WebSocket(wsUrl);
+        socket.onmessage = (event) => {
+          try {
+            const payload = JSON.parse(event.data) as {
+              type?: string;
+              items?: AuctionOpportunity[];
+              item?: AuctionOpportunity;
+            };
+            if (payload.type === 'snapshot' && payload.items) setAuctionPoints(payload.items);
+            if (payload.type === 'auction.updated' && payload.item) {
+              setAuctionPoints((current) => [
+                payload.item!,
+                ...current.filter((item) => item.id !== payload.item!.id),
+              ].slice(0, 120));
+            }
+          } catch {
+            /* payload inválido não deve afetar o mapa */
+          }
+        };
+        socket.onclose = () => {
+          if (!stopped) retry = setTimeout(connect, 5000);
+        };
+      } catch {
+        retry = setTimeout(connect, 5000);
+      }
+    };
+    connect();
+
+    return () => {
+      active = false;
+      stopped = true;
+      clearInterval(poll);
+      if (retry) clearTimeout(retry);
+      socket?.close();
     };
   }, []);
 
@@ -316,6 +401,33 @@ function MapPageInner() {
   useEffect(() => {
     if (mapReady) paintHeat();
   }, [mapReady, paintHeat, heatPoints, showHeat]);
+
+  const paintAuctions = useCallback(() => {
+    const map = mapInstance.current;
+    const L = (window as any).L;
+    if (!map || !L) return;
+    if (auctionLayerRef.current) map.removeLayer(auctionLayerRef.current);
+    const markers = auctionPoints
+      .filter((item) => item.latitude != null && item.longitude != null)
+      .map((item) => L.circleMarker([item.latitude, item.longitude], {
+        radius: 7,
+        fillColor: '#f59e0b',
+        color: '#ffffff',
+        weight: 2,
+        fillOpacity: 0.95,
+      }).bindPopup(
+        `<strong>${escapePopupText(item.title)}</strong><br/>${escapePopupText(item.city)}/${item.state} · ${escapePopupText(item.type)}<br/><small>Fonte: ${escapePopupText(item.source)}</small>`,
+      ));
+    if (!markers.length) {
+      auctionLayerRef.current = null;
+      return;
+    }
+    auctionLayerRef.current = L.layerGroup(markers).addTo(map);
+  }, [auctionPoints]);
+
+  useEffect(() => {
+    if (mapReady) paintAuctions();
+  }, [mapReady, paintAuctions]);
 
   useEffect(() => {
     let active = true;
@@ -414,6 +526,14 @@ function MapPageInner() {
                   Atualizado agora
                 </span>
               </div>
+              {auctionPoints.length > 0 && (
+                <div className="hidden items-center gap-1.5 rounded-full border border-amber-200/80 bg-amber-50/95 px-3 py-1.5 shadow-sm backdrop-blur sm:flex">
+                  <span className="h-2 w-2 rounded-full bg-amber-500" />
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-700">
+                    {auctionPoints.length} oportunidades BR
+                  </span>
+                </div>
+              )}
               <button
                 type="button"
                 onClick={() => setLayersOpen((v) => !v)}

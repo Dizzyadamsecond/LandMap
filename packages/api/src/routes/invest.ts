@@ -30,6 +30,11 @@ function filterByCity(city: string): Property[] {
   return allProperties().filter((p) => normalize(p.city) === target);
 }
 
+function filterByState(state: string): Property[] {
+  const target = normalize(state);
+  return allProperties().filter((p) => normalize(p.state) === target);
+}
+
 /* Validação dos parâmetros de query de /invest/analyze (strings → números).
    Parâmetros de investimento têm defaults do investidor BR; apenas price e
    monthlyRent são obrigatórios. `.default()` só age quando o valor é `undefined`
@@ -131,11 +136,12 @@ investApp.get('/analyze', (c) => {
   return c.json(analysis);
 });
 
-/* GET /invest/opportunities?city=X[&limit=N] → top N imóveis por score desc */
+/* GET /invest/opportunities?city=X[&state=CE][&limit=N] → top N imóveis por score desc */
 investApp.get('/opportunities', (c) => {
   const city = c.req.query('city') ?? '';
-  if (!city.trim()) {
-    return c.json({ error: 'O parâmetro "city" é obrigatório' }, 400);
+  const state = c.req.query('state') ?? '';
+  if (!city.trim() && !state.trim()) {
+    return c.json({ error: 'Informe "city" ou "state"' }, 400);
   }
 
   const limitRaw = Number(c.req.query('limit') ?? '10');
@@ -143,7 +149,13 @@ investApp.get('/opportunities', (c) => {
     ? Math.min(Math.max(Math.trunc(limitRaw), 1), 50)
     : 10;
 
-  const ranked = filterByCity(city)
+  const base = city.trim()
+    ? filterByCity(city)
+    : state.trim()
+      ? filterByState(state)
+      : allProperties();
+
+  const ranked = base
     .map((p) => ({
       id: p.id,
       title: p.title,

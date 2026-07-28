@@ -69,7 +69,7 @@ const PLANS: Plan[] = PLAN_META.map((m) => ({
   highlight: HIGHLIGHT[m.id] ?? false,
 }));
 
-export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
+export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
   const lh = (p: string) => `/${locale}${p}`;
@@ -83,6 +83,15 @@ export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
       } catch {
         /* ignore */
       }
+    }
+    router.push(`${lh('/auth')}?mode=request`);
+  };
+
+  const handleDesktopPlan = (planId: string) => {
+    try {
+      localStorage.setItem('landmap:selected_plan', planId);
+    } catch {
+      /* ignore */
     }
     router.push(`${lh('/auth')}?mode=request`);
   };
@@ -112,7 +121,7 @@ export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
             <Card
               key={pl.id}
               variant={pl.highlight ? 'highlight' : 'interactive'}
-              className={cn('flex flex-col p-4', pl.highlight && 'shadow-[var(--shadow-card)]')}
+              className={cn('flex min-w-0 flex-col p-4', pl.highlight && 'shadow-[var(--shadow-card)]')}
             >
               <div className="flex items-center justify-between">
                 <p className="font-semibold">{pl.name}</p>
@@ -126,19 +135,20 @@ export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
                 {pl.features.map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                    {f}
+                    <span className="min-w-0 break-words">{f}</span>
                   </li>
                 ))}
               </ul>
-              <Link
-                href={lh('/plans')}
+              <button
+                type="button"
+                onClick={() => handleDesktopPlan(pl.id)}
                 className={cn(
                   buttonVariants({ variant: pl.highlight ? 'default' : 'outline' }),
                   'mt-4 w-full',
                 )}
               >
                 {pl.id === 'free' ? 'Começar grátis' : `Assinar ${pl.name.replace('LandMap ', '')}`}
-              </Link>
+              </button>
             </Card>
           ))}
         </Reveal>
@@ -154,7 +164,7 @@ export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
   }
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col bg-background pb-32">
+    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-32">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
         <Link
           href={lh('/onboarding')}
@@ -167,7 +177,7 @@ export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
         <div className="w-9" />
       </header>
 
-      <div className="px-6 pt-8">
+      <div className="px-4 pt-8 sm:px-6">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <Sparkles className="h-3 w-3" />
           Escolha seu plano
@@ -180,7 +190,7 @@ export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
         </p>
       </div>
 
-      <Stagger className="mt-6 flex flex-col gap-3 px-6" stagger={0.08} y={20}>
+      <Stagger className="mt-6 flex flex-col gap-3 px-4 sm:px-6" stagger={0.08} y={20}>
         {PLANS.map((p) => {
           const isSel = p.id === selected;
           return (
@@ -236,17 +246,17 @@ export function PlansShowcase({ variant }: { variant: 'mobile' | 'desktop' }) {
         })}
       </Stagger>
 
-      <div className="mt-6 px-6 text-center">
+      <div className="mt-6 px-4 text-center sm:px-6">
         <Link href={lh('/auth')} className="text-sm text-foreground/60 hover:text-foreground">
           Já tem conta? <span className="font-medium text-primary">Entrar</span>
         </Link>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md border-t border-border bg-background/95 px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-md border-t border-border bg-background/95 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur sm:px-6">
         <button
           type="button"
           onClick={handleSubscribe}
-          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary/90"
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-normal break-words rounded-xl bg-primary px-3 py-2 text-center text-sm font-semibold leading-tight text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary/90"
         >
           {`Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.price)}/mês`}
         </button>
