@@ -1,9 +1,13 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { ArrowUpDown } from '../../../../components/lovable/icons';
 
 export default function AdminExportsPage() {
+  const params = useParams();
+  const locale = (params.locale as string) || 'pt-BR';
   const [exporting, setExporting] = useState<'properties' | 'leads' | 'report' | null>(null);
 
   const exportPropertiesCSV = useCallback(async () => {
@@ -86,14 +90,24 @@ export default function AdminExportsPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
-          <ArrowUpDown className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Dados & relatórios</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Exportações</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">Exportar dados do LandMap</p>
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
+              <ArrowUpDown className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">Dados & relatórios</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Exportações</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">Exportar dados do LandMap</p>
+            </div>
+          </div>
+          <Link
+            href={`/${locale}/admin`}
+            className="inline-flex items-center rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--foreground)] transition hover:bg-[var(--muted)]"
+          >
+            Voltar ao dashboard
+          </Link>
         </div>
       </header>
 

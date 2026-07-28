@@ -29,6 +29,7 @@ export function Footer() {
           <Link href={localeHref('/compare', locale)} className="transition hover:text-[var(--muted-foreground)]">Comparar</Link>
           <Link href={localeHref('/favorites', locale)} className="transition hover:text-[var(--muted-foreground)]">Favoritos</Link>
           <Link href={localeHref('/plans', locale)} className="transition hover:text-[var(--primary)]">Planos</Link>
+          <Link href={localeHref('/pricing', locale)} className="transition hover:text-[var(--muted-foreground)]">Preços</Link>
         </nav>
       </div>
 

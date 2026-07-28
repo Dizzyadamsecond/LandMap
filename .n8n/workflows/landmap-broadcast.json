@@ -1,0 +1,83 @@
+{
+  "name": "LandMap Broadcast",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "landmap-broadcast",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [260, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json;\nconst audience = Array.isArray(body.audience) ? body.audience : [];\nconst channel = body.channel === 'sms' ? 'sms' : 'email';\nconst subject = body.subject || 'LandMap Broadcast';\nconst message = body.message || '';\nreturn audience.map((to) => ({ json: { channel, to, subject, message } }));"
+      },
+      "id": "expand",
+      "name": "Expand Audience",
+      "type": "n8n-nodes-base.code",
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:4000/api/automation/send",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { channel: $json.channel, to: $json.to, subject: $json.subject, message: $json.message } }}"
+      },
+      "id": "send",
+      "name": "Send Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "content": "={{ { ok: true, sent: $items('Send Message').length } }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [960, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          "Expand Audience"
+        ]
+      ]
+    },
+    "Expand Audience": {
+      "main": [
+        [
+          "Send Message"
+        ]
+      ]
+    },
+    "Send Message": {
+      "main": [
+        [
+          "Respond"
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "triggerCount": 0,
+  "tags": [
+    "broadcast",
+    "email",
+    "sms"
+  ]
+}

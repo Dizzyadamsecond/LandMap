@@ -68,18 +68,35 @@
     },
     {
       "parameters": {
-        "url": "https://hooks.slack.com/services/REPLACE/ME",
+        "url": "http://host.docker.internal:4000/api/automation/send",
         "method": "POST",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ { text: $json.text } }}"
+        "jsonBody": "={{ { channel: 'email', to: ($env.REPORT_TO_EMAIL || 'ltdapax9@gmail.com'), subject: 'LandMap · Pendências do cockpit', message: $json.text } }}"
       },
-      "id": "slack",
-      "name": "Send Slack",
+      "id": "email",
+      "name": "Send Email Alert",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
         1050,
         220
+      ]
+    }
+    ,
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:4000/api/automation/send",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { channel: 'sms', to: ($env.REPORT_TO_SMS || '+5500000000000'), message: $json.text } }}"
+      },
+      "id": "sms",
+      "name": "Send SMS Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1050,
+        360
       ]
     }
   ],
@@ -109,7 +126,8 @@
     "Format Message": {
       "main": [
         [
-          "Send Slack"
+          "Send Email Alert",
+          "Send SMS Alert"
         ]
       ]
     }

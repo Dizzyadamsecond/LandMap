@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { RequireAuth } from '../../../components/RequireAuth';
 import { LANDMAP_API_BASE } from '../../../lib/api';
-import { Sparkles } from '../../../components/lovable/icons';
+import { Sparkles, Layers, GitCompare, BellRing, FileText } from '../../../components/lovable/icons';
 import { Stagger } from '../../../components/Motion';
 
 type AdminStats = {
@@ -69,23 +69,57 @@ function AdminDashboardPageInner() {
         },
       ]
     : [];
+  const quickLinks = [
+    { href: `/${locale}/map`, label: 'Mapa', icon: Layers },
+    { href: `/${locale}/compare`, label: 'Comparar', icon: GitCompare },
+    { href: `/${locale}/alerts`, label: 'Alertas', icon: BellRing },
+    { href: `/${locale}/reports`, label: 'Relatórios', icon: FileText },
+  ];
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
-          <Sparkles className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Painel Administrativo</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Dashboard</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">Resumo geral do LandMap</p>
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
+              <Sparkles className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">
+                Painel Administrativo
+              </p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Dashboard</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">Resumo geral do LandMap</p>
+            </div>
+          </div>
+          <div className="hidden items-center gap-2 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 md:flex">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            Operacional
+          </div>
         </div>
       </header>
 
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {quickLinks.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 transition hover:border-[var(--primary)] hover:bg-[var(--muted)]"
+            >
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--primary)]/10 text-[var(--primary)]">
+                <Icon className="h-4 w-4" />
+              </span>
+              <span className="text-sm font-medium text-[var(--foreground)]">{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+
       <Link
         href={`/${locale}/admin/agents`}
-        className="flex items-center justify-between rounded-2xl border border-[var(--primary)]/25 bg-[var(--primary)]/5 px-5 py-4 transition hover:border-[var(--primary)]"
+        className="flex items-center justify-between rounded-3xl border border-[var(--primary)]/25 bg-[var(--primary)]/5 px-5 py-4 transition hover:border-[var(--primary)]"
       >
         <div>
           <p className="text-sm font-semibold text-[var(--foreground)]">Time de agentes · em espera</p>

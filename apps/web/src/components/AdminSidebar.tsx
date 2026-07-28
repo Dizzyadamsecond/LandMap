@@ -15,6 +15,7 @@ import {
   Activity,
   ChevronRight,
   ChevronDown,
+  LandMapWordmark,
 } from './lovable/icons';
 
 const ICONS = {
@@ -24,6 +25,7 @@ const ICONS = {
   agents: Activity,
   analytics: SlidersHorizontal,
   exports: ArrowUpDown,
+  openwa: BellRing,
   webhooks: Layers,
   settings: BellRing,
   audit: ShieldCheck,
@@ -44,6 +46,7 @@ export function AdminSidebar() {
     { href: `/${locale}/admin/agents`, icon: 'agents', label: 'Agentes' },
     { href: `/${locale}/admin/analytics`, icon: 'analytics', label: 'Analytics' },
     { href: `/${locale}/admin/exports`, icon: 'exports', label: 'Exportações' },
+    { href: `/${locale}/admin/openwa`, icon: 'openwa', label: 'OpenWA' },
     { href: `/${locale}/admin/webhooks`, icon: 'webhooks', label: 'Webhooks' },
     { href: `/${locale}/admin/settings`, icon: 'settings', label: 'Configurações' },
     { href: `/${locale}/admin/audit`, icon: 'audit', label: 'Auditoria' },
@@ -51,12 +54,13 @@ export function AdminSidebar() {
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-[var(--border)] bg-[var(--card)] transition-all duration-200 ${
+      className={`hidden md:flex flex-col border-r border-[var(--border)] bg-[var(--background)] transition-all duration-200 ${
         collapsed ? 'w-16' : 'w-56'
       }`}
     >
       {/* Toggle */}
-      <div className="flex h-14 items-center border-b border-[var(--border)] px-4">
+      <div className="flex h-14 items-center justify-between border-b border-[var(--border)] px-4">
+        {!collapsed && <LandMapWordmark />}
         <button
           onClick={() => setCollapsed((v) => !v)}
           aria-label={collapsed ? 'Expandir barra lateral' : 'Recolher barra lateral'}
@@ -65,11 +69,6 @@ export function AdminSidebar() {
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </button>
-        {!collapsed && (
-          <span className="ml-3 text-xs font-medium tracking-widest text-[var(--muted-foreground)] uppercase">
-            Admin
-          </span>
-        )}
       </div>
 
       {/* Nav links */}
@@ -85,9 +84,9 @@ export function AdminSidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
+              className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm transition ${
                 active
-                  ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                  ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-sm'
                   : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
               }`}
               title={link.label}
@@ -105,7 +104,7 @@ export function AdminSidebar() {
         <div className="border-t border-[var(--border)] p-3">
           <Link
             href={`/${locale}`}
-            className="block rounded-lg px-3 py-2 text-[11px] text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
+            className="block rounded-2xl px-3 py-2 text-[11px] text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
           >
             ← Voltar ao site
           </Link>

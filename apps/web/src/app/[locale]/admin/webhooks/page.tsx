@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Layers } from '../../../../components/lovable/icons';
 import {
   createWebhookEndpoint,
@@ -27,6 +29,8 @@ const AVAILABLE_EVENTS: WebhookEventType[] = [
 ];
 
 export default function AdminWebhooksPage() {
+  const params = useParams();
+  const locale = (params.locale as string) || 'pt-BR';
   const [items, setItems] = useState<WebhookEndpoint[]>([]);
   const [deliveries, setDeliveries] = useState<WebhookDelivery[]>([]);
   const [name, setName] = useState('Meu projeto');
@@ -111,24 +115,26 @@ export default function AdminWebhooksPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
-          <Layers className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Integrações</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">
-            Webhooks
-          </h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">
-            Conecte outros projetos — HMAC-SHA256 em{' '}
-            <code className="text-xs">X-LandMap-Signature</code>
-          </p>
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
+              <Layers className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">Integrações</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Webhooks</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">
+                Conecte outros projetos — HMAC-SHA256 em <code className="text-xs">X-LandMap-Signature</code>
+              </p>
+            </div>
+          </div>
+          <Link href={`/${locale}/admin`} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm transition hover:bg-[var(--muted)]">Dashboard</Link>
         </div>
       </header>
 
       {error && (
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 text-sm text-[var(--muted-foreground)]">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 text-sm text-[var(--muted-foreground)] shadow-sm">
           {error}
           <br />
           <span className="text-xs">Garanta proxy `/api` → Hono com rota `/webhooks`.</span>

@@ -2,7 +2,9 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { LANDMAP_API_BASE } from '../../../../lib/api';
-import { Building2, Plus, Trash2, X } from '../../../../components/lovable/icons';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { Building2, Trash2, X, ArrowUpDown } from '../../../../components/lovable/icons';
 
 type Property = {
   id: string;
@@ -43,6 +45,8 @@ const INITIAL_EDIT: EditForm = {
 };
 
 export default function AdminPropertiesPage() {
+  const params = useParams();
+  const locale = (params.locale as string) || 'pt-BR';
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [editId, setEditId] = useState<string | null>(null);
@@ -130,29 +134,40 @@ export default function AdminPropertiesPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex items-center justify-between">
-        <header className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
             <Building2 className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">Catálogo de imóveis</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Imóveis</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">{properties.length} imóvel(is) cadastrado(s)</p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-medium text-[var(--primary)]">Catálogo de imóveis</p>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Imóveis</h1>
-            <p className="mt-1 text-[var(--muted-foreground)]">
-              {properties.length} imóvel(is) cadastrado(s)
-            </p>
+          <div className="flex gap-2">
+            <Link href={`/${locale}/admin`} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm transition hover:bg-[var(--muted)]">Dashboard</Link>
+            <button
+              onClick={() => load()}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
+            >
+              <ArrowUpDown className="h-4 w-4" />
+              Atualizar
+            </button>
           </div>
-        </header>
-        <button
-          onClick={() => load()}
-          className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] px-4 py-1.5 text-[11px] text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
-        >
-          Atualizar
-        </button>
+        </div>
+      </header>
+
+      <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-4">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Total</p><p className="mt-1 text-2xl font-semibold">{properties.length}</p></div>
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Disponíveis</p><p className="mt-1 text-2xl font-semibold">{properties.filter((p) => p.available).length}</p></div>
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Cidades</p><p className="mt-1 text-2xl font-semibold">{new Set(properties.map((p) => p.city)).size}</p></div>
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Fluxo</p><p className="mt-1 text-2xl font-semibold">Live</p></div>
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4">
+      <div className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-[var(--border)] bg-[var(--muted)]">
@@ -219,7 +234,7 @@ export default function AdminPropertiesPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--foreground)]/40 backdrop-blur-sm">
           <form
             onSubmit={handleSave}
-            className="w-full max-w-lg rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-2xl"
+            className="w-full max-w-lg rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-2xl"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-medium text-[var(--foreground)]">Editar Imóvel</h3>

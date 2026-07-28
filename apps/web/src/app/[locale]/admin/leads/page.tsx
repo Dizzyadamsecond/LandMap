@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Star, Filter } from '../../../../components/lovable/icons';
 
 type Lead = {
@@ -60,6 +62,8 @@ function generateLeads(): Lead[] {
 }
 
 export default function AdminLeadsPage() {
+  const params = useParams();
+  const locale = (params.locale as string) || 'pt-BR';
   const [leads] = useState<Lead[]>(generateLeads);
   const [filterStage, setFilterStage] = useState('');
 
@@ -71,16 +75,31 @@ export default function AdminLeadsPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
-          <Star className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Pipeline de contatos</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Leads</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">{leads.length} leads simulados</p>
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
+              <Star className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">Pipeline de contatos</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Leads</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">{leads.length} leads simulados</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Link href={`/${locale}/admin`} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm transition hover:bg-[var(--muted)]">Dashboard</Link>
+            <Link href={`/${locale}/map`} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm transition hover:bg-[var(--muted)]">Mapa</Link>
+          </div>
         </div>
       </header>
+
+      <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-4">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Leads</p><p className="mt-1 text-2xl font-semibold">{leads.length}</p></div>
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Filtrados</p><p className="mt-1 text-2xl font-semibold">{filtered.length}</p></div>
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Score médio</p><p className="mt-1 text-2xl font-semibold">{Math.round(leads.reduce((s,l)=>s+l.score,0)/leads.length)}</p></div>
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-xs text-[var(--muted-foreground)]">Fluxos</p><p className="mt-1 text-2xl font-semibold">Live</p></div>
+      </div>
 
       {/* Filter */}
       <div className="flex items-center gap-3">

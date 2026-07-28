@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { RequireAuth } from '../../../../components/RequireAuth';
 import { LineChart, Search, Activity, TrendingUp, MapPin } from '../../../../components/lovable/icons';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 type PlausibleRow = { dimensions?: string[]; metrics?: number[] };
 type AnalyticsPayload = {
@@ -72,6 +74,8 @@ function ListCard({
 }
 
 function AdminAnalyticsPageInner() {
+  const params = useParams();
+  const locale = (params.locale as string) || 'pt-BR';
   const [data, setData] = useState<AnalyticsPayload | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -130,16 +134,26 @@ function AdminAnalyticsPageInner() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
-          <LineChart className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Admin Intelligence</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Analytics + SEO</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">
-            Plausible, funil e páginas que trazem tráfego e conversão.
-          </p>
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
+              <LineChart className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">Admin Intelligence</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Analytics + SEO</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">
+                Plausible, funil e páginas que trazem tráfego e conversão.
+              </p>
+            </div>
+          </div>
+          <Link
+            href={`/${locale}/admin`}
+            className="inline-flex items-center rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--foreground)] transition hover:bg-[var(--muted)]"
+          >
+            Voltar ao dashboard
+          </Link>
         </div>
       </header>
 

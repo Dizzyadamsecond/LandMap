@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { useParams, useSearchParams } from 'next/navigation';
-import { Card, EmptyState } from '@landmap/ui';
-import { GitCompare, Star } from '../../../components/lovable/icons';
+import { Card, EmptyState, Badge, buttonVariants, cn } from '@landmap/ui';
+import { GitCompare, Star, Layers, BellRing, FileText } from '../../../components/lovable/icons';
 import { getRegionById, fmtBRL, fmtPrice } from '../../../lib/regions-data';
 import { RequireAuth } from '../../../components/RequireAuth';
 
@@ -19,37 +19,76 @@ function CompareInner() {
   const regions = ids
     .map((id) => getRegionById(id))
     .filter((r): r is NonNullable<typeof r> => Boolean(r));
+  const hubLinks = [
+    { href: lh('/map'), icon: Layers, label: 'Mapa' },
+    { href: lh('/alerts'), icon: BellRing, label: 'Alertas' },
+    { href: lh('/reports'), icon: FileText, label: 'Relatórios' },
+  ];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="flex items-center gap-1.5 text-sm font-medium text-[var(--primary)]">
-            <GitCompare className="h-4 w-4" />
+    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500 xl:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside className="space-y-3 self-start">
+        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-foreground/50">
+            <GitCompare className="h-3.5 w-3.5" />
             Comparação
           </p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight">Comparar regiões</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">
+          <h1 className="mt-2 font-display text-2xl font-semibold">Comparar regiões</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             Diff de preço por m² e faixa estimada entre regiões de terrenos.
           </p>
         </div>
-        <Link
-          href={lh('/regions')}
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] transition-colors hover:bg-[var(--primary)]/90"
-        >
-          Ver regiões
-        </Link>
-      </header>
 
-      {regions.length === 0 ? (
-        <EmptyState
-          title="Nenhuma região selecionada para comparação."
-          description="Selecione regiões em Regiões ou Favoritos para compará-las lado a lado."
-        />
-      ) : (
-        <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg">
-          <div className="relative w-full overflow-auto">
-            <table className="w-full caption-bottom text-sm">
+        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
+            Navegação
+          </p>
+          <div className="mt-3 space-y-2">
+            {hubLinks.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    buttonVariants({ variant: 'outline', size: 'sm' }),
+                    'flex h-auto items-center justify-start gap-2 rounded-2xl px-3 py-2.5',
+                  )}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </aside>
+
+      <section className="space-y-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <Badge variant="outline">Comparador</Badge>
+            <p className="mt-2 text-sm text-[var(--muted-foreground)]">
+              Lado a lado com métricas de preço, confiança e volume.
+            </p>
+          </div>
+          <Link
+            href={lh('/regions')}
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] transition-colors hover:bg-[var(--primary)]/90"
+          >
+            Ver regiões
+          </Link>
+        </div>
+
+        {regions.length === 0 ? (
+          <EmptyState
+            title="Nenhuma região selecionada para comparação."
+            description="Selecione regiões em Regiões ou Favoritos para compará-las lado a lado."
+          />
+        ) : (
+          <div className="rounded-lg border border-[var(--border)] bg-[var(--card)]">
+            <div className="relative w-full overflow-auto">
+              <table className="w-full caption-bottom text-sm">
               <thead className="[&_tr]:border-b">
                 <tr>
                   <th className="h-10 px-2 text-left align-middle font-medium text-[var(--muted-foreground)]">
@@ -106,16 +145,11 @@ function CompareInner() {
                   ))}
                 </tr>
               </tbody>
-            </table>
+              </table>
+            </div>
           </div>
-        </div>
-      )}
-
-      <div>
-        <Link href={lh('/regions')} className="text-sm text-[var(--primary)] hover:underline">
-          Voltar para regiões
-        </Link>
-      </div>
+        )}
+      </section>
     </div>
   );
 }

@@ -1,12 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { BellRing } from '../../../../components/lovable/icons';
 
 type Settings = {
   platformName: string;
   contactEmail: string;
   apiBaseUrl: string;
+  automationApiUrl: string;
+  reportSms: string;
+  reportEmail: string;
+  playsmsUrl: string;
+  smsWebhookUrl: string;
 };
 
 const STORAGE_KEY = 'landmap_admin_settings';
@@ -14,9 +21,16 @@ const DEFAULTS: Settings = {
   platformName: 'LandMap',
   contactEmail: 'contato@landmap.com.br',
   apiBaseUrl: 'https://api.landmap.com.br',
+  automationApiUrl: 'http://host.docker.internal:4000/api/automation/send',
+  reportSms: '+5500000000000',
+  reportEmail: 'ltdapax9@gmail.com',
+  playsmsUrl: '',
+  smsWebhookUrl: '',
 };
 
 export default function AdminSettingsPage() {
+  const params = useParams();
+  const locale = (params.locale as string) || 'pt-BR';
   const [settings, setSettings] = useState<Settings>(DEFAULTS);
   const [saved, setSaved] = useState(false);
 
@@ -47,18 +61,23 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
-          <BellRing className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Plataforma</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Configurações</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">Configurações gerais da plataforma</p>
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
+              <BellRing className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">Plataforma</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Configurações</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">Configurações gerais da plataforma</p>
+            </div>
+          </div>
+          <Link href={`/${locale}/admin`} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm transition hover:bg-[var(--muted)]">Dashboard</Link>
         </div>
       </header>
 
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 max-w-lg">
+      <div className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 max-w-lg shadow-sm">
         <div className="space-y-5">
           <Field label="Nome da Plataforma">
             <input
@@ -83,6 +102,52 @@ export default function AdminSettingsPage() {
               type="url"
               value={settings.apiBaseUrl}
               onChange={(e) => handleChange('apiBaseUrl', e.target.value)}
+              className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)]"
+            />
+          </Field>
+
+          <Field label="Automation API URL">
+            <input
+              type="url"
+              value={settings.automationApiUrl}
+              onChange={(e) => handleChange('automationApiUrl', e.target.value)}
+              className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)]"
+            />
+          </Field>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Relatório por e-mail">
+              <input
+                type="email"
+                value={settings.reportEmail}
+                onChange={(e) => handleChange('reportEmail', e.target.value)}
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)]"
+              />
+            </Field>
+            <Field label="Relatório por SMS">
+              <input
+                type="tel"
+                value={settings.reportSms}
+                onChange={(e) => handleChange('reportSms', e.target.value)}
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)]"
+              />
+            </Field>
+          </div>
+
+          <Field label="playSMS URL">
+            <input
+              type="url"
+              value={settings.playsmsUrl}
+              onChange={(e) => handleChange('playsmsUrl', e.target.value)}
+              className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)]"
+            />
+          </Field>
+
+          <Field label="SMS webhook URL">
+            <input
+              type="url"
+              value={settings.smsWebhookUrl}
+              onChange={(e) => handleChange('smsWebhookUrl', e.target.value)}
               className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)]"
             />
           </Field>

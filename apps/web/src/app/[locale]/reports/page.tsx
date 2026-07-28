@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import {
   Sparkles,
   FileText,
@@ -9,6 +11,9 @@ import {
   Share2,
   Star,
   Check,
+  Layers,
+  GitCompare,
+  BellRing,
 } from '../../../components/lovable/icons';
 import { ProductPageShell } from '../../../components/ProductPageShell';
 import { PlanGate } from '../../../components/PlanGate';
@@ -37,6 +42,7 @@ const labelCls = 'block text-xs font-medium text-[var(--muted-foreground)]';
 const MAX_REGIONS = 3;
 
 export default function ReportsPage() {
+  const locale = useLocale();
   const [company, setCompany] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
   const [contact, setContact] = useState('');
@@ -54,6 +60,11 @@ export default function ReportsPage() {
   };
 
   const selectedRegions = INTELLIGENCE_REGIONS.filter((r) => selected.includes(r.id));
+  const hubLinks = [
+    { href: '/map', icon: Layers, label: 'Mapa' },
+    { href: '/compare', icon: GitCompare, label: 'Comparar' },
+    { href: '/alerts', icon: BellRing, label: 'Alertas' },
+  ];
 
   const brandHeader = (
     <div className="flex items-center gap-3 border-b border-[var(--border)] pb-4">
@@ -96,45 +107,69 @@ export default function ReportsPage() {
       maxWidth="5xl"
     >
       <PlanGate required="pro">
-        {/* Brand form */}
-        <Card className="p-5">
-          <div className="flex items-center gap-2">
-            <Building2 className="h-4 w-4 text-[var(--primary)]" />
-            <p className="font-semibold text-[var(--foreground)]">Marca do relatório</p>
-          </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <label className={labelCls}>
-              Nome da empresa
-              <input
-                className={inputCls}
-                placeholder="Ex.: LandMap Capital"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-              />
-            </label>
-            <label className={labelCls}>
-              URL do logo
-              <input
-                className={inputCls}
-                placeholder="https://exemplo.com/logo.png"
-                value={logoUrl}
-                onChange={(e) => setLogoUrl(e.target.value)}
-              />
-            </label>
-            <label className={`${labelCls} sm:col-span-2`}>
-              Contato principal
-              <input
-                className={inputCls}
-                placeholder="nome@empresa.com"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-              />
-            </label>
-          </div>
-        </Card>
+        <div className="grid gap-6 xl:grid-cols-[16rem_minmax(0,1fr)]">
+          <aside className="space-y-3 self-start">
+            <Card className="p-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">
+                Hub
+              </p>
+              <div className="mt-3 space-y-2">
+                {hubLinks.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={`/${locale}${item.href}`}
+                      className="flex items-center gap-2 rounded-xl border border-[var(--border)] px-3 py-2.5 text-sm transition hover:border-[var(--primary)] hover:bg-[var(--muted)]"
+                    >
+                      <Icon className="h-3.5 w-3.5 text-[var(--primary)]" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </Card>
 
-        {/* Region picker */}
-        <Card className="mt-3 p-5">
+            <Card className="p-4">
+              <div className="flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-[var(--primary)]" />
+                <p className="font-semibold text-[var(--foreground)]">Marca do relatório</p>
+              </div>
+              <div className="mt-3 grid gap-3">
+                <label className={labelCls}>
+                  Nome da empresa
+                  <input
+                    className={inputCls}
+                    placeholder="Ex.: LandMap Capital"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                  />
+                </label>
+                <label className={labelCls}>
+                  URL do logo
+                  <input
+                    className={inputCls}
+                    placeholder="https://exemplo.com/logo.png"
+                    value={logoUrl}
+                    onChange={(e) => setLogoUrl(e.target.value)}
+                  />
+                </label>
+                <label className={labelCls}>
+                  Contato principal
+                  <input
+                    className={inputCls}
+                    placeholder="nome@empresa.com"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                  />
+                </label>
+              </div>
+            </Card>
+          </aside>
+
+          <section className="space-y-3">
+            {/* Region picker */}
+            <Card className="p-5">
           <div className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-[var(--primary)]" />
             <p className="font-semibold text-[var(--foreground)]">Regiões</p>
@@ -187,10 +222,10 @@ export default function ReportsPage() {
               );
             })}
           </div>
-        </Card>
+            </Card>
 
-        {/* Generated preview */}
-        <Card variant="highlight" className="mt-3 p-5">
+            {/* Generated preview */}
+            <Card variant="highlight" className="p-5">
           <div className="flex items-center gap-2">
             <FileText className="h-4 w-4 text-[var(--primary)]" />
             <p className="font-semibold text-[var(--foreground)]">Pré-visualização</p>
@@ -294,7 +329,9 @@ export default function ReportsPage() {
               Relatório gerado com dados de inteligência LandMap · modo demonstração.
             </p>
           </div>
-        </Card>
+            </Card>
+          </section>
+        </div>
       </PlanGate>
     </ProductPageShell>
   );

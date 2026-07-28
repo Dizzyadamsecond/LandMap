@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { Activity } from '../../../../components/lovable/icons';
 
@@ -48,22 +50,31 @@ function generateAuditEvents(): AuditEvent[] {
 }
 
 export default function AdminAuditPage() {
+  const params = useParams();
+  const locale = (params.locale as string) || 'pt-BR';
   const events = useMemo(() => generateAuditEvents(), []);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
-          <Activity className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Trilha de auditoria</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Auditoria</h1>
-          <p className="mt-1 text-[var(--muted-foreground)]">Registro de eventos do sistema</p>
+      <header className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--primary)]">
+              <Activity className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">Trilha de auditoria</p>
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[var(--foreground)]">Auditoria</h1>
+              <p className="mt-1 text-[var(--muted-foreground)]">Registro de eventos do sistema</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Link href={`/${locale}/admin`} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm transition hover:bg-[var(--muted)]">Dashboard</Link>
+          </div>
         </div>
       </header>
 
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4">
+      <div className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-sm">
         <div className="space-y-1">
           {events.map((event) => (
             <div

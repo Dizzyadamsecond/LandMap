@@ -60,7 +60,7 @@ export const INTELLIGENCE_LAYERS: IntelligenceLayer[] = [
   { id: 'populationDensity', label: 'Densidade populacional', accent: 'primary' },
 ];
 
-export const SEARCH_PLACEHOLDER = 'Buscar bairro, cidade, CEP ou zoneamento.';
+export const SEARCH_PLACEHOLDER = 'Buscar bairro, cidade, CEP ou zoneamento…';
 
 export const COPY = {
   layersTitle: 'Camadas de inteligência',
@@ -72,6 +72,10 @@ export const COPY = {
   composition: 'Composição por camada',
   score: 'Score LandMap',
   scoreHint: 'Índice composto de valorização, infra e crescimento.',
+  indexLandMap: 'Índice LandMap',
+  appreciationAvg: 'Valorização média',
+  liquidity: 'Liquidez',
+  bestOpportunity: 'Melhor oportunidade',
   topValorization: 'Top valorização (12m)',
   topOpportunities: 'Top oportunidades',
   indexFlow: 'Fluxo do índice',

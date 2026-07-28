@@ -9,6 +9,10 @@ import {
   TrendingUp,
   LandMapWordmark,
   LineChart,
+  Layers,
+  GitCompare,
+  BellRing,
+  FileText,
 } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
 import { Card, Badge, Stat, Sparkline, buttonVariants, cn } from '@landmap/ui';
@@ -89,36 +93,61 @@ export default function MarketPage() {
   );
 
   const hottest = kpis?.topCities[0]?.city ?? '—';
+  const hubLinks = [
+    { href: lh('/map'), icon: Layers, label: 'Mapa' },
+    { href: lh('/compare'), icon: GitCompare, label: 'Comparar' },
+    { href: lh('/alerts'), icon: BellRing, label: 'Alertas' },
+    { href: lh('/reports'), icon: FileText, label: 'Relatórios' },
+  ];
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col bg-background px-4 pb-28 pt-6">
-      <header className="flex items-center justify-between">
-        <Link
-          href={lh('/dashboard')}
-          aria-label="Voltar"
-          className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-muted"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-        <LandMapWordmark />
-        <div className="w-9" />
-      </header>
-
-      <div className="mt-6">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          <Activity className="h-3 w-3" />
-          Mercado
+    <main className="mx-auto grid min-h-screen max-w-7xl gap-6 bg-background px-4 py-6 xl:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside className="space-y-3 self-start">
+        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+          <div className="flex items-center justify-between">
+            <Link
+              href={lh('/dashboard')}
+              aria-label="Voltar"
+              className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-muted"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+            <LandMapWordmark />
+          </div>
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+            <Activity className="h-3 w-3" />
+            Mercado
+          </div>
+          <h1 className="mt-3 font-display text-3xl font-bold tracking-tight">
+            Snapshot do mercado
+          </h1>
+          <p className="mt-2 text-sm text-foreground/60">
+            Visão agregada em tempo real — mesma base do Score LandMap.
+          </p>
         </div>
-        <h1 className="mt-3 font-display text-3xl font-bold tracking-tight">
-          Snapshot do mercado
-        </h1>
-        <p className="mt-2 text-sm text-foreground/60">
-          Visão agregada em tempo real — mesma base do Score LandMap.
-        </p>
-      </div>
+        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">Hub</p>
+          <div className="mt-3 space-y-2">
+            {hubLinks.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-2 rounded-2xl border border-border/50 bg-background/70 px-3 py-2.5 text-sm transition hover:border-primary/30 hover:bg-primary/5"
+                >
+                  <Icon className="h-3.5 w-3.5 text-primary" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </aside>
 
+      <section className="space-y-6">
       {error ? (
-        <div className="mt-6 rounded-xl border border-border bg-card p-6 text-center">
+        <div className="rounded-xl border border-border bg-card p-6 text-center">
           <p className="text-sm font-medium text-destructive">Falha ao carregar o mercado</p>
           <p className="mt-1 text-xs text-muted-foreground">{error}</p>
         </div>
@@ -230,6 +259,7 @@ export default function MarketPage() {
           )}
         </>
       )}
+      </section>
     </main>
   );
 }

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import 'leaflet/dist/leaflet.css';
 import { RequireAuth } from '../../../components/RequireAuth';
+import { geoAutocomplete, geoGeocode, type AutocompleteSuggestion } from '../../../lib/api';
 import {
   LandMapWordmark,
   Search,
@@ -21,6 +22,9 @@ import {
   ArrowLeft,
   Activity,
   LineChart,
+  BellRing,
+  GitCompare,
+  FileText,
 } from '../../../components/lovable/icons';
 import {
   Badge,
@@ -61,6 +65,8 @@ function MapPageInner() {
   const [mapError, setMapError] = useState(false);
   const [mapReady, setMapReady] = useState(false);
   const [suggestOpen, setSuggestOpen] = useState(false);
+  const [remoteSuggestions, setRemoteSuggestions] = useState<AutocompleteSuggestion[]>([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
 
   /** Pontos de heatmap ao vivo (API /api/market/heatmap), dados do dataset real. */
   const [heatPoints, setHeatPoints] = useState<
@@ -81,13 +87,29 @@ function MapPageInner() {
   layerRef.current = activeLayer;
   heatRef.current = showHeat;
 
-  const suggestions = useMemo(() => filterRegions(query).slice(0, 8), [query]);
+  const localSuggestions = useMemo(() => filterRegions(query).slice(0, 8), [query]);
+  const suggestions = useMemo(() => {
+    const seen = new Set<string>();
+    const merged: Array<(typeof localSuggestions)[number] | AutocompleteSuggestion> = [];
+    for (const item of [...remoteSuggestions, ...localSuggestions]) {
+      const key = 'label' in item ? item.label : item.id;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      merged.push(item);
+    }
+    return merged.slice(0, 8);
+  }, [localSuggestions, remoteSuggestions]);
   const selected = useMemo(
     () => INTELLIGENCE_REGIONS.find((r) => r.id === selectedId) ?? null,
     [selectedId],
   );
   const topVal = useMemo(() => topByValorization(5), []);
   const topOpp = useMemo(() => topByScore(5), []);
+  const avgVal = useMemo(() => {
+    if (!topVal.length) return 0;
+    return topVal.reduce((acc, r) => acc + r.priceSqmDelta12m, 0) / topVal.length;
+  }, [topVal]);
+  const bestOpp = topOpp[0] ?? null;
 
   const selectRegion = useCallback((r: IntelligenceRegion) => {
     setSelectedId(r.id);
@@ -96,6 +118,30 @@ function MapPageInner() {
     const map = mapInstance.current;
     if (map) map.flyTo([r.lat, r.lng], 14, { duration: 0.55 });
   }, []);
+
+  const selectAutocomplete = useCallback(
+    async (item: (typeof suggestions)[number]) => {
+      const label = 'label' in item ? item.label : item.name;
+      setQuery(label);
+      setSuggestOpen(false);
+      if ('label' in item) {
+        const map = mapInstance.current;
+        if (map) map.flyTo([item.lat, item.lng], 14, { duration: 0.55 });
+        return;
+      }
+
+      try {
+        const res = await geoGeocode(label);
+        const first = res.features[0];
+        if (!first) return;
+        const map = mapInstance.current;
+        if (map) map.flyTo([first.lat, first.lng], 14, { duration: 0.55 });
+      } catch {
+        /* ignore */
+      }
+    },
+    [],
+  );
 
   const paintMarkers = useCallback(() => {
     const map = mapInstance.current;
@@ -271,7 +317,57 @@ function MapPageInner() {
     if (mapReady) paintHeat();
   }, [mapReady, paintHeat, heatPoints, showHeat]);
 
+  useEffect(() => {
+    let active = true;
+    const q = query.trim();
+    if (!q) {
+      setRemoteSuggestions([]);
+      setLoadingSuggestions(false);
+      return;
+    }
+    setLoadingSuggestions(true);
+    const t = setTimeout(() => {
+      geoAutocomplete(q, 6)
+        .then((items) => {
+          if (!active) return;
+          setRemoteSuggestions(items);
+        })
+        .catch(() => {
+          if (!active) return;
+          setRemoteSuggestions([]);
+        })
+        .finally(() => {
+          if (!active) return;
+          setLoadingSuggestions(false);
+        });
+    }, 220);
+    return () => {
+      active = false;
+      clearTimeout(t);
+    };
+  }, [query]);
+
   const sparkData = selected?.priceHistory.map((p) => p.value) ?? [];
+  const sidebarLinks = [
+    {
+      href: lh('/compare'),
+      icon: GitCompare,
+      title: 'Comparador',
+      desc: 'Lado a lado com diferenças de preço e confiança',
+    },
+    {
+      href: lh('/alerts'),
+      icon: BellRing,
+      title: 'Alertas',
+      desc: 'Gatilhos de valorização, risco e oportunidades',
+    },
+    {
+      href: lh('/reports'),
+      icon: FileText,
+      title: 'Relatórios',
+      desc: 'PDFs e dossiês para decisão comercial',
+    },
+  ];
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
@@ -309,6 +405,15 @@ function MapPageInner() {
               <LandMapWordmark />
             </div>
             <div className="flex items-center gap-2">
+              <div className="hidden items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1.5 shadow-sm backdrop-blur md:flex">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                  Atualizado agora
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={() => setLayersOpen((v) => !v)}
@@ -333,6 +438,44 @@ function MapPageInner() {
             </div>
           </div>
 
+          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+                  {COPY.indexLandMap}
+                </p>
+                <span className="rounded-full border border-border/60 bg-muted/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
+                  Live
+                </span>
+              </div>
+              <p className="mt-1 font-display text-lg font-bold">{selected ? selected.score : 92}</p>
+              <p className="text-xs text-foreground/50">
+                {selected ? scoreLabel(selected.score) : 'Excepcional'}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+                {COPY.appreciationAvg}
+              </p>
+              <p className="mt-1 font-display text-lg font-bold">{fmtDelta(avgVal)}</p>
+              <p className="text-xs text-foreground/50">Últimos 12m</p>
+            </div>
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+                {COPY.liquidity}
+              </p>
+              <p className="mt-1 font-display text-lg font-bold">{bestOpp ? String(bestOpp.score) : '—'}</p>
+              <p className="text-xs text-foreground/50">{bestOpp ? bestOpp.name : 'Sem dados'}</p>
+            </div>
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+                {COPY.bestOpportunity}
+              </p>
+              <p className="mt-1 font-display text-lg font-bold">{bestOpp ? bestOpp.city : '—'}</p>
+              <p className="text-xs text-foreground/50">{bestOpp ? bestOpp.zoning : 'Sem dados'}</p>
+            </div>
+          </div>
+
           {/* Search — Lovable placeholder */}
           <div className="relative max-w-xl">
             <div className="flex items-center gap-2 rounded-2xl border border-border/50 bg-white/98 px-3 shadow-sm backdrop-blur">
@@ -344,6 +487,26 @@ function MapPageInner() {
                   setSuggestOpen(true);
                 }}
                 onFocus={() => setSuggestOpen(true)}
+                onKeyDown={async (e) => {
+                  if (e.key !== 'Enter') return;
+                  e.preventDefault();
+                  const q = query.trim();
+                  if (!q) return;
+                  if (suggestions[0]) {
+                    await selectAutocomplete(suggestions[0]);
+                    return;
+                  }
+                  try {
+                    const res = await geoGeocode(q);
+                    const first = res.features[0];
+                    if (!first) return;
+                    const map = mapInstance.current;
+                    if (map) map.flyTo([first.lat, first.lng], 14, { duration: 0.55 });
+                    setSuggestOpen(false);
+                  } catch {
+                    /* ignore */
+                  }
+                }}
                 placeholder={SEARCH_PLACEHOLDER}
                 aria-label={SEARCH_PLACEHOLDER}
                 className="h-11 w-full border-0 bg-transparent px-0 text-sm shadow-none outline-none focus-visible:ring-0"
@@ -368,21 +531,32 @@ function MapPageInner() {
                   <button
                     key={r.id}
                     type="button"
-                    onClick={() => selectRegion(r)}
+                    onClick={() => {
+                      if ('name' in r && 'score' in r) {
+                        selectRegion(r);
+                        return;
+                      }
+                      void selectAutocomplete(r);
+                    }}
                     className="flex w-full items-center justify-between px-4 py-3 text-left text-sm transition hover:bg-muted"
                   >
                     <span className="flex items-center gap-2">
                       <MapPin className="h-3.5 w-3.5 text-primary" />
                       <span>
-                        <span className="font-medium">{r.name}</span>
-                        <span className="text-foreground/50"> · {r.city}</span>
+                        <span className="font-medium">{'name' in r ? r.name : r.label}</span>
+                        <span className="text-foreground/50">
+                          {'city' in r && r.city ? ` · ${r.city}` : ''}
+                        </span>
                       </span>
                     </span>
                     <span className="tabular-nums text-xs text-foreground/50">
-                      {fmtDelta(r.priceSqmDelta12m)}
+                      {'priceSqmDelta12m' in r ? fmtDelta(r.priceSqmDelta12m) : 'Buscar'}
                     </span>
                   </button>
                 ))}
+                {loadingSuggestions && (
+                  <div className="px-4 py-2 text-xs text-foreground/50">Buscando sugestões…</div>
+                )}
               </div>
             )}
           </div>
@@ -391,8 +565,8 @@ function MapPageInner() {
 
       {/* Layers panel — Lovable floating card */}
       {layersOpen && (
-        <div className="pointer-events-none absolute bottom-[auto] left-3 top-[8.5rem] z-20 w-[min(100%-1.5rem,20rem)] sm:left-4 sm:top-[9rem]">
-          <div className="pointer-events-auto max-h-[calc(100dvh-9.5rem)] overflow-y-auto rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
+        <div className="pointer-events-none absolute bottom-[auto] left-3 top-[8.5rem] z-20 flex w-[min(100%-1.5rem,20rem)] flex-col gap-3 sm:left-4 sm:top-[9rem]">
+          <div className="pointer-events-auto max-h-[calc(100dvh-17rem)] overflow-y-auto rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
             <div className="mb-3 flex items-center justify-between">
               <p className="font-display text-sm font-semibold">{COPY.layersTitle}</p>
               <button
@@ -462,6 +636,40 @@ function MapPageInner() {
                   )}
                 </button>
               ))}
+            </div>
+          </div>
+
+          <div className="pointer-events-auto rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
+            <div className="mb-3 flex items-center justify-between">
+              <div>
+                <p className="font-display text-sm font-semibold">Fluxos</p>
+                <p className="text-[10px] text-foreground/50">Acesso rápido às páginas do produto</p>
+              </div>
+              <span className="rounded-full border border-border/60 bg-muted/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
+                Hub
+              </span>
+            </div>
+            <div className="space-y-2">
+              {sidebarLinks.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="flex items-start gap-3 rounded-xl border border-border/50 bg-background/70 p-3 transition hover:border-primary/30 hover:bg-primary/5"
+                  >
+                    <span className="mt-0.5 grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-primary">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-sm font-semibold text-foreground">{item.title}</span>
+                      <span className="mt-0.5 block text-xs leading-snug text-foreground/55">
+                        {item.desc}
+                      </span>
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>

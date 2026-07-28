@@ -9,6 +9,7 @@ const NAV = [
   { href: '', label: 'Início' },
   { href: 'onboarding', label: 'Conheça o LandMap' },
   { href: 'plans', label: 'Planos' },
+  { href: 'pricing', label: 'Preços' },
   { href: 'map', label: 'Mapa' },
   { href: 'favorites', label: 'Favoritos' },
   { href: 'compare', label: 'Comparar' },

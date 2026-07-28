@@ -1,0 +1,88 @@
+{
+  "name": "LandMap OpenWA Cron",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 20
+            }
+          ]
+        }
+      },
+      "id": "cron",
+      "name": "Cron (20m)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [260, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:4000/api/opportunities?limit=20",
+        "method": "GET"
+      },
+      "id": "opp",
+      "name": "Get Opportunities",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = ($input.first().json.opportunities || $input.first().json.items || []).filter((o) => (o.consent?.whatsapp === 'opt_in' || o.consent?.sms === 'opt_in'));\nreturn items.map((o) => ({ json: { leadId: o.id, name: o.name || o.id, city: o.city, state: o.state, score: o.score ?? 60, channelFit: o.channelFit ?? 0.6, consent: o.consent || { whatsapp: 'opt_in', sms: 'opt_in', call: 'none' }, draft: { whatsapp: `Olá ${o.name || 'lead'}, vimos uma oportunidade relevante em LandMap.`, sms: `LandMap: oportunidade ${o.name || o.id} pronta.` } } }));"
+      },
+      "id": "filter",
+      "name": "Filter Opt-in",
+      "type": "n8n-nodes-base.code",
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:4000/api/automation/dispatch",
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { leadId: $json.leadId, name: $json.name, city: $json.city, state: $json.state, score: $json.score, stage: 'qualified', engagement: 1, intent: $json.channelFit, followUpsSent: 0, daysSinceActivity: 1, toleranceDays: 7, channelFit: $json.channelFit, consent: $json.consent, timezone: 'America/Sao_Paulo', draft: $json.draft } }}"
+      },
+      "id": "dispatch",
+      "name": "Dispatch Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [920, 300]
+    }
+  ],
+  "connections": {
+    "Cron (20m)": {
+      "main": [
+        [
+          "Get Opportunities"
+        ]
+      ]
+    },
+    "Get Opportunities": {
+      "main": [
+        [
+          "Filter Opt-in"
+        ]
+      ]
+    },
+    "Filter Opt-in": {
+      "main": [
+        [
+          "Dispatch Lead"
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "triggerCount": 0,
+  "tags": [
+    "openwa",
+    "cron",
+    "automation"
+  ]
+}

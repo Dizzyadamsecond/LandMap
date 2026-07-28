@@ -14,6 +14,9 @@ import {
   TrendingDown,
   Activity,
   Star,
+  Layers,
+  GitCompare,
+  FileText,
 } from '../../../components/lovable/icons';
 import { ProductPageShell } from '../../../components/ProductPageShell';
 import { PlanGate } from '../../../components/PlanGate';
@@ -127,10 +130,40 @@ function WatchlistContent() {
         r.city.toLowerCase().includes(q) ||
         r.state.toLowerCase().includes(q)),
   ).slice(0, SUGGEST_CAP);
+  const hubLinks = [
+    { href: lh('/map'), icon: Layers, label: 'Mapa' },
+    { href: lh('/compare'), icon: GitCompare, label: 'Comparar' },
+    { href: lh('/reports'), icon: FileText, label: 'Relatórios' },
+  ];
 
   return (
-    <>
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <main className="mx-auto grid min-h-screen max-w-7xl gap-6 px-4 py-6 xl:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside className="space-y-3 self-start">
+        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
+            Watchlist
+          </p>
+          <h1 className="mt-2 font-display text-2xl font-semibold">Monitoramento</h1>
+          <div className="mt-3 space-y-2">
+            {hubLinks.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-2 rounded-2xl border border-border/50 bg-background/70 px-3 py-2.5 text-sm transition hover:border-primary/30 hover:bg-primary/5"
+                >
+                  <Icon className="h-3.5 w-3.5 text-primary" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </aside>
+
+      <section>
+        <section className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <Stat label="Monitoradas" value={mounted ? watch.length : 0} />
         <Stat label="Com alerta" value={mounted ? alerts.length : 0} />
         <Stat
@@ -138,7 +171,7 @@ function WatchlistContent() {
           value={best ? best.name : '—'}
           hint={best ? fmtDelta(best.priceSqmDelta12m) : undefined}
         />
-      </section>
+        </section>
 
       <Reveal className="mt-8">
         <div className="flex items-center gap-2">
@@ -298,7 +331,8 @@ function WatchlistContent() {
           ))}
         </div>
       )}
-    </>
+      </section>
+    </main>
   );
 }
 

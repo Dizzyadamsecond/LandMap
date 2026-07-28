@@ -6,7 +6,7 @@ import { AppShell } from './AppShell';
 
 // Rotas "bare" (sem AppShell) — espelha o Lovable: funil público + mapa full-page.
 // O resto usa o AppShell autenticado (sidebar 68px + header).
-const PUBLIC_SEGMENTS = ['auth', 'plans', 'onboarding', 'map'];
+const PUBLIC_SEGMENTS = ['auth', 'plans', 'pricing', 'onboarding', 'map'];
 
 export function ShellSwitch({ children }: { children: ReactNode }) {
   const pathname = usePathname() || '';

@@ -9,6 +9,9 @@ import {
   LandMapWordmark,
   TrendingUp,
   MapPin,
+  Layers,
+  GitCompare,
+  FileText,
 } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
 import { Card, Badge, Stat, buttonVariants, cn } from '@landmap/ui';
@@ -70,22 +73,49 @@ export default function AlertsPage() {
   }, []);
 
   const alta = alerts.filter((a) => a.severity === 'alta').length;
+  const hubLinks = [
+    { href: lh('/map'), icon: Layers, label: 'Mapa' },
+    { href: lh('/compare'), icon: GitCompare, label: 'Comparar' },
+    { href: lh('/reports'), icon: FileText, label: 'Relatórios' },
+  ];
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col bg-background px-4 pb-28 pt-6">
-      <header className="flex items-center justify-between">
-        <Link
-          href={lh('/dashboard')}
-          aria-label="Voltar"
-          className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-muted"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-        <LandMapWordmark />
-        <div className="w-9" />
-      </header>
+    <main className="mx-auto grid min-h-screen max-w-7xl gap-6 bg-background px-4 py-6 xl:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside className="space-y-3 self-start">
+        <div className="flex items-center justify-between rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+          <Link
+            href={lh('/dashboard')}
+            aria-label="Voltar"
+            className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-muted"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+          <LandMapWordmark />
+        </div>
 
-      <div className="mt-6">
+        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
+            Navegação
+          </p>
+          <div className="mt-3 space-y-2">
+            {hubLinks.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-2 rounded-2xl border border-border/50 bg-background/70 px-3 py-2.5 text-sm transition hover:border-primary/30 hover:bg-primary/5"
+                >
+                  <Icon className="h-3.5 w-3.5 text-primary" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </aside>
+
+      <section className="min-w-0">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <BellRing className="h-3 w-3" />
           Alertas
@@ -96,24 +126,23 @@ export default function AlertsPage() {
         <p className="mt-2 text-sm text-foreground/60">
           Derivados das camadas do mapa — valorização, oportunidades e risco.
         </p>
-      </div>
 
-      <section className="mt-6 grid grid-cols-3 gap-3">
+        <section className="mt-6 grid grid-cols-3 gap-3">
         <Stat label="Ativos" value={String(alerts.length)} />
         <Stat label="Alta" value={String(alta)} />
         <Stat label="Regiões" value={String(INTELLIGENCE_REGIONS.length)} />
-      </section>
+        </section>
 
-      <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex gap-2">
         <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
           Mapa
         </Link>
         <Link href={lh('/kpis')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
           KPIs
         </Link>
-      </div>
+        </div>
 
-      <Reveal className="mt-6 space-y-3">
+        <Reveal className="mt-6 space-y-3">
         {alerts.map((a) => (
           <Card key={a.id} className="p-4">
             <div className="flex items-start justify-between gap-2">
@@ -142,7 +171,8 @@ export default function AlertsPage() {
             </Link>
           </Card>
         ))}
-      </Reveal>
+        </Reveal>
+      </section>
     </main>
   );
 }
