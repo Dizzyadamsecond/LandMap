@@ -158,7 +158,7 @@ function AdminAnalyticsPageInner() {
       </header>
 
       {!data?.configured && (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <div className="rounded-2xl border border-warning/40 bg-warning/15 p-4 text-sm text-warning-foreground">
           Plausible ainda não está configurado. Defina `PLAUSIBLE_STATS_API_KEY` e `PLAUSIBLE_SITE_ID` ou `PLAUSIBLE_DOMAIN`.
         </div>
       )}

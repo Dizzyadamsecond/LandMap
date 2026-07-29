@@ -517,19 +517,19 @@ function MapPageInner() {
               <LandMapWordmark />
             </div>
             <div className="flex items-center gap-2">
-              <div className="hidden items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1.5 shadow-sm backdrop-blur md:flex">
+              <div className="hidden items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 shadow-sm backdrop-blur md:flex">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-success">
                   Atualizado agora
                 </span>
               </div>
               {auctionPoints.length > 0 && (
-                <div className="hidden items-center gap-1.5 rounded-full border border-amber-200/80 bg-amber-50/95 px-3 py-1.5 shadow-sm backdrop-blur sm:flex">
-                  <span className="h-2 w-2 rounded-full bg-amber-500" />
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-700">
+                <div className="hidden items-center gap-1.5 rounded-full border border-warning/40 bg-warning/15 px-3 py-1.5 shadow-sm backdrop-blur sm:flex">
+                  <span className="h-2 w-2 rounded-full bg-warning" />
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-warning-foreground">
                     {auctionPoints.length} oportunidades BR
                   </span>
                 </div>

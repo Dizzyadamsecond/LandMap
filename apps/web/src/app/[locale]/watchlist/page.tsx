@@ -56,10 +56,10 @@ function writeIds(key: string, ids: string[]) {
 
 function gradeFor(score: number): {
   label: string;
-  variant: 'success' | 'warning' | 'destructive';
+  variant: 'default' | 'warning' | 'destructive';
 } {
   const label = scoreLabel(score);
-  if (score >= 80) return { label, variant: 'success' };
+  if (score >= 80) return { label, variant: 'default' };
   if (score >= 50) return { label, variant: 'warning' };
   return { label, variant: 'destructive' };
 }

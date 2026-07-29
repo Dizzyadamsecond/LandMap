@@ -49,9 +49,9 @@ export function BadgeShelf({ badges, columns = 4, className }: BadgeShelfProps) 
               )}
               style={
                 unlocked && def.tier === 'sovereign'
-                  ? { boxShadow: 'var(--glow-sovereign)' }
+                  ? { boxShadow: 'var(--shadow-glow)' }
                   : unlocked && def.tier === 'gold'
-                    ? { boxShadow: 'var(--glow-gold)' }
+                    ? { boxShadow: 'var(--shadow-glow)' }
                     : undefined
               }
             >
@@ -76,7 +76,7 @@ export function BadgeShelf({ badges, columns = 4, className }: BadgeShelfProps) 
                   </div>
                   <p className="text-neutral-300">{def.description}</p>
                   {def.rewardLandcoins ? (
-                    <p className="mt-1 text-[var(--gold-soft)]">
+                    <p className="mt-1 text-warning">
                       +{def.rewardLandcoins} LandCoins
                     </p>
                   ) : null}

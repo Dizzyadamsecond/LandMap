@@ -9,13 +9,12 @@ export interface StreakFlameProps {
 }
 
 /**
- * Chama da streak diária. O brilho gold cresce com o número de dias;
- * acima de 7 dias usa o glow sovereign. Reusa tokens via CSS vars.
+ * Chama da streak diária. O brilho cresce com o número de dias e reusa
+ * tokens do design system.
  */
 export function StreakFlame({ streak, best, frozen, className }: StreakFlameProps) {
   const intensity = Math.min(streak, 30) / 30;
-  const glow =
-    streak >= 7 ? 'var(--glow-sovereign)' : 'var(--glow-gold)';
+  const glow = 'var(--shadow-glow)';
   const body: ReactNode = (
     <div
       className={cn(

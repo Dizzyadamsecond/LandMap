@@ -18,10 +18,10 @@ const tierLabel: Record<GamificationTier, string> = {
 };
 
 const tierBar: Record<GamificationTier, string> = {
-  bronze: 'from-neutral-400 to-neutral-200',
-  silver: 'from-cyan-400 to-sky-300',
-  gold: 'from-[#d4af37] to-[#f4e2a1]',
-  sovereign: 'from-emerald-400 to-cyan-400',
+  bronze: 'from-muted-foreground to-muted',
+  silver: 'from-primary to-accent',
+  gold: 'from-warning to-accent',
+  sovereign: 'from-primary to-warning',
 };
 
 /** Barra de XP com nível/tier e saldo de LandCoins. Tema dark-premium. */

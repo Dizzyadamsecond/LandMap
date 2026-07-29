@@ -500,7 +500,7 @@ export default function AdminOpenWaPage() {
                 <p className="mt-1 text-[var(--muted-foreground)]">QR, sessão e regras de lead para um número dedicado</p>
               </div>
             </div>
-            <div className="rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+            <div className="rounded-full border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-success">
               {statusLabel}
             </div>
           </div>
@@ -782,7 +782,7 @@ export default function AdminOpenWaPage() {
                   )}
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <button onClick={markReady} disabled={!session} className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50">
+                  <button onClick={markReady} disabled={!session} className="rounded-full bg-success px-4 py-2 text-sm font-medium text-success-foreground transition hover:bg-success/90 disabled:opacity-50">
                     Marcar como pronta
                   </button>
                   <button onClick={copySessionId} disabled={!session} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm transition hover:bg-[var(--muted)] disabled:opacity-50">

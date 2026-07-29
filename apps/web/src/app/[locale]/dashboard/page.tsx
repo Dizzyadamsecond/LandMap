@@ -111,12 +111,12 @@ function DashboardInner() {
             <span className="hidden text-sm text-muted-foreground sm:inline">Painel</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1.5 shadow-sm backdrop-blur md:flex">
+            <div className="hidden items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 shadow-sm backdrop-blur md:flex">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
               </span>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-700">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-success">
                 Mercado vivo
               </span>
             </div>

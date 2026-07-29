@@ -40,9 +40,12 @@ def ensure_server():
     web = os.path.join(CD, "apps/web")
     next_bin = os.path.join(web, "node_modules", ".bin", "next.cmd")
     si = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+    try:
+        out = open(os.path.join(CD, "devserver.log"), "a", encoding="utf-8")
+    except OSError:
+        out = subprocess.DEVNULL
     subprocess.Popen([next_bin, "dev", "-p", str(PORT)], cwd=web, creationflags=si,
-                     stdout=open(os.path.join(CD, "devserver.log"), "a", encoding="utf-8"),
-                     stderr=subprocess.STDOUT)
+                     stdout=out, stderr=subprocess.STDOUT)
     for _ in range(60):
         try:
             urllib.request.urlopen(f"{BASE}/{LOCALE}", timeout=4); return True

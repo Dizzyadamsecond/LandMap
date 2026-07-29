@@ -38,10 +38,10 @@ export function Leaderboard({
             className={cn(
               'flex items-center gap-3 rounded-lg border px-3 py-2 transition',
               e.isCurrentUser
-                ? 'border-[#d4af37]/40 bg-[#d4af37]/[0.06]'
+                ? 'border-warning/40 bg-warning/10'
                 : 'border-white/5 bg-white/[0.02]',
             )}
-            style={e.isCurrentUser ? { boxShadow: 'var(--glow-old)' } : undefined}
+            style={e.isCurrentUser ? { boxShadow: 'var(--shadow-glow)' } : undefined}
           >
             <span className="w-7 text-center text-sm font-semibold tabular-nums text-neutral-300">
               {rankMedal(e.rank)}
@@ -51,7 +51,7 @@ export function Leaderboard({
               <p className="truncate text-sm font-medium text-neutral-100">
                 {e.displayName}
                 {e.isCurrentUser ? (
-                  <span className="ml-1.5 text-[10px] uppercase tracking-wide text-[var(--gold-soft)]">
+                  <span className="ml-1.5 text-[10px] uppercase tracking-wide text-warning">
                     você
                   </span>
                 ) : null}

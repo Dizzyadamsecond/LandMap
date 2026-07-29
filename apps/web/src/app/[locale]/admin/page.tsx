@@ -92,8 +92,8 @@ function AdminDashboardPageInner() {
               <p className="mt-1 text-[var(--muted-foreground)]">Resumo geral do LandMap</p>
             </div>
           </div>
-          <div className="hidden items-center gap-2 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 md:flex">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+          <div className="hidden items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-success md:flex">
+            <span className="h-2 w-2 rounded-full bg-success" />
             Operacional
           </div>
         </div>

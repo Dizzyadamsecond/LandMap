@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { ProductPageShell } from '../../../components/ProductPageShell';
-import { Card, Badge, Button } from '@landmap/ui';
+import { Card, Badge, buttonVariants, cn } from '@landmap/ui';
 import { ArrowLeft, LandMapWordmark, User, Bell, ShieldCheck, Check } from '../../../components/lovable/icons';
 import { readMockUser } from '../../../lib/mockAuth';
 import { planMeta, type PlanId } from '../../../lib/plans';
@@ -110,7 +110,13 @@ export default function SettingsPage() {
             </label>
           </div>
           <div className="mt-4 flex items-center gap-3">
-            <Button onClick={persistProfile}>Salvar perfil</Button>
+            <button
+              type="button"
+              onClick={persistProfile}
+              className={cn(buttonVariants({ variant: 'default' }))}
+            >
+              Salvar perfil
+            </button>
             {saved && (
               <span className="inline-flex items-center gap-1 text-xs text-[var(--success)]">
                 <Check className="h-3.5 w-3.5" /> Salvo
@@ -148,8 +154,8 @@ export default function SettingsPage() {
               <Badge variant="secondary">{planMeta(plan as PlanId)?.name ?? 'Free'}</Badge>
               <span className="text-sm text-[var(--muted-foreground)]">Seu plano atual</span>
             </div>
-            <Link href={`/${locale}/plans`}>
-              <Button variant="outline">Ver planos</Button>
+            <Link href={`/${locale}/plans`} className={cn(buttonVariants({ variant: 'outline' }))}>
+              Ver planos
             </Link>
           </div>
         </Card>

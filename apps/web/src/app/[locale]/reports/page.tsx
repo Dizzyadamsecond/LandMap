@@ -26,11 +26,11 @@ import {
   topByValorization,
 } from '../../../lib/mapIntelligence';
 
-type GradeVariant = 'success' | 'info' | 'warning' | 'destructive';
+type GradeVariant = 'default' | 'secondary' | 'warning' | 'destructive';
 
 function gradeFor(score: number): { letter: string; variant: GradeVariant } {
-  if (score >= 90) return { letter: 'A', variant: 'success' };
-  if (score >= 80) return { letter: 'B', variant: 'info' };
+  if (score >= 90) return { letter: 'A', variant: 'default' };
+  if (score >= 80) return { letter: 'B', variant: 'secondary' };
   if (score >= 70) return { letter: 'C', variant: 'warning' };
   return { letter: 'D', variant: 'destructive' };
 }

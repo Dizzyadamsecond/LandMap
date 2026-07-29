@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import { Eye, EyeOff, LandMapWordmark } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
 import { useMockUser, storeUserType, type UserType } from '../../../lib/mockAuth';
@@ -340,10 +340,4 @@ function AuthPageInner() {
   );
 }
 
-export default function AuthPage() {
-  return (
-    <Suspense fallback={null}>
-      <AuthPageInner />
-    </Suspense>
-  );
-}
+export default AuthPageInner;
