@@ -6,13 +6,13 @@ import { useParams } from 'next/navigation';
 import {
   ArrowRight,
   Search,
-  Play,
-  Pause,
+  SlidersHorizontal,
   Plus,
   Trash2,
-  Settings,
-  Download,
-  ListFilter,
+  Filter,
+  FileText,
+  Send,
+  Minus,
   MapPin,
 } from '../../../../components/lovable/icons';
 import { apiUrl } from '../../../../lib/api';
@@ -216,7 +216,7 @@ export default function AdminScoutPage() {
           {['BR imóveis','Construtoras + Corretores','Alta rentabilidade'].map((p)=> (
             <button key={p} onClick={()=>applyPreset(p)} className="rounded-lg border border-[var(--border)] px-3 py-2 text-xs hover:bg-[var(--muted)]">{p}</button>
           ))}
-          <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-xs text-[var(--muted-foreground)]"><ListFilter className="h-3.5 w-3.5" /> {limit} leads/job</div>
+          <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-xs hover:bg-[var(--muted)]"><Filter className="h-3.5 w-3.5" /> {limit} leads/job</div>
           <input type="number" className="w-24 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-xs" value={limit} onChange={(e)=>setLimit(Number(e.target.value||200))} />
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -245,7 +245,7 @@ export default function AdminScoutPage() {
               <div>
                 <p className="text-sm font-medium text-[var(--foreground)]">{job.name}</p>
                 <p className="font-mono text-[10px] text-[var(--muted-foreground)]">{SOURCE_LABEL[job.source]} · {job.query} {job.location?`· ${job.location}`:''}</p>
-                <div className="mt-1 flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-2">
                   <span className="rounded-full border border-[var(--border)] px-2 py-0.5 text-[10px] text-[var(--muted-foreground)]">{job.status}</span>
                   <span className="text-[10px] text-[var(--muted-foreground)]">Leads: {job.leadsFound}</span>
                   {job.stats && <span className="text-[10px] text-[var(--muted-foreground)]">Exportados: {job.stats.exported}</span>}
@@ -253,12 +253,12 @@ export default function AdminScoutPage() {
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <button onClick={()=>patch(job.id,{status: job.status==='running'?'paused':'running'})} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--primary)]">
-                  {job.status==='running'?<Pause className="h-3.5 w-3.5" />:<Play className="h-3.5 w-3.5" />}
+                <button onClick={()=>patch(job.id,{status: job.status==='running'?'idle':'running'})} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--primary)]">
+                  {job.status==='running'?<Minus className="h-3.5 w-3.5" />:<Send className="h-3.5 w-3.5" />}
                   {job.status==='running'?'Pausar':'Executar'}
                 </button>
-                <Link href={`/${locale}/admin/scout/${job.id}`} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--primary)]"><Settings className="h-3.5 w-3.5" /> Configurar</Link>
-                <button onClick={()=>exportCsv(job)} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--primary)]"><Download className="h-3.5 w-3.5" /> Exportar</button>
+                <Link href={`/${locale}/admin/scout/${job.id}`} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--primary)]"><SlidersHorizontal className="h-3.5 w-3.5" /> Configurar</Link>
+                <button onClick={()=>exportCsv(job)} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--primary)]"><FileText className="h-3.5 w-3.5" /> Exportar</button>
                 <button onClick={()=>remove(job.id)} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--destructive)]"><Trash2 className="h-3.5 w-3.5" /> Remover</button>
               </div>
             </li>
