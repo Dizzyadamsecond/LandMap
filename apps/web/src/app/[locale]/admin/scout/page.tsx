@@ -241,7 +241,7 @@ export default function AdminScoutPage() {
         {!loading && rows.length === 0 && <p className="mt-3 text-xs text-[var(--muted-foreground)]">Nenhum job criado.</p>}
         <ul className="mt-4 space-y-3">
           {rows.map((job)=> (
-            <li key={job.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] px-4 py-3">
+            <li key={job.id} className="flex flex-col gap-2 rounded-xl border border-[var(--border)] px-4 py-3">
               <div>
                 <p className="text-sm font-medium text-[var(--foreground)]">{job.name}</p>
                 <p className="font-mono text-[10px] text-[var(--muted-foreground)]">{SOURCE_LABEL[job.source]} · {job.query} {job.location?`· ${job.location}`:''}</p>

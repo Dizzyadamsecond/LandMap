@@ -1,59 +1,10 @@
 import { NextRequest } from 'next/server';
 import { apiUrl } from '../../../../lib/api';
 
-const memory = globalThis as unknown as {
-  landmapScoutJobs?: Array<{
-    id: string;
-    name: string;
-    source: 'google' | 'linkedin' | 'instagram' | 'facebook' | 'custom';
-    query: string;
-    location?: string;
-    status: 'idle' | 'running' | 'paused' | 'done' | 'failed';
-    leadsFound: number;
-    lastRunAt?: string;
-    createdAt?: string;
-    filters?: {
-      cities?: string[];
-      states?: string[];
-      niches?: string[];
-      leadTypes?: string[];
-      limit?: number;
-      throttleMs?: number;
-    };
-    stats?: {
-      processed: number;
-      found: number;
-      duplicates: number;
-      enriched: number;
-      exported: number;
-    };
-    logs?: Array<{ time: string; message: string }>;
-  }>;
-  landmapScoutLeads?: Array<{
-    id: string;
-    jobId: string;
-    source: string;
-    name: string;
-    type: 'construtora' | 'imobiliaria' | 'corretor' | 'incorporadora';
-    cnpj?: string;
-    phone?: string;
-    email?: string;
-    site?: string;
-    address?: string;
-    city?: string;
-    state?: string;
-    responsible?: string;
-    social?: { instagram?: string; facebook?: string; linkedin?: string };
-    score: number;
-    status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost';
-    raw: any;
-  }>;
-};
-
-if (!memory.landmapScoutJobs) memory.landmapScoutJobs = [];
-if (!memory.landmapScoutLeads) memory.landmapScoutLeads = [];
-
-export const dynamic = 'force-dynamic';
+const memory = (globalThis as any).__landmapScoutMemory ?? ((globalThis as any).__landmapScoutMemory = {
+  landmapScoutJobs: [],
+  landmapScoutLeads: [],
+});
 
 function nowISO() {
   return new Date().toISOString();
@@ -61,15 +12,17 @@ function nowISO() {
 
 function log(jobId: string, message: string) {
   const jobs = memory.landmapScoutJobs || [];
-  const job = jobs.find((j) => j.id === jobId);
+  const job = jobs.find((j: any) => j.id === jobId);
   if (!job) return;
   job.logs = job.logs || [];
   job.logs.unshift({ time: nowISO(), message });
   if (job.logs.length > 200) job.logs.length = 200;
 }
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
-  const items = (memory.landmapScoutJobs || []).map(({ logs, ...rest }) => rest);
+  const items = (memory.landmapScoutJobs || []).map(({ logs, ...rest }: any) => rest);
   return Response.json({ items, total: items.length });
 }
 
@@ -90,7 +43,7 @@ export async function POST(request: NextRequest) {
       id: `scout-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       name,
       source: ['google', 'linkedin', 'instagram', 'facebook', 'custom'].includes(source)
-        ? (source as typeof source)
+        ? (source as 'google' | 'linkedin' | 'instagram' | 'facebook' | 'custom')
         : 'google',
       query,
       location: location || undefined,
@@ -98,10 +51,10 @@ export async function POST(request: NextRequest) {
       leadsFound: 0,
       createdAt: nowISO(),
       filters: {
-        cities: Array.isArray(filters?.cities) ? filters.cities.slice(0, 200) : [],
-        states: Array.isArray(filters?.states) ? filters.states.slice(0, 60) : [],
-        niches: Array.isArray(filters?.niches) ? filters.niches.slice(0, 50) : [],
-        leadTypes: Array.isArray(filters?.leadTypes) ? filters.leadTypes.slice(0, 20) : [],
+        cities: Array.isArray(filters?.cities) ? filters?.cities.slice(0, 200) : [],
+        states: Array.isArray(filters?.states) ? filters?.states.slice(0, 60) : [],
+        niches: Array.isArray(filters?.niches) ? filters?.niches.slice(0, 50) : [],
+        leadTypes: Array.isArray(filters?.leadTypes) ? filters?.leadTypes.slice(0, 20) : [],
         limit: Number(filters?.limit || 200),
         throttleMs: Number(filters?.throttleMs || 250),
       },
@@ -127,18 +80,20 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const id = String(body?.id || '').trim();
     const items = memory.landmapScoutJobs || [];
-    const idx = items.findIndex((j) => j.id === id);
-    if (idx === -1) return Response.json({ error: 'job não encontrado' }, { status: 404 });
+    const index = items.findIndex((j) => j.id === id);
+    if (index === -1) return Response.json({ error: 'job não encontrado' }, { status: 404 });
 
-    const allowed = ['status', 'leadsFound', 'lastRunAt', 'filters', 'query', 'location', 'name', 'stats', 'logs'] as const;
-    const updated = { ...items[idx] };
-    const patchBody = body as Record<string, unknown>;
-    for (const key of allowed) {
-      if (key in patchBody) (updated as Record<string, unknown>)[key] = patchBody[key];
-    }
+    const current = items[index];
+    const next = {
+      ...current,
+      ...body,
+      id: current.id,
+      filters: { ...current.filters, ...(body?.filters || {}) },
+      stats: { ...current.stats, ...(body?.stats || {}) },
+    };
 
-    items[idx] = updated;
-    return Response.json({ item: updated });
+    items[index] = next;
+    return Response.json({ item: next });
   } catch {
     return Response.json({ error: 'falha ao atualizar job' }, { status: 500 });
   }
@@ -146,13 +101,13 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = String(searchParams.get('id') || '').trim();
+    const id = String(request.nextUrl.searchParams.get('id') || '').trim();
+    if (!id) return Response.json({ error: 'id obrigatório' }, { status: 422 });
     const items = memory.landmapScoutJobs || [];
-    const idx = items.findIndex((j) => j.id === id);
-    if (idx === -1) return Response.json({ error: 'job não encontrado' }, { status: 404 });
-    const removed = items.splice(idx, 1)[0];
-    return Response.json({ item: removed });
+    const index = items.findIndex((j) => j.id === id);
+    if (index === -1) return Response.json({ error: 'job não encontrado' }, { status: 404 });
+    items.splice(index, 1);
+    return Response.json({ ok: true });
   } catch {
     return Response.json({ error: 'falha ao remover job' }, { status: 500 });
   }

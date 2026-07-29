@@ -5,12 +5,15 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import {
   ArrowRight,
-  Play,
-  Pause,
+  Search,
+  SlidersHorizontal,
+  Plus,
   Trash2,
-  Settings,
-  Download,
   Filter,
+  FileText,
+  Send,
+  Minus,
+  MapPin,
 } from '../../../../../components/lovable/icons';
 import { apiUrl } from '../../../../../lib/api';
 
