@@ -16,6 +16,8 @@ import {
   ChevronRight,
   ChevronDown,
   LandMapWordmark,
+  Filter,
+  GitCompare,
 } from './lovable/icons';
 
 const ICONS = {
@@ -27,6 +29,7 @@ const ICONS = {
   exports: ArrowUpDown,
   openwa: BellRing,
   webhooks: Layers,
+  kanban: GitCompare,
   settings: BellRing,
   audit: ShieldCheck,
 } as const;
@@ -43,6 +46,7 @@ export function AdminSidebar() {
     { href: `/${locale}/admin`, icon: 'dashboard', label: 'Dashboard' },
     { href: `/${locale}/admin/properties`, icon: 'properties', label: 'Terrenos' },
     { href: `/${locale}/admin/leads`, icon: 'leads', label: 'Leads' },
+    { href: `/${locale}/admin/kanban`, icon: 'kanban', label: 'Kanban' },
     { href: `/${locale}/admin/agents`, icon: 'agents', label: 'Agentes' },
     { href: `/${locale}/admin/analytics`, icon: 'analytics', label: 'Analytics' },
     { href: `/${locale}/admin/exports`, icon: 'exports', label: 'Exportações' },
