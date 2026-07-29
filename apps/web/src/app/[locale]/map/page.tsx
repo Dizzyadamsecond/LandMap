@@ -199,12 +199,9 @@ function MapPageInner() {
     markersRef.current = [group];
   }, []);
 
-  // Keep the Leaflet canvas sized correctly on mobile when the URL bar
-  // shows/hides or the device is rotated (avoids greyed/clipped tiles).
   const onResize = useCallback(() => {
     const map = mapInstance.current;
     if (!map) return;
-    // debounce-ish: rAF coalesces bursts of resize events
     if ((window as any).__mapResizeRAF) cancelAnimationFrame((window as any).__mapResizeRAF);
     (window as any).__mapResizeRAF = requestAnimationFrame(() => {
       try {
@@ -218,7 +215,6 @@ function MapPageInner() {
   useEffect(() => {
     window.addEventListener('resize', onResize);
     window.addEventListener('orientationchange', onResize);
-    // initial pass in case the viewport changed before mount
     const t = setTimeout(onResize, 250);
     return () => {
       clearTimeout(t);
@@ -234,8 +230,6 @@ function MapPageInner() {
     (async () => {
       try {
         if (cancelled || !mapRef.current || mapInstance.current) return;
-        // Leaflet is imported dynamically: its module touches `window` at import
-        // time, which breaks SSR. Loading it here (client-only) avoids that.
         const leafletMod = await import('leaflet');
         const L = (leafletMod as any).default ?? leafletMod;
         const map = L.map(mapRef.current, {
@@ -246,7 +240,6 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        // Light basemap close to Lovable Google Maps light style
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
           attribution: '&copy; OSM &copy; CARTO',
           maxZoom: 19,
@@ -280,7 +273,6 @@ function MapPageInner() {
     if (mapReady) paintMarkers();
   }, [mapReady, paintMarkers, activeLayer, showHeat, selectedId]);
 
-  // Busca o heatmap de densidade de preço ao vivo (dataset real, 3000 imóveis).
   useEffect(() => {
     let active = true;
     fetch('/api/market/heatmap?city=Fortaleza')
@@ -298,8 +290,6 @@ function MapPageInner() {
     };
   }, []);
 
-  // Snapshot nacional leve; o WebSocket complementa a lista quando o endpoint
-  // de stream estiver configurado no ambiente da API.
   useEffect(() => {
     let active = true;
     const refreshAuctions = () => getAuctionOpportunities({ limit: 120 })
@@ -310,8 +300,6 @@ function MapPageInner() {
         /* oportunidades são uma camada opcional do mapa */
       });
     refreshAuctions();
-    // Serverless não mantém conexões WebSocket; este intervalo garante que a
-    // experiência continue atualizada mesmo sem um servidor Node persistente.
     const poll = setInterval(refreshAuctions, 10000);
 
     const wsUrl = process.env.NEXT_PUBLIC_AUCTIONS_WS_URL;
@@ -365,13 +353,11 @@ function MapPageInner() {
     };
   }, []);
 
-  // Pinta uma camada de heat suave por bairro (dados vivos) sob os marcadores.
   const paintHeat = useCallback(() => {
     const map = mapInstance.current;
     const L = (window as any).L;
     if (!map || !L) return;
 
-    // limpa a camada anterior
     if (heatLayerRef.current) {
       map.removeLayer(heatLayerRef.current);
       heatLayerRef.current = null;
@@ -483,9 +469,15 @@ function MapPageInner() {
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
-      {/* Full-bleed map */}
-      {mapError ? (
-        <div className="grid h-full place-items-center p-6">
+      {/* Full-bleed map — iOS-friendly rendering */}
+      <div
+        ref={mapRef}
+        role="region"
+        aria-label="Mapa de inteligência territorial"
+        className="absolute inset-0 z-0 h-full w-full touch-manipulation font-[system-ui,sans-serif]"
+      />
+      {mapError && (
+        <div className="absolute inset-0 z-10 grid h-full w-full place-items-center p-6">
           <div className="text-center">
             <p className="font-medium text-destructive">{COPY.failMap}</p>
             <p className="mt-1 text-sm text-foreground/60">
@@ -493,13 +485,6 @@ function MapPageInner() {
             </p>
           </div>
         </div>
-      ) : (
-        <div
-          ref={mapRef}
-          role="region"
-          aria-label="Mapa de inteligência territorial"
-          className="absolute inset-0 z-0 h-full w-full"
-        />
       )}
 
       {/* Top chrome */}
@@ -685,7 +670,7 @@ function MapPageInner() {
 
       {/* Layers panel — Lovable floating card */}
       {layersOpen && (
-        <div className="pointer-events-none absolute bottom-[auto] left-3 top-[8.5rem] z-20 flex w-[min(100%-1.5rem,20rem)] flex-col gap-3 sm:left-4 sm:top-[9rem]">
+        <div className="pointer-events-none absolute bottom-auto left-3 top-[8.5rem] z-20 flex w-[min(100%-1.5rem,20rem)] flex-col gap-3 sm:left-4 sm:top-[9rem]">
           <div className="pointer-events-auto max-h-[calc(100dvh-17rem)] overflow-y-auto rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
             <div className="mb-3 flex items-center justify-between">
               <p className="font-display text-sm font-semibold">{COPY.layersTitle}</p>
@@ -795,8 +780,7 @@ function MapPageInner() {
         </div>
       )}
 
-      {/* Bottom ranking cards — Lovable grid on desktop; horizontal scroller on mobile
-          so the cards never stack over the whole map. */}
+      {/* Bottom ranking cards */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-3 sm:p-4">
         <div className="pointer-events-auto flex snap-x snap-mandatory gap-3 overflow-x-auto pb-[max(0.25rem,env(safe-area-inset-bottom))] md:mx-auto md:max-w-[1400px] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 lg:grid-cols-3">
           <div className="w-[85vw] max-w-sm shrink-0 snap-start sm:w-80 md:w-auto md:max-w-none md:shrink">
@@ -940,9 +924,9 @@ function MapPageInner() {
             <ul className="space-y-2">
               {selected.timeline.map((t) => (
                 <li key={`${t.year}-${t.title}`} className="flex items-start gap-2 text-sm">
-                  <Badge variant="outline" className="shrink-0 tabular-nums">
+                  <span className="rounded-md border border-border/60 bg-muted/60 px-2 py-0.5 text-xs tabular-nums font-medium">
                     {t.year}
-                  </Badge>
+                  </span>
                   <span className="text-foreground/70">{t.title}</span>
                 </li>
               ))}
