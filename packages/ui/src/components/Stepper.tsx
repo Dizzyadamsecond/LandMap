@@ -37,8 +37,8 @@ function CheckIcon() {
 }
 
 /**
- * Accessible, on-brand progress stepper. States: done (emerald check +
- * gradient connector), active (emerald→cyan gradient + glow), upcoming
+ * Accessible, on-brand progress stepper. States: done (primary check +
+ * gradient connector), active (primary-token gradient + glow), upcoming
  * (neutral). Connector between steps fills with the brand gradient once passed.
  */
 export function Stepper({

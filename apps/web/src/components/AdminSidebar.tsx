@@ -104,6 +104,7 @@ export function AdminSidebar() {
         <div className="border-t border-[var(--border)] p-3">
           <Link
             href={`/${locale}`}
+            prefetch={false}
             className="block rounded-2xl px-3 py-2 text-[11px] text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
           >
             ← Voltar ao site

@@ -134,6 +134,7 @@ export function Navbar() {
     <header className="sticky top-3 z-50 mx-3 flex w-full max-w-5xl items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card)]/85 px-4 py-2.5 backdrop-blur-xl [backdrop-filter:saturate(150%)] shadow-[0_8px_40px_-12px_color-mix(in_srgb,var(--primary)_18%,transparent)] md:mx-auto">
       <Link
         href={`/${locale}`}
+        prefetch={false}
         aria-label="LandMap - ir para a pÃ¡gina inicial"
         className={`group flex items-center gap-2 text-sm font-semibold tracking-tight ${focusRing}`}
       >
@@ -157,6 +158,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={href}
+              prefetch={false}
               aria-current={isActive ? 'page' : undefined}
               className={`rounded-full px-3 py-1.5 transition ${focusRing} ${
                 isActive
@@ -213,6 +215,7 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={href}
+                    prefetch={false}
                     role="menuitem"
                     aria-current={isActive ? 'page' : undefined}
                     className={`block rounded-xl px-3 py-2 text-sm transition ${focusRing} ${
@@ -268,6 +271,7 @@ export function Navbar() {
           <div className="hidden items-center gap-2 md:flex">
             <Link
               href={`/${locale}/map`}
+              prefetch={false}
               onClick={() => {
                 ensureFreeAccess();
                 try {
@@ -282,6 +286,7 @@ export function Navbar() {
             </Link>
             <Link
               href={`/${locale}/auth`}
+              prefetch={false}
               className={`inline-flex h-9 items-center rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 text-sm font-medium text-[var(--foreground)] transition hover:bg-[var(--muted)] ${focusRing}`}
             >
               Entrar
@@ -315,6 +320,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={href}
+                prefetch={false}
                 aria-current={isActive ? 'page' : undefined}
                 className={`rounded-xl px-3 py-2.5 text-sm transition ${focusRing} ${
                   isActive ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium' : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
@@ -329,6 +335,7 @@ export function Navbar() {
               <>
                 <Link
                   href={`/${locale}/map`}
+                  prefetch={false}
                   onClick={() => {
                     ensureFreeAccess();
                     try {
@@ -344,6 +351,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href={`/${locale}/auth`}
+                  prefetch={false}
                   onClick={() => setMobileOpen(false)}
                   className={`inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[var(--border)] text-sm font-medium ${focusRing}`}
                 >

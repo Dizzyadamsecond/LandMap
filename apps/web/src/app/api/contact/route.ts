@@ -4,8 +4,8 @@ export const runtime = 'nodejs';
 
 /**
  * Contact form sink. There is no external CRM wired yet, so we validate the
- * payload server-side and log it. The client treats any non-2xx as a failure,
- * which keeps the UI honest instead of faking success.
+ * payload server-side and return a real 2xx/4xx result without exposing PII in
+ * logs. The client treats any non-2xx as a failure, keeping the UI honest.
  */
 export async function POST(request: Request) {
   try {
@@ -20,9 +20,6 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
-
-    // No backend yet — log server-side as a graceful sink.
-    console.log('[contact] new message', { nome, email, telefone: body.telefone });
 
     return NextResponse.json({ ok: true });
   } catch {

@@ -124,22 +124,22 @@ function KpisPageInner() {
                   label={t('avgPricePerM2')}
                   value={loading || !kpis ? '—' : fmtBRL(kpis.avgPricePerSqm)}
                   hint={t('medianHint')}
-                  tone="emerald"
+                  tone="primary"
                 />
                 <MetricStat
                   label={t('appreciationYoy')}
                   value={loading || !kpis ? '—' : fmtPct(kpis.avgAppreciationYoy)}
-                  thresholds={[{ min: 0, tone: 'emerald' }]}
+                  thresholds={[{ min: 0, tone: 'primary' }]}
                   numeric={kpis?.avgAppreciationYoy}
-                  tone="emerald"
+                  tone="primary"
                 />
                 <MetricStat
                   label={t('confidence')}
                   value={loading || !kpis ? '—' : `${kpis.confidence}%`}
                   numeric={kpis?.confidence}
                   thresholds={[
-                    { min: 85, tone: 'emerald' },
-                    { min: 70, tone: 'cyan' },
+                    { min: 85, tone: 'primary' },
+                    { min: 70, tone: 'primary' },
                     { min: 0, tone: 'warning' },
                   ]}
                   hint={t('confidenceHint')}
@@ -168,7 +168,7 @@ function KpisPageInner() {
                   label={t('opportunities')}
                   value={loading ? '—' : opportunities.length.toLocaleString('pt-BR')}
                   hint={t('opportunitiesHint')}
-                  tone="violet"
+                  tone="accent"
                 />
               </div>
             </Reveal>

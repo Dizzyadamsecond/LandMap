@@ -12,7 +12,7 @@ export interface CommandItem {
   /** Extra terms to match against the query (not displayed). */
   keywords?: string[];
   /** Optional tonal accent for the leading mark. */
-  tone?: 'emerald' | 'cyan' | 'violet' | 'gold' | 'neutral';
+  tone?: 'primary' | 'accent' | 'emerald' | 'cyan' | 'violet' | 'gold' | 'neutral';
   onSelect: () => void;
 }
 
@@ -31,6 +31,8 @@ export interface CommandPaletteProps {
 }
 
 const toneMark: Record<NonNullable<CommandItem['tone']>, string> = {
+  primary: 'text-[var(--primary)]',
+  accent: 'text-[var(--accent)]',
   emerald: 'text-[var(--primary)]',
   cyan: 'text-[var(--primary)]',
   violet: 'text-[var(--accent)]',
@@ -44,7 +46,7 @@ const toneMark: Record<NonNullable<CommandItem['tone']>, string> = {
  * - Input is a `combobox` (`aria-expanded` / `aria-controls` / `aria-activedescendant`).
  * - Results are a `listbox` of `option`s with `aria-selected`; Arrow/Home/End/Enter navigate.
  * - Filtering matches `label` + `keywords` (case-insensitive, accent-insensitive).
- * - Built on brand tokens: glass surface, emerald/dual glow, GeistMono for hints.
+ * - Built on brand tokens: glass surface, primary/accent glow, mono hints.
  */
 export function CommandPalette({
   open,

@@ -181,7 +181,7 @@ function MapPageInner() {
       const marker = L.circleMarker([r.lat, r.lng], {
         radius,
         fillColor: color,
-        color: isSel ? resolveToken('--primary') || '#575ECF' : '#ffffff',
+        color: isSel ? resolveToken('--primary') || 'oklch(34% .18 265)' : '#ffffff',
         weight: isSel ? 3 : 2,
         fillOpacity: heat ? 0.35 + (w / 100) * 0.45 : 0.92,
         opacity: 1,
@@ -387,7 +387,7 @@ function MapPageInner() {
       return L.circleMarker([p.lat, p.lng], {
         radius: 26 + w * 46,
         stroke: false,
-        fillColor: resolveToken('--primary') || '#575ECF',
+        fillColor: resolveToken('--primary') || 'oklch(34% .18 265)',
         fillOpacity: 0.1 + w * 0.22,
       }).bindPopup(
         `<strong>${p.neighborhood}</strong><br/>Preço médio: <b>${fmtPriceSqm(p.avgPrice)}/m²</b>`,
@@ -411,7 +411,7 @@ function MapPageInner() {
       .filter((item) => item.latitude != null && item.longitude != null)
       .map((item) => L.circleMarker([item.latitude, item.longitude], {
         radius: 7,
-        fillColor: '#f59e0b',
+        fillColor: resolveToken('--warning') || 'oklch(78% .15 78)',
         color: '#ffffff',
         weight: 2,
         fillOpacity: 0.95,

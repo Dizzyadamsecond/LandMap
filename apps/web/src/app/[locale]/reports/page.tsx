@@ -47,6 +47,7 @@ export default function ReportsPage() {
   const [logoUrl, setLogoUrl] = useState('');
   const [contact, setContact] = useState('');
   const [selected, setSelected] = useState<string[]>(['meireles', 'cambeba']);
+  const [feedback, setFeedback] = useState<string | null>(null);
 
   const scoreRank = topByScore(INTELLIGENCE_REGIONS.length);
   const topValorizationIds = new Set(topByValorization(3).map((r) => r.id));
@@ -57,6 +58,11 @@ export default function ReportsPage() {
       if (prev.length >= MAX_REGIONS) return prev;
       return [...prev, id];
     });
+  };
+
+  const showFeedback = (message: string) => {
+    setFeedback(message);
+    window.setTimeout(() => setFeedback(null), 3200);
   };
 
   const selectedRegions = INTELLIGENCE_REGIONS.filter((r) => selected.includes(r.id));
@@ -305,24 +311,28 @@ export default function ReportsPage() {
             )}
 
             <div className="mt-4 flex flex-wrap gap-3">
-              <Button
-                onClick={() =>
-                  alert('Download PDF (demo) — geração do relatório em breve.')
-                }
-              >
+              <Button onClick={() => showFeedback('PDF em preparação — o relatório está pronto para virar exportação real.')}>
                 <FileText className="h-4 w-4" />
                 Baixar PDF (demo)
               </Button>
               <Button
                 variant="outline"
-                onClick={() =>
-                  alert('Link de compartilhamento (demo) copiado para a área de transferência.')
-                }
+                onClick={() => showFeedback('Link de compartilhamento preparado no modo demonstração.')}
               >
                 <Share2 className="h-4 w-4" />
                 Compartilhar (demo)
               </Button>
             </div>
+
+            {feedback ? (
+              <div
+                role="status"
+                aria-live="polite"
+                className="mt-3 rounded-xl border border-[var(--border)] bg-[var(--primary)]/10 px-4 py-3 text-sm font-medium text-[var(--primary)]"
+              >
+                {feedback}
+              </div>
+            ) : null}
 
             <p className="mt-3 flex items-center gap-1.5 text-[11px] text-[var(--muted-foreground)]">
               <Star className="h-3 w-3" />

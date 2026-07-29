@@ -5,11 +5,13 @@ export interface StatPillProps extends React.HTMLAttributes<HTMLSpanElement> {
   label?: React.ReactNode;
   value: React.ReactNode;
   trend?: number;
-  tone?: 'emerald' | 'cyan' | 'violet' | 'gold' | 'warning' | 'neutral';
+  tone?: 'primary' | 'accent' | 'emerald' | 'cyan' | 'violet' | 'gold' | 'warning' | 'neutral';
   icon?: React.ReactNode;
 }
 
 const tones: Record<NonNullable<StatPillProps['tone']>, string> = {
+  primary: 'border-[color-mix(in_srgb,var(--primary)_10%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]',
+  accent: 'border-[color-mix(in_srgb,var(--accent)_10%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] text-[var(--accent)]',
   emerald: 'border-[color-mix(in_srgb,var(--primary)_10%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]',
   cyan: 'border-[color-mix(in_srgb,var(--primary)_10%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]',
   violet: 'border-[color-mix(in_srgb,var(--accent)_10%,transparent)] bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] text-[var(--accent)]',
@@ -20,7 +22,7 @@ const tones: Record<NonNullable<StatPillProps['tone']>, string> = {
 
 /** Compact, highlighted metric pill that reuses the brand accent tokens. */
 export const StatPill = forwardRef<HTMLSpanElement, StatPillProps>(
-  ({ label, value, trend, tone = 'emerald', icon, className, ...props }, ref) => (
+  ({ label, value, trend, tone = 'primary', icon, className, ...props }, ref) => (
     <span
       ref={ref}
       className={cn(

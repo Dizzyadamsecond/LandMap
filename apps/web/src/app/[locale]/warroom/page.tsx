@@ -164,7 +164,7 @@ export default function WarRoomPage() {
                   <span
                     className={cn(
                       'h-2 w-2 rounded-full',
-                      a.status === 'running' ? 'bg-[var(--primary)] animate-pulse' : 'bg-neutral-500',
+                      a.status === 'running' ? 'bg-[var(--primary)] animate-pulse' : 'bg-[var(--muted-foreground)]',
                     )}
                   />
                   <h3 className="font-semibold">{a.name}</h3>

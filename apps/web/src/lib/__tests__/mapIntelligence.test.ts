@@ -62,13 +62,13 @@ describe('scoreLabel — band alignment', () => {
 });
 
 describe('scoreColor — band thresholds (jsdom falls back to concrete hex)', () => {
-  // resolveToken returns '' in jsdom -> non-destructive bands fall back to '#575ECF'
+  // resolveToken returns '' in jsdom -> non-destructive bands fall back to primary oklch.
   it.each([
-    [20, '#dc2626'], // <35 destructive -> distinct fallback
-    [40, '#575ECF'], // 35-49 warning (no real var in jsdom)
-    [55, '#575ECF'], // 50-64 accent
-    [70, '#575ECF'], // 65-79 accent
-    [90, '#575ECF'], // >=80 primary
+    [20, 'oklch(58% .22 27)'], // <35 destructive -> distinct fallback
+    [40, 'oklch(34% .18 265)'], // 35-49 warning (no real var in jsdom)
+    [55, 'oklch(34% .18 265)'], // 50-64 accent
+    [70, 'oklch(34% .18 265)'], // 65-79 accent
+    [90, 'oklch(34% .18 265)'], // >=80 primary
   ])('score %i -> %s', (score, hex) => {
     expect(scoreColor(score)).toBe(hex);
   });

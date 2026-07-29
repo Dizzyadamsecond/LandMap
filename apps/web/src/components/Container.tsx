@@ -7,7 +7,7 @@ interface ContainerProps {
   narrow?: boolean;
 }
 
-/** Centered max-width wrapper (Sovereign Intelligence layout system). */
+/** Centered max-width wrapper for the Lovable/indigo LandMap layout system. */
 export function Container({ children, className, narrow }: ContainerProps) {
   return (
     <div className={cn(narrow ? 'container-narrow' : 'container-x', className)}>

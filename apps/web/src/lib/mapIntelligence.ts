@@ -132,14 +132,14 @@ export function resolveToken(token: string): string {
 export function scoreColor(score: number): string {
   const band = SCORE_BANDS.find((b) => score >= b.min);
   const token = band ? band.token : '--destructive';
-  return resolveToken(token) || (token === '--destructive' ? '#dc2626' : '#575ECF');
+  return resolveToken(token) || (token === '--destructive' ? 'oklch(58% .22 27)' : 'oklch(34% .18 265)');
 }
 
 /** Gradiente escala heatmap — resolvido de tokens (vermelho → âmbar → indigo). */
 export function heatScaleGradient(): string {
-  const danger = resolveToken('--destructive') || '#dc2626';
-  const warn = resolveToken('--warning') || '#eab308';
-  const primary = resolveToken('--primary') || '#575ECF';
+  const danger = resolveToken('--destructive') || 'oklch(58% .22 27)';
+  const warn = resolveToken('--warning') || 'oklch(78% .15 78)';
+  const primary = resolveToken('--primary') || 'oklch(34% .18 265)';
   return `linear-gradient(90deg, ${danger} 0%, ${warn} 50%, ${primary} 100%)`;
 }
 

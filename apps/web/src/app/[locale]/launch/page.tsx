@@ -62,14 +62,14 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
       }}
     >
       {/* Fixed surreal backdrop */}
-      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <motion.div
           style={{
             position: 'absolute',
             top: '-20%',
             left: '-10%',
-            width: 620,
-            height: 620,
+            width: 'min(620px, 72vw)',
+            height: 'min(620px, 72vw)',
             borderRadius: '50%',
             background:
               'radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--primary) 70%, transparent), transparent 70%)',
@@ -84,8 +84,8 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
             position: 'absolute',
             bottom: '-25%',
             right: '-15%',
-            width: 520,
-            height: 520,
+            width: 'min(520px, 66vw)',
+            height: 'min(520px, 66vw)',
             borderRadius: '50%',
             background:
               'radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--ring) 60%, transparent), transparent 70%)',
@@ -205,7 +205,7 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
           Pronto para lançar.
         </RevealText>
         <motion.a
-          href="/pt-BR/map"
+          href={`/${params.locale}/map`}
           initial={reduce ? false : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

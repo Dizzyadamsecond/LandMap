@@ -24,7 +24,7 @@ const sideClasses: Record<TooltipSide, string> = {
 
 /**
  * Accessible hover/focus tooltip. Links the trigger to the tooltip via
- * aria-describedby and exposes role="tooltip". Glass surface, emerald glow.
+ * aria-describedby and exposes role="tooltip". Glass surface, primary-token glow.
  */
 export const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(
   ({ content, side = 'top', children, className, delay = 0 }, ref) => {

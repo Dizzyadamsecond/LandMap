@@ -19,7 +19,7 @@ export function Footer() {
             <span>LandMap</span>
           </div>
           <p className="mt-3 leading-relaxed">
-            Inteligência imobiliária soberana e aberta. Dados, busca, mapa e IA — sem custo e sem login.
+            Mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.
           </p>
         </div>
 
@@ -34,8 +34,8 @@ export function Footer() {
       </div>
 
       <div className="mt-10 flex items-center justify-between border-t hairline pt-6">
-        <p>© {year} LandMap — Sovereign Intelligence.</p>
-        <p className="text-[var(--muted-foreground)]">Free AI · MiniMax via Puter</p>
+        <p>© {year} LandMap — Inteligência de terrenos.</p>
+        <p className="text-[var(--muted-foreground)]">Dados territoriais · decisões com confiança</p>
       </div>
       </div>
     </footer>

@@ -48,7 +48,7 @@ export default function PortfolioPage() {
       : 0;
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col bg-background px-4 pb-28 pt-6">
+    <main className="mx-auto flex min-h-screen max-w-3xl flex-col overflow-x-hidden bg-background px-4 pb-28 pt-6">
       <header className="flex items-center justify-between">
         <Link
           href={lh('/favorites')}

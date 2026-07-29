@@ -12,7 +12,7 @@ export const colors = {
   /* ── Core surface / text (flat mirror of --surface / --text / …) ── */
   bg: 'oklch(100% 0 0)',            // --background
   text: 'oklch(18% 0.06 265)',      // --foreground
-  textStrong: '#ffffff',
+  textStrong: 'oklch(100% 0 0)',
   surface: 'oklch(100% 0 0)',       // --surface (= --card)
   surface1: 'oklch(100% 0 0)',      // --surface-1
   surface2: 'oklch(96% 0.01 250)',  // --surface-2 (= --muted)
@@ -25,8 +25,8 @@ export const colors = {
   accentDim: 'oklch(28% 0.14 265)', // --accent-dim (= --accent-foreground)
   danger: 'oklch(58% 0.22 27)',     // --danger (= --destructive)
 
-  /* ── Primary brand ramp (LandMap azul #003594) ── */
-  // Aligned to Lovable primary (indigo) — was legacy #003594 blue spec (drift).
+  /* ── Primary Lovable indigo brand ramp ── */
+  // Aligned to Lovable primary indigo token.
   primary: 'oklch(34% .18 265)',
   primaryBright: 'oklch(50% .18 265)',
   primarySoft: 'oklch(55% .15 265)',

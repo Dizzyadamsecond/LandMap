@@ -7,7 +7,7 @@ export interface ProgressProps {
   barClassName?: string;
 }
 
-/** Thin progress bar with an emerald gradient fill. */
+/** Thin progress bar with a Lovable primary-token gradient fill. */
 export function Progress({ value, className, barClassName }: ProgressProps) {
   const pct = Math.max(0, Math.min(100, value));
   return (

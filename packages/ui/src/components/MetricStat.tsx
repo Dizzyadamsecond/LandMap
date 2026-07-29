@@ -2,6 +2,8 @@ import React from 'react';
 import { cn } from '../lib/index';
 
 export type MetricTone =
+  | 'primary'
+  | 'accent'
   | 'emerald'
   | 'cyan'
   | 'violet'
@@ -35,6 +37,9 @@ export interface MetricStatProps extends React.HTMLAttributes<HTMLDivElement> {
 // pipeline is turned on. Colors reference the brand CSS vars (with rgba
 // fallbacks) already defined in packages/ui/src/styles.css and globals.css.
 const toneStyle: Record<MetricTone, React.CSSProperties> = {
+  primary: { color: 'var(--primary)', borderColor: 'color-mix(in srgb, var(--primary) 35%, transparent)', background: 'color-mix(in srgb, var(--primary) 8%, transparent)' },
+  accent: { color: 'var(--accent)', borderColor: 'color-mix(in srgb, var(--accent) 35%, transparent)', background: 'color-mix(in srgb, var(--accent) 8%, transparent)' },
+  // Backward-compatible aliases from the old feature palette; all resolve to Lovable tokens.
   emerald: { color: 'var(--primary)', borderColor: 'color-mix(in srgb, var(--primary) 35%, transparent)', background: 'color-mix(in srgb, var(--primary) 8%, transparent)' },
   cyan: { color: 'var(--primary)', borderColor: 'color-mix(in srgb, var(--primary) 35%, transparent)', background: 'color-mix(in srgb, var(--primary) 8%, transparent)' },
   violet: { color: 'var(--accent)', borderColor: 'color-mix(in srgb, var(--accent) 35%, transparent)', background: 'color-mix(in srgb, var(--accent) 8%, transparent)' },
@@ -90,7 +95,7 @@ export const MetricStat = React.forwardRef<HTMLDivElement, MetricStatProps>(
             display: 'flex',
             alignItems: 'center',
             gap: 6,
-            color: 'var(--muted-foreground, #a3a3a3)',
+            color: 'var(--muted-foreground)',
           }}
         >
           {icon ? (
@@ -112,7 +117,7 @@ export const MetricStat = React.forwardRef<HTMLDivElement, MetricStatProps>(
           {value}
         </div>
         {hint ? (
-          <div style={{ fontSize: 12, color: 'var(--muted-foreground, #737373)', fontVariantNumeric: 'tabular-nums' }}>
+          <div style={{ fontSize: 12, color: 'var(--muted-foreground)', fontVariantNumeric: 'tabular-nums' }}>
             {hint}
           </div>
         ) : null}

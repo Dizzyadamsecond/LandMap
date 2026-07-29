@@ -33,15 +33,15 @@ export default function CockpitPage() {
   const getStatusColor = (status: AgentStatus) => {
     switch (status) {
       case 'idle':
-        return 'bg-gray-500';
+        return 'bg-[var(--muted-foreground)]';
       case 'running':
-        return 'bg-blue-500 animate-pulse';
+        return 'bg-[var(--primary)] animate-pulse';
       case 'completed':
-        return 'bg-green-500';
+        return 'bg-[var(--success)]';
       case 'error':
-        return 'bg-red-500';
+        return 'bg-[var(--destructive)]';
       default:
-        return 'bg-gray-500';
+        return 'bg-[var(--muted-foreground)]';
     }
   };
 
@@ -105,7 +105,7 @@ export default function CockpitPage() {
           </Card>
           <Card className="p-4">
             <p className="text-xs text-[var(--muted-foreground)]">Uptime</p>
-            <p className="text-2xl font-bold text-green-600">99.9%</p>
+            <p className="text-2xl font-bold text-[var(--success)]">99.9%</p>
           </Card>
         </div>
 
