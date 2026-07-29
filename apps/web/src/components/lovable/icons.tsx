@@ -581,6 +581,16 @@ export function ArrowLeftRight({ size = 24, ...p }: IconProps) {
   );
 }
 
+export function CalendarClock({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <rect x="3" y="4" width="18" height="18" rx="2" />
+      <path d="M16 2v4M8 2v4M3 10h18" />
+      <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+    </svg>
+  );
+}
+
 /** Simple bell (header notifications) — distinct from BellRing */
 export function Bell({ size = 24, ...p }: IconProps) {
   return (
