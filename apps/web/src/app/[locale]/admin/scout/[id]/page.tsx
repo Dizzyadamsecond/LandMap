@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { ArrowRight, Play, Pause, Trash2, Settings, Download, ListFilter } from '../../../../../../components/lovable/icons';
-import { apiUrl } from '../../../../lib/api';
+import { apiUrl } from '../../../../../lib/api';
 
 type ScoutSource = 'google' | 'linkedin' | 'instagram' | 'facebook' | 'custom';
 
