@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { apiUrl } from '../../../../../lib/api';
+import { apiUrl } from '../../../../lib/api';
 const memory = globalThis as unknown as {
   landmapScoutLeads?: Array<any>;
 };

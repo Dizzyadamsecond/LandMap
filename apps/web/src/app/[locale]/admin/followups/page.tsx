@@ -197,7 +197,7 @@ export default function AdminFollowupsPage() {
                   onClick={() => patch(f.id, { status: 'failed', result: 'falha' })}
                   className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2 py-1 text-[10px] hover:border-[var(--destructive)]"
                 >
-                  <XCircle className="h-3.5 w-3.5" /> Falha
+                  <X className="h-3.5 w-3.5" /> Falha
                 </button>
                 <button
                   onClick={() => remove(f.id)}
