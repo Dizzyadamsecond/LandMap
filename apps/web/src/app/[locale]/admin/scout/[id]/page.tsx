@@ -11,8 +11,8 @@ import {
   Settings,
   Download,
   Filter,
-} from '../../../../components/lovable/icons';
-import { apiUrl } from '../../../../lib/api';
+} from '../../../../../components/lovable/icons';
+import { apiUrl } from '../../../../../lib/api';
 
 type ScoutSource = 'google' | 'linkedin' | 'instagram' | 'facebook' | 'custom';
 
