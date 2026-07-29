@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowRight } from '../../../../components/lovable/icons';
+import { ArrowRight } from '../../../../../components/lovable/icons';
 
 export default function AdminPlansManagePage() {
   const params = useParams();
