@@ -172,10 +172,10 @@ export default function AdminScoutJobPage() {
             <ArrowRight className="h-3.5 w-3.5 rotate-180" /> Voltar
           </Link>
           <button onClick={runJob} disabled={saving || job?.status === 'running'} className="inline-flex items-center gap-1 rounded-lg bg-[var(--primary)] px-3 py-2 text-xs text-black hover:brightness-110 disabled:opacity-60">
-            <Play className="h-3.5 w-3.5" /> {job?.status === 'running' ? 'Executando...' : 'Executar job'}
+            <Send className="h-3.5 w-3.5" /> {job?.status === 'running' ? 'Executando...' : 'Executar job'}
           </button>
           <button onClick={exportCsv} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs hover:bg-[var(--muted)]">
-            <Download className="h-3.5 w-3.5" /> Exportar CSV
+            <FileText className="h-3.5 w-3.5" /> Exportar CSV
           </button>
         </div>
       </div>
@@ -249,7 +249,7 @@ export default function AdminScoutJobPage() {
       <section className="mt-6 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-[var(--foreground)]">Logs</h2>
-          <span className="text-[10px] text-[var(--muted-foreground)]">{logs.length} entradas</span>
+          <span className="text-[10px] text-[var(--muted-foreground)]">{(logs ?? []).length} entradas</span>
         </div>
         <ul className="mt-4 space-y-2">
           {logs?.map((log) => (

@@ -80,7 +80,7 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const id = String(body?.id || '').trim();
     const items = memory.landmapScoutJobs || [];
-    const index = items.findIndex((j) => j.id === id);
+    const index = items.findIndex((j: any) => j.id === id);
     if (index === -1) return Response.json({ error: 'job não encontrado' }, { status: 404 });
 
     const current = items[index];
@@ -104,7 +104,7 @@ export async function DELETE(request: NextRequest) {
     const id = String(request.nextUrl.searchParams.get('id') || '').trim();
     if (!id) return Response.json({ error: 'id obrigatório' }, { status: 422 });
     const items = memory.landmapScoutJobs || [];
-    const index = items.findIndex((j) => j.id === id);
+    const index = items.findIndex((j: any) => j.id === id);
     if (index === -1) return Response.json({ error: 'job não encontrado' }, { status: 404 });
     items.splice(index, 1);
     return Response.json({ ok: true });

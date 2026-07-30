@@ -93,7 +93,7 @@ function AuthPageInner() {
       /* ignore */
     }
     signInGuest();
-    router.push(lh('/map'));
+    router.push(lh('/dashboard'));
   };
 
   const onLogin = async (e: React.FormEvent) => {
@@ -101,7 +101,7 @@ function AuthPageInner() {
     setLoginLoading(true);
     try {
       await signInEmail({ email: loginEmail || undefined });
-      router.push(lh('/map'));
+      router.push(lh('/dashboard'));
     } finally {
       setLoginLoading(false);
     }

@@ -145,6 +145,58 @@ export function signOutMock(): void {
   if (typeof window !== 'undefined') window.localStorage.removeItem(STORAGE_KEY);
 }
 
+/**
+ * Waiting/access flow helpers.
+ *
+ * The canonical free surface is `/dashboard`. Routes that opt into the
+ * "waiting room" behavior should redirect to `/dashboard` after any
+ * auth/login/guest-signup action so users land on the same free surface.
+ */
+export function getPostAuthRedirect(returnTo?: string): string {
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = window.localStorage.getItem('landmap:post_auth_return');
+      if (stored) {
+        window.localStorage.removeItem('landmap:post_auth_return');
+        if (stored === '/dashboard' || stored.startsWith('/dashboard/')) {
+          return stored;
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  if (returnTo && (returnTo === '/dashboard' || returnTo.startsWith('/dashboard/'))) {
+    return returnTo;
+  }
+  return '/dashboard';
+}
+
+export function setPostAuthReturn(href: string | undefined | null): void {
+  if (!href || typeof window === 'undefined') return;
+  if (href === '/dashboard' || href.startsWith('/dashboard/')) {
+    try {
+      window.localStorage.setItem('landmap:post_auth_return', href);
+    } catch {
+      /* ignore */
+    }
+  }
+}
+
+export function clearPostAuthReturn(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem('landmap:post_auth_return');
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Returns true when the current free flow should treat `/map` as secondary to `/dashboard`. */
+export function isDashboardPrimaryFlow(): boolean {
+  return true;
+}
+
 /** Hook de sessão mockada — fonte única de verdade do estado "logado". */
 export function useMockUser() {
   const [user, setUser] = useState<MockUser | null>(null);

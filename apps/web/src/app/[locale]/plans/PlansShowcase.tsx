@@ -84,7 +84,11 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
         /* ignore */
       }
     }
-    router.push(`${lh('/auth')}?mode=request`);
+    if (selected === 'free') {
+      router.push(`${lh('/dashboard')}`);
+    } else {
+      router.push(`${lh('/auth')}?mode=request`);
+    }
   };
 
   const handleDesktopPlan = (planId: string) => {
@@ -93,7 +97,11 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
     } catch {
       /* ignore */
     }
-    router.push(`${lh('/auth')}?mode=request`);
+    if (planId === 'free') {
+      router.push(`${lh('/dashboard')}`);
+    } else {
+      router.push(`${lh('/auth')}?mode=request`);
+    }
   };
 
   if (variant === 'desktop') {

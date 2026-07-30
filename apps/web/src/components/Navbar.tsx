@@ -270,7 +270,7 @@ export function Navbar() {
         ) : (
           <div className="hidden items-center gap-2 md:flex">
             <Link
-              href={`/${locale}/map`}
+              href={`/${locale}/dashboard`}
               prefetch={false}
               onClick={() => {
                 ensureFreeAccess();
@@ -334,7 +334,7 @@ export function Navbar() {
             {!user && (
               <>
                 <Link
-                  href={`/${locale}/map`}
+                  href={`/${locale}/dashboard`}
                   prefetch={false}
                   onClick={() => {
                     ensureFreeAccess();
@@ -347,7 +347,7 @@ export function Navbar() {
                   }}
                   className={`inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[var(--primary)] px-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-card)] ${focusRing}`}
                 >
-                  Começar grátis — mapa
+                  Começar grátis
                 </Link>
                 <Link
                   href={`/${locale}/auth`}
