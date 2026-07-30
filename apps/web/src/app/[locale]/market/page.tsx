@@ -182,7 +182,7 @@ export default function MarketPage() {
 
           <div className="mt-4 flex flex-wrap gap-2">
             <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
-              Mapa intelligence
+              Mapa
             </Link>
             <Link href={lh('/kpis')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
               KPIs

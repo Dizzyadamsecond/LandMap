@@ -488,34 +488,37 @@ function MapPageInner() {
       )}
 
       {/* Top chrome */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-3 sm:p-4">
-        <div className="pointer-events-auto mx-auto flex max-w-[1400px] flex-col gap-3">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-2 sm:p-4">
+        <div className="pointer-events-auto mx-auto flex max-w-[1400px] flex-col gap-2 sm:gap-3">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 rounded-2xl border border-border/50 bg-white/95 px-2 py-1.5 shadow-sm backdrop-blur">
+            <div className="flex items-center gap-1.5 rounded-2xl border border-border/50 bg-white/95 px-2 py-1.5 shadow-sm backdrop-blur sm:px-2.5">
               <Link
                 href={lh('/')}
                 aria-label="Voltar"
-                className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted"
+                className="grid h-8 w-8 place-items-center rounded-full hover:bg-muted"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-3.5 w-3.5" />
               </Link>
-              <LandMapWordmark />
+              <div className="flex items-center gap-1.5">
+                <LandMapWordmark />
+                <span className="text-xs font-semibold text-foreground/80">Mapa</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="hidden items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 shadow-sm backdrop-blur md:flex">
-                <span className="relative flex h-2 w-2">
+            <div className="flex items-center gap-1.5">
+              <div className="hidden items-center gap-1 rounded-full border border-success/30 bg-success/10 px-2 py-1 shadow-sm backdrop-blur md:flex">
+                <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-success" />
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-success">
-                  Atualizado agora
+                <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-success">
+                  Atualizado
                 </span>
               </div>
               {auctionPoints.length > 0 && (
-                <div className="hidden items-center gap-1.5 rounded-full border border-warning/40 bg-warning/15 px-3 py-1.5 shadow-sm backdrop-blur sm:flex">
-                  <span className="h-2 w-2 rounded-full bg-warning" />
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-warning-foreground">
-                    {auctionPoints.length} oportunidades BR
+                <div className="hidden items-center gap-1 rounded-full border border-warning/40 bg-warning/15 px-2 py-1 shadow-sm backdrop-blur sm:flex">
+                  <span className="h-1.5 w-1.5 rounded-full bg-warning" />
+                  <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-warning-foreground">
+                    {auctionPoints.length} BR
                   </span>
                 </div>
               )}
@@ -524,67 +527,67 @@ function MapPageInner() {
                 onClick={() => setLayersOpen((v) => !v)}
                 className={cn(
                   buttonVariants({ variant: layersOpen ? 'default' : 'outline', size: 'sm' }),
-                  'min-h-10 rounded-full bg-white/95 shadow-sm',
+                  'h-8 min-h-8 rounded-full bg-white/95 px-2.5 shadow-sm sm:px-3',
                   !layersOpen && 'border-border/50',
                 )}
               >
-                <Layers className="mr-1.5 h-3.5 w-3.5" />
-                Camadas
+                <Layers className="mr-1 h-3 w-3 sm:mr-1.5 sm:h-3.5 sm:w-3.5" />
+                <span className="text-[11px] sm:text-xs">Camadas</span>
               </button>
               <Link
                 href={lh('/dashboard')}
                 className={cn(
                   buttonVariants({ variant: 'outline', size: 'sm' }),
-                  'min-h-10 rounded-full border-border/50 bg-white/95 shadow-sm',
+                  'h-8 min-h-8 rounded-full border-border/50 bg-white/95 px-2.5 shadow-sm sm:px-3',
                 )}
               >
-                Painel
+                <span className="text-[11px] sm:text-xs">Painel</span>
               </Link>
             </div>
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+              <div className="flex items-center justify-between gap-1.5">
+                <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                   {COPY.indexLandMap}
                 </p>
-                <span className="rounded-full border border-border/60 bg-muted/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
+                <span className="rounded-full border border-border/60 bg-muted/60 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
                   Live
                 </span>
               </div>
-              <p className="mt-1 font-display text-lg font-bold">{selected ? selected.score : 92}</p>
-              <p className="text-xs text-foreground/50">
+              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{selected ? selected.score : 92}</p>
+              <p className="text-[10px] text-foreground/50 sm:text-xs">
                 {selected ? scoreLabel(selected.score) : 'Excepcional'}
               </p>
             </div>
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+              <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                 {COPY.appreciationAvg}
               </p>
-              <p className="mt-1 font-display text-lg font-bold">{fmtDelta(avgVal)}</p>
-              <p className="text-xs text-foreground/50">Últimos 12m</p>
+              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{fmtDelta(avgVal)}</p>
+              <p className="text-[10px] text-foreground/50 sm:text-xs">Últimos 12m</p>
             </div>
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+              <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                 {COPY.liquidity}
               </p>
-              <p className="mt-1 font-display text-lg font-bold">{bestOpp ? String(bestOpp.score) : '—'}</p>
-              <p className="text-xs text-foreground/50">{bestOpp ? bestOpp.name : 'Sem dados'}</p>
+              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{bestOpp ? String(bestOpp.score) : '—'}</p>
+              <p className="text-[10px] text-foreground/50 sm:text-xs">{bestOpp ? bestOpp.name : 'Sem dados'}</p>
             </div>
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+              <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                 {COPY.bestOpportunity}
               </p>
-              <p className="mt-1 font-display text-lg font-bold">{bestOpp ? bestOpp.city : '—'}</p>
-              <p className="text-xs text-foreground/50">{bestOpp ? bestOpp.zoning : 'Sem dados'}</p>
+              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{bestOpp ? bestOpp.city : '—'}</p>
+              <p className="text-[10px] text-foreground/50 sm:text-xs">{bestOpp ? bestOpp.zoning : 'Sem dados'}</p>
             </div>
           </div>
 
           {/* Search — Lovable placeholder */}
           <div className="relative max-w-xl">
-            <div className="flex items-center gap-2 rounded-2xl border border-border/50 bg-white/98 px-3 shadow-sm backdrop-blur">
-              <Search className="h-4 w-4 shrink-0 text-foreground/50" />
+            <div className="flex items-center gap-1.5 rounded-2xl border border-border/50 bg-white/98 px-2.5 py-2 shadow-sm backdrop-blur sm:px-3">
+              <Search className="h-3.5 w-3.5 shrink-0 text-foreground/50 sm:h-4 sm:w-4" />
               <input
                 value={query}
                 onChange={(e) => {
@@ -614,7 +617,7 @@ function MapPageInner() {
                 }}
                 placeholder={SEARCH_PLACEHOLDER}
                 aria-label={SEARCH_PLACEHOLDER}
-                className="h-11 w-full border-0 bg-transparent px-0 text-sm shadow-none outline-none focus-visible:ring-0"
+                className="h-9 w-full border-0 bg-transparent px-0 text-sm shadow-none outline-none focus-visible:ring-0"
               />
               {query && (
                 <button
@@ -631,7 +634,7 @@ function MapPageInner() {
               )}
             </div>
             {suggestOpen && query.trim() && suggestions.length > 0 && (
-              <div className="absolute inset-x-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-border/50 bg-white/98 shadow-lg animate-in fade-in motion-reduce:animate-none">
+              <div className="absolute inset-x-0 top-full z-30 mt-1.5 overflow-hidden rounded-2xl border border-border/50 bg-white/98 shadow-lg animate-in fade-in motion-reduce:animate-none">
                 {suggestions.map((r) => (
                   <button
                     key={r.id}
@@ -643,7 +646,7 @@ function MapPageInner() {
                       }
                       void selectAutocomplete(r);
                     }}
-                    className="flex w-full items-center justify-between px-4 py-3 text-left text-sm transition hover:bg-muted"
+                    className="flex w-full items-center justify-between px-3 py-2.5 text-left text-sm transition hover:bg-muted"
                   >
                     <span className="flex items-center gap-2">
                       <MapPin className="h-3.5 w-3.5 text-primary" />
@@ -660,7 +663,7 @@ function MapPageInner() {
                   </button>
                 ))}
                 {loadingSuggestions && (
-                  <div className="px-4 py-2 text-xs text-foreground/50">Buscando sugestões…</div>
+                  <div className="px-3 py-2 text-xs text-foreground/50">Buscando sugestões…</div>
                 )}
               </div>
             )}
@@ -670,9 +673,9 @@ function MapPageInner() {
 
       {/* Layers panel — Lovable floating card */}
       {layersOpen && (
-        <div className="pointer-events-none absolute bottom-auto left-3 top-[8.5rem] z-20 flex w-[min(100%-1.5rem,20rem)] flex-col gap-3 sm:left-4 sm:top-[9rem]">
-          <div className="pointer-events-auto max-h-[calc(100dvh-17rem)] overflow-y-auto rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
-            <div className="mb-3 flex items-center justify-between">
+        <div className="pointer-events-none absolute bottom-auto left-2 top-[7.5rem] z-20 flex w-[min(100%-1rem,18rem)] flex-col gap-2 sm:left-4 sm:top-[8rem] sm:w-[min(100%-2rem,22rem)]">
+          <div className="pointer-events-auto max-h-[calc(100dvh-16rem)] overflow-y-auto rounded-2xl border border-border/50 bg-white/98 p-3 shadow-lg backdrop-blur sm:p-4">
+            <div className="mb-2 flex items-center justify-between">
               <p className="font-display text-sm font-semibold">{COPY.layersTitle}</p>
               <button
                 type="button"
@@ -684,7 +687,7 @@ function MapPageInner() {
               </button>
             </div>
 
-            <div className="mb-3 flex items-center justify-between rounded-xl bg-muted/60 px-3 py-2">
+            <div className="mb-2 flex items-center justify-between rounded-xl bg-muted/60 px-2.5 py-2 sm:px-3">
               <div className="flex items-center gap-2">
                 <Activity className="h-3.5 w-3.5 text-primary" />
                 <span className="text-sm font-medium">{COPY.heat}</span>
@@ -708,7 +711,7 @@ function MapPageInner() {
               </button>
             </div>
 
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
               {COPY.heatScale}
             </p>
             <div
@@ -722,14 +725,14 @@ function MapPageInner() {
               <span>{COPY.exceptional}</span>
             </div>
 
-            <div className="mt-4 space-y-1">
+            <div className="mt-3 space-y-1">
               {INTELLIGENCE_LAYERS.map((layer) => (
                 <button
                   key={layer.id}
                   type="button"
                   onClick={() => setActiveLayer(layer.id)}
                   className={cn(
-                    'flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition',
+                    'flex w-full items-center justify-between rounded-xl px-2.5 py-2 text-left text-sm transition sm:px-3 sm:py-2.5',
                     activeLayer === layer.id
                       ? 'bg-primary text-primary-foreground'
                       : 'hover:bg-muted text-foreground/80',
@@ -744,11 +747,11 @@ function MapPageInner() {
             </div>
           </div>
 
-          <div className="pointer-events-auto rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
-            <div className="mb-3 flex items-center justify-between">
+          <div className="pointer-events-auto rounded-2xl border border-border/50 bg-white/98 p-3 shadow-lg backdrop-blur sm:p-4">
+            <div className="mb-2 flex items-center justify-between">
               <div>
                 <p className="font-display text-sm font-semibold">Fluxos</p>
-                <p className="text-[10px] text-foreground/50">Acesso rápido às páginas do produto</p>
+                <p className="text-[10px] text-foreground/50">Acesso rápido</p>
               </div>
               <span className="rounded-full border border-border/60 bg-muted/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
                 Hub
@@ -761,14 +764,14 @@ function MapPageInner() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-start gap-3 rounded-xl border border-border/50 bg-background/70 p-3 transition hover:border-primary/30 hover:bg-primary/5"
+                    className="flex items-start gap-2.5 rounded-xl border border-border/50 bg-background/70 p-2.5 transition hover:border-primary/30 hover:bg-primary/5 sm:gap-3 sm:p-3"
                   >
-                    <span className="mt-0.5 grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-primary">
-                      <Icon className="h-4 w-4" />
+                    <span className="mt-0.5 grid h-7 w-7 place-items-center rounded-full bg-primary/10 text-primary sm:h-8 sm:w-8">
+                      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </span>
                     <span className="min-w-0">
                       <span className="block text-sm font-semibold text-foreground">{item.title}</span>
-                      <span className="mt-0.5 block text-xs leading-snug text-foreground/55">
+                      <span className="mt-0.5 block text-[11px] leading-snug text-foreground/55 sm:text-xs">
                         {item.desc}
                       </span>
                     </span>
@@ -781,12 +784,12 @@ function MapPageInner() {
       )}
 
       {/* Bottom ranking cards */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-3 sm:p-4">
-        <div className="pointer-events-auto flex snap-x snap-mandatory gap-3 overflow-x-auto pb-[max(0.25rem,env(safe-area-inset-bottom))] md:mx-auto md:max-w-[1400px] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 lg:grid-cols-3">
-          <div className="w-[85vw] max-w-sm shrink-0 snap-start sm:w-80 md:w-auto md:max-w-none md:shrink">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-2 sm:p-4">
+        <div className="pointer-events-auto flex snap-x snap-mandatory gap-2 overflow-x-auto pb-[max(0.25rem,env(safe-area-inset-bottom))] md:mx-auto md:max-w-[1400px] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 lg:grid-cols-3">
+          <div className="w-[82vw] max-w-xs shrink-0 snap-start sm:w-72 md:w-auto md:max-w-none md:shrink">
             <RankCard
               title={COPY.topValorization}
-              icon={<TrendingUp className="h-3.5 w-3.5" />}
+              icon={<TrendingUp className="h-3 w-3" />}
               items={topVal.map((r) => ({
                 id: r.id,
                 name: r.name,
@@ -800,10 +803,10 @@ function MapPageInner() {
               }}
             />
           </div>
-          <div className="w-[85vw] max-w-sm shrink-0 snap-start sm:w-80 md:w-auto md:max-w-none md:shrink">
+          <div className="w-[82vw] max-w-xs shrink-0 snap-start sm:w-72 md:w-auto md:max-w-none md:shrink">
             <RankCard
               title={COPY.topOpportunities}
-              icon={<MapPin className="h-3.5 w-3.5" />}
+              icon={<MapPin className="h-3 w-3" />}
               items={topOpp.map((r) => ({
                 id: r.id,
                 name: r.name,
@@ -817,8 +820,8 @@ function MapPageInner() {
               }}
             />
           </div>
-          <div className="hidden w-[85vw] max-w-sm shrink-0 snap-start sm:block sm:w-80 md:w-auto md:max-w-none md:shrink lg:block">
-            <div className="rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
+          <div className="hidden w-[82vw] max-w-xs shrink-0 snap-start sm:block sm:w-72 md:w-auto md:max-w-none md:shrink lg:block">
+            <div className="rounded-2xl border border-border/50 bg-white/98 p-3 shadow-lg backdrop-blur sm:p-4">
               <div className="mb-2 flex items-center gap-2">
                 <LineChart className="h-3.5 w-3.5 text-primary" />
                 <div>
@@ -831,8 +834,8 @@ function MapPageInner() {
                   selected?.priceHistory.map((p) => p.value) ??
                   (INTELLIGENCE_REGIONS[0]?.priceHistory.map((p) => p.value) ?? [])
                 }
-                width={260}
-                height={56}
+                width={240}
+                height={48}
                 aria-label={COPY.indexFlow}
               />
             </div>
@@ -842,8 +845,8 @@ function MapPageInner() {
 
       {/* Region detail sheet */}
       {selected && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center p-3 pb-[max(11rem,env(safe-area-inset-bottom))] sm:bottom-auto sm:left-auto sm:right-4 sm:top-[8.5rem] sm:w-[22rem] sm:p-0 sm:pb-0">
-          <div className="pointer-events-auto max-h-[min(70dvh,520px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-border/60 bg-white p-4 shadow-xl sm:max-w-none">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center p-2 pb-[max(9.5rem,env(safe-area-inset-bottom))] sm:bottom-auto sm:left-auto sm:right-3 sm:top-[7.5rem] sm:w-[20rem] sm:p-0 sm:pb-0">
+          <div className="pointer-events-auto max-h-[min(66dvh,460px)] w-full max-w-md overflow-y-auto rounded-2xl border border-border/60 bg-white p-3 shadow-xl sm:max-w-none sm:p-4">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-foreground/50">
@@ -863,7 +866,7 @@ function MapPageInner() {
               </button>
             </div>
 
-            <div className="mt-3 rounded-xl bg-muted/50 p-3">
+            <div className="mt-2.5 rounded-xl bg-muted/50 p-2.5 sm:mt-3 sm:p-3">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-foreground/50">
                 {COPY.score}
               </p>
@@ -873,7 +876,7 @@ function MapPageInner() {
               <p className="mt-0.5 text-xs text-foreground/60">{COPY.scoreHint}</p>
             </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2">
+            <div className="mt-2.5 grid grid-cols-2 gap-1.5 sm:mt-3 sm:gap-2">
               <Meta label={COPY.avgPrice} value={fmtPriceSqm(selected.priceSqm)} />
               <Meta label="12m" value={fmtDelta(selected.priceSqmDelta12m)} />
               <Meta label={COPY.stateRank} value={`#${Math.max(1, 12 - Math.floor(selected.score / 10))}`} />
@@ -886,13 +889,13 @@ function MapPageInner() {
               <Meta label={COPY.floodRisk} value={selected.floodRisk} />
             </div>
 
-            <p className="mb-2 mt-4 font-display text-sm font-semibold">{COPY.composition}</p>
-            <div className="space-y-2">
+            <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.composition}</p>
+            <div className="space-y-1.5">
               {INTELLIGENCE_LAYERS.map((layer) => {
                 const n = selected.layerScores[layer.id];
                 return (
-                  <div key={layer.id} className="flex items-center gap-3">
-                    <span className="w-36 shrink-0 truncate text-xs text-foreground/70 sm:w-40">
+                  <div key={layer.id} className="flex items-center gap-2 sm:gap-3">
+                    <span className="w-28 shrink-0 truncate text-[11px] text-foreground/70 sm:w-36 sm:text-xs">
                       {layer.label}
                     </span>
                     <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
@@ -904,13 +907,13 @@ function MapPageInner() {
                         }}
                       />
                     </div>
-                    <span className="w-7 text-right text-xs tabular-nums font-medium">{n}</span>
+                    <span className="w-6 text-right text-[11px] tabular-nums font-medium sm:w-7 sm:text-xs">{n}</span>
                   </div>
                 );
               })}
             </div>
 
-            <p className="mb-2 mt-4 font-display text-sm font-semibold">{COPY.highlights}</p>
+            <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.highlights}</p>
             <ul className="space-y-1.5 text-sm text-foreground/80">
               {selected.highlights.map((h) => (
                 <li key={h} className="flex gap-2">
@@ -920,7 +923,7 @@ function MapPageInner() {
               ))}
             </ul>
 
-            <p className="mb-2 mt-4 font-display text-sm font-semibold">{COPY.timeline}</p>
+            <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.timeline}</p>
             <ul className="space-y-2">
               {selected.timeline.map((t) => (
                 <li key={`${t.year}-${t.title}`} className="flex items-start gap-2 text-sm">
@@ -933,13 +936,13 @@ function MapPageInner() {
             </ul>
 
             {sparkData.length > 0 && (
-              <div className="mt-4">
-                <p className="mb-2 text-xs text-foreground/50">{COPY.history}</p>
-                <Sparkline data={sparkData} width={280} height={40} />
+              <div className="mt-3">
+                <p className="mb-1.5 text-[11px] text-foreground/50">{COPY.history}</p>
+                <Sparkline data={sparkData} width={240} height={36} />
               </div>
             )}
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-1.5">
               <Link
                 href={`${lh('/compare')}?ids=${selected.id}`}
                 className={cn(buttonVariants({ size: 'sm' }))}
@@ -981,8 +984,8 @@ function RankCard({
   onSelect: (id: string) => void;
 }) {
   return (
-    <div className="rounded-2xl border border-border/50 bg-white/98 p-4 shadow-lg backdrop-blur">
-      <div className="mb-3 flex items-center gap-2">
+    <div className="rounded-2xl border border-border/50 bg-white/98 p-3 shadow-lg backdrop-blur sm:p-4">
+      <div className="mb-2 flex items-center gap-1.5 sm:gap-2">
         <span className="text-primary">{icon}</span>
         <p className="font-display text-sm font-semibold">{title}</p>
       </div>

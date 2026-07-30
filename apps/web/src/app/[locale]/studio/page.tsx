@@ -43,7 +43,7 @@ export default function StudioPage() {
       </div>
 
       <Link href={lh('/map')} className={cn(buttonVariants(), 'mt-6')}>
-        Abrir mapa intelligence
+        Abrir mapa
       </Link>
     </ProductPageShell>
   );

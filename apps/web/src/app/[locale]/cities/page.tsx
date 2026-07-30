@@ -87,7 +87,7 @@ export default function CitiesPage() {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+        <div className="rounded-3xl border border-border/50 bg-white/95 p-3 shadow-sm backdrop-blur sm:p-4">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">Hub</p>
           <div className="mt-3 space-y-2">
             {hubLinks.map((item) => {
@@ -116,7 +116,7 @@ export default function CitiesPage() {
 
       <div className="flex flex-wrap gap-2">
         <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
-          Mapa intelligence
+          Mapa
         </Link>
         <Link href={lh('/map')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
           Mapa Free

@@ -155,7 +155,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                   'mt-4 w-full',
                 )}
               >
-                {pl.id === 'free' ? 'Começar grátis' : `Assinar ${pl.name.replace('LandMap ', '')}`}
+                {pl.id === 'free' ? 'Começar no mapa' : `Assinar ${pl.name.replace('LandMap ', '')}`}
               </button>
             </Card>
           ))}

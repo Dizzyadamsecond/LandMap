@@ -128,7 +128,7 @@ function AuthPageInner() {
         name: fullName.trim(),
         userType: userType as UserType,
       });
-      router.replace(lh('/map'));
+      router.replace(lh('/dashboard'));
       router.refresh();
     } catch {
       setError('Não foi possível concluir o cadastro. Tente novamente.');
@@ -226,8 +226,8 @@ function AuthPageInner() {
           {tab === 'signup' && (
             <form onSubmit={onSignup} className="mt-8 space-y-4">
               <h1 className="text-2xl font-bold tracking-tight">Criar conta</h1>
-              <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-                Preencha seus dados para começar a usar o LandMap.
+              <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+                Cadastre-se para liberar o mapa completo, filtros e alertas.
               </p>
               <Field
                 label="Nome completo"

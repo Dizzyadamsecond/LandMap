@@ -135,12 +135,8 @@ function DashboardInner() {
               Hub LandMap
             </p>
             <h1 className="mt-2 font-display text-2xl font-semibold">Visão geral do mercado</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              O mapa completo com camadas Lovable está em{' '}
-              <Link href={lh('/map')} className="font-medium text-primary underline-offset-2 hover:underline">
-                /map
-              </Link>
-              .
+            <p className="mt-2 text-xs text-muted-foreground">
+              Abra o mapa para ver camadas, score e heatmap ao vivo por bairro.
             </p>
           </div>
 
@@ -244,7 +240,7 @@ function DashboardInner() {
 
           <div className="flex flex-wrap gap-2">
             <Link href={lh('/map')} className={cn(buttonVariants({ size: 'lg' }))}>
-              Abrir mapa intelligence
+              Abrir mapa
             </Link>
             <Link href={lh('/compare')} className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}>
               Comparar regiões

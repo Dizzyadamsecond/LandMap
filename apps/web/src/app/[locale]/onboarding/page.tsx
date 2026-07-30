@@ -27,7 +27,7 @@ export default function OnboardingPage() {
         </div>
         <h1 className="text-3xl font-bold leading-tight tracking-tight">Todo o Brasil no mapa</h1>
         <p className="mt-4 max-w-sm text-base text-foreground/60">
-          Veja preço por m², valorização e oportunidades em tempo real. Use o mapa livremente.
+          Abra o mapa para ver camadas, score e heatmap ao vivo por bairro.
         </p>
       </main>
 
