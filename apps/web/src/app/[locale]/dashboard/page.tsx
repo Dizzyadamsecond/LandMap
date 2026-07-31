@@ -238,12 +238,12 @@ function DashboardInner() {
             </>
           )}
 
-          <div className="flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             <Link href={lh('/map')} className={cn(buttonVariants({ size: 'lg' }))}>
               Abrir mapa
             </Link>
-            <Link href={lh('/compare')} className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}>
-              Comparar regiões
+            <Link href={lh('/plans')} className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}>
+              Planos
             </Link>
           </div>
         </section>

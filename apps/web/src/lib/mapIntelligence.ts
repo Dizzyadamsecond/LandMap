@@ -113,34 +113,20 @@ export function scoreLabel(score: number): string {
  * Leaflet circleMarker exige cor concreta, então resolvemos a
  * var(--*) computada em runtime (disponível após montagem).
  * Bandas: primary (≥80) · accent (≥65) · warning (≥50) · orange (≥35) · destructive.
- /** scoreColor: banda de cor alinhada a scoreLabel.
-  * primary(≥80) · accent(≥65 e ≥50 "Médio") · warning(35–49 "Baixo") · destructive(<35 "Crítico"). */
- const SCORE_BANDS: { min: number; token: string }[] = [
-   { min: 80, token: '--primary' },
-   { min: 65, token: '--accent' },
-   { min: 50, token: '--accent' },
-   { min: 35, token: '--warning' },
- ];
+ /** scoreColor: banda de cor alinhada a scoreLabel (cores Lovable). */
+ const SCORE_COLORS = ['#dc2626', '#f97316', '#eab308', '#3b82f6', '#003594'] as const;
 
-/** Lê o valor computado de uma CSS var (fallback concreto se ainda não resolvida). */
-export function resolveToken(token: string): string {
-  if (typeof window === 'undefined') return '';
-  const raw = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
-  return raw || '';
-}
+ export function scoreColor(score: number): string {
+   if (score >= 80) return SCORE_COLORS[4];
+   if (score >= 65) return SCORE_COLORS[3];
+   if (score >= 50) return SCORE_COLORS[2];
+   if (score >= 35) return SCORE_COLORS[1];
+   return SCORE_COLORS[0];
+ }
 
-export function scoreColor(score: number): string {
-  const band = SCORE_BANDS.find((b) => score >= b.min);
-  const token = band ? band.token : '--destructive';
-  return resolveToken(token) || (token === '--destructive' ? 'oklch(58% .22 27)' : 'oklch(34% .18 265)');
-}
-
-/** Gradiente escala heatmap — resolvido de tokens (vermelho → âmbar → indigo). */
+/** Gradiente escala heatmap — alinhado às cores Lovable (vermelho → âmbar → indigo). */
 export function heatScaleGradient(): string {
-  const danger = resolveToken('--destructive') || 'oklch(58% .22 27)';
-  const warn = resolveToken('--warning') || 'oklch(78% .15 78)';
-  const primary = resolveToken('--primary') || 'oklch(34% .18 265)';
-  return `linear-gradient(90deg, ${danger} 0%, ${warn} 50%, ${primary} 100%)`;
+  return 'linear-gradient(90deg, #dc2626 0%, #eab308 50%, #003594 100%)';
 }
 
 function scores(

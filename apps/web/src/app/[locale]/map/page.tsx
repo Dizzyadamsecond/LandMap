@@ -50,7 +50,6 @@ import {
   fmtDelta,
   fmtPriceSqm,
   layerValue,
-  resolveToken,
   scoreColor,
   scoreLabel,
   topByScore,
@@ -76,7 +75,7 @@ function MapPageInner() {
   const [query, setQuery] = useState('');
   const [activeLayer, setActiveLayer] = useState<LayerId>('valorization');
   const [showHeat, setShowHeat] = useState(true);
-  const [layersOpen, setLayersOpen] = useState(true);
+  const [layersOpen, setLayersOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mapError, setMapError] = useState(false);
   const [mapReady, setMapReady] = useState(false);
@@ -181,7 +180,7 @@ function MapPageInner() {
       const marker = L.circleMarker([r.lat, r.lng], {
         radius,
         fillColor: color,
-        color: isSel ? resolveToken('--primary') || 'oklch(34% .18 265)' : '#ffffff',
+        color: isSel ? '#003594' : '#ffffff',
         weight: isSel ? 3 : 2,
         fillOpacity: heat ? 0.35 + (w / 100) * 0.45 : 0.92,
         opacity: 1,
@@ -373,7 +372,7 @@ function MapPageInner() {
       return L.circleMarker([p.lat, p.lng], {
         radius: 26 + w * 46,
         stroke: false,
-        fillColor: resolveToken('--primary') || 'oklch(34% .18 265)',
+        fillColor: '#003594',
         fillOpacity: 0.1 + w * 0.22,
       }).bindPopup(
         `<strong>${p.neighborhood}</strong><br/>Preço médio: <b>${fmtPriceSqm(p.avgPrice)}/m²</b>`,
@@ -397,7 +396,7 @@ function MapPageInner() {
       .filter((item) => item.latitude != null && item.longitude != null)
       .map((item) => L.circleMarker([item.latitude, item.longitude], {
         radius: 7,
-        fillColor: resolveToken('--warning') || 'oklch(78% .15 78)',
+        fillColor: '#eab308',
         color: '#ffffff',
         weight: 2,
         fillOpacity: 0.95,
@@ -505,19 +504,19 @@ function MapPageInner() {
               </div>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="hidden items-center gap-1 rounded-full border border-success/30 bg-success/10 px-2 py-1 shadow-sm backdrop-blur md:flex">
+              <div className="hidden items-center gap-1 rounded-full border border-[var(--success)]/30 bg-[var(--success)]/10 px-2 py-1 shadow-sm backdrop-blur md:flex">
                 <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-success" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--success)] opacity-60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--success)]" />
                 </span>
-                <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-success">
+                <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[var(--success)]">
                   Atualizado
                 </span>
               </div>
               {auctionPoints.length > 0 && (
-                <div className="hidden items-center gap-1 rounded-full border border-warning/40 bg-warning/15 px-2 py-1 shadow-sm backdrop-blur sm:flex">
-                  <span className="h-1.5 w-1.5 rounded-full bg-warning" />
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-warning-foreground">
+                <div className="hidden items-center gap-1 rounded-full border border-[var(--warning)]/40 bg-[var(--warning)]/15 px-2 py-1 shadow-sm backdrop-blur sm:flex">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]" />
+                  <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--foreground)]">
                     {auctionPoints.length} BR
                   </span>
                 </div>
@@ -547,7 +546,7 @@ function MapPageInner() {
           </div>
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:p-3">
               <div className="flex items-center justify-between gap-1.5">
                 <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                   {COPY.indexLandMap}
@@ -561,21 +560,21 @@ function MapPageInner() {
                 {selected ? scoreLabel(selected.score) : 'Excepcional'}
               </p>
             </div>
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+            <div className="rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:p-3">
               <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                 {COPY.appreciationAvg}
               </p>
               <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{fmtDelta(avgVal)}</p>
               <p className="text-[10px] text-foreground/50 sm:text-xs">Últimos 12m</p>
             </div>
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+            <div className="hidden rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:block sm:p-3">
               <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                 {COPY.liquidity}
               </p>
               <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{bestOpp ? String(bestOpp.score) : '—'}</p>
               <p className="text-[10px] text-foreground/50 sm:text-xs">{bestOpp ? bestOpp.name : 'Sem dados'}</p>
             </div>
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-2.5 shadow-sm backdrop-blur sm:p-3">
+            <div className="hidden rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:block sm:p-3">
               <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
                 {COPY.bestOpportunity}
               </p>

@@ -107,7 +107,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
   if (variant === 'desktop') {
     return (
       <ProductPageShell
-        backHref="/plans"
+        backHref="/dashboard"
         eyebrow={
           <>
             <Sparkles className="h-3 w-3" /> Planos
@@ -160,13 +160,6 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
             </Card>
           ))}
         </Reveal>
-
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          Pagamento não ativado — fluxo de demonstração.{' '}
-          <Link href={lh('/auth')} className="text-primary hover:underline">
-            Já tem conta? Entrar
-          </Link>
-        </p>
       </ProductPageShell>
     );
   }
