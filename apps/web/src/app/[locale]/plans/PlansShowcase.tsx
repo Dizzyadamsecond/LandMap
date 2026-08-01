@@ -6,74 +6,19 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ArrowLeft, Check, Sparkles, LandMapWordmark } from '../../../components/lovable/icons';
 import { Stagger, Reveal } from '../../../components/Motion';
-import { Card, Badge, Stat, buttonVariants, cn } from '@landmap/ui';
-import { PLANS as PLAN_META, formatBRL } from '../../../lib/plans';
+import { Card, Badge, buttonVariants, cn } from '@landmap/ui';
+import { PLANS, formatBRL } from '../../../lib/plans';
 import { ProductPageShell } from '../../../components/ProductPageShell';
 
-type Plan = {
-  id: string;
-  name: string;
-  tag?: string;
-  price: number;
-  features: string[];
-  highlight?: boolean;
-};
-
-const FEATURES: Record<string, string[]> = {
-  access: [
-    'Acesso a todas as cidades do Brasil',
-    'Mapa de valorização e desvalorização',
-    'Mapa de calor básico',
-    'Ranking das regiões mais valorizadas',
-    'Ranking das regiões em queda',
-    'Histórico de preço por m²',
-    'Busca por bairro, cidade e região',
-    'Salvar até 10 áreas favoritas',
-    'Tendência: subindo, estável ou caindo',
-  ],
-  plus: [
-    'Tudo do Access',
-    'Radar de oportunidades LandMap',
-    'Alertas inteligentes de valorização',
-    'Alertas de queda de preço',
-    'Ranking de oportunidades por cidade',
-    'Comparação entre regiões',
-    'Notas automáticas sobre potencial da área',
-    'Salvar até 25 áreas favoritas',
-  ],
-  pro: [
-    'Tudo do Plus',
-    'Acompanhar áreas monitoradas (salvas)',
-    'Salvar até 50 regiões favoritas',
-    'Histórico completo da área',
-    'Relatório mensal geral',
-    'Avaliação do seu terreno',
-  ],
-  business: [
-    'Tudo do Pro',
-    'Até 5 usuários',
-    'Painel de equipe',
-    'Relatório com marca da empresa',
-    'Histórico de análise da equipe',
-  ],
-};
+type Plan = typeof PLANS[number];
 
 const HIGHLIGHT: Record<string, boolean> = { plus: true };
-
-const PLANS: Plan[] = PLAN_META.map((m) => ({
-  id: m.id,
-  name: m.name,
-  tag: m.tagline,
-  price: m.priceBRL,
-  features: FEATURES[m.id] ?? [],
-  highlight: HIGHLIGHT[m.id] ?? false,
-}));
 
 export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
   const lh = (p: string) => `/${locale}${p}`;
-  const [selected, setSelected] = useState<string>('free');
+  const [selected, setSelected] = useState<string>('plus');
   const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[1];
 
   const handleSubscribe = () => {
@@ -84,11 +29,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
         /* ignore */
       }
     }
-    if (selected === 'free') {
-      router.push(`${lh('/dashboard')}`);
-    } else {
-      router.push(`${lh('/auth')}?mode=request`);
-    }
+    router.push(`${lh('/auth')}?mode=request`);
   };
 
   const handleDesktopPlan = (planId: string) => {
@@ -97,11 +38,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
     } catch {
       /* ignore */
     }
-    if (planId === 'free') {
-      router.push(`${lh('/dashboard')}`);
-    } else {
-      router.push(`${lh('/auth')}?mode=request`);
-    }
+    router.push(`${lh('/auth')}?mode=request`);
   };
 
   if (variant === 'desktop') {
@@ -117,15 +54,8 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
         description="Comece a analisar o mercado agora. Cancele quando quiser. Sem fidelidade."
         maxWidth="5xl"
       >
-        <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label="Planos" value="5" />
-          <Stat label="Mais popular" value="Plus" />
-          <Stat label="Mapa" value="incluído" />
-          <Stat label="Fidelidade" value="0 dias" />
-        </section>
-
         <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {PLANS.map((pl) => (
+          {PLANS.filter((p) => p.id !== 'free').map((pl) => (
             <Card
               key={pl.id}
               variant={pl.highlight ? 'highlight' : 'interactive'}
@@ -133,10 +63,10 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
             >
               <div className="flex items-center justify-between">
                 <p className="font-semibold">{pl.name}</p>
-                {pl.highlight && <Badge variant="default">{pl.tag}</Badge>}
+                {pl.highlight && <Badge variant="default">{pl.tagline}</Badge>}
               </div>
               <p className="mt-2 font-display text-2xl font-bold">
-                {pl.id === 'free' ? 'R$ 0,00' : `R$ ${formatBRL(pl.price)}`}
+                R$ {formatBRL(pl.priceBRL)}
                 <span className="text-sm font-normal text-muted-foreground">/mês</span>
               </p>
               <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm">
@@ -155,7 +85,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                   'mt-4 w-full',
                 )}
               >
-                {pl.id === 'free' ? 'Começar no mapa' : `Assinar ${pl.name.replace('LandMap ', '')}`}
+                {pl.highlight ? 'Assinar LandMap Plus' : `Assinar ${pl.name.replace('LandMap ', '')}`}
               </button>
             </Card>
           ))}
@@ -192,7 +122,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
       </div>
 
       <Stagger className="mt-6 flex flex-col gap-3 px-4 sm:px-6" stagger={0.08} y={20}>
-        {PLANS.map((p) => {
+        {PLANS.filter((p) => p.id !== 'free').map((p) => {
           const isSel = p.id === selected;
           return (
             <button
@@ -207,7 +137,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
             >
               {p.highlight && (
                 <span className="absolute -top-2 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-primary-foreground">
-                  {p.tag}
+                  {p.tagline}
                 </span>
               )}
 
@@ -228,7 +158,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
 
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-xs text-foreground/50">R$</span>
-                <span className="font-display text-2xl font-bold tracking-tight">{formatBRL(p.price)}</span>
+                <span className="font-display text-2xl font-bold tracking-tight">{formatBRL(p.priceBRL)}</span>
                 <span className="text-sm text-foreground/50">/mês</span>
               </div>
 
@@ -259,7 +189,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
           onClick={handleSubscribe}
           className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-normal break-words rounded-xl bg-primary px-3 py-2 text-center text-sm font-semibold leading-tight text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary/90"
         >
-          {`Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.price)}/mês`}
+          {`Assinar LandMap Plus — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
           Pagamento não ativado — fluxo de demonstração.
