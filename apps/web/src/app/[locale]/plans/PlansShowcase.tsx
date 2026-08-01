@@ -55,7 +55,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
         maxWidth="5xl"
       >
         <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {PLANS.filter((p) => p.id !== 'free').map((pl) => (
+          {PLANS.map((pl) => (
             <Card
               key={pl.id}
               variant={pl.highlight ? 'highlight' : 'interactive'}
@@ -70,7 +70,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                 <span className="text-sm font-normal text-muted-foreground">/mês</span>
               </p>
               <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm">
-                {pl.features.map((f) => (
+                {(pl.features ?? []).map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     <span className="min-w-0 break-words">{f}</span>
@@ -81,11 +81,11 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                 type="button"
                 onClick={() => handleDesktopPlan(pl.id)}
                 className={cn(
-                  buttonVariants({ variant: pl.highlight ? 'default' : 'outline' }),
+                  buttonVariants({ variant: pl.id === 'free' ? 'outline' : (pl.highlight ? 'default' : 'outline') }),
                   'mt-4 w-full',
                 )}
               >
-                {pl.highlight ? 'Assinar LandMap Plus' : `Assinar ${pl.name.replace('LandMap ', '')}`}
+                {pl.id === 'free' ? 'Começar no mapa' : (pl.highlight ? 'Assinar LandMap Plus' : `Assinar ${pl.name.replace('LandMap ', '')}`)}
               </button>
             </Card>
           ))}
@@ -122,7 +122,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
       </div>
 
       <Stagger className="mt-6 flex flex-col gap-3 px-4 sm:px-6" stagger={0.08} y={20}>
-        {PLANS.filter((p) => p.id !== 'free').map((p) => {
+        {PLANS.map((p) => {
           const isSel = p.id === selected;
           return (
             <button
@@ -162,9 +162,9 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                 <span className="text-sm text-foreground/50">/mês</span>
               </div>
 
-              {isSel && p.features.length > 0 && (
+              {isSel && (p.features ?? []).length > 0 && (
                 <ul className="mt-4 max-h-[40vh] space-y-2 overflow-y-auto border-t border-border/60 pt-4">
-                  {p.features.map((f) => (
+                  {(p.features ?? []).map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-foreground/75">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                       <span>{f}</span>
@@ -189,7 +189,9 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
           onClick={handleSubscribe}
           className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-normal break-words rounded-xl bg-primary px-3 py-2 text-center text-sm font-semibold leading-tight text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary/90"
         >
-          {`Assinar LandMap Plus — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
+          {selectedPlan.id === 'free'
+            ? 'Começar no mapa'
+            : `Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
           Pagamento não ativado — fluxo de demonstração.

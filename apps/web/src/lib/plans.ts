@@ -17,14 +17,16 @@ export type PlanMeta = {
   name: string;
   priceBRL: number;
   tagline: string;
+  highlight?: boolean;
+  features?: string[];
 };
 
 export const PLANS: PlanMeta[] = [
-  { id: 'free', name: 'Gratuito', priceBRL: 0, tagline: 'Acesso aberto e sem cobrança' },
-  { id: 'access', name: 'LandMap Access', priceBRL: 69.9, tagline: 'Comece com o essencial' },
-  { id: 'plus', name: 'LandMap Plus', priceBRL: 119.9, tagline: 'Mais popular' },
-  { id: 'pro', name: 'LandMap Pro', priceBRL: 249.9, tagline: 'Para profissionais' },
-  { id: 'business', name: 'LandMap Business', priceBRL: 699.9, tagline: 'Para equipes' },
+  { id: 'free', name: 'Gratuito', priceBRL: 0, tagline: 'Acesso aberto e sem cobrança', features: ['Mapa básico', 'Busca de regiões', 'Histórico resumido'] },
+  { id: 'access', name: 'LandMap Access', priceBRL: 69.9, tagline: 'Comece com o essencial', features: ['Mapa completo', 'Filtros avançados', 'Alertas básicos'] },
+  { id: 'plus', name: 'LandMap Plus', priceBRL: 119.9, tagline: 'Mais popular', highlight: true, features: ['Tudo do Access', 'Radar de oportunidades', 'Alertas inteligentes', 'Ranking por cidade', 'Comparação entre regiões', '25 favoritos'] },
+  { id: 'pro', name: 'LandMap Pro', priceBRL: 249.9, tagline: 'Para profissionais', features: ['Tudo do Plus', 'API e exportação', 'Relatórios avançados', 'Suporte prioritário'] },
+  { id: 'business', name: 'LandMap Business', priceBRL: 699.9, tagline: 'Para equipes', features: ['Tudo do Pro', 'Multi-usuários', 'White-label', 'SLA dedicado'] },
 ];
 
 export function planTier(plan: PlanId | undefined | null): number {
