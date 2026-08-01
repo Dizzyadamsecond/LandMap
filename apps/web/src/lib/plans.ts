@@ -22,11 +22,10 @@ export type PlanMeta = {
 };
 
 export const PLANS: PlanMeta[] = [
-  { id: 'free', name: 'Gratuito', priceBRL: 0, tagline: 'Acesso aberto e sem cobrança', features: ['Mapa básico', 'Busca de regiões', 'Histórico resumido'] },
-  { id: 'access', name: 'LandMap Access', priceBRL: 69.9, tagline: 'Comece com o essencial', features: ['Mapa completo', 'Filtros avançados', 'Alertas básicos'] },
-  { id: 'plus', name: 'LandMap Plus', priceBRL: 119.9, tagline: 'Mais popular', highlight: true, features: ['Tudo do Access', 'Radar de oportunidades', 'Alertas inteligentes', 'Ranking por cidade', 'Comparação entre regiões', '25 favoritos'] },
-  { id: 'pro', name: 'LandMap Pro', priceBRL: 249.9, tagline: 'Para profissionais', features: ['Tudo do Plus', 'API e exportação', 'Relatórios avançados', 'Suporte prioritário'] },
-  { id: 'business', name: 'LandMap Business', priceBRL: 699.9, tagline: 'Para equipes', features: ['Tudo do Pro', 'Multi-usuários', 'White-label', 'SLA dedicado'] },
+  { id: 'access', name: 'LandMap Access', priceBRL: 69.9, tagline: 'Comece com o essencial', features: ['Acesso a todas as cidades do Brasil', 'Mapa de valorização e desvalorização', 'Mapa de calor básico', 'Ranking das regiões mais valorizadas', 'Ranking das regiões em queda', 'Histórico de preço por m²', 'Busca por bairro, cidade e região', 'Salvar até 10 áreas favoritas', 'Tendência: subindo, estável ou caindo'] },
+  { id: 'plus', name: 'LandMap Plus', priceBRL: 119.9, tagline: 'Mais popular', highlight: true, features: ['Tudo do Access', 'Radar de oportunidades LandMap', 'Alertas inteligentes de valorização', 'Alertas de queda de preço', 'Ranking de oportunidades por cidade', 'Comparação entre regiões', 'Notas automáticas sobre potencial da área', 'Salvar até 25 áreas favoritas'] },
+  { id: 'pro', name: 'LandMap Pro', priceBRL: 249.9, tagline: 'Para profissionais', features: ['Tudo do Plus', 'Acompanhar áreas monitoradas (salvas)', 'Salvar até 50 regiões favoritas', 'Histórico completo da área', 'Relatório mensal geral', 'Avaliação do seu terreno'] },
+  { id: 'business', name: 'LandMap Business', priceBRL: 699.9, tagline: 'Para equipes', features: ['Tudo do Pro', 'Até 5 usuários', 'Painel de equipe', 'Relatório com marca da empresa', 'Histórico de análise da equipe'] },
 ];
 
 export function planTier(plan: PlanId | undefined | null): number {

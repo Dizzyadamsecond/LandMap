@@ -19,7 +19,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
   const router = useRouter();
   const lh = (p: string) => `/${locale}${p}`;
   const [selected, setSelected] = useState<string>('plus');
-  const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[1];
+  const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS.find((p) => p.id === 'plus')!;
 
   const handleSubscribe = () => {
     if (typeof window !== 'undefined') {
@@ -50,8 +50,8 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
             <Sparkles className="h-3 w-3" /> Planos
           </>
         }
-        title="Escolha seu plano"
-        description="Comece a analisar o mercado agora. Cancele quando quiser. Sem fidelidade."
+        title="Comece a analisar o mercado agora"
+        description="Cancele quando quiser. Sem fidelidade."
         maxWidth="5xl"
       >
         <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -81,11 +81,11 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                 type="button"
                 onClick={() => handleDesktopPlan(pl.id)}
                 className={cn(
-                  buttonVariants({ variant: pl.id === 'free' ? 'outline' : (pl.highlight ? 'default' : 'outline') }),
+                  buttonVariants({ variant: pl.highlight ? 'default' : 'outline' }),
                   'mt-4 w-full',
                 )}
               >
-                {pl.id === 'free' ? 'Começar no mapa' : (pl.highlight ? 'Assinar LandMap Plus' : `Assinar ${pl.name.replace('LandMap ', '')}`)}
+                {pl.highlight ? 'Assinar LandMap Plus' : `Assinar ${pl.name.replace('LandMap ', '')}`}
               </button>
             </Card>
           ))}
@@ -189,9 +189,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
           onClick={handleSubscribe}
           className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-normal break-words rounded-xl bg-primary px-3 py-2 text-center text-sm font-semibold leading-tight text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary/90"
         >
-          {selectedPlan.id === 'free'
-            ? 'Começar no mapa'
-            : `Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
+          {`Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
           Pagamento não ativado — fluxo de demonstração.

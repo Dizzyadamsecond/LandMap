@@ -24,7 +24,7 @@ function RegionsPageInner() {
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500 xl:grid-cols-[16rem_minmax(0,1fr)]">
       <aside className="space-y-3 self-start">
         <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">Regiões</p>
+          <p className="text-sm font-medium text-primary">Regiões monitoradas</p>
           <h1 className="mt-2 font-display text-2xl font-semibold">Bairros de Fortaleza</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Preços médios anunciados e observados, faixa estimada e confiança dos dados.
@@ -70,7 +70,7 @@ function RegionsPageInner() {
                     Bairro
                   </th>
                   <th className="h-10 px-2 text-right align-middle font-medium text-[var(--muted-foreground)]">
-                    Observado (R$/m²)
+                    Anunciado (R$/m²)
                   </th>
                   <th className="h-10 px-2 text-right align-middle font-medium text-[var(--muted-foreground)]">
                     Faixa estimada
