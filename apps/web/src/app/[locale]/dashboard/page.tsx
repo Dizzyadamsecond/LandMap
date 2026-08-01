@@ -226,7 +226,11 @@ function DashboardInner() {
                   </h2>
                   <ul className="space-y-2">
                     {loading ? (
-                      <li className="text-sm text-muted-foreground">Carregando…</li>
+                      <li className="space-y-2">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="h-8 animate-pulse rounded-2xl bg-muted/60" />
+                        ))}
+                      </li>
                     ) : topVal.length === 0 ? (
                       <li className="text-sm text-muted-foreground">Sem dados de valorização.</li>
                     ) : (
@@ -246,7 +250,11 @@ function DashboardInner() {
                   </h2>
                   <ul className="space-y-2">
                     {loading ? (
-                      <li className="text-sm text-muted-foreground">Carregando…</li>
+                      <li className="space-y-2">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="h-8 animate-pulse rounded-2xl bg-muted/60" />
+                        ))}
+                      </li>
                     ) : topOpp.length === 0 ? (
                       <li className="text-sm text-muted-foreground">Sem oportunidades.</li>
                     ) : (

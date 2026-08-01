@@ -68,7 +68,7 @@ function CompareInner() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <Badge variant="outline">Comparador</Badge>
-            <p className="mt-2 text-sm text-[var(--muted-foreground)]">
+            <p className="mt-2 text-sm text-foreground/70">
               Lado a lado com métricas de preço, confiança e volume.
             </p>
           </div>
