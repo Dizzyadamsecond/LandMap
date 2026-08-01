@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_yGGRzfAXO3nfp96QwuvdA1jWARkt",
+  "orgId": "team_XjbwyiZfHYAWIGIugWYIkzSd",
+  "projectName": "landmapprod",
+  "settings": {
+    "createdAt": 1783432620693,
+    "framework": "nextjs",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}
