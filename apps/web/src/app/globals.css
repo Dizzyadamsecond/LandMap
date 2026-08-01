@@ -96,6 +96,9 @@
 @utility fade-out {
   --tw-exit-opacity: 0;
 }
+@utility slide-in-from-bottom {
+  --tw-enter-translate-y: 0px;
+}
 @utility slide-in-from-bottom-4 {
   --tw-enter-translate-y: 16px;
 }
@@ -125,6 +128,12 @@
 }
 @utility delay-150 {
   --tw-animate-delay: 150ms;
+}
+@utility ease-in-out {
+  --tw-animate-easing: cubic-bezier(.4, 0, .2, 1);
+}
+@utility ease-linear {
+  --tw-animate-easing: linear;
 }
 
 /* ─── Marquee infinite scroll (port from lovable_styles.css prototype) ─── */

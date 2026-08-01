@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   motion,
   useScroll,
@@ -32,9 +32,86 @@ const FEATURES = [
   { k: 'Multi-idioma', d: 'pt-BR · en-US · es-ES nativo.' },
 ];
 
+type SeedItem = {
+  id: string;
+  title: string;
+  city: string;
+  state: string;
+  price: number;
+  areaM2: number;
+  pricePerM2: number;
+  type: 'apartamento' | 'casa' | 'terreno' | 'comercial';
+  status: string;
+  neighborhood?: string;
+};
+
+const STATIC_FALLBACK: SeedItem[] = [
+  { id: 'seed-1', title: 'Lote Planalto', city: 'Fortaleza', state: 'CE', price: 180000, areaM2: 250, pricePerM2: 720, type: 'terreno', status: 'available', neighborhood: 'Meireles' },
+  { id: 'seed-2', title: 'Apartamento Aldeota', city: 'Fortaleza', state: 'CE', price: 620000, areaM2: 85, pricePerM2: 7294, type: 'apartamento', status: 'available', neighborhood: 'Aldeota' },
+  { id: 'seed-3', title: 'Casa Cocó', city: 'Fortaleza', state: 'CE', price: 950000, areaM2: 160, pricePerM2: 5937, type: 'casa', status: 'available', neighborhood: 'Cocó' },
+  { id: 'seed-4', title: 'Terreno Guararapes', city: 'Fortaleza', state: 'CE', price: 210000, areaM2: 300, pricePerM2: 700, type: 'terreno', status: 'available', neighborhood: 'Guararapes' },
+  { id: 'seed-5', title: 'Flat Praia do Futuro', city: 'Fortaleza', state: 'CE', price: 390000, areaM2: 55, pricePerM2: 7090, type: 'apartamento', status: 'available', neighborhood: 'Praia do Futuro' },
+  { id: 'seed-6', title: 'Sobrado Fátima', city: 'Fortaleza', state: 'CE', price: 780000, areaM2: 140, pricePerM2: 5571, type: 'casa', status: 'available', neighborhood: 'Fátima' },
+];
+
+let cachedSeed: SeedItem[] | null = null;
+let seedPromise: Promise<SeedItem[]> | null = null;
+
+function getOrCreateSeedPromise(): Promise<SeedItem[]> {
+  if (cachedSeed) return Promise.resolve(cachedSeed);
+  if (!seedPromise) {
+    seedPromise = fetch('/api/markdowns?limit=20', { cache: 'no-store' })
+      .then((res) => {
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        return res.json() as Promise<{ items?: Array<{
+          id: string; title: string; city: string; state: string; price: number; areaM2: number;
+          pricePerM2?: number; type: SeedItem['type']; status: string; neighborhood?: string;
+        }> }>;
+      })
+      .then((data) => {
+        const items = (data.items ?? [])
+          .filter((item): item is SeedItem => !!item.id && typeof item.price === 'number' && typeof item.areaM2 === 'number')
+          .map((item) => ({
+            ...item,
+            pricePerM2: item.pricePerM2 ?? Math.round(item.price / Math.max(1, item.areaM2)),
+          }));
+        cachedSeed = items.length > 0 ? items : STATIC_FALLBACK;
+        return cachedSeed;
+      })
+      .catch(() => STATIC_FALLBACK);
+  }
+  return seedPromise;
+}
+
+function getLaunchSeedSync(): SeedItem[] {
+  return cachedSeed ?? STATIC_FALLBACK;
+}
+
+export function useLaunchSeed() {
+  const [seed, setSeed] = useState<SeedItem[]>(getLaunchSeedSync);
+  const [status, setStatus] = useState<'ready' | 'loading' | 'fallback'>(() => cachedSeed ? 'ready' : 'fallback');
+
+  useEffect(() => {
+    let active = true;
+    setStatus('loading');
+    getOrCreateSeedPromise().then((items) => {
+      if (!active) return;
+      cachedSeed = items;
+      setSeed(items);
+      setStatus(items === STATIC_FALLBACK ? 'fallback' : 'ready');
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return { seed, status };
+}
+
 export default function LaunchPage({ params }: { params: { locale: string } }) {
   const reduce = useReducedMotion() ?? false;
   const root = useRef<HTMLDivElement>(null);
+  const { seed, status } = useLaunchSeed();
 
   const { scrollYProgress } = useScroll({
     target: root,
@@ -42,13 +119,17 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
   });
   const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 24 });
 
-  // Parallax layers
   const orbY1 = useTransform(smooth, [0, 1], [0, -260]);
   const orbY2 = useTransform(smooth, [0, 1], [0, 180]);
   const orbScale = useTransform(smooth, [0, 0.5, 1], [1, 1.6, 0.8]);
   const heroY = useTransform(smooth, [0, 0.4], [0, -120]);
   const heroOpacity = useTransform(smooth, [0, 0.35], [1, 0]);
   const gridOpacity = useTransform(smooth, [0, 0.6], [0.18, 0.02]);
+
+  const spotlight = useMemo(() => {
+    if (status === 'loading') return null;
+    return seed.filter((item) => item.price > 0 && item.areaM2 > 0).slice(0, 6);
+  }, [status, seed]);
 
   return (
     <div
@@ -61,7 +142,6 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
         overflow: 'hidden',
       }}
     >
-      {/* Fixed surreal backdrop */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <motion.div
           style={{
@@ -71,8 +151,7 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
             width: 'min(620px, 72vw)',
             height: 'min(620px, 72vw)',
             borderRadius: '50%',
-            background:
-              'radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--primary) 70%, transparent), transparent 70%)',
+            background: 'radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--primary) 70%, transparent), transparent 70%)',
             filter: 'blur(80px)',
             y: reduce ? 0 : orbY1,
             scale: reduce ? 1 : orbScale,
@@ -87,8 +166,7 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
             width: 'min(520px, 66vw)',
             height: 'min(520px, 66vw)',
             borderRadius: '50%',
-            background:
-              'radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--ring) 60%, transparent), transparent 70%)',
+            background: 'radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--ring) 60%, transparent), transparent 70%)',
             filter: 'blur(90px)',
             y: reduce ? 0 : orbY2,
             opacity: 0.45,
@@ -98,8 +176,7 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
           style={{
             position: 'absolute',
             inset: 0,
-            backgroundImage:
-              'linear-gradient(to right, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(to right, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px)',
             backgroundSize: '48px 48px',
             opacity: reduce ? 0.1 : 1,
             // @ts-expect-error -- framer style
@@ -109,7 +186,6 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
         />
       </div>
 
-      {/* HERO */}
       <section
         style={{
           position: 'relative',
@@ -165,7 +241,6 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
         </motion.div>
       </section>
 
-      {/* SURREAL MORPH BLOCK */}
       <section style={sectionStyle}>
         <OrbMorph reduce={reduce} />
         <RevealText reduce={reduce} delay={0.1}>
@@ -178,7 +253,6 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
         </RevealText>
       </section>
 
-      {/* FEATURES — staggered magnetic cards */}
       <section style={{ ...sectionStyle, minHeight: 'auto', padding: '120px 24px' }}>
         <RevealText reduce={reduce} delay={0}>
           Tudo num só lugar
@@ -199,7 +273,78 @@ export default function LaunchPage({ params }: { params: { locale: string } }) {
         </div>
       </section>
 
-      {/* CTA */}
+      <section style={{ ...sectionStyle, minHeight: '70vh' }}>
+        <RevealText reduce={reduce} delay={0}>
+          Dados reais, não placeholders.
+        </RevealText>
+        <motion.p
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ delay: 0.1, duration: 0.8 }}
+          style={{ marginTop: 18, color: COL.muted, maxWidth: 640, textAlign: 'center', lineHeight: 1.55 }}
+        >
+          A apresentação agora consome o catálogo real do LandMap via <code style={{ color: 'var(--primary)' }}>/api/markdowns</code>.
+          A lista abaixo atualiza automaticamente quando o dataset mudar; enquanto isso, usamos um fallback determinístico.
+        </motion.p>
+
+        <div
+          style={{
+            marginTop: 64,
+            width: '100%',
+            maxWidth: 980,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: 16,
+          }}
+        >
+          {spotlight?.map((item, i) => (
+            <motion.div
+              key={item.id}
+              initial={reduce ? false : { opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ delay: (i % 6) * 0.06, duration: 0.65 }}
+              whileHover={reduce ? undefined : { y: -6, scale: 1.02 }}
+              style={{
+                position: 'relative',
+                padding: 22,
+                borderRadius: 20,
+                border: '1px solid color-mix(in srgb, var(--ring) 28%, transparent)',
+                background: 'color-mix(in srgb, var(--primary) 5%, var(--card, transparent))',
+                backdropFilter: 'blur(10px)',
+                textAlign: 'left',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: 3,
+                  background: 'linear-gradient(90deg, var(--primary), transparent)',
+                  transformOrigin: 'left',
+                }}
+              />
+              <p style={{ margin: 0, fontSize: 11, letterSpacing: '0.18em', color: 'var(--muted-foreground)', textTransform: 'uppercase' }}>
+                {item.neighborhood ?? item.city} · {item.state}
+              </p>
+              <p style={{ margin: '8px 0 6px', fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 600, color: 'var(--foreground)' }}>
+                {item.title}
+              </p>
+              <p style={{ margin: 0, fontSize: 13, color: 'var(--muted-foreground)', lineHeight: 1.5 }}>
+                {item.type === 'terreno' ? 'Lote' : item.type === 'apartamento' ? 'Apartamento' : item.type === 'casa' ? 'Casa' : 'Comercial'} · {(item.areaM2 ?? 0).toLocaleString('pt-BR')} m²
+              </p>
+              <p style={{ margin: '8px 0 0', fontSize: 14, fontWeight: 600, color: 'var(--foreground)' }}>
+                R$ {(item.price ?? 0).toLocaleString('pt-BR')}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       <section style={{ ...sectionStyle, minHeight: '70vh' }}>
         <RevealText reduce={reduce} delay={0}>
           Pronto para lançar.
@@ -341,8 +486,7 @@ function OrbMorph({ reduce }: { reduce: boolean }) {
         width: 260,
         height: 260,
         borderRadius: '42% 58% 63% 37% / 41% 44% 56% 59%',
-        background:
-          'conic-gradient(from 0deg, color-mix(in srgb, var(--primary) 90%, transparent), color-mix(in srgb, var(--ring) 90%, transparent), color-mix(in srgb, var(--primary) 90%, transparent))',
+        background: 'conic-gradient(from 0deg, color-mix(in srgb, var(--primary) 90%, transparent), color-mix(in srgb, var(--ring) 90%, transparent), color-mix(in srgb, var(--primary) 90%, transparent))',
         filter: 'blur(6px)',
         marginBottom: 48,
         boxShadow: '0 0 90px color-mix(in srgb, var(--primary) 55%, transparent)',
