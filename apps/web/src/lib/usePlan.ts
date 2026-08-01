@@ -20,7 +20,7 @@ const PLAN_KEY = 'landmap:selected_plan';
 function readPlan(): PlanId {
   try {
     const raw = window.localStorage.getItem(PLAN_KEY);
-    if (raw === 'access' || raw === 'plus' || raw === 'pro' || raw === 'business') return raw;
+    if (raw === 'free') return 'free';
   } catch {
     /* ignore */
   }

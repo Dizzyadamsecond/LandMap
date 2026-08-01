@@ -12,19 +12,19 @@ import { ProductPageShell } from '../../../components/ProductPageShell';
 
 type Plan = typeof PLANS[number];
 
-const HIGHLIGHT: Record<string, boolean> = { plus: true };
+const HIGHLIGHT: Record<string, boolean> = { free: true };
 
 export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
   const lh = (p: string) => `/${locale}${p}`;
-  const [selected, setSelected] = useState<string>('plus');
-  const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS.find((p) => p.id === 'plus')!;
+  const [selected, setSelected] = useState<string>('free');
+  const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[0];
 
   const handleSubscribe = () => {
     if (typeof window !== 'undefined') {
       try {
-        localStorage.setItem('landmap:selected_plan', selected);
+        localStorage.setItem('landmap:selected_plan', 'free');
       } catch {
         /* ignore */
       }
@@ -34,7 +34,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
 
   const handleDesktopPlan = (planId: string) => {
     try {
-      localStorage.setItem('landmap:selected_plan', planId);
+      localStorage.setItem('landmap:selected_plan', 'free');
     } catch {
       /* ignore */
     }
@@ -85,7 +85,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                   'mt-4 w-full',
                 )}
               >
-                {pl.highlight ? 'Assinar LandMap Plus' : `Assinar ${pl.name.replace('LandMap ', '')}`}
+                {pl.highlight ? 'Assinar LandMap Free' : `Assinar ${pl.name.replace('LandMap ', '')}`}
               </button>
             </Card>
           ))}

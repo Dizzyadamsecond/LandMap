@@ -3,13 +3,12 @@
 
 export type PlanId = 'free' | 'access' | 'plus' | 'pro' | 'business';
 
-// Numeric tier used to gate premium features (higher = more access).
 export const PLAN_TIER: Record<PlanId, number> = {
   free: 0,
-  access: 1,
-  plus: 2,
-  pro: 3,
-  business: 4,
+  access: 0,
+  plus: 0,
+  pro: 0,
+  business: 0,
 };
 
 export type PlanMeta = {
@@ -22,11 +21,28 @@ export type PlanMeta = {
 };
 
 export const PLANS: PlanMeta[] = [
-  { id: 'access', name: 'LandMap Access', priceBRL: 69.9, tagline: 'Comece com o essencial', features: ['Acesso a todas as cidades do Brasil', 'Mapa de valorização e desvalorização', 'Mapa de calor básico', 'Ranking das regiões mais valorizadas', 'Ranking das regiões em queda', 'Histórico de preço por m²', 'Busca por bairro, cidade e região', 'Salvar até 10 áreas favoritas', 'Tendência: subindo, estável ou caindo'] },
-  { id: 'plus', name: 'LandMap Plus', priceBRL: 119.9, tagline: 'Mais popular', highlight: true, features: ['Tudo do Access', 'Radar de oportunidades LandMap', 'Alertas inteligentes de valorização', 'Alertas de queda de preço', 'Ranking de oportunidades por cidade', 'Comparação entre regiões', 'Notas automáticas sobre potencial da área', 'Salvar até 25 áreas favoritas'] },
-  { id: 'pro', name: 'LandMap Pro', priceBRL: 249.9, tagline: 'Para profissionais', features: ['Tudo do Plus', 'Acompanhar áreas monitoradas (salvas)', 'Salvar até 50 regiões favoritas', 'Histórico completo da área', 'Relatório mensal geral', 'Avaliação do seu terreno'] },
-  { id: 'business', name: 'LandMap Business', priceBRL: 699.9, tagline: 'Para equipes', features: ['Tudo do Pro', 'Até 5 usuários', 'Painel de equipe', 'Relatório com marca da empresa', 'Histórico de análise da equipe'] },
+  {
+    id: 'free',
+    name: 'LandMap Free',
+    priceBRL: 0,
+    tagline: 'Comece sem custo',
+    highlight: true,
+    features: [
+      'Mapa básico de valorização',
+      'Ranking de regiões',
+      'Histórico simplificado',
+      'Até 5 favoritos',
+    ],
+  },
 ];
+
+export const PLAN_REQUIREMENTS: Record<string, PlanId> = {
+  free: 'free',
+  access: 'free',
+  plus: 'free',
+  pro: 'free',
+  business: 'free',
+};
 
 export function planTier(plan: PlanId | undefined | null): number {
   return PLAN_TIER[plan ?? 'free'] ?? 0;
@@ -43,4 +59,8 @@ export function planMeta(id: PlanId): PlanMeta | undefined {
 
 export function formatBRL(v: number): string {
   return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+export function requirementFor(id: string): PlanId {
+  return PLAN_REQUIREMENTS[id] ?? 'free';
 }

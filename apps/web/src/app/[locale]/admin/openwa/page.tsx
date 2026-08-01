@@ -282,8 +282,13 @@ export default function AdminOpenWaPage() {
     const api = settings.automationApiUrl || '/api/automation/send';
     const to =
       channel === 'email'
-        ? settings.reportEmail || 'ltdapax9@gmail.com'
-        : settings.reportSms || '+5500000000000';
+        ? settings.reportEmail
+        : settings.reportSms;
+    if (!to) {
+      setDispatchResult('Defina o destinatário nas configurações antes de enviar.');
+      setDispatching(false);
+      return;
+    }
     const payload =
       channel === 'email'
         ? {

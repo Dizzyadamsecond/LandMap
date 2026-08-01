@@ -27,9 +27,9 @@ const ACTIONS = [
 ];
 
 const USERS = [
-  'admin@landmap.com.br',
-  'joao@landmap.com.br',
-  'maria@landmap.com.br',
+  'admin@local',
+  'joao@local',
+  'maria@local',
   'sistema',
 ];
 
