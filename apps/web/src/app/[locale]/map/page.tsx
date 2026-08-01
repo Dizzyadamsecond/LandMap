@@ -87,6 +87,9 @@ function MapPageInner() {
   /** Controle de expansão do painel de KPIs do mapa. */
   const [kpisOpen, setKpisOpen] = useState(true);
 
+  /** Controle de expansão dos cards de ranking/flow do mapa. */
+  const [rankingsOpen, setRankingsOpen] = useState(true);
+
   /** Pontos de heatmap ao vivo (API /api/market/heatmap), dados do dataset real. */
   const [heatPoints, setHeatPoints] = useState<
     { lat: number; lng: number; weight: number; neighborhood: string; avgPrice: number }[]
@@ -776,63 +779,75 @@ function MapPageInner() {
       )}
 
       {/* Bottom ranking cards */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-2 sm:p-4">
-        <div className="pointer-events-auto flex snap-x snap-mandatory gap-2 overflow-x-auto pb-[max(0.25rem,env(safe-area-inset-bottom))] md:mx-auto md:max-w-[1400px] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 lg:grid-cols-3">
-          <div className="w-[82vw] max-w-xs shrink-0 snap-start sm:w-72 md:w-auto md:max-w-none md:shrink">
-            <RankCard
-              title={COPY.topValorization}
-              icon={<TrendingUp className="h-3 w-3" />}
-              items={topVal.map((r) => ({
-                id: r.id,
-                name: r.name,
-                hint: r.city,
-                value: fmtDelta(r.priceSqmDelta12m),
-                positive: r.priceSqmDelta12m >= 0,
-              }))}
-              onSelect={(id) => {
-                const r = INTELLIGENCE_REGIONS.find((x) => x.id === id);
-                if (r) selectRegion(r);
-              }}
-            />
-          </div>
-          <div className="w-[82vw] max-w-xs shrink-0 snap-start sm:w-72 md:w-auto md:max-w-none md:shrink">
-            <RankCard
-              title={COPY.topOpportunities}
-              icon={<MapPin className="h-3 w-3" />}
-              items={topOpp.map((r) => ({
-                id: r.id,
-                name: r.name,
-                hint: `${r.city} · ${r.zoning}`,
-                value: String(r.score),
-                positive: true,
-              }))}
-              onSelect={(id) => {
-                const r = INTELLIGENCE_REGIONS.find((x) => x.id === id);
-                if (r) selectRegion(r);
-              }}
-            />
-          </div>
-          <div className="hidden w-[82vw] max-w-xs shrink-0 snap-start sm:block sm:w-72 md:w-auto md:max-w-none md:shrink lg:block">
-            <div className="rounded-2xl border border-border/50 bg-white/98 p-3 shadow-lg backdrop-blur sm:p-4">
-              <div className="mb-2 flex items-center gap-2">
-                <LineChart className="h-3.5 w-3.5 text-primary" />
-                <div>
-                  <p className="font-display text-sm font-semibold">{COPY.indexFlow}</p>
-                  <p className="text-[10px] text-foreground/50">{COPY.last7Years}</p>
-                </div>
-              </div>
-              <Sparkline
-                data={
-                  selected?.priceHistory.map((p) => p.value) ??
-                  (INTELLIGENCE_REGIONS[0]?.priceHistory.map((p) => p.value) ?? [])
-                }
-                width={240}
-                height={48}
-                aria-label={COPY.indexFlow}
+      {rankingsOpen && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-2 sm:p-4">
+          <div className="pointer-events-auto flex snap-x snap-mandatory gap-2 overflow-x-auto pb-[max(0.25rem,env(safe-area-inset-bottom))] md:mx-auto md:max-w-[1400px] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 lg:grid-cols-3">
+            <div className="w-[82vw] max-w-xs shrink-0 snap-start sm:w-72 md:w-auto md:max-w-none md:shrink">
+              <RankCard
+                title={COPY.topValorization}
+                icon={<TrendingUp className="h-3 w-3" />}
+                items={topVal.map((r) => ({
+                  id: r.id,
+                  name: r.name,
+                  hint: r.city,
+                  value: fmtDelta(r.priceSqmDelta12m),
+                  positive: r.priceSqmDelta12m >= 0,
+                }))}
+                onSelect={(id) => {
+                  const r = INTELLIGENCE_REGIONS.find((x) => x.id === id);
+                  if (r) selectRegion(r);
+                }}
               />
+            </div>
+            <div className="w-[82vw] max-w-xs shrink-0 snap-start sm:w-72 md:w-auto md:max-w-none md:shrink">
+              <RankCard
+                title={COPY.topOpportunities}
+                icon={<MapPin className="h-3 w-3" />}
+                items={topOpp.map((r) => ({
+                  id: r.id,
+                  name: r.name,
+                  hint: `${r.city} · ${r.zoning}`,
+                  value: String(r.score),
+                  positive: true,
+                }))}
+                onSelect={(id) => {
+                  const r = INTELLIGENCE_REGIONS.find((x) => x.id === id);
+                  if (r) selectRegion(r);
+                }}
+              />
+            </div>
+            <div className="hidden w-[82vw] max-w-xs shrink-0 snap-start sm:block sm:w-72 md:w-auto md:max-w-none md:shrink lg:block">
+              <div className="rounded-2xl border border-border/50 bg-white/98 p-3 shadow-sm backdrop-blur sm:p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <LineChart className="h-3.5 w-3.5 text-primary" />
+                  <div>
+                    <p className="font-display text-sm font-semibold">{COPY.indexFlow}</p>
+                    <p className="text-[10px] text-foreground/50">{COPY.last7Years}</p>
+                  </div>
+                </div>
+                <Sparkline
+                  data={
+                    selected?.priceHistory.map((p) => p.value) ??
+                    (INTELLIGENCE_REGIONS[0]?.priceHistory.map((p) => p.value) ?? [])
+                  }
+                  width={240}
+                  height={48}
+                  aria-label={COPY.indexFlow}
+                />
+              </div>
             </div>
           </div>
         </div>
+      )}
+      <div className="pointer-events-auto z-20 flex justify-center pb-2 sm:pb-0">
+        <button
+          type="button"
+          aria-label={rankingsOpen ? 'Minimizar cards' : 'Expandir cards'}
+          onClick={() => setRankingsOpen((v) => !v)}
+          className="inline-flex h-7 items-center gap-1 rounded-full border border-border/50 bg-white/90 px-2.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/70 shadow-sm backdrop-blur transition hover:border-primary/30 hover:text-primary"
+        >
+          {rankingsOpen ? 'Minimizar cards' : 'Cards'}
+        </button>
       </div>
 
       {/* Region detail sheet */}
