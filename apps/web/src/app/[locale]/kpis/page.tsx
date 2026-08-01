@@ -12,6 +12,7 @@ import {
   type KpiSnapshot,
   type OpportunitySeverity,
 } from '../../../lib/api';
+import { type Aggregates } from '../../../lib/opportunities';
 import {
   OPPORTUNITY_TYPE_LABEL,
   opportunitySeverityColor,
@@ -49,6 +50,7 @@ function KpisPageInner() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [aggregates, setAggregates] = useState<Aggregates | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -59,6 +61,7 @@ function KpisPageInner() {
         if (!active) return;
         setKpis(data.kpis);
         setOpportunities(data.opportunities ?? []);
+        setAggregates((data as unknown as { aggregates?: Aggregates }).aggregates ?? null);
       })
       .catch((e) => {
         if (active) setError((e as Error)?.message || t('loadError'));
@@ -70,6 +73,28 @@ function KpisPageInner() {
       active = false;
     };
   }, [t]);
+
+  // Auto-refresh Brazil macro/aggregates every 60s.
+  useEffect(() => {
+    let active = true;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const refresh = async () => {
+      try {
+        const res = await fetch('/api/market/aggregates', { headers: { accept: 'application/json' } });
+        if (!res.ok) return;
+        const data = (await res.json()) as { aggregates?: Aggregates };
+        if (active) setAggregates(data.aggregates ?? null);
+      } catch {
+        // silent background refresh
+      }
+    };
+    refresh();
+    timer = setInterval(refresh, 60_000);
+    return () => {
+      active = false;
+      if (timer) clearInterval(timer);
+    };
+  }, []);
 
   const topCities = useMemo(() => kpis?.topCities ?? [], [kpis]);
 
@@ -123,7 +148,7 @@ function KpisPageInner() {
                 <MetricStat
                   label={t('avgPricePerM2')}
                   value={loading || !kpis ? '—' : fmtBRL(kpis.avgPricePerSqm)}
-                  hint={t('medianHint')}
+                  hint={aggregates ? `Liquidez ${aggregates.liquidityScore}` : t('medianHint')}
                   tone="primary"
                 />
                 <MetricStat
@@ -143,6 +168,34 @@ function KpisPageInner() {
                     { min: 0, tone: 'warning' },
                   ]}
                   hint={t('confidenceHint')}
+                />
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.12} className="mt-4">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <MetricStat
+                  label="Cidades"
+                  value={loading || !aggregates ? '—' : String(aggregates.totalCities)}
+                  tone="neutral"
+                />
+                <MetricStat
+                  label="IPCA"
+                  value={aggregates?.macro?.ipca ? `${aggregates.macro.ipca.value.toFixed(2)}%` : '—'}
+                  hint={aggregates?.macro?.ipca ? aggregates.macro.ipca.date : t('catalogHint')}
+                  tone="neutral"
+                />
+                <MetricStat
+                  label="Selic"
+                  value={aggregates?.macro?.selic ? `${aggregates.macro.selic.value.toFixed(2)}%` : '—'}
+                  hint={aggregates?.macro?.selic ? aggregates.macro.selic.date : ''}
+                  tone="neutral"
+                />
+                <MetricStat
+                  label="USD"
+                  value={aggregates?.macro?.fx ? fmtBRL(aggregates.macro.fx.value) : '—'}
+                  hint={aggregates?.macro?.fx ? aggregates.macro.fx.date : ''}
+                  tone="accent"
                 />
               </div>
             </Reveal>

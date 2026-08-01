@@ -30,6 +30,7 @@ import {
   type Opportunity,
   type KpiSnapshot,
 } from '../../../lib/api';
+import { type Aggregates } from '../../../lib/opportunities';
 
 function fmtBRL(n: number): string {
   return new Intl.NumberFormat('pt-BR', {
@@ -51,6 +52,7 @@ function DashboardInner() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [aggregates, setAggregates] = useState<Aggregates | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -61,6 +63,7 @@ function DashboardInner() {
         if (!active) return;
         setKpis(data.kpis);
         setOpportunities(data.opportunities ?? []);
+        setAggregates((data as unknown as { aggregates?: Aggregates }).aggregates ?? null);
       })
       .catch((e) => {
         if (active) setError((e as Error)?.message || 'Falha ao carregar o mercado.');
@@ -70,6 +73,28 @@ function DashboardInner() {
       });
     return () => {
       active = false;
+    };
+  }, []);
+
+  // Refresh Brazil macro/aggregates every 60s.
+  useEffect(() => {
+    let active = true;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const refresh = async () => {
+      try {
+        const res = await fetch('/api/market/aggregates', { headers: { accept: 'application/json' } });
+        if (!res.ok) return;
+        const data = (await res.json()) as { aggregates?: Aggregates };
+        if (active) setAggregates(data.aggregates ?? null);
+      } catch {
+        // silent
+      }
+    };
+    refresh();
+    timer = setInterval(refresh, 60_000);
+    return () => {
+      active = false;
+      if (timer) clearInterval(timer);
     };
   }, []);
 

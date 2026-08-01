@@ -49,6 +49,22 @@ export interface KpiSnapshot {
   generatedAt: string;
 }
 
+export interface Aggregates {
+  totalCities: number;
+  avgPriceM2: number;
+  medianPriceM2: number;
+  avgAppreciationYoy: number;
+  availabilityRate: number;
+  liquidityScore: number;
+  macro?: {
+    ipca?: { date: string; value: number };
+    selic?: { date: string; value: number };
+    cdi?: { date: string; value: number };
+    fx?: { date: string; value: number };
+    error?: string;
+  };
+}
+
 export interface AlertRule {
   id: string;
   type: OpportunityType;
