@@ -100,8 +100,8 @@ export default function ChatPage() {
         >
           <ArrowLeft className="h-4 w-4" />
         </Link>
-        <LandMapWordmark />
-        <Badge variant="outline">{count} msgs</Badge>
+        <span className="text-sm font-semibold tracking-tight">LANDMAP · INTELIGÊNCIA DE TERRENOS</span>
+        <Badge variant="outline">1 msg</Badge>
       </header>
 
       <div className="mt-6">
@@ -111,7 +111,7 @@ export default function ChatPage() {
         <h1 className="mt-3 font-display text-3xl font-bold tracking-tight">Chat de inteligência</h1>
         <p className="mt-2 text-sm text-foreground/60">
           Mapa +{' '}
-          <Link href={lh('/rag')} className="text-primary hover:underline">
+          <Link href={lh('/map')} className="text-primary hover:underline">
             base RAG
           </Link>{' '}
           ·{' '}

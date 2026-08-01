@@ -29,13 +29,6 @@ function RegionsPageInner() {
           <p className="mt-2 text-sm text-muted-foreground">
             Preços médios anunciados e observados, faixa estimada e confiança dos dados.
           </p>
-          <Link
-            href={compareHref}
-            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] transition-colors hover:bg-[var(--primary)]/90"
-          >
-            <GitCompare className="h-4 w-4" />
-            Comparar regiões
-          </Link>
         </div>
         <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">Hub</p>

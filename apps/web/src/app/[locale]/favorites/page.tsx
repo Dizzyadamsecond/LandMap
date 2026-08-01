@@ -70,12 +70,9 @@ function FavoritesPageInner() {
             Terrenos e regiões salvos
           </h1>
         </div>
-        <Link
-          href={lh('/regions')}
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] transition-colors hover:bg-[var(--primary)]/90"
-        >
-          Ver regiões
-        </Link>
+        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--muted)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)]">
+          ⌘K
+        </div>
       </header>
 
       {/* Regiões favoritas */}
