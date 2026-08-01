@@ -5,10 +5,10 @@ export type PlanId = 'free' | 'access' | 'plus' | 'pro' | 'business';
 
 export const PLAN_TIER: Record<PlanId, number> = {
   free: 0,
-  access: 0,
-  plus: 0,
-  pro: 0,
-  business: 0,
+  access: 1,
+  plus: 2,
+  pro: 3,
+  business: 4,
 };
 
 export type PlanMeta = {
@@ -32,16 +32,73 @@ export const PLANS: PlanMeta[] = [
       'Ranking de regiões',
       'Histórico simplificado',
       'Até 5 favoritos',
+      'Comparador básico de bairros',
+    ],
+  },
+  {
+    id: 'access',
+    name: 'LandMap Access',
+    priceBRL: 49.9,
+    tagline: 'Mais acessível',
+    highlight: false,
+    features: [
+      'Tudo do Free',
+      'Comparador completo',
+      'Alertas de oportunidade',
+      'Relatórios básicos',
+      'Suporte por e-mail',
+    ],
+  },
+  {
+    id: 'plus',
+    name: 'LandMap Plus',
+    priceBRL: 89.9,
+    tagline: 'Mais popular',
+    highlight: true,
+    features: [
+      'Tudo do Access',
+      'Mapa inteligente avançado',
+      'Dossiê de imóvel',
+      'Heatmap e camadas',
+      'Suporte prioritário',
+    ],
+  },
+  {
+    id: 'pro',
+    name: 'LandMap Pro',
+    priceBRL: 179.9,
+    tagline: 'Para profissionais',
+    highlight: false,
+    features: [
+      'Tudo do Plus',
+      'API e webhooks',
+      'Automações',
+      'Multi-usuário (3)',
+      'Suporte dedicado',
+    ],
+  },
+  {
+    id: 'business',
+    name: 'LandMap Business',
+    priceBRL: 349.9,
+    tagline: 'Time e operação',
+    highlight: false,
+    features: [
+      'Tudo do Pro',
+      'Usuários ilimitados',
+      'White-label',
+      'Integrações avançadas',
+      'SLA de atendimento',
     ],
   },
 ];
 
 export const PLAN_REQUIREMENTS: Record<string, PlanId> = {
   free: 'free',
-  access: 'free',
-  plus: 'free',
-  pro: 'free',
-  business: 'free',
+  access: 'access',
+  plus: 'plus',
+  pro: 'pro',
+  business: 'business',
 };
 
 export function planTier(plan: PlanId | undefined | null): number {

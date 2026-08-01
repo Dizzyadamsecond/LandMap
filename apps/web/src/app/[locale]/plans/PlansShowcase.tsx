@@ -10,35 +10,27 @@ import { Card, Badge, buttonVariants, cn } from '@landmap/ui';
 import { PLANS, formatBRL } from '../../../lib/plans';
 import { ProductPageShell } from '../../../components/ProductPageShell';
 
-type Plan = typeof PLANS[number];
-
-const HIGHLIGHT: Record<string, boolean> = { free: true };
-
 export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
-  const lh = (p: string) => `/${locale}${p}`;
   const [selected, setSelected] = useState<string>('free');
   const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[0];
 
-  const handleSubscribe = () => {
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem('landmap:selected_plan', 'free');
-      } catch {
-        /* ignore */
-      }
+  const handleSubscribe = (planId: string) => {
+    try {
+      localStorage.setItem('landmap:selected_plan', planId);
+    } catch {
+      // ignore
     }
-    router.push(`${lh('/auth')}?mode=request`);
+    router.push(`/${locale}/checkout?plan=${planId}`);
   };
 
   const handleDesktopPlan = (planId: string) => {
-    try {
-      localStorage.setItem('landmap:selected_plan', 'free');
-    } catch {
-      /* ignore */
-    }
-    router.push(`${lh('/auth')}?mode=request`);
+    handleSubscribe(planId);
+  };
+
+  const mobileSubscribe = () => {
+    handleSubscribe(selected);
   };
 
   if (variant === 'desktop') {
@@ -98,7 +90,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-32">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
         <Link
-          href={lh('/onboarding')}
+          href={`/${locale}/onboarding`}
           aria-label="Voltar"
           className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-muted"
         >
@@ -178,7 +170,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
       </Stagger>
 
       <div className="mt-6 px-4 text-center sm:px-6">
-        <Link href={lh('/auth')} className="text-sm text-foreground/60 hover:text-foreground">
+        <Link href={`/${locale}/auth`} className="text-sm text-foreground/60 hover:text-foreground">
           Já tem conta? <span className="font-medium text-primary">Entrar</span>
         </Link>
       </div>
@@ -186,15 +178,17 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
       <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-md border-t border-border bg-background/95 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur sm:px-6">
         <button
           type="button"
-          onClick={handleSubscribe}
+          onClick={mobileSubscribe}
           className="inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-normal break-words rounded-xl bg-primary px-3 py-2 text-center text-sm font-semibold leading-tight text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary/90"
         >
           {`Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
-          Pagamento não ativado — fluxo de demonstração.
+          Checkout com PIX ou cartão.
         </p>
       </div>
     </div>
   );
 }
+
+export default PlansShowcase;

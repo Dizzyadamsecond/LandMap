@@ -546,42 +546,17 @@ function MapPageInner() {
           </div>
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:p-3">
-              <div className="flex items-center justify-between gap-1.5">
-                <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
-                  {COPY.indexLandMap}
-                </p>
-                <span className="rounded-full border border-border/60 bg-muted/60 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
-                  Live
-                </span>
-              </div>
-              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{selected ? selected.score : 92}</p>
-              <p className="text-[10px] text-foreground/50 sm:text-xs">
-                {selected ? scoreLabel(selected.score) : 'Excepcional'}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:p-3">
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
-                {COPY.appreciationAvg}
-              </p>
-              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{fmtDelta(avgVal)}</p>
-              <p className="text-[10px] text-foreground/50 sm:text-xs">Últimos 12m</p>
-            </div>
-            <div className="hidden rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:block sm:p-3">
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
-                {COPY.liquidity}
-              </p>
-              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{bestOpp ? String(bestOpp.score) : '—'}</p>
-              <p className="text-[10px] text-foreground/50 sm:text-xs">{bestOpp ? bestOpp.name : 'Sem dados'}</p>
-            </div>
-            <div className="hidden rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:block sm:p-3">
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
-                {COPY.bestOpportunity}
-              </p>
-              <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{bestOpp ? bestOpp.city : '—'}</p>
-              <p className="text-[10px] text-foreground/50 sm:text-xs">{bestOpp ? bestOpp.zoning : 'Sem dados'}</p>
-            </div>
+            <KpiChip label={COPY.indexLandMap} value={selected ? String(selected.score) : '92'} hint={selected ? scoreLabel(selected.score) : 'Excepcional'} />
+            <KpiChip label={COPY.appreciationAvg} value={fmtDelta(avgVal)} hint="Últimos 12m" />
+            <KpiChip label={COPY.liquidity} value={bestOpp ? String(bestOpp.score) : '—'} hint={bestOpp ? bestOpp.name : 'Sem dados'} />
+            <KpiChip label={COPY.bestOpportunity} value={bestOpp ? bestOpp.city : '—'} hint={bestOpp ? bestOpp.zoning : 'Sem dados'} />
           </div>
+          <Link
+            href={lh('/kpis')}
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-8 rounded-full bg-white/95 px-3 text-xs shadow-sm sm:text-sm')}
+          >
+            KPIs completos
+          </Link>
 
           {/* Search — Lovable placeholder */}
           <div className="relative max-w-xl">
@@ -1015,6 +990,16 @@ function RankCard({
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function KpiChip({ label, value, hint }: { label: string; value: string; hint?: string }) {
+  return (
+    <div className="rounded-2xl border border-border/50 bg-white/95 p-2 shadow-sm backdrop-blur sm:p-3">
+      <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">{label}</p>
+      <p className="mt-0.5 font-display text-lg font-bold leading-tight sm:text-xl">{value}</p>
+      {hint && <p className="text-[10px] text-foreground/50 sm:text-xs">{hint}</p>}
     </div>
   );
 }
