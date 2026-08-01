@@ -13,13 +13,13 @@ import { INTELLIGENCE_REGIONS } from '../../../lib/mapIntelligence';
 type CompareRow = {
   id: string;
   name: string;
-  city: string;
-  state: string;
+  city?: string;
+  state?: string;
   avgObservedPrice: number;
   minPrice: number;
   maxPrice: number;
   confidence: number;
-  dataPoints: number;
+  dataPoints?: number;
 };
 
 function resolveRows(ids: string[]): CompareRow[] {
@@ -51,8 +51,8 @@ function resolveRows(ids: string[]): CompareRow[] {
         avgObservedPrice: 0,
         minPrice: 0,
         maxPrice: 0,
-        confidence: 0,
-        dataPoints: match.dataPoints ?? 0,
+        confidence: match.score,
+        dataPoints: 0,
       });
       continue;
     }

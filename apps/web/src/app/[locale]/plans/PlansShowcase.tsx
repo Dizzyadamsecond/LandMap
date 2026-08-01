@@ -36,7 +36,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
   if (variant === 'desktop') {
     return (
       <ProductPageShell
-        backHref="/dashboard"
+        backHref="/map"
         eyebrow={
           <>
             <Sparkles className="h-3 w-3" /> Planos

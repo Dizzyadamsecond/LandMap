@@ -84,6 +84,9 @@ function MapPageInner() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [auctionPoints, setAuctionPoints] = useState<AuctionOpportunity[]>([]);
 
+  /** Controle de expansão do painel de KPIs do mapa. */
+  const [kpisOpen, setKpisOpen] = useState(true);
+
   /** Pontos de heatmap ao vivo (API /api/market/heatmap), dados do dataset real. */
   const [heatPoints, setHeatPoints] = useState<
     { lat: number; lng: number; weight: number; neighborhood: string; avgPrice: number }[]
@@ -534,7 +537,7 @@ function MapPageInner() {
                 <span className="text-[11px] sm:text-xs">Camadas</span>
               </button>
               <Link
-                href={lh('/dashboard')}
+                href={lh('/map')}
                 className={cn(
                   buttonVariants({ variant: 'outline', size: 'sm' }),
                   'h-8 min-h-8 rounded-full border-border/50 bg-white/95 px-2.5 shadow-sm sm:px-3',
@@ -545,12 +548,27 @@ function MapPageInner() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            <KpiChip label={COPY.indexLandMap} value={selected ? String(selected.score) : '92'} hint={selected ? scoreLabel(selected.score) : 'Excepcional'} />
-            <KpiChip label={COPY.appreciationAvg} value={fmtDelta(avgVal)} hint="Últimos 12m" />
-            <KpiChip label={COPY.liquidity} value={bestOpp ? String(bestOpp.score) : '—'} hint={bestOpp ? bestOpp.name : 'Sem dados'} />
-            <KpiChip label={COPY.bestOpportunity} value={bestOpp ? bestOpp.city : '—'} hint={bestOpp ? bestOpp.zoning : 'Sem dados'} />
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
+              {COPY.layersTitle}
+            </p>
+            <button
+              type="button"
+              aria-label={kpisOpen ? 'Minimizar KPIs' : 'Expandir KPIs'}
+              onClick={() => setKpisOpen((v) => !v)}
+              className="inline-flex h-7 items-center gap-1 rounded-full border border-border/50 bg-white/90 px-2.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/70 shadow-sm backdrop-blur transition hover:border-primary/30 hover:text-primary"
+            >
+              {kpisOpen ? 'Minimizar' : 'KPIs'}
+            </button>
           </div>
+          {kpisOpen && (
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 xl:grid-cols-4">
+              <KpiChip label={COPY.indexLandMap} value={selected ? String(selected.score) : '92'} hint={selected ? scoreLabel(selected.score) : 'Excepcional'} />
+              <KpiChip label={COPY.appreciationAvg} value={fmtDelta(avgVal)} hint="Últimos 12m" />
+              <KpiChip label={COPY.liquidity} value={bestOpp ? String(bestOpp.score) : '—'} hint={bestOpp ? bestOpp.name : 'Sem dados'} />
+              <KpiChip label={COPY.bestOpportunity} value={bestOpp ? bestOpp.city : '—'} hint={bestOpp ? bestOpp.zoning : 'Sem dados'} />
+            </div>
+          )}
           <Link
             href={lh('/kpis')}
             className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-8 rounded-full bg-white/95 px-3 text-xs shadow-sm sm:text-sm')}

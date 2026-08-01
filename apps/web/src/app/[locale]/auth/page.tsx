@@ -85,7 +85,7 @@ function AuthPageInner() {
 
   const { signInEmail, signInGuest } = useMockUser();
 
-  /** Lovable: guest_mode=1 → /dashboard (AppShell). */
+  /** Free landing surface: /map. */
   const guest = () => {
     try {
       window.localStorage.setItem('guest_mode', '1');
@@ -93,7 +93,8 @@ function AuthPageInner() {
       /* ignore */
     }
     signInGuest();
-    router.push(lh('/dashboard'));
+    router.replace(lh('/map'));
+    router.refresh();
   };
 
   const onLogin = async (e: React.FormEvent) => {
@@ -101,7 +102,8 @@ function AuthPageInner() {
     setLoginLoading(true);
     try {
       await signInEmail({ email: loginEmail || undefined });
-      router.push(lh('/dashboard'));
+      router.replace(lh('/map'));
+      router.refresh();
     } finally {
       setLoginLoading(false);
     }
@@ -128,7 +130,7 @@ function AuthPageInner() {
         name: fullName.trim(),
         userType: userType as UserType,
       });
-      router.replace(lh('/dashboard'));
+      router.replace(lh('/map'));
       router.refresh();
     } catch {
       setError('Não foi possível concluir o cadastro. Tente novamente.');

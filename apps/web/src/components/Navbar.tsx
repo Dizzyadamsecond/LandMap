@@ -270,7 +270,7 @@ export function Navbar() {
         ) : (
           <div className="hidden items-center gap-2 md:flex">
             <Link
-              href={`/${locale}/dashboard`}
+              href={`/${locale}/map`}
               prefetch={false}
               onClick={() => {
                 ensureFreeAccess();
@@ -334,7 +334,7 @@ export function Navbar() {
             {!user && (
               <>
                 <Link
-                  href={`/${locale}/dashboard`}
+                  href={`/${locale}/map`}
                   prefetch={false}
                   onClick={() => {
                     ensureFreeAccess();

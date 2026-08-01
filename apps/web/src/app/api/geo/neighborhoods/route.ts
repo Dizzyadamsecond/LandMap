@@ -38,6 +38,7 @@ export async function GET(request: Request) {
 
   const map = new Map<string, NeighborhoodAgg>();
   for (const p of props) {
+    if (p.latitude == null || p.longitude == null) continue;
     const name = p.neighborhood?.trim() || 'Centro';
     const key = `${p.city}|${p.state}|${name}`;
     const ppm2 = p.price / p.areaM2;

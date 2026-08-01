@@ -88,7 +88,7 @@ export default function PortfolioPage() {
         <Link href={lh('/compare')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
           Comparar
         </Link>
-        <Link href={lh('/dashboard')} className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
+        <Link href={lh('/map')} className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
           Mapa
         </Link>
       </div>
@@ -104,7 +104,7 @@ export default function PortfolioPage() {
         <Reveal className="mt-6 space-y-3">
           {fromIntel.map((r) => (
             <Card key={r.id} variant="interactive" className="p-4">
-              <Link href={lh('/dashboard')} className="block">
+              <Link href={lh('/map')} className="block">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-semibold">{r.name}</p>

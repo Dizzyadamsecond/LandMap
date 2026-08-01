@@ -84,7 +84,7 @@ export default function AlertsPage() {
       <aside className="space-y-3 self-start">
         <div className="flex items-center justify-between rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
           <Link
-            href={lh('/dashboard')}
+            href={lh('/map')}
             aria-label="Voltar"
             className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-muted"
           >
@@ -134,7 +134,7 @@ export default function AlertsPage() {
         </section>
 
         <div className="mt-4 flex gap-2">
-        <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
+        <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }))}>
           Mapa
         </Link>
         <Link href={lh('/kpis')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
@@ -163,7 +163,7 @@ export default function AlertsPage() {
               </Badge>
             </div>
             <Link
-              href={lh('/dashboard')}
+              href={lh('/map')}
               className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary"
             >
               <TrendingUp className="h-3 w-3" />

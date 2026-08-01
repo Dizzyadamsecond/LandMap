@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ArrowLeft, Check, Copy, LandMapWordmark, QrCode, CreditCard } from '../../../../components/lovable/icons';
+import { ArrowLeft, Check, Copy, LandMapWordmark, QrCode, CreditCard } from '../../../components/lovable/icons';
 import { Card, Badge, buttonVariants, cn, Input } from '@landmap/ui';
-import { PLANS, formatBRL, type PlanId } from '../../../../lib/plans';
+import { PLANS, formatBRL, type PlanId } from '../../../lib/plans';
 
 type CheckoutMethod = 'pix' | 'card';
 
@@ -45,7 +45,7 @@ export default function CheckoutPage() {
       } catch {
         // ignore
       }
-      window.location.href = '/dashboard';
+      window.location.href = '/map';
       return;
     }
     setSubmitted(true);
@@ -181,7 +181,7 @@ export default function CheckoutPage() {
                     Seu plano <strong>{plan.name}</strong> foi selecionado.
                   </p>
                   <div className="mt-3">
-                    <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
+                    <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }))}>
                       Ir para o dashboard
                     </Link>
                   </div>

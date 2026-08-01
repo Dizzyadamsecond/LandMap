@@ -100,7 +100,7 @@ export default function ValorizationPage() {
         </Card>
 
         <div className="mt-4 flex gap-2">
-          <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
+          <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }))}>
             Ver no mapa
           </Link>
           <Link href={lh('/cities')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>

@@ -106,7 +106,7 @@ export default function MarketPage() {
         <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
           <div className="flex items-center justify-between">
             <Link
-              href={lh('/dashboard')}
+              href={lh('/map')}
               aria-label="Voltar"
               className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-muted"
             >
@@ -181,7 +181,7 @@ export default function MarketPage() {
           </Card>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
+            <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }))}>
               Mapa
             </Link>
             <Link href={lh('/kpis')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>

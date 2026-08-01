@@ -241,6 +241,29 @@ export function X({ size = 24, ...p }: IconProps) {
   );
 }
 
+export function QrCode({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+      <path d="M10 7h4" />
+      <path d="M7 10v4" />
+      <path d="M17 10v4" />
+    </svg>
+  );
+}
+
+export function CreditCard({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <path d="M2 10h20" />
+    </svg>
+  );
+}
+
 export function Search({ size = 24, ...p }: IconProps) {
   return (
     <svg {...base(size, p)} aria-hidden>

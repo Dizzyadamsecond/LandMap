@@ -79,7 +79,7 @@ export default function NeighborhoodsPage() {
       />
 
       <div className="mt-3 flex flex-wrap gap-2">
-        <Link href={lh('/dashboard')} className={cn(buttonVariants({ size: 'sm' }))}>
+        <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }))}>
           Abrir no mapa
         </Link>
         <Link href={lh('/compare')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
@@ -90,7 +90,7 @@ export default function NeighborhoodsPage() {
       <Reveal className="mt-6 space-y-3">
         {rows.map((r) => (
           <Card key={r.id} variant="interactive" className="p-4">
-            <Link href={lh('/dashboard')} className="block">
+            <Link href={lh('/map')} className="block">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-semibold">{r.name}</p>
