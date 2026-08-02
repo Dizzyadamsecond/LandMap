@@ -429,3 +429,22 @@ body {
     border-color: var(--border);
   }
 }
+
+/* ─── Mapa Leaflet → cor Lovable (indigo) ───
+   O basemap padrão (OpenStreetMap) tem cores vivas/amarelas que não
+   correspondem à marca Lovable (indigo hue 265). Aplicamos um filtro
+   de tint no tile pane para tender ao tema, sem introduzir cor de
+   marca fora dos tokens do design system. */
+.landmap-tiles .leaflet-tile-pane {
+  filter:
+    invert(1) hue-rotate(245deg) saturate(0.55) brightness(0.92) contrast(0.92);
+  transition: filter 0.3s ease;
+}
+
+.landmap-tiles .leaflet-container {
+  background: var(--background);
+}
+
+:root:not(.dark) .landmap-tiles .leaflet-tile-pane {
+  filter: hue-rotate(12deg) saturate(0.85) brightness(1.02) contrast(0.96);
+}

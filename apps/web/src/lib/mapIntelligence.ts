@@ -109,24 +109,41 @@ export function scoreLabel(score: number): string {
 }
 
 /**
- * Cor do score por banda — 100% tokenizada (sem hex de marca).
- * Leaflet circleMarker exige cor concreta, então resolvemos a
- * var(--*) computada em runtime (disponível após montagem).
- * Bandas: primary (≥80) · accent (≥65) · warning (≥50) · orange (≥35) · destructive.
- /** scoreColor: banda de cor alinhada a scoreLabel (cores Lovable). */
- const SCORE_COLORS = ['#dc2626', '#f97316', '#eab308', '#3b82f6', '#003594'] as const;
+ * Resolve um token CSS (ex: --primary) para um valor concreto utilizável
+ * pelo Leaflet (que não interpreta var() em atributos SVG). Lê o valor
+ * computado de :root (disponível após montagem no cliente). Fallback para
+ * os valores Lovable indigo (oklch hue 265) caso o DOM ainda não exista.
+ */
+export function resolveVar(name: string, fallback?: string): string {
+  if (typeof document !== 'undefined') {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    if (v) return v;
+  }
+  return fallback ?? '';
+}
 
- export function scoreColor(score: number): string {
-   if (score >= 80) return SCORE_COLORS[4];
-   if (score >= 65) return SCORE_COLORS[3];
-   if (score >= 50) return SCORE_COLORS[2];
-   if (score >= 35) return SCORE_COLORS[1];
-   return SCORE_COLORS[0];
- }
+// Valores Lovable indigo (globals.css :root/.dark) — fallback semântico.
+const FALLBACK_PRIMARY = 'oklch(62% .2 265)'; // dark primary
+const FALLBACK_RING = 'oklch(62% .2 265)';
+const FALLBACK_WARNING = 'oklch(70% .15 70)';
+const FALLBACK_DESTRUCTIVE = 'oklch(58% .22 25)';
 
-/** Gradiente escala heatmap — alinhado às cores Lovable (vermelho → âmbar → indigo). */
+/**
+ * Cor do score por banda — 100% tokenizada com a marca Lovable (indigo).
+ * Bandas: primary (≥80) · ring (≥65) · warning (≥50) · warning saturado (≥35) · destructive.
+ * Sem hex de marca externa; tudo vem de var(--*) do design system.
+ */
+export function scoreColor(score: number): string {
+  if (score >= 80) return resolveVar('--primary', FALLBACK_PRIMARY);
+  if (score >= 65) return resolveVar('--ring', FALLBACK_RING);
+  if (score >= 50) return resolveVar('--warning', FALLBACK_WARNING);
+  if (score >= 35) return resolveVar('--warning', FALLBACK_WARNING);
+  return resolveVar('--destructive', FALLBACK_DESTRUCTIVE);
+}
+
+/** Gradiente escala heatmap — alinhado às cores Lovable (destructive → warning → primary, indigo). */
 export function heatScaleGradient(): string {
-  return 'linear-gradient(90deg, #dc2626 0%, #eab308 50%, #003594 100%)';
+  return 'linear-gradient(90deg, var(--destructive) 0%, var(--warning) 50%, var(--primary) 100%)';
 }
 
 function scores(

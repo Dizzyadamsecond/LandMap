@@ -31,6 +31,8 @@ import {
   BellRing,
   GitCompare,
   FileText,
+  ChevronDown,
+  ChevronUp,
 } from '../../../components/lovable/icons';
 import {
   Badge,
@@ -52,6 +54,7 @@ import {
   layerValue,
   scoreColor,
   scoreLabel,
+  resolveVar,
   topByScore,
   topByValorization,
   type IntelligenceRegion,
@@ -89,6 +92,8 @@ function MapPageInner() {
 
   /** Controle de expansão dos cards de ranking/flow do mapa. */
   const [rankingsOpen, setRankingsOpen] = useState(true);
+  const [currentCity, setCurrentCity] = useState('Fortaleza');
+  const [detailsMinimized, setDetailsMinimized] = useState(false);
 
   /** Pontos de heatmap ao vivo (API /api/market/heatmap), dados do dataset real. */
   const [heatPoints, setHeatPoints] = useState<
@@ -138,6 +143,9 @@ function MapPageInner() {
     setSelectedId(r.id);
     setQuery(r.name);
     setSuggestOpen(false);
+    if (r.city) {
+      setCurrentCity(r.city);
+    }
     const map = mapInstance.current;
     if (map) map.flyTo([r.lat, r.lng], 14, { duration: 0.55 });
   }, []);
@@ -148,8 +156,28 @@ function MapPageInner() {
       setQuery(label);
       setSuggestOpen(false);
       if ('label' in item) {
+        if (item.city) {
+          setCurrentCity(item.city);
+        } else if (item.type === 'city') {
+          setCurrentCity(item.label.split(',')[0].trim());
+        }
         const map = mapInstance.current;
-        if (map) map.flyTo([item.lat, item.lng], 14, { duration: 0.55 });
+        if (map) {
+          try {
+            const res = await geoGeocode(label);
+            const first = res.features[0];
+            if (first && first.bbox) {
+              map.fitBounds([
+                [first.bbox[1], first.bbox[0]],
+                [first.bbox[3], first.bbox[2]]
+              ], { duration: 0.55 });
+              return;
+            }
+          } catch {
+            /* ignore & fallback */
+          }
+          map.flyTo([item.lat, item.lng], 14, { duration: 0.55 });
+        }
         return;
       }
 
@@ -157,8 +185,20 @@ function MapPageInner() {
         const res = await geoGeocode(label);
         const first = res.features[0];
         if (!first) return;
+        if (first.city) {
+          setCurrentCity(first.city);
+        }
         const map = mapInstance.current;
-        if (map) map.flyTo([first.lat, first.lng], 14, { duration: 0.55 });
+        if (map) {
+          if (first.bbox) {
+            map.fitBounds([
+              [first.bbox[1], first.bbox[0]],
+              [first.bbox[3], first.bbox[2]]
+            ], { duration: 0.55 });
+          } else {
+            map.flyTo([first.lat, first.lng], 14, { duration: 0.55 });
+          }
+        }
       } catch {
         /* ignore */
       }
@@ -186,7 +226,7 @@ function MapPageInner() {
       const marker = L.circleMarker([r.lat, r.lng], {
         radius,
         fillColor: color,
-        color: isSel ? '#003594' : '#ffffff',
+        color: isSel ? '#ffffff' : '#ffffff',
         weight: isSel ? 3 : 2,
         fillOpacity: heat ? 0.35 + (w / 100) * 0.45 : 0.92,
         opacity: 1,
@@ -245,10 +285,9 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; OSM &copy; CARTO',
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors',
           maxZoom: 19,
-          subdomains: 'abcd',
         }).addTo(map);
         mapInstance.current = map;
         setMapReady(true);
@@ -280,7 +319,7 @@ function MapPageInner() {
 
   useEffect(() => {
     let active = true;
-    fetch('/api/market/heatmap?city=Fortaleza')
+    fetch(`/api/market/heatmap?city=${encodeURIComponent(currentCity)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!active || !data?.points?.length) return;
@@ -293,7 +332,7 @@ function MapPageInner() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [currentCity]);
 
   useEffect(() => {
     let active = true;
@@ -378,7 +417,7 @@ function MapPageInner() {
       return L.circleMarker([p.lat, p.lng], {
         radius: 26 + w * 46,
         stroke: false,
-        fillColor: '#003594',
+        fillColor: resolveVar('--primary', 'oklch(62% .2 265)'),
         fillOpacity: 0.1 + w * 0.22,
       }).bindPopup(
         `<strong>${p.neighborhood}</strong><br/>Preço médio: <b>${fmtPriceSqm(p.avgPrice)}/m²</b>`,
@@ -402,7 +441,7 @@ function MapPageInner() {
       .filter((item) => item.latitude != null && item.longitude != null)
       .map((item) => L.circleMarker([item.latitude, item.longitude], {
         radius: 7,
-        fillColor: '#eab308',
+        fillColor: resolveVar('--warning', 'oklch(70% .15 70)'),
         color: '#ffffff',
         weight: 2,
         fillOpacity: 0.95,
@@ -479,8 +518,19 @@ function MapPageInner() {
         ref={mapRef}
         role="region"
         aria-label="Mapa de inteligência territorial"
-        className="absolute inset-0 z-0 h-full w-full touch-manipulation font-[system-ui,sans-serif]"
+        className="landmap-tiles absolute inset-0 z-0 h-full w-full touch-manipulation font-[system-ui,sans-serif]"
       />
+      {!mapReady && !mapError && (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <div className="animate-pulse">
+              <LandMapWordmark />
+            </div>
+            <p className="text-xs text-foreground/50 font-medium">Carregando mapa de inteligência...</p>
+          </div>
+        </div>
+      )}
       {mapError && (
         <div className="absolute inset-0 z-10 grid h-full w-full place-items-center p-6">
           <div className="text-center">
@@ -604,7 +654,16 @@ function MapPageInner() {
                     const first = res.features[0];
                     if (!first) return;
                     const map = mapInstance.current;
-                    if (map) map.flyTo([first.lat, first.lng], 14, { duration: 0.55 });
+                    if (map) {
+                      if (first.bbox) {
+                        map.fitBounds([
+                          [first.bbox[1], first.bbox[0]],
+                          [first.bbox[3], first.bbox[2]]
+                        ], { duration: 0.55 });
+                      } else {
+                        map.flyTo([first.lat, first.lng], 14, { duration: 0.55 });
+                      }
+                    }
                     setSuggestOpen(false);
                   } catch {
                     /* ignore */
@@ -863,14 +922,28 @@ function MapPageInner() {
                   {selected.name}
                 </h2>
               </div>
-              <button
-                type="button"
-                onClick={() => setSelectedId(null)}
-                className="grid h-8 w-8 place-items-center rounded-full hover:bg-muted"
-                aria-label="Fechar"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setDetailsMinimized(v => !v)}
+                  className="grid h-8 w-8 place-items-center rounded-full hover:bg-muted text-foreground/60 transition"
+                  aria-label={detailsMinimized ? 'Expandir métricas' : 'Minimizar métricas'}
+                >
+                  {detailsMinimized ? (
+                    <ChevronDown className="h-4 w-4" />
+                  ) : (
+                    <ChevronUp className="h-4 w-4" />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedId(null)}
+                  className="grid h-8 w-8 place-items-center rounded-full hover:bg-muted"
+                  aria-label="Fechar"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
             <div className="mt-2.5 rounded-xl bg-muted/50 p-2.5 sm:mt-3 sm:p-3">
@@ -883,86 +956,90 @@ function MapPageInner() {
               <p className="mt-0.5 text-xs text-foreground/60">{COPY.scoreHint}</p>
             </div>
 
-            <div className="mt-2.5 grid grid-cols-2 gap-1.5 sm:mt-3 sm:gap-2">
-              <Meta label={COPY.avgPrice} value={fmtPriceSqm(selected.priceSqm)} />
-              <Meta label="12m" value={fmtDelta(selected.priceSqmDelta12m)} />
-              <Meta label={COPY.stateRank} value={`#${Math.max(1, 12 - Math.floor(selected.score / 10))}`} />
-              <Meta label={COPY.nationalRank} value={`#${Math.max(1, 40 - Math.floor(selected.score / 3))}`} />
-              <Meta label={COPY.population} value={selected.population.toLocaleString('pt-BR')} />
-              <Meta label={COPY.income} value={fmtPriceSqm(selected.incomeAvg)} />
-              <Meta label={COPY.idh} value={selected.hdi.toFixed(3)} />
-              <Meta label={COPY.zoning} value={selected.zoning} />
-              <Meta label={COPY.envRisk} value={selected.environmentalRisk} />
-              <Meta label={COPY.floodRisk} value={selected.floodRisk} />
-            </div>
+            {!detailsMinimized && (
+              <>
+                <div className="mt-2.5 grid grid-cols-2 gap-1.5 sm:mt-3 sm:gap-2">
+                  <Meta label={COPY.avgPrice} value={fmtPriceSqm(selected.priceSqm)} />
+                  <Meta label="12m" value={fmtDelta(selected.priceSqmDelta12m)} />
+                  <Meta label={COPY.stateRank} value={`#${Math.max(1, 12 - Math.floor(selected.score / 10))}`} />
+                  <Meta label={COPY.nationalRank} value={`#${Math.max(1, 40 - Math.floor(selected.score / 3))}`} />
+                  <Meta label={COPY.population} value={selected.population.toLocaleString('pt-BR')} />
+                  <Meta label={COPY.income} value={fmtPriceSqm(selected.incomeAvg)} />
+                  <Meta label={COPY.idh} value={selected.hdi.toFixed(3)} />
+                  <Meta label={COPY.zoning} value={selected.zoning} />
+                  <Meta label={COPY.envRisk} value={selected.environmentalRisk} />
+                  <Meta label={COPY.floodRisk} value={selected.floodRisk} />
+                </div>
 
-            <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.composition}</p>
-            <div className="space-y-1.5">
-              {INTELLIGENCE_LAYERS.map((layer) => {
-                const n = selected.layerScores[layer.id];
-                return (
-                  <div key={layer.id} className="flex items-center gap-2 sm:gap-3">
-                    <span className="w-28 shrink-0 truncate text-[11px] text-foreground/70 sm:w-36 sm:text-xs">
-                      {layer.label}
-                    </span>
-                    <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-                      <div
-                        className="absolute inset-y-0 left-0 rounded-full"
-                        style={{
-                          width: `${n}%`,
-                          background: scoreColor(n),
-                        }}
-                      />
-                    </div>
-                    <span className="w-6 text-right text-[11px] tabular-nums font-medium sm:w-7 sm:text-xs">{n}</span>
+                <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.composition}</p>
+                <div className="space-y-1.5">
+                  {INTELLIGENCE_LAYERS.map((layer) => {
+                    const n = selected.layerScores[layer.id];
+                    return (
+                      <div key={layer.id} className="flex items-center gap-2 sm:gap-3">
+                        <span className="w-28 shrink-0 truncate text-[11px] text-foreground/70 sm:w-36 sm:text-xs">
+                          {layer.label}
+                        </span>
+                        <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                          <div
+                            className="absolute inset-y-0 left-0 rounded-full"
+                            style={{
+                              width: `${n}%`,
+                              background: scoreColor(n),
+                            }}
+                          />
+                        </div>
+                        <span className="w-6 text-right text-[11px] tabular-nums font-medium sm:w-7 sm:text-xs">{n}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.highlights}</p>
+                <ul className="space-y-1.5 text-sm text-foreground/80">
+                  {selected.highlights.map((h) => (
+                    <li key={h} className="flex gap-2">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.timeline}</p>
+                <ul className="space-y-2">
+                  {selected.timeline.map((t) => (
+                    <li key={`${t.year}-${t.title}`} className="flex items-start gap-2 text-sm">
+                      <span className="rounded-md border border-border/60 bg-muted/60 px-2 py-0.5 text-xs tabular-nums font-medium">
+                        {t.year}
+                      </span>
+                      <span className="text-foreground/70">{t.title}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {sparkData.length > 0 && (
+                  <div className="mt-3">
+                    <p className="mb-1.5 text-[11px] text-foreground/50">{COPY.history}</p>
+                    <Sparkline data={sparkData} width={240} height={36} />
                   </div>
-                );
-              })}
-            </div>
+                )}
 
-            <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.highlights}</p>
-            <ul className="space-y-1.5 text-sm text-foreground/80">
-              {selected.highlights.map((h) => (
-                <li key={h} className="flex gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                  {h}
-                </li>
-              ))}
-            </ul>
-
-            <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.timeline}</p>
-            <ul className="space-y-2">
-              {selected.timeline.map((t) => (
-                <li key={`${t.year}-${t.title}`} className="flex items-start gap-2 text-sm">
-                  <span className="rounded-md border border-border/60 bg-muted/60 px-2 py-0.5 text-xs tabular-nums font-medium">
-                    {t.year}
-                  </span>
-                  <span className="text-foreground/70">{t.title}</span>
-                </li>
-              ))}
-            </ul>
-
-            {sparkData.length > 0 && (
-              <div className="mt-3">
-                <p className="mb-1.5 text-[11px] text-foreground/50">{COPY.history}</p>
-                <Sparkline data={sparkData} width={240} height={36} />
-              </div>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  <Link
+                    href={`${lh('/compare')}?ids=${selected.id}`}
+                    className={cn(buttonVariants({ size: 'sm' }))}
+                  >
+                    {COPY.compare}
+                  </Link>
+                  <Link
+                    href={lh('/regions')}
+                    className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+                  >
+                    {COPY.regions}
+                  </Link>
+                </div>
+              </>
             )}
-
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              <Link
-                href={`${lh('/compare')}?ids=${selected.id}`}
-                className={cn(buttonVariants({ size: 'sm' }))}
-              >
-                {COPY.compare}
-              </Link>
-              <Link
-                href={lh('/regions')}
-                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
-              >
-                {COPY.regions}
-              </Link>
-            </div>
           </div>
         </div>
       )}
@@ -1014,7 +1091,7 @@ function RankCard({
               <span
                 className={cn(
                   'shrink-0 text-xs font-semibold tabular-nums',
-                  it.positive ? 'text-primary' : 'text-destructive',
+                  it.positive ? 'text-success' : 'text-destructive',
                 )}
               >
                 {it.value}
