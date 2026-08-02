@@ -431,6 +431,8 @@
     "alerts": "alertas",
     "noOpportunities": "Ninguna oportunidad por ahora.",
     "loadError": "No se pudieron cargar los KPIs.",
+    "macroSection": "Macro de Brasil (IPCA, Selic, divisas)",
+    "marketSection": "Mercado (precios y oportunidades)",
     "score": "score",
     "severity": {
       "baixa": "Baja",

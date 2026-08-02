@@ -10,10 +10,10 @@ import { Card, Badge, buttonVariants, cn } from '@landmap/ui';
 import { PLANS, formatBRL } from '../../../lib/plans';
 import { ProductPageShell } from '../../../components/ProductPageShell';
 
-export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'desktop' }) {
+export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
-  const [selected, setSelected] = useState<string>('free');
+  const [selected, setSelected] = useState<string>('plus');
   const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[0];
 
   const handleSubscribe = (planId: string) => {
@@ -51,7 +51,11 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
             <Card
               key={pl.id}
               variant={pl.highlight ? 'highlight' : 'interactive'}
-              className={cn('flex min-w-0 flex-col p-4', pl.highlight && 'shadow-[var(--shadow-card)]')}
+              className={cn(
+                'flex min-w-0 flex-col p-4',
+                pl.highlight && 'shadow-[var(--shadow-card)]',
+                'ring-1 ring-transparent transition hover:ring-[var(--primary)]/30',
+              )}
             >
               <div className="flex items-center justify-between">
                 <p className="font-semibold">{pl.name}</p>
@@ -77,7 +81,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                   'mt-4 w-full',
                 )}
               >
-                {pl.highlight ? 'Assinar LandMap Free' : `Assinar ${pl.name.replace('LandMap ', '')}`}
+                {pl.id === 'free' ? 'Assinar LandMap Free' : `Assinar ${pl.name.replace('LandMap ', '')}`}
               </button>
             </Card>
           ))}
@@ -87,7 +91,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
   }
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-32">
+    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-32 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
         <Link
           href={`/${locale}/onboarding`}
@@ -154,16 +158,23 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
                 <span className="text-sm text-foreground/50">/mês</span>
               </div>
 
-              {isSel && (p.features ?? []).length > 0 && (
-                <ul className="mt-4 max-h-[40vh] space-y-2 overflow-y-auto border-t border-border/60 pt-4">
-                  {(p.features ?? []).map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-foreground/75">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div
+                className={cn(
+                  'grid transition-all duration-300 ease-in-out',
+                  isSel ? 'grid-rows-[1fr] opacity-100 mt-4 border-t border-border/60 pt-4' : 'grid-rows-[0fr] opacity-0'
+                )}
+              >
+                <div className="overflow-hidden">
+                  <ul className="space-y-2 max-h-[40vh] overflow-y-auto">
+                    {(p.features ?? []).map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-foreground/75">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </button>
           );
         })}
@@ -184,7 +195,7 @@ export function PlansShowcase({ variant = 'desktop' }: { variant?: 'mobile' | 'd
           {`Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
-          Checkout com PIX ou cartão.
+          Pagamento não ativado — fluxo de demonstração.
         </p>
       </div>
     </div>

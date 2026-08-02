@@ -431,6 +431,8 @@
     "alerts": "alertas",
     "noOpportunities": "Nenhuma oportunidade no momento.",
     "loadError": "Não foi possível carregar os KPIs.",
+    "macroSection": "Macro Brasil (IPCA, Selic, Câmbio)",
+    "marketSection": "Mercado (preços e oportunidades)",
     "score": "score",
     "severity": {
       "baixa": "Baixa",

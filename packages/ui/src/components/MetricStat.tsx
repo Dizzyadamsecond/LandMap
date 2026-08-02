@@ -5,6 +5,7 @@ export type MetricTone =
   | 'primary'
   | 'accent'
   | 'emerald'
+  | 'success'
   | 'cyan'
   | 'violet'
   | 'gold'
@@ -40,7 +41,8 @@ const toneStyle: Record<MetricTone, React.CSSProperties> = {
   primary: { color: 'var(--primary)', borderColor: 'color-mix(in srgb, var(--primary) 35%, transparent)', background: 'color-mix(in srgb, var(--primary) 8%, transparent)' },
   accent: { color: 'var(--accent)', borderColor: 'color-mix(in srgb, var(--accent) 35%, transparent)', background: 'color-mix(in srgb, var(--accent) 8%, transparent)' },
   // Backward-compatible aliases from the old feature palette; all resolve to Lovable tokens.
-  emerald: { color: 'var(--primary)', borderColor: 'color-mix(in srgb, var(--primary) 35%, transparent)', background: 'color-mix(in srgb, var(--primary) 8%, transparent)' },
+  emerald: { color: 'var(--success)', borderColor: 'color-mix(in srgb, var(--success) 35%, transparent)', background: 'color-mix(in srgb, var(--success) 8%, transparent)' },
+  success: { color: 'var(--success)', borderColor: 'color-mix(in srgb, var(--success) 35%, transparent)', background: 'color-mix(in srgb, var(--success) 8%, transparent)' },
   cyan: { color: 'var(--primary)', borderColor: 'color-mix(in srgb, var(--primary) 35%, transparent)', background: 'color-mix(in srgb, var(--primary) 8%, transparent)' },
   violet: { color: 'var(--accent)', borderColor: 'color-mix(in srgb, var(--accent) 35%, transparent)', background: 'color-mix(in srgb, var(--accent) 8%, transparent)' },
   gold: { color: 'var(--warning)', borderColor: 'color-mix(in srgb, var(--warning) 35%, transparent)', background: 'color-mix(in srgb, var(--warning) 8%, transparent)' },

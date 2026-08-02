@@ -431,6 +431,8 @@
     "alerts": "alerts",
     "noOpportunities": "No opportunities right now.",
     "loadError": "Could not load KPIs.",
+    "macroSection": "Brazil macro (IPCA, Selic, FX)",
+    "marketSection": "Market (prices and opportunities)",
     "score": "score",
     "severity": {
       "baixa": "Low",

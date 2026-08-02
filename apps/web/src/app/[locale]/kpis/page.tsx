@@ -41,6 +41,51 @@ function severityVariant(sev: OpportunitySeverity): 'default' | 'warning' | 'des
   }
 }
 
+/** Collapsible KPI section — permite minimizar/mostrar os cards (pedido: "minimizar os outros KPIs"). */
+function KpiSection({
+  id,
+  title,
+  collapsed,
+  onToggle,
+  children,
+}: {
+  id: string;
+  title: string;
+  collapsed: boolean;
+  onToggle: (id: string) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mt-4">
+      <button
+        type="button"
+        onClick={() => onToggle(id)}
+        aria-expanded={!collapsed}
+        className="flex w-full items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-left transition hover:border-[var(--primary)]/40"
+      >
+        <span className="text-sm font-semibold text-[var(--foreground)]">{title}</span>
+        <span
+          className="text-[var(--muted-foreground)] transition-transform duration-200"
+          style={{ transform: collapsed ? 'rotate(-90deg)' : 'rotate(0deg)' }}
+          aria-hidden
+        >
+          ▾
+        </span>
+      </button>
+      <div
+        className="grid transition-all duration-300 ease-in-out"
+        style={{
+          gridTemplateRows: collapsed ? '0fr' : '1fr',
+          opacity: collapsed ? 0 : 1,
+          marginTop: collapsed ? 0 : 12,
+        }}
+      >
+        <div className="overflow-hidden">{children}</div>
+      </div>
+    </section>
+  );
+}
+
 function KpisPageInner() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
@@ -51,6 +96,13 @@ function KpisPageInner() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [aggregates, setAggregates] = useState<Aggregates | null>(null);
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({
+    macro: false,
+    market: false,
+    cities: false,
+  });
+  const toggleSection = (id: string) =>
+    setCollapsed((prev) => ({ ...prev, [id]: !prev[id] }));
 
   useEffect(() => {
     let active = true;
@@ -172,59 +224,59 @@ function KpisPageInner() {
               </div>
             </Reveal>
 
-            <Reveal delay={0.12} className="mt-4">
+            <KpiSection id="macro" title={t('macroSection')} collapsed={!!collapsed.macro} onToggle={toggleSection}>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <MetricStat
                   label="Cidades"
                   value={loading || !aggregates ? '—' : String(aggregates.totalCities)}
-                  tone="neutral"
+                  tone="success"
                 />
                 <MetricStat
                   label="IPCA"
                   value={aggregates?.macro?.ipca ? `${aggregates.macro.ipca.value.toFixed(2)}%` : '—'}
                   hint={aggregates?.macro?.ipca ? aggregates.macro.ipca.date : t('catalogHint')}
-                  tone="neutral"
+                  tone="success"
                 />
                 <MetricStat
                   label="Selic"
                   value={aggregates?.macro?.selic ? `${aggregates.macro.selic.value.toFixed(2)}%` : '—'}
                   hint={aggregates?.macro?.selic ? aggregates.macro.selic.date : ''}
-                  tone="neutral"
+                  tone="success"
                 />
                 <MetricStat
                   label="USD"
                   value={aggregates?.macro?.fx ? fmtBRL(aggregates.macro.fx.value) : '—'}
                   hint={aggregates?.macro?.fx ? aggregates.macro.fx.date : ''}
-                  tone="accent"
+                  tone="success"
                 />
               </div>
-            </Reveal>
+            </KpiSection>
 
-            <Reveal delay={0.15} className="mt-4">
+            <KpiSection id="market" title={t('marketSection')} collapsed={!!collapsed.market} onToggle={toggleSection}>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <MetricStat
                   label={t('availabilityRate')}
                   value={loading || !kpis ? '—' : `${kpis.availabilityRate}%`}
-                  tone="neutral"
+                  tone="success"
                 />
                 <MetricStat
                   label={t('avgPrice')}
                   value={loading || !kpis ? '—' : fmtBRL(kpis.avgPrice)}
-                  tone="neutral"
+                  tone="success"
                 />
                 <MetricStat
                   label={t('medianPricePerM2')}
                   value={loading || !kpis ? '—' : fmtBRL(kpis.medianPricePerSqm)}
-                  tone="neutral"
+                  tone="success"
                 />
                 <MetricStat
                   label={t('opportunities')}
                   value={loading ? '—' : opportunities.length.toLocaleString('pt-BR')}
                   hint={t('opportunitiesHint')}
-                  tone="accent"
+                  tone="success"
                 />
               </div>
-            </Reveal>
+            </KpiSection>
 
             <Reveal delay={0.2} className="mt-10">
               <h2 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">

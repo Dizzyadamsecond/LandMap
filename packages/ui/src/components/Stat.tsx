@@ -15,8 +15,8 @@ export const Stat = forwardRef<HTMLDivElement, StatProps>(
     <div
       ref={ref}
       className={cn(
-        'rounded-lg border border-[var(--border)] bg-[var(--accent)] p-5 transition',
-        'hover:border-[var(--border)] hover:bg-[var(--card)] hover:shadow-sm',
+        'rounded-lg border border-[var(--border)] bg-[var(--card)] p-5 transition',
+        'hover:border-[var(--primary)]/40 hover:bg-[var(--card)] hover:shadow-sm',
         'motion-reduce:transition-none',
         className,
       )}
