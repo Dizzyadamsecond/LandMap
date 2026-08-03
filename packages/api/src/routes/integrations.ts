@@ -12,6 +12,9 @@ import {
   CnpjClient,
   BacenClient,
   GeoClient,
+  SidraClient,
+  BrasilApiClient,
+  Crawl4aiClient,
   listIntegrations,
 } from '@landmap/integrations';
 
@@ -287,6 +290,80 @@ export function createIntegrationsRouter() {
     }
 
     return c.json({ type, configured: client.configured, records, generatedAt: new Date().toISOString() }, 200);
+  });
+
+  /* ─── SIDRA / IBGE (national statistics, live) ─── */
+  router.get('/sidra/ipca', async (c) => {
+    const client = new SidraClient();
+    const lastN = Number(c.req.query('n') ?? '13');
+    try {
+      const { geral, habitacao } = await client.getIpca(lastN);
+      return c.json({
+        configured: client.configured,
+        mock: client.mock,
+        geral: geral.points,
+        habitacao: habitacao.points,
+        generatedAt: new Date().toISOString(),
+      });
+    } catch (e) {
+      return c.json({ configured: client.configured, error: (e as Error).message }, 200);
+    }
+  });
+
+  router.get('/sidra/series', async (c) => {
+    const client = new SidraClient();
+    const table = Number(c.req.query('table') ?? '1736');
+    const variable = c.req.query('variable') ? Number(c.req.query('variable')) : undefined;
+    const lastN = c.req.query('n') ? Number(c.req.query('n')) : undefined;
+    try {
+      const series = await client.getSeries({ table, variable, lastN });
+      return c.json({ configured: client.configured, series, generatedAt: new Date().toISOString() });
+    } catch (e) {
+      return c.json({ configured: client.configured, error: (e as Error).message }, 200);
+    }
+  });
+
+  /* ─── BrasilAPI (DDD + Bancos, live) ─── */
+  router.get('/brasilapi/ddd/:code', async (c) => {
+    const client = new BrasilApiClient();
+    try {
+      const info = await client.getDdd(c.req.param('code'));
+      return c.json({ configured: client.configured, mock: client.mock, ...info });
+    } catch (e) {
+      return c.json({ configured: client.configured, error: (e as Error).message }, 200);
+    }
+  });
+
+  router.get('/brasilapi/banks', async (c) => {
+    const client = new BrasilApiClient();
+    try {
+      const banks = await client.listBanks();
+      return c.json({ configured: client.configured, mock: client.mock, count: banks.length, banks });
+    } catch (e) {
+      return c.json({ configured: client.configured, error: (e as Error).message }, 200);
+    }
+  });
+
+  /* ─── Crawl4AI (live browser crawler) ─── */
+  router.post('/crawl4ai/live', async (c) => {
+    const body = await c.req.json().catch(() => ({}));
+    const { url, max_links, word_count_threshold } = z
+      .object({
+        url: z.string().url(),
+        max_links: z.number().int().nonnegative().max(200).optional(),
+        word_count_threshold: z.number().int().nonnegative().optional(),
+      })
+      .parse(body);
+    const client = new Crawl4aiClient();
+    if (!client.configured) {
+      return c.json({ ok: false, error: 'crawl4ai service not installed', configured: false }, 200);
+    }
+    try {
+      const result = await client.crawl({ url, max_links, word_count_threshold });
+      return c.json({ ...result, generatedAt: new Date().toISOString() }, 200);
+    } catch (e) {
+      return c.json({ ok: false, error: (e as Error).message }, 200);
+    }
   });
 
   return router;

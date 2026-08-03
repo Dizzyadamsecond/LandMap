@@ -43,7 +43,7 @@ SCREENS = {
     "onboarding":("/onboarding",  "/pt-BR/onboarding"),
 }
 
-SKIP = {"script", "style", "head", "noscript", "svg"}
+SKIP = {"script", "style", "head", "noscript", "svg", "path", "circle", "rect", "polygon", "polyline", "ellipse", "line", "g", "defs", "linearGradient", "stop", "use", "clipPath"}
 BLOCK = {"h1", "h2", "h3", "h4", "p", "li", "button", "a", "td", "th", "title"}
 
 

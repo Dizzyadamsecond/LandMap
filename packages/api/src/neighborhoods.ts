@@ -73,5 +73,32 @@ export function createNeighborhoodsRouter() {
     return c.json({ items: allNeighborhoods, total: allNeighborhoods.length });
   });
 
+  /** GET /neighborhoods?ids=city|state|name,city|state|name — retorna bairros por ids compostos */
+  router.get('/by-ids', async (c) => {
+    const raw = c.req.query('ids');
+    if (!raw) {
+      return c.json({ items: [], total: 0 });
+    }
+
+    const keys = new Set(
+      raw
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .map((token) => {
+          const trimmed = token.toLowerCase();
+          if (trimmed.includes(',')) return trimmed;
+          return `${trimmed}|brasil`;
+        })
+    );
+
+    const filtered = allNeighborhoods.filter((n) => {
+      const key = `${n.city.toLowerCase()}|${n.state.toLowerCase()}|${n.name.toLowerCase()}`;
+      return keys.has(key);
+    });
+
+    return c.json({ items: filtered, total: filtered.length });
+  });
+
   return router;
 }

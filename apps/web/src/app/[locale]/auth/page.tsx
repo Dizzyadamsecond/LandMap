@@ -5,15 +5,17 @@ import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Eye, EyeOff, LandMapWordmark } from '../../../components/lovable/icons';
+import { Briefcase, Building2, Gem, TrendingUp, User } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
 import { useMockUser, storeUserType, type UserType } from '../../../lib/mockAuth';
 
-/** Labels 1:1 Lovable (values mapeados para UserType local). */
-const USER_TYPE_OPTIONS: { id: UserType; label: string }[] = [
-  { id: 'corretor', label: 'Corretor' },
-  { id: 'incorporadora', label: 'Construtora' },
-  { id: 'investidor', label: 'Investidor' },
-  { id: 'fundo', label: 'Empresário' },
+/** Segmentos do mercado imobiliário — escolha obrigatória no cadastro (1:1 Lovable). */
+const USER_TYPE_OPTIONS: { id: UserType; label: string; icon: React.ReactNode; hint: string }[] = [
+  { id: 'corretor', label: 'Corretor', icon: <Briefcase size={18} />, hint: 'Comissão e carteira de clientes' },
+  { id: 'investidor', label: 'Investidor', icon: <TrendingUp size={18} />, hint: 'Valorização e ROI de terrenos' },
+  { id: 'fundo', label: 'Fundo de investimento', icon: <Gem size={18} />, hint: 'Gestão de portfólio institucional' },
+  { id: 'incorporadora', label: 'Incorporadora', icon: <Building2 size={18} />, hint: 'Aquisição e desenvolvimento' },
+  { id: 'comprador', label: 'Comprador', icon: <User size={18} />, hint: 'Busca direta de terreno' },
 ];
 
 const fieldClass =
@@ -251,21 +253,27 @@ function AuthPageInner() {
                 <span className="mb-1.5 block text-xs font-medium text-[var(--muted-foreground)]">
                   Tipo de usuário
                 </span>
-                <select
-                  required
-                  value={userType}
-                  onChange={(e) => setUserType(e.target.value as UserType | '')}
-                  className={fieldClass}
-                  style={{ borderColor: 'var(--border)' }}
-                  aria-label="Tipo de usuário"
-                >
-                  <option value="">Selecione seu perfil</option>
-                  {USER_TYPE_OPTIONS.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {USER_TYPE_OPTIONS.map((t) => {
+                    const active = userType === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => setUserType(t.id)}
+                        className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition ${
+                          active
+                            ? 'border-[var(--primary)] bg-[var(--primary)]/10'
+                            : 'border-[var(--border)] bg-[var(--card)] hover:border-[var(--primary)]'
+                        }`}
+                      >
+                        <span className="text-[var(--primary)]">{t.icon}</span>
+                        <span className="text-sm font-medium text-[var(--foreground)]">{t.label}</span>
+                        <span className="text-xs text-[var(--muted-foreground)]">{t.hint}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </label>
               <Field
                 label="E-mail"

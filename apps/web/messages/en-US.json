@@ -18,6 +18,7 @@
     "docs": "Docs",
     "status": "Status",
     "admin": "Admin",
+    "investor": "Investors",
     "backHome": "Back to Home"
   },
   "home": {
@@ -57,6 +58,7 @@
     "noProperties": "No properties match these filters. Adjust type, modality or city.",
     "sortLabel": "Sort by",
     "sortPriceAsc": "Price: Low to High",
+    "score": "Score",
     "sortPriceDesc": "Price: High to Low",
     "sortArea": "Area",
     "sortDate": "Date",
@@ -232,7 +234,9 @@
     "cta": "Explore map",
     "f1": "3D building extrusion via OpenStreetMap",
     "f2": "Investment, energy & thermal panels",
-    "f3": "Real-time appreciation LivePulse"
+    "f3": "Real-time appreciation LivePulse",
+    "subtitle": "Mundo 3D interativo: skyline, calor de preço e fluxo de investimento em tempo real.",
+    "hint": "Use o mouse para orbitar e o scroll para zoom."
   },
   "integrations": {
     "title": "Integrations",
@@ -258,7 +262,6 @@
     "crieCpf": "Owner CPF",
     "crieImovel": "City / State",
     "crieValue": "Value",
-    "crieResult": "Record(s) found",
     "matricula": "Matricula",
     "cartorio": "Registry office",
     "comarca": "Comarca",
@@ -280,7 +283,6 @@
     "viacepBairro": "Neighborhood",
     "viacepCidade": "City",
     "viacepUf": "State",
-    "viacepCepLabel": "ZIP",
     "leilaoTitle": "Auction (real-time)",
     "leilaoDesc": "Court + Caixa auctions: lots, appraisal and min bid, live.",
     "leilaoLive": "Live",
@@ -289,7 +291,6 @@
     "leilaoNovo": "NEW",
     "leilaoTipo": "Type",
     "leilaoComarca": "Comarca",
-    "leilaoBem": "Asset",
     "leilaoAval": "Appraisal",
     "leilaoLance": "Min bid",
     "leilaoEncerra": "Closes",
@@ -353,7 +354,6 @@
     "catCrm": "CRM",
     "catData": "Data",
     "fieldWabaTo": "Phone (with country code)",
-    "fieldWabaText": "Message",
     "fieldCrieValue": "Value (matricula / CPF / address)",
     "fieldLeilaoTipo": "Auction type",
     "fieldCambioPair": "Pair (e.g. USD-BRL)",
@@ -439,5 +439,180 @@
       "media": "Medium",
       "alta": "High"
     }
+  },
+  "investor": {
+    "hero": {
+      "title": "Invest in LandMap",
+      "description": "Join us in transforming real estate intelligence across Latin America and beyond.",
+      "plansButton": "See Our Plans",
+      "contactButton": "Contact Investor Relations"
+    },
+    "about": {
+      "title": "About Us",
+      "description": "LandMap is the leading platform for real estate intelligence in Brazil, providing AI-powered insights, market analytics, and investment tools for developers, investors, and financial institutions.",
+      "mission": "Our Mission",
+      "vision": "Our Vision",
+      "visionDescription": "To democratize access to high-quality real estate data and analytics, enabling smarter investments and sustainable urban development."
+    },
+    "metrics": {
+      "title": "Key Metrics",
+      "properties": "Properties Mapped",
+      "propertiesDesc": "Comprehensive coverage of urban and rural properties",
+      "cities": "Cities Covered",
+      "citiesDesc": "From metropolises to emerging markets",
+      "accuracy": "Data Accuracy",
+      "accuracyDesc": "Validated through multiple sources and AI verification",
+      "users": "Active Users",
+      "usersDesc": "Investors, brokers, and financial institutions"
+    },
+    "highlights": {
+      "title": "Why Invest in LandMap?",
+      "traction": "Proven Traction",
+      "tractionDesc": "Rapid revenue growth with strong unit economics and expanding market share in Brazil's proptech sector.",
+      "technology": "Defensible Technology",
+      "technologyDesc": "Proprietary AI models and unique data pipelines create significant barriers to entry.",
+      "team": "Experienced Team",
+      "teamDesc": "Founders with deep expertise in real estate, data science, and enterprise software.",
+      "model": "Scalable Business Model",
+      "modelDesc": "SaaS-based revenue with expanding enterprise and government contracts.",
+      "impact": "Positive Impact",
+      "impactDesc": "Contributing to transparent markets, efficient land use, and sustainable development.",
+      "exit": "Clear Exit Pathways",
+      "exitDesc": "Attractive to strategic acquirers in proptech, finance, and real estate sectors."
+    },
+    "documents": {
+      "title": "Investor Documents",
+      "description": "Access our latest financial reports, presentations, and legal documents.",
+      "financialReport": "Quarterly Report Q1 2024",
+      "financialReportDesc": "Financial highlights and operational metrics",
+      "presentation": "Investor Presentation",
+      "presentationDesc": "Overview of business model, market opportunity, and financial projections",
+      "legal": "Term Sheet Template",
+      "legalDesc": "Standard terms for equity investment rounds",
+      "download": "Download PDF"
+    },
+    "cta": {
+      "title": "Ready to Join Our Journey?",
+      "description": "We're seeking strategic partners who share our vision of transforming real estate markets through technology and data.",
+      "seePlans": "Explore Partnership Opportunities",
+      "contact": "Contact Investor Relations"
+    }
+  },
+  "ConsorcioPage": {
+    "hero": {
+      "title": "Consórcio de Imóveis",
+      "subtitle": "Planeje a aquisição do seu terreno sem juros, com flexibilidade e segurança."
+    },
+    "step1": {
+      "title": "Escolha a cota",
+      "description": "Selecione o valor do crédito que deseja e entre em um grupo de consórcio com pessoas com objetivos semelhantes."
+    },
+    "step2": {
+      "title": "Pague as parcelas",
+      "description": "Pague mensalmente e tenha a chance de ser contemplado por sorteio ou lance."
+    },
+    "step3": {
+      "title": "Realize seu sonho",
+      "description": "Quando contemplado, use o crédito para comprar o terreno à vista, sem juros."
+    },
+    "benefits": {
+      "title": "Por que escolher o consórcio?",
+      "access": {
+        "title": "Acesso facilitado",
+        "description": "Sem necessidade de entrada alta ou análise de crédito rigorosa."
+      },
+      "finance": {
+        "title": "Sem juros",
+        "description": "Você paga apenas o valor do crédito, mais uma taxa de administração fixa."
+      },
+      "growth": {
+        "title": "Planejamento",
+        "description": "Ideal para quem quer comprar um terreno no futuro com disciplina financeira."
+      }
+    },
+    "cta": {
+      "title": "Pronto para começar?",
+      "description": "Junte-se a milhares de pessoas que estão realizando o sonho do próprio terreno através do consórcio.",
+      "button1": "Simular minha cota",
+      "button2": "Falar com um consultor"
+    }
+  },
+  "LeilaoPage": {
+    "hero": {
+      "title": "Leilão de Terrenos",
+      "subtitle": "Participe de leilões seguros e transparentes para adquirir seu terreno com ótimas condições."
+    },
+    "step1": {
+      "title": "Cadastre-se",
+      "description": "Faça seu cadastro gratuitamente e tenha acesso aos leilões disponíveis."
+    },
+    "step2": {
+      "title": "Dê seu lance",
+      "description": "Acompanhe o leilão em tempo real e dê seu lance quando desejar."
+    },
+    "step3": {
+      "title": "Conquiste seu terreno",
+      "description": "Se vencer o leilão, conclua a compra e receba a documentação do seu novo terreno."
+    },
+    "benefits": {
+      "title": "Por que participar dos nossos leilões?",
+      "transparency": {
+        "title": "Transparência total",
+        "description": "Todos os lances são públicos e os critérios de avaliação são claros."
+      },
+      "legality": {
+        "title": "Segurança jurídica",
+        "description": "Processos conforme a legislação, com documentação rigorosa e idoneidade."
+      },
+      "value": {
+        "title": "Ótimas oportunidades",
+        "description": "Terrenos com preços abaixo do mercado e potencial de valorização."
+      }
+    },
+    "cta": {
+      "title": "Pronto para dar seu primeiro lance?",
+      "description": "Cadastre-se agora e participe do próximo leilão de terras com condições especiais.",
+      "button1": "Cadastrar grátis",
+      "button2": "Ver próximos leilões"
+    }
+  },
+  "sobre": {
+    "eyebrow": "About",
+    "title": "About LandMap",
+    "description": "LandMap raises the Brazilian real estate territory as open data — price per m², heatmaps and AI for decisions, free and without login.",
+    "f1": "Mission: make the square-meter price transparent across every city in Brazil.",
+    "f2": "Data: property catalog across 20+ cities with price history and heat layers.",
+    "f3": "Open: no paywall — the map and indicators stay open for any user."
+  },
+  "privacy": {
+    "eyebrow": "Privacy",
+    "title": "Privacy Policy",
+    "description": "How we collect, use and protect your data on LandMap.",
+    "f1": "Collection: we collect only the minimum needed to run the map and account.",
+    "f2": "Use: your data is never sold and is used to improve the experience.",
+    "f3": "Rights: you may request export or deletion at any time."
+  },
+  "terms": {
+    "eyebrow": "Terms",
+    "title": "Terms of Use",
+    "description": "Conditions for using the LandMap platform.",
+    "f1": "Use: content is informational and not advice.",
+    "f2": "Account: you are responsible for your account and data security.",
+    "f3": "Limitation: LandMap is not liable for decisions based on the data."
+  },
+  "fontes": {
+    "eyebrow": "Sources",
+    "title": "Data Sources",
+    "description": "Where LandMap properties, prices and indicators come from.",
+    "f1": "Catalog: properties aggregated from public portals and open market bases.",
+    "f2": "Price/m²: computed per region from recent transactions and listings.",
+    "f3": "Refresh: the dataset is recomputed periodically to reflect the market."
+  },
+  "splash": {
+    "title": "Real estate territory, raised as data.",
+    "subtitle": "Interactive map, price per m² and AI for decisions — free and no login.",
+    "ctaMap": "Open the map",
+    "ctaStart": "Get started",
+    "footnote": "LandMap · Open territorial intelligence"
   }
 }

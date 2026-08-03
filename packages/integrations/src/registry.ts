@@ -9,6 +9,9 @@ import { TwentyClient } from './twenty.js';
 import { CnpjClient } from './cnpj.js';
 import { BacenClient } from './bacen.js';
 import { GeoClient } from './geo.js';
+import { SidraClient } from './sidra.js';
+import { BrasilApiClient } from './brasilapi.js';
+import { Crawl4aiClient } from './crawl4ai.js';
 
 export type IntegrationCategory = 'messaging' | 'registry' | 'design' | 'crm' | 'data';
 
@@ -43,6 +46,9 @@ export function listIntegrations(): IntegrationMeta[] {
   const cnpj = new CnpjClient();
   const bacen = new BacenClient();
   const geo = new GeoClient();
+  const sidra = new SidraClient();
+  const brasilapi = new BrasilApiClient();
+  const crawl4ai = new Crawl4aiClient();
 
   return [
     {
@@ -143,6 +149,33 @@ export function listIntegrations(): IntegrationMeta[] {
       docsUrl: 'https://nominatim.openstreetmap.org',
       configured: geo.configured,
       mock: !geo.configured,
+    },
+    {
+      id: 'sidra',
+      name: 'SIDRA / IBGE (Estatísticas Nacionais)',
+      description: 'IPCA, Habitação, INCC e índices nacionais do IBGE — live, sem chave.',
+      category: 'data',
+      docsUrl: 'https://apisidra.ibge.gov.br',
+      configured: sidra.configured,
+      mock: !sidra.configured,
+    },
+    {
+      id: 'brasilapi',
+      name: 'BrasilAPI (DDD + Bancos)',
+      description: 'Código de área (estado + cidades) e lista oficial de bancos — live, sem chave.',
+      category: 'data',
+      docsUrl: 'https://brasilapi.com.br',
+      configured: brasilapi.configured,
+      mock: !brasilapi.configured,
+    },
+    {
+      id: 'crawl4ai',
+      name: 'Crawl4AI (live crawler)',
+      description: 'Crawler browser-backed de fontes abertas (.gov.br, IBGE, BCB, Wikipedia) — live, sem chave.',
+      category: 'data',
+      docsUrl: 'https://docs.crawl4ai.com',
+      configured: crawl4ai.configured,
+      mock: !crawl4ai.configured,
     },
   ];
 }

@@ -94,7 +94,7 @@ function CompareInner() {
     let active = true;
     setLoading(true);
     const qs = keys.join(',');
-    fetch(`/api/geo/neighborhoods?ids=${encodeURIComponent(qs)}`)
+    fetch(`/neighborhoods/by-ids?ids=${encodeURIComponent(qs)}`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error('Falha ao carregar comparação'))))
       .then((data) => {
         if (!active) return;

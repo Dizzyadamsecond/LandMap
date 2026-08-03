@@ -8,30 +8,76 @@ import { ProductPageShell } from '../../../components/ProductPageShell';
 import { Card, Badge, Stat, buttonVariants, cn } from '@landmap/ui';
 import { INTELLIGENCE_REGIONS, fmtDelta } from '../../../lib/mapIntelligence';
 
+interface LiveEvent {
+  id: string;
+  text: string;
+  source: string;
+  ts: string;
+}
+
+interface LivePayload {
+  live: boolean;
+  generatedAt: string;
+  stats: { sources: number; ufs: number; banks: number; ipcaAvailable: boolean };
+  events: LiveEvent[];
+}
+
 export default function LivePage() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
   const [tick, setTick] = useState(0);
+  const [data, setData] = useState<LivePayload | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const t = setInterval(() => setTick((x) => x + 1), 4000);
+    const t = setInterval(() => setTick((x) => x + 1), 8000);
     return () => clearInterval(t);
   }, []);
 
-  const feed = INTELLIGENCE_REGIONS.map((r, i) => ({
-    id: `${r.id}-${tick}-${i}`,
-    text:
-      tick % 2 === 0
-        ? `Score ${r.name} estável em ${r.score}`
-        : `Valorização 12m ${r.name}: ${fmtDelta(r.priceSqmDelta12m)}`,
-    region: r.name,
-  })).slice(0, 8);
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/live', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`status ${res.status}`);
+        const json = (await res.json()) as LivePayload;
+        if (active) setData(json);
+      } catch (e) {
+        if (active) setError((e as Error).message);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [tick]);
+
+  // Real live feed (no simulation). Falls back to region pulse only if the
+  // aggregator is unavailable so the page never looks broken.
+  const feed =
+    data?.events?.length
+      ? data.events.map((e) => ({
+          id: e.id,
+          text: e.text,
+          region: e.source,
+        }))
+      : INTELLIGENCE_REGIONS.map((r, i) => ({
+          id: `${r.id}-${tick}-${i}`,
+          text:
+            tick % 2 === 0
+              ? `Score ${r.name} estável em ${r.score}`
+              : `Valorização 12m ${r.name}: ${fmtDelta(r.priceSqmDelta12m)}`,
+          region: r.name,
+        })).slice(0, 8);
+
   const hubLinks = [
     { href: lh('/map'), icon: Layers, label: 'Mapa' },
     { href: lh('/compare'), icon: GitCompare, label: 'Comparar' },
     { href: lh('/alerts'), icon: BellRing, label: 'Alertas' },
     { href: lh('/reports'), icon: FileText, label: 'Relatórios' },
   ];
+
+  const sources = data?.stats.sources ?? 0;
+  const ufs = data?.stats.ufs ?? INTELLIGENCE_REGIONS.length;
 
   return (
     <ProductPageShell
@@ -42,7 +88,11 @@ export default function LivePage() {
         </>
       }
       title="Pulse do mercado"
-      description="Feed simulado a partir das regiões do mapa intelligence."
+      description={
+        data
+          ? 'Feed em tempo real de fontes abertas nacionais (IBGE, SIDRA, BrasilAPI).'
+          : 'Carregando dados ao vivo de fontes abertas…'
+      }
     >
       <div className="grid gap-6 xl:grid-cols-[16rem_minmax(0,1fr)]">
         <aside className="space-y-3 self-start">
@@ -72,11 +122,23 @@ export default function LivePage() {
         <section>
           <section className="grid grid-cols-3 gap-3">
             <Stat label="Eventos" value={String(feed.length)} />
-            <Stat label="Regiões" value={String(INTELLIGENCE_REGIONS.length)} />
-            <Stat label="Tick" value={String(tick)} />
+            <Stat label="Fontes" value={String(sources || INTELLIGENCE_REGIONS.length)} />
+            <Stat label="UF" value={String(ufs)} />
           </section>
 
-          <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }), 'mt-4')}>
+          <span
+            className={cn(
+              'mt-4 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px]',
+              data
+                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
+                : 'border-amber-500/30 bg-amber-500/10 text-amber-400',
+            )}
+          >
+            <Activity className="h-3 w-3 animate-pulse" />
+            {data ? 'Dados reais (live)' : error ? `Fallback (${error})` : 'Conectando…'}
+          </span>
+
+          <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }), 'ml-3 mt-4')}>
             Mapa live
           </Link>
 

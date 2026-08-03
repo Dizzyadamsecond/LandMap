@@ -87,11 +87,11 @@ function MapPageInner() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [auctionPoints, setAuctionPoints] = useState<AuctionOpportunity[]>([]);
 
-  /** Controle de expansão do painel de KPIs do mapa. */
-  const [kpisOpen, setKpisOpen] = useState(true);
+  /** Controle de expansão do painel de KPIs do mapa — minimizado por padrão (UX Lovable). */
+  const [kpisOpen, setKpisOpen] = useState(false);
 
-  /** Controle de expansão dos cards de ranking/flow do mapa. */
-  const [rankingsOpen, setRankingsOpen] = useState(true);
+  /** Controle de expansão dos cards de ranking/flow do mapa — minimizado por padrão. */
+  const [rankingsOpen, setRankingsOpen] = useState(false);
   const [currentCity, setCurrentCity] = useState('Fortaleza');
   const [detailsMinimized, setDetailsMinimized] = useState(false);
 

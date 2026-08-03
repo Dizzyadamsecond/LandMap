@@ -224,6 +224,52 @@ function KpisPageInner() {
               </div>
             </Reveal>
 
+            <Reveal delay={0.15} className="mt-6">
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wide text-[var(--muted-foreground)]">
+                      {t('globalCoverage') ?? 'Cobertura global'}
+                    </p>
+                    <p className="mt-1 text-sm text-[var(--foreground)]">
+                      {(loading || !kpis)
+                        ? '—'
+                        : `${kpis.total.toLocaleString('pt-BR')} imóveis · ${topCities.length} cidades no ranking`}
+                    </p>
+                  </div>
+                  <Link
+                    href={lh('/map')}
+                    className="btn btn-ghost !px-3 !py-1.5 !text-xs"
+                  >
+                    {t('viewMap')}
+                  </Link>
+                </div>
+                {topCities.length > 0 && (
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {topCities.slice(0, 6).map((c, i) => (
+                      <div
+                        key={`${c.city}-${c.state}`}
+                        className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2"
+                      >
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium text-[var(--foreground)]">
+                            <span className="mr-1 text-[var(--muted-foreground)]">#{i + 1}</span>
+                            {c.city}/{c.state}
+                          </p>
+                          <p className="text-xs text-[var(--muted-foreground)]">
+                            {c.count.toLocaleString('pt-BR')} imóveis
+                          </p>
+                        </div>
+                        <span className="text-sm font-semibold text-[var(--primary)]">
+                          {fmtBRL(c.avgPrice)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Reveal>
+
             <KpiSection id="macro" title={t('macroSection')} collapsed={!!collapsed.macro} onToggle={toggleSection}>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <MetricStat

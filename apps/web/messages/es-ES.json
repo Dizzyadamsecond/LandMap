@@ -18,6 +18,7 @@
     "docs": "Documentación",
     "status": "Estado",
     "admin": "Admin",
+    "investor": "Inversores",
     "backHome": "Volver al Inicio"
   },
   "home": {
@@ -56,6 +57,7 @@
     "result": "resultado",
     "noProperties": "Ningún inmueble coincide con estos filtros. Ajusta tipología, modalidad o ciudad.",
     "sortLabel": "Ordenar por",
+    "score": "Score",
     "sortPriceAsc": "Precio: menor-mayor",
     "sortPriceDesc": "Precio: mayor-menor",
     "sortArea": "Área",
@@ -232,7 +234,9 @@
     "cta": "Explorar mapa",
     "f1": "Extrusión 3D de edificios vía OpenStreetMap",
     "f2": "Paneles de inversión, energía y térmica",
-    "f3": "LivePulse de valorización en tiempo real"
+    "f3": "LivePulse de valorización en tiempo real",
+    "subtitle": "Mundo 3D interativo: skyline, calor de preço e fluxo de investimento em tempo real.",
+    "hint": "Use o mouse para orbitar e o scroll para zoom."
   },
   "integrations": {
     "title": "Integraciones",
@@ -281,7 +285,7 @@
     "viacepCidade": "Ciudad",
     "viacepUf": "Provincia",
     "viacepCepLabel": "CP",
-    "leilaoTitle": "Subasta (tempo real)",
+    "leilaoTitle": "Subasta (tiempo real)",
     "leilaoDesc": "Subastas judiciales + Caixa: lotes, tasación y lance mínimo, en vivo.",
     "leilaoLive": "En vivo",
     "leilaoLots": "Lotes encontrados",
@@ -301,13 +305,13 @@
     "leilaoCaixa": "Caixa",
     "leilaoPrecomposicao": "Precomposición",
     "cambioTitle": "Divisas (BCB)",
-    "cambioDesc": "Cotizaciones oficiais (USD/BRL etc.) vía AwesomeAPI — en vivo, sin clave.",
+    "cambioDesc": "Cotizaciones oficiales (USD/BRL etc.) vía AwesomeAPI — en vivo, sin clave.",
     "cambioPair": "Par",
     "cambioBid": "Compra",
     "cambioAsk": "Venda",
     "cambioUpdated": "Actualizado em",
     "twentyTitle": "Twenty CRM",
-    "twentyDesc": "CRM de relación (persoas, negocios, oportunidades) do LandMap.",
+    "twentyDesc": "CRM de relación (personas, negocios, oportunidades) do LandMap.",
     "twentyStatus": "Estado",
     "twentyVersion": "Versión",
     "twentyLive": "Conectado",
@@ -320,45 +324,45 @@
     "leilaoEmpty": "Ningún lote encontrado para el filtro.",
     "twentyCheck": "Verificar estado",
     "cnpjTitle": "CNPJ (Hacienda)",
-    "cnpjDesc": "Consulta de empresa vía BrasilAPI — en vivo, sen clave.",
+    "cnpjDesc": "Consulta de empresa vía BrasilAPI — en vivo, sin clave.",
     "cnpjLookup": "Consultar CNPJ",
     "cnpjRazao": "Razón social",
-    "cnpjFantasia": "Nome comercial",
+    "cnpjFantasia": "Nombre comercial",
+    "cnpjSitu": "",
     "cnpjSituacao": "Situación",
     "cnpjCnae": "CNAE",
     "cnpjUF": "Provincia",
     "cnpjMunicipio": "Concello",
     "cnpjFonte": "Fonte",
     "bacenTitle": "Banco Central (SGS)",
-    "bacenDesc": "Taxas oficiais Selic / CDI / IPCA (BCB) — en vivo, sen clave.",
-    "bacenRefresh": "Actualizar taxas",
+    "bacenDesc": "Tasas oficiales Selic / CDI / IPCA (BCB) — en vivo, sin clave.",
+    "bacenRefresh": "Actualizar tasas",
     "bacenSelic": "Selic",
     "bacenCdi": "CDI",
     "bacenIpca": "IPCA",
     "geoTitle": "Geo (OpenStreetMap)",
-    "geoDesc": "Geocodificación de enderezo vía Nominatim — en vivo, sen clave.",
-    "geoSearch": "Buscar enderezo",
-    "kpiTotal": "Integracións",
+    "geoDesc": "Geocodificación de dirección vía Nominatim — en vivo, sin clave.",
+    "geoSearch": "Buscar dirección",
+    "kpiTotal": "Integraciónes",
     "kpiLive": "En vivo",
     "kpiDemo": "Demo",
-    "cmdHint": "Consejo: pulsa para abrir a paleta de comandos",
+    "cmdHint": "Consejo: pulsa para abrir la paleta de comandos",
     "copied": "Endpoint copiado",
     "copy": "Copiar endpoint",
-    "copyFailed": "Non se puido copiar",
-    "ctaMap": "Explorar o mapa",
+    "copyFailed": "No se pudo copiar",
+    "ctaMap": "Explorar el mapa",
     "catAll": "Todas",
-    "catMessaging": "Mensaxería",
-    "catRegistry": "Rexistros",
-    "catDesign": "Deseño",
+    "catMessaging": "Mensajería",
+    "catRegistry": "Registros",
+    "catDesign": "Diseño",
     "catCrm": "CRM",
     "catData": "Datos",
-    "fieldWabaTo": "Teléfono (con prefijo)",
-    "fieldWabaText": "Mensaxe",
-    "fieldCrieValue": "Valor (matrícula / CPF / enderezo)",
-    "fieldLeilaoTipo": "Tipo de poxa",
-    "fieldCambioPair": "Par (ex: USD-BRL)",
+    "fieldWabaTo": "Teléfono (con código de país)",
+    "fieldCrieValue": "Valor (matrícula / CPF / dirección)",
+    "fieldLeilaoTipo": "Tipo de subasta",
+    "fieldCambioPair": "Par (ej: USD-BRL)",
     "fieldCnpj": "CNPJ",
-    "fieldGeo": "Enderezo"
+    "fieldGeo": "Dirección"
   },
   "insights": {
     "eyebrow": "Insights",
@@ -374,7 +378,7 @@
     "title": "Pipeline de ventas",
     "description": "Sigue leads, oportunidades y conversiones en un CRM ligero integrado con el mapa de inmuebles.",
     "cta": "Abrir dashboard",
-    "f1": "Leads por puntuación y origem",
+    "f1": "Leads por puntuación y origen",
     "f2": "Oportunidades y pipeline",
     "f3": "Integración con Twenty CRM"
   },
@@ -384,14 +388,14 @@
     "description": "Busca terrenos y loteamientos con historial de precio por m² y potencial de construcción.",
     "cta": "Buscar terrenos",
     "f1": "Filtro por ciudad y UF",
-    "f2": "Historial de precio por m²",
+    "f2": "Histórico de precio por m²",
     "f3": "Potencial de construcción"
   },
   "studio": {
     "eyebrow": "Studio",
     "title": "Estudio creativo",
-    "description": "Genera presentaciones, mapas e informes con la marca a partir de tus datos territoriales.",
-    "cta": "Abrir studio",
+    "description": "Genera presentaciones, mapas e informes con marca a partir de tus datos territoriales.",
+    "cta": "Abrir estudio",
     "f1": "Presentaciones con marca",
     "f2": "Mapas e informes",
     "f3": "Exportación en PDF/PNG"
@@ -439,5 +443,180 @@
       "media": "Media",
       "alta": "Alta"
     }
+  },
+  "investor": {
+    "hero": {
+      "title": "Invierte en LandMap",
+      "description": "Únete a nosotros para transformar la inteligencia inmobiliaria en América Latina y más allá.",
+      "plansButton": "Ver Nuestros Planes",
+      "contactButton": "Contacto para Inversores"
+    },
+    "about": {
+      "title": "Sobre Nosotros",
+      "description": "LandMap es la plataforma líder de inteligencia inmobiliaria en Brasil, que ofrece información impulsada por IA, análisis de mercado y herramientas de inversión para desarrolladores, inversores e instituciones financieras.",
+      "mission": "Nuestra Misión",
+      "vision": "Nuestra Visión",
+      "visionDescription": "Democratizar el acceso a datos y análisis inmobiliarios de alta calidad, permitiendo inversiones más inteligentes y un desarrollo urbano sostenible."
+    },
+    "metrics": {
+      "title": "Métricas Clave",
+      "properties": "Propiedades Mapeadas",
+      "propertiesDesc": "Cobertura completa de propiedades urbanas y rurales",
+      "cities": "Ciudades Cubiertas",
+      "citiesDesc": "Desde metrópolis hasta mercados emergentes",
+      "accuracy": "Precisión de Datos",
+      "accuracyDesc": "Validado mediante múltiples fuentes y verificación de IA",
+      "users": "Usuarios Activos",
+      "usersDesc": "Inversores, corredores y instituciones financieras"
+    },
+    "highlights": {
+      "title": "¿Por qué Invertir en LandMap?",
+      "traction": "Trayectoria Probada",
+      "tractionDesc": "Crecimiento rápido de ingresos con sólida economía por unidad y expansión de participación en el sector proptech de Brasil.",
+      "technology": "Tecnología Defendible",
+      "technologyDesc": "Modelos de IA propietarios y tuberías de datos únicas crean barreras significativas de entrada.",
+      "team": "Equipo Experimentado",
+      "teamDesc": "Fundadores con profunda experiencia en bienes raíces, ciencia de datos y software empresarial.",
+      "model": "Modelo de Negocio Escalable",
+      "modelDesc": "Ingresos basados en SaaS con expansión de contratos empresariales y gubernamentales.",
+      "impact": "Impacto Positivo",
+      "impactDesc": "Contribuyendo a mercados transparentes, uso eficiente de la tierra y desarrollo sostenible.",
+      "exit": "Rutas de Salida Claras",
+      "exitDesc": "Atractivo para adquirentes estratégicos en proptech, finanzas y sectores inmobiliarios."
+    },
+    "documents": {
+      "title": "Documentos para Inversores",
+      "description": "Acceda a nuestros últimos informes financieros, presentaciones y documentos legales.",
+      "financialReport": "Informe Trimestral Q1 2024",
+      "financialReportDesc": "Resaltados financieros y métricas operativas",
+      "presentation": "Presentación para Inversores",
+      "presentationDesc": "Visión general del modelo de negocio, oportunidad de mercado y proyecciones financieras",
+      "legal": "Plantilla de Hoja de Términos",
+      "legalDesc": "Términos estándar para rondas de inversión de capital",
+      "download": "Descargar PDF"
+    },
+    "cta": {
+      "title": "¿Listo para Unirte a Nuestro Viaje?",
+      "description": "Buscamos socios estratégicos que compartan nuestra visión de transformar los mercados inmobiliarios mediante tecnología y datos.",
+      "seePlans": "Explorar Oportunidades de Asociación",
+      "contact": "Contacto para Inversores"
+    }
+  },
+  "ConsorcioPage": {
+    "hero": {
+      "title": "Consorcio de Inmuebles",
+      "subtitle": "Planifique la adquisición de su terreno sin intereses, con flexibilidad y seguridad."
+    },
+    "step1": {
+      "title": "Elija la cuota",
+      "description": "Seleccione el valor del crédito que desea y únase a un grupo de consorcio con personas con objetivos similares."
+    },
+    "step2": {
+      "title": "Pague las cuotas",
+      "description": "Pague mensualmente y tenga la oportunidad de ser contemplado por sorteo o puja."
+    },
+    "step3": {
+      "title": "Realice su sueño",
+      "description": "Cuando sea contemplado, use el crédito para comprar el terreno al contado, sin intereses."
+    },
+    "benefits": {
+      "title": "¿Por qué elegir el consorcio?",
+      "access": {
+        "title": "Acceso facilitado",
+        "description": "Sin necesidad de un pago inicial alto o un análisis de crédito rigurosos."
+      },
+      "finance": {
+        "title": "Sin intereses",
+        "description": "Usted paga solo el valor del crédito, más una tasa administrativa fija."
+      },
+      "growth": {
+        "title": "Planificación",
+        "description": "Ideal para quienes quieren comprar un terreno en el futuro con disciplina financiera."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para comenzar?",
+      "description": "Únase a miles de personas que están realizando el sueño de su propio terreno a través del consorcio.",
+      "button1": "Simular mi quota",
+      "button2": "Hablar con un asesor"
+    }
+  },
+  "LeilaoPage": {
+    "hero": {
+      "title": "Subasta de Terrenos",
+      "subtitle": "Participe de subastas seguras y transparentes para adquirir su terreno con excelentes condiciones."
+    },
+    "step1": {
+      "title": "Regístrese",
+      "description": "Regístrese gratuitamente y tenga acceso a las subastas disponibles."
+    },
+    "step2": {
+      "title": "Haga su oferta",
+      "description": "Siga la subasta en tiempo real y haga su oferta cuando lo desee."
+    },
+    "step3": {
+      "title": "Adquiera su terreno",
+      "description": "Si gana la subasta, concluya la compra y reciba la documentación de su nuevo terreno."
+    },
+    "benefits": {
+      "title": "¿Por qué participar en nuestras subastas?",
+      "transparency": {
+        "title": "Transparencia total",
+        "description": "Todas las ofertas son públicas y los criterios de evaluación son claros."
+      },
+      "legality": {
+        "title": "Seguridad jurídica",
+        "description": "Procesos conforme a la legislación, con documentación rigurosa y idoneidad."
+      },
+      "value": {
+        "title": "Oportunidades excelentes",
+        "description": "Terrenos con precios por debajo del mercado y potencial de apreciación."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para hacer su primera oferta?",
+      "description": "Regístrese ahora y participe en la próxima subasta de tierras con condiciones especiales.",
+      "button1": "Registrarse gratis",
+      "button2": "Ver próximas subastas"
+    }
+  },
+  "sobre": {
+    "eyebrow": "Acerca de",
+    "title": "Acerca de LandMap",
+    "description": "LandMap eleva el territorio inmobiliario brasileño como datos abiertos — precio por m², mapas de calor e IA para decisiones, gratis y sin login.",
+    "f1": "Misión: hacer transparente el precio del metro cuadrado en todas las ciudades de Brasil.",
+    "f2": "Datos: catálogo de inmuebles en 20+ ciudades con histórico de precios y capas de calor.",
+    "f3": "Abierto: sin paywall — el mapa y los indicadores quedan abiertos para cualquier usuario."
+  },
+  "privacy": {
+    "eyebrow": "Privacidad",
+    "title": "Política de Privacidad",
+    "description": "Cómo recopilamos, usamos y protegemos tus datos en LandMap.",
+    "f1": "Recopilación: recopilamos solo el mínimo necesario para operar el mapa y la cuenta.",
+    "f2": "Uso: tus datos no se venden y se usan para mejorar la experiencia.",
+    "f3": "Derechos: puedes solicitar exportación o eliminación en cualquier momento."
+  },
+  "terms": {
+    "eyebrow": "Términos",
+    "title": "Términos de Uso",
+    "description": "Condiciones para usar la plataforma LandMap.",
+    "f1": "Uso: el contenido es informativo y no constituye asesoramiento.",
+    "f2": "Cuenta: eres responsable de la seguridad de tu cuenta y datos.",
+    "f3": "Limitación: LandMap no se responsabiliza por decisiones basadas en los datos."
+  },
+  "fontes": {
+    "eyebrow": "Fuentes",
+    "title": "Fuentes de Datos",
+    "description": "De dónde vienen los inmuebles, precios e indicadores de LandMap.",
+    "f1": "Catálogo: inmuebles agregados de portales públicos y bases de mercado abiertas.",
+    "f2": "Precio/m²: calculado por región a partir de transacciones y anuncios recientes.",
+    "f3": "Actualización: el dataset se recalcula periódicamente para reflejar el mercado."
+  },
+  "splash": {
+    "title": "El territorio inmobiliario, elevado como dato.",
+    "subtitle": "Mapa interactivo, precio por m² e IA para decidir — gratis y sin login.",
+    "ctaMap": "Abrir el mapa",
+    "ctaStart": "Empezar",
+    "footnote": "LandMap · Inteligencia territorial abierta"
   }
 }

@@ -38,7 +38,7 @@ export const PLANS: PlanMeta[] = [
   {
     id: 'access',
     name: 'LandMap Access',
-    priceBRL: 49.9,
+    priceBRL: 69.9,
     tagline: 'Mais acessível',
     highlight: false,
     features: [
@@ -52,21 +52,24 @@ export const PLANS: PlanMeta[] = [
   {
     id: 'plus',
     name: 'LandMap Plus',
-    priceBRL: 89.9,
+    priceBRL: 119.9,
     tagline: 'Mais popular',
     highlight: true,
     features: [
       'Tudo do Access',
-      'Mapa inteligente avançado',
-      'Dossiê de imóvel',
-      'Heatmap e camadas',
-      'Suporte prioritário',
+      'Radar de oportunidades LandMap',
+      'Alertas inteligentes de valorização',
+      'Alertas de queda de preço',
+      'Ranking de oportunidades por cidade',
+      'Comparação entre regiões',
+      'Notas automáticas sobre potencial da área',
+      'Salvar até 25 áreas favoritas',
     ],
   },
   {
     id: 'pro',
     name: 'LandMap Pro',
-    priceBRL: 179.9,
+    priceBRL: 249.9,
     tagline: 'Para profissionais',
     highlight: false,
     features: [
@@ -80,7 +83,7 @@ export const PLANS: PlanMeta[] = [
   {
     id: 'business',
     name: 'LandMap Business',
-    priceBRL: 349.9,
+    priceBRL: 699.9,
     tagline: 'Time e operação',
     highlight: false,
     features: [

@@ -20,6 +20,7 @@ import {
   GitCompare,
   CalendarClock,
   FileText,
+  TrendingUp,
 } from './lovable/icons';
 
 const ICONS = {
@@ -37,6 +38,8 @@ const ICONS = {
   webhooks: Layers,
   settings: BellRing,
   audit: ShieldCheck,
+  consorcio: Star,
+  leilao: TrendingUp,
 } as const;
 
 type IconKey = keyof typeof ICONS;
@@ -62,6 +65,8 @@ export function AdminSidebar() {
     { href: `/${locale}/admin/webhooks`, icon: 'webhooks', label: 'Webhooks' },
     { href: `/${locale}/admin/settings`, icon: 'settings', label: 'Configurações' },
     { href: `/${locale}/admin/audit`, icon: 'audit', label: 'Auditoria' },
+    { href: `/${locale}/admin/consorcio`, icon: 'consorcio', label: 'Consórcio' },
+    { href: `/${locale}/admin/leilao`, icon: 'leilao', label: 'Leilão' },
   ];
 
   return (

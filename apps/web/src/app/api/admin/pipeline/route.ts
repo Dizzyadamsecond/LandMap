@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server';
-import { apiUrl } from '../../../../lib/api';
 
 type PipelineStage = {
   key: 'Novo' | 'Contatado' | 'Agendou Visita' | 'Negociação' | 'Fechado' | 'Perdido';
@@ -16,14 +15,13 @@ export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const minScore = Number(url.searchParams.get('minScore') || 0);
 
-    const base = apiUrl('/api/admin/leads');
-    const leadsRes = await fetch(`${base}?${new URLSearchParams({ stage: '' })}`, {
-      headers: { accept: 'application/json' },
-      cache: 'no-store',
-    });
-    if (!leadsRes.ok) throw new Error(`leads failed: ${leadsRes.status}`);
-    const leadsJson = (await leadsRes.json()) as { items: Array<Record<string, any>> };
-    const items = (leadsJson.items || []).filter((l) => (Number(l.score) || 0) >= minScore);
+    // Leads vivem em memória compartilhada (globalThis) — sem self-fetch para evitar URL dupla.
+    const memory = globalThis as unknown as {
+      landmapLeads?: Array<Record<string, any>>;
+    };
+    const items = (memory.landmapLeads || []).filter(
+      (l) => (Number(l.score) || 0) >= minScore,
+    );
 
     const stages: PipelineStage[] = [
       { key: 'Novo', label: 'Novo', count: 0, value: 0, conversionPct: 0 },
@@ -50,7 +48,8 @@ export async function GET(request: NextRequest) {
     }
 
     for (const stage of stages) {
-      stage.conversionPct = totalLeads > 0 ? Number(((stage.count / totalLeads) * 100).toFixed(1)) : 0;
+      stage.conversionPct =
+        totalLeads > 0 ? Number(((stage.count / totalLeads) * 100).toFixed(1)) : 0;
     }
 
     return Response.json({

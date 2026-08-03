@@ -9,6 +9,9 @@ export { TwentyClient } from './twenty.js';
 export { CnpjClient } from './cnpj.js';
 export { BacenClient } from './bacen.js';
 export { GeoClient } from './geo.js';
+export { SidraClient } from './sidra.js';
+export { BrasilApiClient } from './brasilapi.js';
+export { Crawl4aiClient } from './crawl4ai.js';
 export { listIntegrations } from './registry.js';
 export type { IntegrationMeta, IntegrationCategory } from './registry.js';
 export type {

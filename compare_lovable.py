@@ -31,7 +31,7 @@ SCREENS = {
     "onboarding":  ("lovable_html_onboarding.html", "/pt-BR/onboarding"),
 }
 
-SKIP = {"script", "style", "head", "noscript", "svg"}
+SKIP = {"script", "style", "head", "noscript", "svg", "path", "circle", "rect", "polygon", "polyline", "ellipse", "line", "g", "defs", "linearGradient", "stop", "use", "clipPath"}
 MEANINGFUL = {"h1", "h2", "h3", "h4", "p", "button", "a", "li", "td", "th",
               "span", "label", "strong", "b", "title", "meta"}
 

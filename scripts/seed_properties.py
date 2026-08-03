@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate 3000 investor-grade mock property records (LandMap Free dataset)."""
+"""Generate nationwide Brazil property records for LandMap (Free dataset)."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from typing import Any
 OUTPUT_DIR = os.path.join("data", "seeds")
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "properties.json")
 
-COUNT = 3000
+COUNT = 10000
 TARGET_TERRENO_RATIO = 0.55
 RANDOM_SEED = 42
 
@@ -26,96 +26,216 @@ TYPE_WEIGHTS = [
 MODALITIES = ["venda", "venda", "venda", "aluguel", "lancamento"]
 
 CITIES: list[dict[str, str]] = [
-    {"city": "Curitiba", "state": "PR"},
-    {"city": "Florianópolis", "state": "SC"},
-    {"city": "Balneário Camboriú", "state": "SC"},
+    # Norte
+    {"city": "Manaus", "state": "AM"},
+    {"city": "Belém", "state": "PA"},
+    {"city": "Porto Velho", "state": "RO"},
+    {"city": "Rio Branco", "state": "AC"},
+    {"city": "Macapá", "state": "AP"},
+    {"city": "Boa Vista", "state": "RR"},
+    {"city": "Palmas", "state": "TO"},
+    {"city": "Santarém", "state": "PA"},
+    # Nordeste
+    {"city": "São Luís", "state": "MA"},
+    {"city": "Teresina", "state": "PI"},
+    {"city": "Fortaleza", "state": "CE"},
+    {"city": "Natal", "state": "RN"},
+    {"city": "João Pessoa", "state": "PB"},
+    {"city": "Recife", "state": "PE"},
+    {"city": "Maceió", "state": "AL"},
+    {"city": "Aracaju", "state": "SE"},
+    {"city": "Salvador", "state": "BA"},
+    {"city": "Juazeiro do Norte", "state": "CE"},
+    # Centro-Oeste
+    {"city": "Brasília", "state": "DF"},
+    {"city": "Goiânia", "state": "GO"},
+    {"city": "Campo Grande", "state": "MS"},
+    {"city": "Cuiabá", "state": "MT"},
+    # Sudeste
     {"city": "São Paulo", "state": "SP"},
     {"city": "Rio de Janeiro", "state": "RJ"},
     {"city": "Belo Horizonte", "state": "MG"},
-    {"city": "Porto Alegre", "state": "RS"},
-    {"city": "Joinville", "state": "SC"},
-    {"city": "Londrina", "state": "PR"},
-    {"city": "Maringá", "state": "PR"},
+    {"city": "Vitória", "state": "ES"},
     {"city": "Campinas", "state": "SP"},
     {"city": "Ribeirão Preto", "state": "SP"},
+    {"city": "Santos", "state": "SP"},
     {"city": "Niterói", "state": "RJ"},
     {"city": "Uberlândia", "state": "MG"},
-    {"city": "Brasília", "state": "DF"},
-    {"city": "Goiânia", "state": "GO"},
-    {"city": "Salvador", "state": "BA"},
-    {"city": "Fortaleza", "state": "CE"},
-    {"city": "Recife", "state": "PE"},
+    {"city": "Contagem", "state": "MG"},
+    {"city": "Vila Velha", "state": "ES"},
+    {"city": "Serra", "state": "ES"},
+    # Sul
+    {"city": "Curitiba", "state": "PR"},
+    {"city": "Florianópolis", "state": "SC"},
+    {"city": "Porto Alegre", "state": "RS"},
+    {"city": "Balneário Camboriú", "state": "SC"},
+    {"city": "Londrina", "state": "PR"},
+    {"city": "Maringá", "state": "PR"},
+    {"city": "Joinville", "state": "SC"},
     {"city": "Itajaí", "state": "SC"},
+    {"city": "Caxias do Sul", "state": "RS"},
+    {"city": "Pelotas", "state": "RS"},
+    {"city": "Foz do Iguaçu", "state": "PR"},
 ]
 
 NEIGHBORHOODS: dict[str, list[str]] = {
-    "Curitiba": ["Batel", "Centro", "Centro Cívico", "Água Verde", "Bigorrilho", "Mercês", "Juvevê", "Bom Retiro"],
-    "Florianópolis": ["Centro", "Trindade", "Jurerê", "Lagoa da Conceição", "Canasvieiras", "Ingleses"],
-    "Balneário Camboriú": ["Centro", "Nações", "Pioneiros", "Barra Sul", "Municípios"],
+    # Norte
+    "Manaus": ["Adrianópolis", "Ponta Negra", "Centro", "Aleixo", "Jardim Botânico"],
+    "Belém": ["Batista Campos", "Umarizal", "Nazaré", "Água Boa", "Centro"],
+    "Porto Velho": ["Centro", "Nova Porto Velho", "São João", "Rio Madeira"],
+    "Rio Branco": ["Bosque", "Centro", "Vila Ivonete", "Jardim Europa"],
+    "Macapá": ["Centro", "Jardim Equatorial", "Trem", "Buritizal"],
+    "Boa Vista": ["Centro", "São Francisco", "Jardim Floresta", "Caçari"],
+    "Palmas": ["Plano Diretor Sul", "Jardim Taquari", "Aureny I", "Centro"],
+    "Santarém": ["Centro", "Alter do Chão", "Nova República", "Uruará"],
+    # Nordeste
+    "São Luís": ["Renascer", "Jaracaty", "Calhau", "Centro"],
+    "Teresina": ["Jóquei", "Ininga", "Centro", "Água Mineral"],
+    "Fortaleza": ["Meireles", "Aldeota", "Cocó", "Centro", "Praia de Iracema"],
+    "Natal": ["Ponta Negra", "Petrópolis", "Tirol", "Centro"],
+    "João Pessoa": ["Manaíra", "Tambaú", "Centro", "Bessa"],
+    "Recife": ["Boa Viagem", "Recife Antigo", "Casa Forte", "Pina", "Espinheiro"],
+    "Maceió": ["Pajuçara", "Jatiúca", "Centro", "Mangabeiras"],
+    "Aracaju": ["Atalaia", "Jardins", "Centro", "Coroa do Meio"],
+    "Salvador": ["Barra", "Pituba", "Ondina", "Caminho das Árvores", "Itaigara"],
+    "Juazeiro do Norte": ["Centro", "Triângulo", "Romeirão", "Pirajá"],
+    # Centro-Oeste
+    "Brasília": ["Asa Sul", "Asa Norte", "Lago Sul", "Sudoeste", "Águas Claras"],
+    "Goiânia": ["Setor Bueno", "Setor Marista", "Centro", "Jardim Goiás"],
+    "Campo Grande": ["Centro", "Jardim dos Estados", "São Francisco", "Tiradentes"],
+    "Cuiabá": ["Centro", "Jardim Cuiabá", "Goiabeiras", "Duque de Caxias"],
+    # Sudeste
     "São Paulo": ["Jardins", "Vila Olímpia", "Pinheiros", "Moema", "Barra Funda", "Perdizes", "Itaim Bibi"],
     "Rio de Janeiro": ["Copacabana", "Ipanema", "Barra da Tijuca", "Botafogo", "Leblon", "Flamengo"],
     "Belo Horizonte": ["Savassi", "Lourdes", "Funcionários", "Cidade Jardim", "Sion"],
-    "Porto Alegre": ["Moinhos de Vento", "Bela Vista", "Centro Histórico", "Petrópolis"],
-    "Joinville": ["Centro", "América", "Bucarein", "Atiradores"],
-    "Londrina": ["Centro", "Gleba Palhano", "Jardim Higienópolis", "Vila Nova"],
-    "Maringá": ["Zona 01", "Zona 02", "Zona 07", "Zona 03"],
+    "Vitória": ["Praia do Canto", "Jardim da Penha", "Centro", "Mata da Serra"],
     "Campinas": ["Cambuí", "Centro", "Barão Geraldo", "Nova Campinas", "Taquaral"],
     "Ribeirão Preto": ["Centro", "Jardim Irajá", "Nova Aliança", "Ribeirânia"],
+    "Santos": ["Gonzaga", "Boqueirão", "Centro", "Ponta da Praia"],
     "Niterói": ["Icaraí", "Centro", "São Francisco", "Charitas", "Ingá"],
     "Uberlândia": ["Centro", "Santa Mônica", "Tibery", "Jaraguá"],
-    "Brasília": ["Asa Sul", "Asa Norte", "Lago Sul", "Sudoeste", "Águas Claras"],
-    "Goiânia": ["Setor Bueno", "Setor Marista", "Centro", "Jardim Goiás"],
-    "Salvador": ["Barra", "Pituba", "Ondina", "Caminho das Árvores", "Itaigara"],
-    "Fortaleza": ["Meireles", "Aldeota", "Cocó", "Centro", "Praia de Iracema"],
-    "Recife": ["Boa Viagem", "Recife Antigo", "Casa Forte", "Pina", "Espinheiro"],
+    "Contagem": ["Centro", "Eldorado", "Industrial", "Vale do Jatobá"],
+    "Vila Velha": ["Praia da Costa", "Itapuã", "Centro", "Boa Vista"],
+    "Serra": ["Laranjeiras", "Jacaraípe", "Centro", "Porto Canoa"],
+    # Sul
+    "Curitiba": ["Batel", "Centro", "Centro Cívico", "Água Verde", "Bigorrilho", "Mercês", "Juvevê", "Bom Retiro"],
+    "Florianópolis": ["Centro", "Trindade", "Jurerê", "Lagoa da Conceição", "Canasvieiras", "Ingleses"],
+    "Porto Alegre": ["Moinhos de Vento", "Bela Vista", "Centro Histórico", "Petrópolis"],
+    "Balneário Camboriú": ["Centro", "Nações", "Pioneiros", "Barra Sul", "Municípios"],
+    "Londrina": ["Centro", "Gleba Palhano", "Jardim Higienópolis", "Vila Nova"],
+    "Maringá": ["Zona 01", "Zona 02", "Zona 07", "Zona 03"],
+    "Joinville": ["Centro", "América", "Bucarein", "Atiradores"],
     "Itajaí": ["Centro", "Fazenda", "São João", "Cordeiros"],
+    "Caxias do Sul": ["Centro", "São Pelegrino", "Jardim América", "Desvio Rizzo"],
+    "Pelotas": ["Centro", "Fragata", "Três Vendas", "Areal"],
+    "Foz do Iguaçu": ["Centro", "Jardim América", "Cataratas", "Porto Meira"],
 }
 
 COORDS: dict[str, tuple[float, float]] = {
-    "Curitiba": (-25.4290, -49.2671),
-    "Florianópolis": (-27.5954, -48.5480),
-    "Balneário Camboriú": (-26.9907, -48.6301),
+    # Norte
+    "Manaus": (-3.1190, -60.0217),
+    "Belém": (-1.4558, -48.4902),
+    "Porto Velho": (-8.7612, -63.9004),
+    "Rio Branco": (-9.9754, -67.8249),
+    "Macapá": (0.0356, -51.0705),
+    "Boa Vista": (2.8235, -60.6758),
+    "Palmas": (-10.2491, -48.3243),
+    "Santarém": (-2.4446, -54.7086),
+    # Nordeste
+    "São Luís": (-2.5387, -44.2825),
+    "Teresina": (-5.0920, -42.8038),
+    "Fortaleza": (-3.7172, -38.5433),
+    "Natal": (-5.7945, -35.2110),
+    "João Pessoa": (-7.1151, -34.8641),
+    "Recife": (-8.0476, -34.8770),
+    "Maceió": (-9.6658, -35.7350),
+    "Aracaju": (-10.9091, -37.0747),
+    "Salvador": (-12.9777, -38.5016),
+    "Juazeiro do Norte": (-7.1967, -39.3079),
+    # Centro-Oeste
+    "Brasília": (-15.7801, -47.9292),
+    "Goiânia": (-16.6869, -49.2648),
+    "Campo Grande": (-20.4697, -54.6201),
+    "Cuiabá": (-15.6014, -56.0979),
+    # Sudeste
     "São Paulo": (-23.5505, -46.6333),
     "Rio de Janeiro": (-22.9068, -43.1729),
     "Belo Horizonte": (-19.9167, -43.9345),
-    "Porto Alegre": (-30.0346, -51.2177),
-    "Joinville": (-26.3045, -48.8487),
-    "Londrina": (-23.3103, -51.1628),
-    "Maringá": (-23.4205, -51.9333),
+    "Vitória": (-20.3155, -40.3128),
     "Campinas": (-22.9099, -47.0626),
     "Ribeirão Preto": (-21.1775, -47.8103),
+    "Santos": (-23.9618, -46.3322),
     "Niterói": (-22.8832, -43.1034),
     "Uberlândia": (-18.9186, -48.2772),
-    "Brasília": (-15.7801, -47.9292),
-    "Goiânia": (-16.6869, -49.2648),
-    "Salvador": (-12.9777, -38.5016),
-    "Fortaleza": (-3.7172, -38.5433),
-    "Recife": (-8.0476, -34.8770),
+    "Contagem": (-19.9317, -44.0529),
+    "Vila Velha": (-20.3297, -40.2935),
+    "Serra": (-20.1280, -40.3065),
+    # Sul
+    "Curitiba": (-25.4290, -49.2671),
+    "Florianópolis": (-27.5954, -48.5480),
+    "Porto Alegre": (-30.0346, -51.2177),
+    "Balneário Camboriú": (-26.9907, -48.6301),
+    "Londrina": (-23.3103, -51.1628),
+    "Maringá": (-23.4205, -51.9333),
+    "Joinville": (-26.3045, -48.8487),
     "Itajaí": (-26.9078, -48.6619),
+    "Caxias do Sul": (-29.1678, -51.1794),
+    "Pelotas": (-31.7616, -52.3370),
+    "Foz do Iguaçu": (-25.5478, -54.5882),
 }
 
 # City tier multiplies base R$/m² (premium metros & coast higher)
 CITY_TIER: dict[str, float] = {
+    # Norte
+    "Manaus": 0.85,
+    "Belém": 0.8,
+    "Porto Velho": 0.7,
+    "Rio Branco": 0.68,
+    "Macapá": 0.7,
+    "Boa Vista": 0.72,
+    "Palmas": 0.78,
+    "Santarém": 0.72,
+    # Nordeste
+    "São Luís": 0.78,
+    "Teresina": 0.75,
+    "Fortaleza": 0.9,
+    "Natal": 0.88,
+    "João Pessoa": 0.82,
+    "Recife": 0.85,
+    "Maceió": 0.8,
+    "Aracaju": 0.78,
+    "Salvador": 0.85,
+    "Juazeiro do Norte": 0.72,
+    # Centro-Oeste
+    "Brasília": 1.15,
+    "Goiânia": 0.88,
+    "Campo Grande": 0.82,
+    "Cuiabá": 0.8,
+    # Sudeste
     "São Paulo": 1.35,
     "Rio de Janeiro": 1.25,
-    "Brasília": 1.15,
-    "Balneário Camboriú": 1.3,
-    "Florianópolis": 1.2,
-    "Niterói": 1.15,
-    "Curitiba": 1.0,
     "Belo Horizonte": 0.95,
-    "Porto Alegre": 0.95,
+    "Vitória": 0.95,
     "Campinas": 1.05,
-    "Salvador": 0.9,
-    "Fortaleza": 0.85,
-    "Recife": 0.88,
-    "Goiânia": 0.82,
-    "Uberlândia": 0.8,
-    "Ribeirão Preto": 0.85,
-    "Joinville": 0.9,
-    "Londrina": 0.78,
-    "Maringá": 0.8,
-    "Itajaí": 1.1,
+    "Ribeirão Preto": 0.9,
+    "Santos": 1.1,
+    "Niterói": 1.15,
+    "Uberlândia": 0.82,
+    "Contagem": 0.8,
+    "Vila Velha": 0.9,
+    "Serra": 0.88,
+    # Sul
+    "Curitiba": 1.0,
+    "Florianópolis": 1.2,
+    "Porto Alegre": 0.95,
+    "Balneário Camboriú": 1.3,
+    "Londrina": 0.82,
+    "Maringá": 0.82,
+    "Joinville": 0.95,
+    "Itajaí": 1.05,
+    "Caxias do Sul": 0.88,
+    "Pelotas": 0.78,
+    "Foz do Iguaçu": 0.85,
 }
 
 AREAS: dict[str, tuple[int, int]] = {
@@ -146,7 +266,7 @@ COORD_JITTER = 0.028
 RENT_YIELD: dict[str, float] = {
     "apartamento": 0.065,
     "casa": 0.06,
-    "terreno": 0.055,  # proxy (dev / lease / carry)
+    "terreno": 0.055,
     "comercial": 0.085,
 }
 
@@ -270,7 +390,6 @@ def generate_property(idx: int) -> dict[str, Any]:
 
     risks = random.sample(RISK_POOL, k=random.randint(1, 3))
     drivers = random.sample(DRIVER_POOL, k=random.randint(2, 4))
-
     record: dict[str, Any] = {
         "id": str(idx),
         "schemaVersion": 2,
@@ -391,7 +510,6 @@ def analyze_invest(
         else:
             irr = (lo + hi) / 2
 
-    # Score mirrors packages/invest BENCH/WEIGHTS
     cap_s = _clamp(cap / 0.07, 0, 1)
     coc_s = _clamp((coc + 0.1) / 0.22, 0, 1)
     p2r_s = _clamp((22 - p2r) / (22 - 8), 0, 1)
@@ -505,7 +623,6 @@ def enrich_all(properties: list[dict[str, Any]]) -> list[dict[str, Any]]:
         peers = [i for i in by_nhood_type[(p["city"], p["neighborhood"], p["type"])] if i != p["id"]]
         random.shuffle(peers)
         p["comps"] = peers[:3]
-
         # Thesis bullets
         grade = invest["grade"]
         cap_pct = invest["capRate"] * 100
@@ -551,6 +668,7 @@ def main() -> int:
     print(f"[OK] Generated {len(properties)} properties -> {OUTPUT_FILE}")
     print(f"   terrenos: {terrenos}/{len(properties)} ({100 * terrenos / len(properties):.1f}%)")
     print(f"   cities: {len({p['city'] for p in properties})}")
+    print(f"   states: {sorted({p['state'] for p in properties})}")
     print(f"   grades: {dict(sorted(grades.items()))}")
     if terrenos / len(properties) < TARGET_TERRENO_RATIO - 0.02:
         print(f"[WARN] terreno ratio below target {TARGET_TERRENO_RATIO}")

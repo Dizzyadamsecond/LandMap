@@ -3,7 +3,7 @@ import asyncio, json, re
 from playwright.async_api import async_playwright
 
 LOV = "https://landmap-insight.lovable.app"
-LOCAL = "http://localhost:3000"
+LOCAL = "https://landmapprod.vercel.app"
 ROUTES = ["/", "/regions", "/favorites", "/compare", "/dashboard", "/admin", "/plans", "/auth", "/map"]
 
 async def render(page, url):

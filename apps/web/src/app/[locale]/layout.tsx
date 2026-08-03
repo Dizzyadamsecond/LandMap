@@ -108,31 +108,31 @@ export default async function RootLayout({
 
   return (
     <NextIntlClientProvider messages={messages} locale={resolvedLocale}>
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[var(--card)] border border-[var(--border)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--foreground)]"
-      >
-        Pular para o conteúdo
-      </a>
-      <style
-        dangerouslySetInnerHTML={{
-          __html:
-            ':focus-visible{outline:2px solid color-mix(in srgb,var(--primary)_80%,transparent);outline-offset:2px;border-radius:6px;}',
-        }}
-      />
-      {/* pb bottom-nav só no AppShell (mobile) — rotas bare (auth/plans/onboarding/map) sem padding fantasma */}
-      <div className="relative min-h-[100dvh] text-[var(--foreground)] antialiased">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[var(--background)]" />
-          <div className="absolute inset-0 cadastre-grid opacity-[0.03]" />
-        </div>
-        <ShellSwitch>
-          <ToastProvider>
-            <ErrorBoundary>{children}</ErrorBoundary>
-          </ToastProvider>
-        </ShellSwitch>
-        <ScrollToTop />
-      </div>
-    </NextIntlClientProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[var(--card)] border border-[var(--border)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--foreground)]"
+          >
+            Pular para o conteúdo
+          </a>
+          <style
+            dangerouslySetInnerHTML={{
+              __html:
+                ':focus-visible{outline:2px solid color-mix(in srgb,var(--primary)_80%,transparent);outline-offset:2px;border-radius:6px;}',
+            }}
+          />
+          {/* pb bottom-nav só no AppShell (mobile) — rotas bare (auth/plans/onboarding/map) sem padding fantasma */}
+          <div className="relative min-h-[100dvh] text-[var(--foreground)] antialiased">
+            <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+              <div className="absolute inset-0 bg-[var(--background)]" />
+              <div className="absolute inset-0 cadastre-grid opacity-[0.03]" />
+            </div>
+            <ShellSwitch>
+              <ToastProvider>
+                <ErrorBoundary>{children}</ErrorBoundary>
+              </ToastProvider>
+            </ShellSwitch>
+            <ScrollToTop />
+          </div>
+        </NextIntlClientProvider>
   );
 }

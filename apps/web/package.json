@@ -16,6 +16,7 @@
     "@landmap/api": "workspace:*",
     "@landmap/config": "workspace:*",
     "@landmap/geo": "workspace:*",
+    "@landmap/integrations": "workspace:*",
     "@landmap/sales": "workspace:*",
     "@landmap/ui": "workspace:*",
     "@supabase/supabase-js": "^2.45.0",

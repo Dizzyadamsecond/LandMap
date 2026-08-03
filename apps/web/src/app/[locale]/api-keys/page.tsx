@@ -155,7 +155,7 @@ export default function ApiKeysPage() {
 
   return (
     <ProductPageShell
-      backHref="/plans"
+      backHref={lh('/plans')}
       eyebrow={
         <>
           <Code2 className="h-3 w-3" /> API &amp; Webhooks

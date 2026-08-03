@@ -61,15 +61,22 @@ describe('scoreLabel — band alignment', () => {
   });
 });
 
+// scoreColor é 100% tokenizado (marca Lovable indigo oklch hue 265).
+// No ambiente de teste (sem DOM), resolve para os fallbacks oklch definidos em
+// mapIntelligence.ts (--destructive / --warning / --ring / --primary).
 describe('scoreColor — band thresholds', () => {
   it.each([
-    [20, '#dc2626'], // <35 critical
-    [40, '#f97316'], // 35-49 orange
-    [55, '#eab308'], // 50-64 amber
-    [70, '#3b82f6'], // 65-79 blue
-    [90, '#003594'], // >=80 indigo
-  ])('score %i -> %s', (score, expected) => {
+    [20, 'oklch(58% .22 25)'], // <35 destructive
+    [40, 'oklch(70% .15 70)'], // 35-49 warning
+    [55, 'oklch(70% .15 70)'], // 50-64 warning
+    [70, 'oklch(62% .2 265)'], // 65-79 ring
+    [90, 'oklch(62% .2 265)'], // >=80 primary
+  ])('score %i -> %s (oklch fallback)', (score, expected) => {
     expect(scoreColor(score)).toBe(expected);
+  });
+
+  it('returns distinct tokens across bands (critical vs exceptional)', () => {
+    expect(scoreColor(20)).not.toBe(scoreColor(90));
   });
 });
 

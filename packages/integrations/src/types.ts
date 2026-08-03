@@ -147,3 +147,38 @@ export interface TwentyConfig {
   baseUrl?: string;
 }
 
+/* ─── SIDRA / IBGE (national statistics, no key) ─── */
+
+export interface SidraConfig {
+  baseUrl?: string;
+}
+
+export interface SidraPoint {
+  month: string;
+  value: number;
+}
+
+export interface SidraSeries {
+  table: number;
+  variable?: number;
+  points: SidraPoint[];
+}
+
+/* ─── BrasilAPI (DDD + Bancos, no key) ─── */
+
+export interface BrasilApiConfig {
+  baseUrl?: string;
+}
+
+export interface DddInfo {
+  state: string;
+  cities: string[];
+}
+
+export interface Bank {
+  ispb: string;
+  name: string;
+  code: number;
+  fullName: string;
+}
+
