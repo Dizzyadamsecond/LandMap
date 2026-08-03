@@ -1,0 +1,37 @@
+[
+  {
+    "route": "/map",
+    "file": "apps/web/src/app/[locale]/map/page.tsx",
+    "status": "RESOLVED_IN_CODE",
+    "verified_at": "2026-08-03",
+    "note": "Painel 'Composição por camada' JÁ renderiza (map/page.tsx ~L974-996, lê selected.layerScores). Placeholder de busca JÁ é 'Buscar bairro, cidade, CEP ou zoneamento…' (mapIntelligence.ts:63). 'Top valorização (12m)' JÁ exato (mapIntelligence.ts:79). Itens P1/P2 anteriores deste arquivo estavam obsoletos pós-restore 3fc76ef."
+  },
+  {
+    "route": "/dashboard",
+    "file": "apps/web/src/app/[locale]/dashboard/page.tsx",
+    "divergence": "Title/metadata do dashboard pode não bater com o título canônico do Lovable.",
+    "lovable_canonical_title": "LandMap — Inteligência de terrenos",
+    "severity": "P2",
+    "suggested_fix": "Manter dashboard como overview de produto; se alinhar metadata, usar 'LandMap — Inteligência de terrenos' (título canônico capturado ao vivo em 2026-08-03)."
+  },
+  {
+    "route": "/",
+    "file": "apps/web/src/app/[locale]/page.tsx",
+    "divergence": "Hero/CTAs podem ter drift de spacing/token/copy frente ao Lovable home.",
+    "severity": "P2",
+    "note": "CTAs LandMap são intencionais (fora do clone Lovable por decisão do usuário). Apenas espaçamentos/tokens devem ser conferidos."
+  },
+  {
+    "route": "REALTIME",
+    "file": "crawl4ai_service/ + packages/integrations + apps/web/src/app/[locale]/live",
+    "status": "ACTIVE",
+    "note": "Pipeline de tempo real nativo: crawl4ai_service (servidor Python + venv, fontes .gov.br/IBGE/BCB/BrasilAPI) + Crawl4aiClient + integrações live (IBGE/SIDRA/BCB/BrasilAPI). Em Vercel (serverless) cai para APIs diretas (sem browser). /live usa useEffect+fetch contra essas integrações."
+  },
+  {
+    "route": "WORLD_3D",
+    "file": "apps/web/src/app/[locale]/world + /world-3d + apps/web/src/components/BmapViewer*",
+    "status": "RESTAURADA_E_ATIVA",
+    "verified_at": "2026-08-03",
+    "note": "TRACKED; pnpm --filter @landmap/web typecheck + lint verdes. Links 'Mundo 3D'/'Atlas vivo' no Navbar. Paleta emerald/cyan/gold = feature palette documentada (CLAUDE.md). /terrenos também restaurada (TRACKED)."
+  }
+]

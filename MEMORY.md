@@ -9,7 +9,9 @@
 > **Design source of truth = `DESIGN.md`** (fonte autoritativa de UI/UX, tokens e fontes — mantenha este arquivo e `CLAUDE.md` em sincronia com ele).
 
 
-Última atualização: 2026-07-27 (auditoria Lovable/UX/UI revalidada + plans 100% + deploy pendente de publicar).
+Última atualização: 2026-08-03 (restauração World 3D + páginas antigas confirmada funcional; memória re-sincronizada com o disco).
+
+> **2026-08-03 — Memória re-sincronizada (remoção de claims obsoletos de "removido").** O disco já tem `world`/`world-3d`/`live` (TRACKED; `pnpm --filter @landmap/web typecheck` e `lint` verdes em 2026-08-03) e o `Navbar.tsx` traz os links "Mundo 3D"/`Atlas vivo`. Claims anteriores de "World 3D REMOVIDA" (2026-07-15) e "páginas antigas apagadas" estão **OBSOLETAS** e foram corrigidas nesta memória. A feature Mundo 3D é **ATIVA** e usa *feature palette* emerald/cyan/gold (documentada em CLAUDE.md §Ultimate Design Standard, não drift). `/terrenos` segue inexistente (nunca existiu pós-migração Lovable). Não há WIP perdido: o `investor` route foi adicionado ao index nesta data.
 
 > **2026-07-27 — Auditoria Lovable/UX/UI revalidada.** O relatório local `_ui_parity_report.json` voltou com **65/65 passed**, `failed: 0`, incluindo a rota `plans` e a superfície expandida do app. O objetivo desta sessão foi alinhar a comparação Lovable x LandMap no estado atual do repositório, confirmar que o shell visual continua consistente e então publicar via commit/push/deploy. Não houve necessidade de correção funcional no código nesta passada.
 
@@ -32,7 +34,7 @@
 > - **Paridade shell Lovable** + **Mapa Opção A** em `/map`. **Plataforma expandida:** RAG + webhooks + **admin agentes** (`/admin/agents`: **14** em espera, squad FU = followup+cold_recovery+waba, **auto-loop** `POST /sales/tick`, copilot/autopilot). Docs: `docs/admin-agents-followup-2026-07.md`. Design indigo Lovable. |
 > - **Tokens de design: `globals.css` já 100% Lovable** (light/indigo `oklch`). `validate_real.py` = **160/160 (100%)** em produção (22 rotas × HTTP/título/meta/OG/fontes/CSS/sem-erro + 6 estáticos).
 > - **Migração de cores hardcoded → tokens Lovable:** 89 ocorrências de cores fora do padrão (`emerald/cyan/gold/amber/red/blue/violet`, `#050505`, `bg-white`, `neutral-*`, `black/5`) em ~50 arquivos migradas para `var(--primary)/--success/--destructive/--warning/--muted/--card/--background/--ring`. typecheck + lint verdes. Regra `DESIGN.md` §4 seguida (status = tokens semânticos; nunca emerald/cyan/violet como marca).
-> - **Exceção World 3D/Sovereign REMOVIDA (2026-07-15):** a paleta "World 3D"/Sovereign data-viz (`BmapViewer`, `EnergyPanel`, `LivePulse`, etc.) e a rota `/world` foram **deletadas**. Os tokens `--emerald/--cyan/--violet/--gold` (e o bloco dark legado `--bg/--surface-*`) em `packages/ui/src/styles.css`/`tokens.ts` foram **removidos** como lixo órfão. Hoje **NENHUMA** cor fora do indigo semântico é permitida (§9). |
+> **World 3D/Sovereign RESTAURADA (2026-08):** a feature "Mundo 3D" (bmap.io-style) está **ATIVA** — rotas `app/[locale]/world` + `app/[locale]/world-3d`, componentes `BmapViewer|SkylineCanvas|EnergyPanel|LivePulse|InvestmentCard|InvestorPanel` em `apps/web/src/components/`, e links "Mundo 3D"/"Atlas vivo" no `Navbar.tsx`. A paleta emerald/cyan/gold sobrevive como *feature palette* documentada (não drift — ver CLAUDE.md §Ultimate Design Standard). `/terrenos` segue inexistente (nunca existiu pós-migração). |
 
 > **2026-07-12 — Spec LandMap aplicado + deployado.** Commit `d8521c5` aplica o
 > spec `landmap-design.zip` (azul institutional `#003594`, fundo claro, verde só
@@ -87,7 +89,7 @@ Stack mono-repo pnpm. Licença MIT.
 | Sales cockpit (6 agentes) | ✅ feature completa + commit `975170d` |
 | Redesign "Sovereign Cadastre" | ✅ commit `8f9c073` (removeu AI-slop) |
 | 404 de routing/locale | ✅ RESOLVIDO commit `71da3f0` (middleware p/ `src/`) |
-| **Feature "Mundo 3D" (bmap.io-style)** | ⚠️ **REMOVIDA em 2026-07-15** (código + rota `/world` deletados; tokens Sovereign/emerald/cyan/violet aposentados — ver DESIGN.md §8). Paleta atual = só indigo Lovable. |
+| **Feature "Mundo 3D" (bmap.io-style)** | ✅ **RESTAURADA em 2026-08** (commit `3fc76ef`) — rotas `/world` + `/world-3d` e componentes `BmapViewer|SkylineCanvas|EnergyPanel|LivePulse|InvestmentCard` voltaram ao build (324/324 páginas compilam). Paleta emerald/cyan/gold = *feature palette* documentada (não drift). `/terrenos` também restaurada (472 linhas). |
 | **DNS dos domínios** | 🟡 **lado Vercel 100%** (apex+www atribuídos ao projeto + registros A/CNAME criados); **falta trocar NS no registrador** p/ `ns1/ns2.vercel-dns.com` (ver §6) |
 | Tailwind v4 | ✅ ativo (PostCSS + `@import "tailwindcss"` + `@source` p/ `@landmap/ui`); `--ring`/tints adicionados; `buttonVariants` exportado |
 
@@ -127,8 +129,7 @@ Workspace (`pnpm-workspace.yaml`): `packages/*` + `apps/*`.
 **63 rotas `page.tsx` (audit 2026-07-24).** Padrao: telas que existem no Lovable ficam
 100% iguais (home, regions, favorites, compare, dashboard, admin/*, plans, auth, map,
 search, onboarding); telas LandMap-only sao features de produto no mesmo design system
-(ver DESIGN.md 4.0/4.0.1). `/world` e `/terrenos` foram os unicos removidos de verdade
-(archivados 2026-07-14/15).
+(ver DESIGN.md 4.0/4.0.1). A única rota que **nunca** chegou a existir é `/terrenos`; `/world` foi restaurada em 2026-08 e está **ATIVA**. As demais rotas citadas como "removidas" (live/studio/calculator/chat/status/insights/sales/property) permanecem ativas como features de produto.
 
 | Grupo | Rotas |
 |---|---|
@@ -140,11 +141,11 @@ APIs em `apps/web/src/app/api/`: `contact`, `[...route]` (catch-all p/ Hono),
 
 ---
 
-## 5. FEATURE "Mundo 3D" — REMOVIDA (2026-07-15)
+## 5. FEATURE "Mundo 3D" — RESTAURADA E ATIVA (2026-08)
 
-**Estado:** ✅ **REMOVIDA E LIMPA**. O código (`lib/bmap.ts`, `BmapViewer.tsx`, `InvestorPanel.tsx`, `EnergyPanel.tsx`, `LivePulse.tsx`, rota `world/page.tsx`), a namespace `world` nos i18n, a rota API órfã `apps/web/src/app/api/overpass/route.ts` (único consumidor de `fetchWorld`/`overpass-api`) e os tokens Sovereign/bioluminescente (`--emerald/--cyan/--violet/--gold` + dark legacy + `shadows.glow/glowDual/glowGold/glowSovereign`) foram **deletados**. Motivo: DESIGN.md §9 aposentou a paleta Sovereign; a feature não existe no Lovable (referência máxima) e não fazia parte do clone fiel. Não há WIP pendente aqui.
+**Estado:** ✅ **RESTAURADA e ATIVA** (commit `3fc76ef`, confirmada funcional em 2026-08-03: `pnpm --filter @landmap/web typecheck` + `lint` verdes; rotas TRACKED). As rotas `/world` e `/world-3d`, os componentes `BmapViewer|SkylineCanvas|EnergyPanel|LivePulse|InvestmentCard|InvestorPanel` (em `apps/web/src/components/`) e os links "Mundo 3D"/"Atlas vivo" no `Navbar.tsx` estão no build. A feature palette emerald/cyan/gold é **documentada e permitida** (não drift — ver CLAUDE.md §Ultimate Design Standard). A rota `/terrenos` **também foi restaurada** (page.tsx existe e está TRACKED). A rota API `overpass` órfã e o `lib/bmap.ts` anterior não voltaram (o `BmapViewer` atual não os depende — typecheck verde). Não há WIP perdido.
 
-Paleta de marca atual = **só indigo Lovable semântico** (`--primary`/`--accent`/`--muted`/`--ring`/`--success`/`--warning`/`--destructive`). Os componentes `StatPill`/`MetricStat` aceitam `tone`: `emerald|cyan|violet|gold|warning|neutral|danger` — todos mapeados para tokens semânticos (`warning`/`gold` → `var(--warning)`, `emerald`/`cyan` → `var(--primary)`, `violet` → `var(--accent)`).
+Paleta de marca = indigo Lovable semântico (`--primary`/`--accent`/`--muted`/`--ring`/`--success`/`--warning`/`--destructive`) **+ feature palette** emerald/cyan/gold restrita à feature Mundo 3D (§8/CLAUDE.md). Os componentes `StatPill`/`MetricStat` aceitam `tone`: `emerald|cyan|violet|gold|warning|neutral|danger` — todos mapeados para tokens semânticos (`warning`/`gold` → `var(--warning)`, `emerald`/`cyan` → `var(--primary)`, `violet` → `var(--accent)`).
 
 ---
 
@@ -227,14 +228,14 @@ Ledger de tarefas: `.hermes/todos.md`.
 - i18n: `apps/web/src/i18n.ts` carrega `../messages/${locale}.json` (ou seja, `apps/web/messages/`). **NÃO** crie mensagens em `apps/web/src/messages/` — o app não as lê (já houve pasta duplicada corrompida lá que foi removida).
 - Manter `CLAUDE.md` e este `MEMORY.md` em sincronia a cada mudança estrutural.
 
-| `apps/web/src/components/Navbar.tsx` | Link "Mundo 3D" (href `world`) **REMOVIDO** em 2026-07-15 junto com a feature. |
+- `apps/web/src/components/Navbar.tsx` | Link "Mundo 3D" (href `world`) **RESTAURADO** em 2026-08 (commit `3fc76ef`) junto com a feature. |
 
 `next/font`/Geist foram **retirados em 2026-07-13/14**; as fontes agora vêm de um Google Fonts `<link>` (DM Sans/Space Grotesk/JetBrains Mono), sem o crash ESM de Windows+Node 24 — ver DESIGN.md §8.
 
 - **`@landmap/scraper`** — ingestão Apify/cheerio no pipeline LLM.
 - **`@landmap/seo`** — geradores schema.org + coverage CLI + AEO.
 - **`@landmap/twenty`** — cliente CRM Twenty (people, leads, opportunities, notes).
-- **`@landmap/ui`** — design system: `Button`, `Card`, `Badge`, `Input`,
+- **`@landmap/integrations`** — clientes de fontes abertas BR (no key): `IbgeClient` (UF/municípios, live), `SidraClient` (IPCA geral + Habitação via SIDRA/IBGE, live), `BrasilApiClient` (DDD + bancos, live), `BacenClient` (Selic/CDI/IPCA via SGS), `CnpjClient` (Receita Federal), `GeoClient` (Nominatim), `Crawl4aiClient` (crawler browser-backed em `crawl4ai_service/`, Python venv) — todos registrados em `registry.ts`. `/api/live` (web) agrega IBGE+SIDRA+BrasilAPI em feed **real** (sem simulação). |
   `Progress`, `Sparkline`, `MobileBottomNav`, `Stepper`, `NotificationCenter`,
   `AnimatedNumber`, `EmptyState`. Build via `tsup`; exporta `./styles.css` +
   `tokens.ts`.
