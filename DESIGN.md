@@ -173,13 +173,14 @@ system (indigo Lovable, `var(--*)`, `@landmap/ui`, `lovable/icons`, i18n). Ou se
 Lovable é a **fonte de verdade do UX/UI** para as telas compartilhadas; as telas
 LandMap-only seguem o mesmo padrão visual mas têm layout próprio.
 
-> **Correção de auditoria (2026-07-24):** a afirmação anterior de que "o app contém SÓ as
-> telas do Lovable e as demais foram removidas em 2026-07-14" está **OBSOLETA**. O app tem
-> **63 rotas** `page.tsx`. Telas LandMap-only (live, studio, calculator, chat, status,
-> insights, sales, property, agents, cockpit, radar, heatmap, assistant, automations,
-> pipeline, writer, knowledge, etc.) **estão no disco e ativas** — elas são *features de
-> produto*, não drift. O Lovable serve como padrão de design para as telas compartilhadas,
-> não como teto de escopo.
+> **Correção de auditoria (2026-07-24, reconfirmada 2026-08-03):** a afirmação anterior de
+> que "o app contém SÓ as telas do Lovable e as demais foram removidas em 2026-07-14" está
+> **OBSOLETA**. O app tem **100+ rotas** `page.tsx` (108 contando segments dinâmicos e admin
+> aninhado; 73 rotas de produto nomeadas no CLAUDE.md). Telas LandMap-only (live, studio,
+> calculator, chat, status, insights, sales, property, world, world-3d, terrenos, investor,
+> agents, cockpit, radar, heatmap, assistant, automations, pipeline, writer, knowledge,
+> etc.) **estão no disco e ativas** — elas são *features de produto*, não drift. O Lovable
+> serve como padrão de design para as telas compartilhadas, não como teto de escopo.
 
 ### 4.0 Telas compartilhadas (Lovable → local, devem ficar 100% iguais)
 
@@ -235,14 +236,17 @@ Contrato RAG/webhooks: `docs/platform-rag-webhooks-2026-07.md`.
 - Dashboard genérico sem camadas (reverter A).
 - MapView demo órfão / sliders mortos.
 
-**Removed (de fato, fora do build):** `world` (3D "World"/Sovereign data-viz +
-`BmapViewer`/`SkylineCanvas`/`AtlasLanding`/`InvestmentCard`/`InvestorPanel`/
-`EnergyPanel`/`LivePulse`/`HeroTerritory`/`PropertyThumb`/`InvestmentLegend` +
-`lib/bmap.ts`) e `terrenos` foram movidos para `archive_landmap_only_2026-07-14/`.
-> **Nota (2026-07-24):** as telas `live`, `studio`, `calculator`, `chat`, `status`,
-> `insights`, `sales`, `property` citadas como "removidas" em versões anteriores do doc
-> **NÃO foram removidas** — permanecem ativas como features de produto (§4.0.1). O único
-> removido de verdade dentre as citadas é `world` (paleta Sovereign aposentada, DESIGN §8).
+> **ATIVO (2026-08-03):** `world` e `world-3d` (feature "World 3D"/Sovereign data-viz:
+> `BmapViewer`/`SkylineCanvas`/`AtlasLanding`/`InvestmentCard`/`InvestorPanel`/
+> `EnergyPanel`/`LivePulse`/`HeroTerritory`/`PropertyThumb`/`InvestmentLegend`) **estão no
+> disco e em produção** — NÃO foram removidas. A única coisa aposentada em 2026-07-13/14 foi
+> a *paleta* bioluminescente Sovereign como marca (§8); as rotas sobrevivem como *feature
+> palette* documentada (emerald/cyan/gold restritos a esta feature, não é drift).
+
+> **Nota (2026-07-24, reconfirmada 2026-08-03):** as telas `live`, `studio`, `calculator`,
+> `chat`, `status`, `insights`, `sales`, `property`, `world`, `world-3d` citadas como
+> "removidas" em versões anteriores do doc **NÃO foram removidas** — permanecem ativas como
+> features de produto (§4.0.1). Nenhuma rota citada foi de fato removida do disco.
 Se uma feature precisar retornar, portá-la como tela *on-brand* (indigo tokens,
 `var(--*)`, `@landmap/ui`, i18n) — nunca como Lovable drift.
 

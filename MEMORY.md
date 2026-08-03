@@ -21,8 +21,8 @@
 
 > **2026-07-18 (SESSÃO 2) — Deploy 100% green + hardening escalabilidade.** `validate_real.py`=146/146, `compare_live.py`=TOTAL MISSING 0. Deploy `landmapprod-ghn0aobna-dizzys-projects-d5a44b36.vercel.app` (alias `landmapprod.vercel.app`, `landmap.us.kg`). **Build/deploy = pnpm (estável, commitado):** `vercel.json` → `installCommand: "pnpm install --frozen-lockfile"`, `buildCommand: "pnpm --filter @landmap/web run build"`, `outputDirectory: "apps/web/.next"`, `framework: "nextjs"`. Workspaces via `pnpm-workspace.yaml` (não o campo `workspaces` do package.json). **Deploy da RAIZ:** `vercel deploy --prod --yes` (sem `--cwd apps/web`) para o `vercel.json` raiz ser lido. Projeto Vercel em Node `20.x`. Live: `/pt-BR` e `/en-US` retornam HTTP 200. **Hardening aplicado e commitado:** `apps/web/next.config.mjs` ganhou CSP (self + Google Fonts), `Permissions-Policy`, cache longo p/ assets estáticos (immutable) e `s-maxage=60/stale-while-revalidate=300` p/ rotas; `apps/web/src/middleware.ts` ganhou rate-limit sliding-window (120 req/IP/min) + `Cache-Control` em GET `/api`. Lint 0, build local + remoto verdes. NOTA: tentativa anterior de trocar o install para `bun` foi **revertida** (commit `bf1d155`) — manter `pnpm` no `vercel.json`.
 
-> **2026-07-18 — Audit de produção + correção i18n.** `validate_real.py` rodado contra `landmapprod.vercel.app`: 146/146 (100%) — HTTP/títulos/MetaDesc/OG/fontes(DM Sans+Space Grotesk)/CSS/sem-erro/statics. `compare_live.py` (frase-a-frase vs Lovable live): **0 missing**. Bug real encontrado e corrigido: `apps/web/src/app/[locale]/page.tsx` (home) tinha `generateMetadata` com título fixo pt-BR, sobrescrevendo o locale → `/en-US` e `/es-ES` serviam título pt-BR. Agora localiza (pt-BR/en-US/es-ES). Scripts de audit limpos (`/world` e `/terrenos` removidos das listas — rotas inexistentes no app ativo; `/terrenos` nunca existiu pós-migração Lovable). Deploy `landmapprod-4y4bov6ql-dizzys-projects-d5a44b36.vercel.app` (alias `landmapprod.vercel.app` + `landmap.us.kg`).
-> - `tokens.ts` re-alinhado ao indigo Lovable (corrigido drift `#003594`/`emeraldTint`/`cyanTint` azuis)
+> **2026-07-18 — Audit de produção + correção i18n.** `validate_real.py` rodado contra `landmapprod.vercel.app`: 146/146 (100%) — HTTP/títulos/MetaDesc/OG/fontes(DM Sans+Space Grotesk)/CSS/sem-erro/statics. `compare_live.py` (frase-a-frase vs Lovable live): **0 missing**. Bug real encontrado e corrigido: `apps/web/src/app/[locale]/page.tsx` (home) tinha `generateMetadata` com título fixo pt-BR, sobrescrevendo o locale → `/en-US` e `/es-ES` serviam título pt-BR. Agora localiza (pt-BR/en-US/es-ES). Scripts de audit limpos. Deploy `landmapprod-4y4bov6ql-dizzys-projects-d5a44b36.vercel.app` (alias `landmapprod.vercel.app` + `landmap.us.kg`).
+> - `tokens.ts` re-alinhado ao indigo Lovable (corrigido drift `#003594`/`emeraldTint`/`cyanTint` azuis) | terrenos ATIVO (2026-08-03: rota `app/[locale]/terrenos` existe no disco)
 > - Root `layout.tsx`: `metadata` export com favicon.svg, OG image, twitter card
 > - `[locale]/layout.tsx`: OG image atualizado de `.png` → `.svg`
 > - Manifest PWA: background/theme → Lovable (white/indigo)
@@ -36,7 +36,7 @@
 > - **Paridade shell Lovable** + **Mapa Opção A** em `/map`. **Plataforma expandida:** RAG + webhooks + **admin agentes** (`/admin/agents`: **14** em espera, squad FU = followup+cold_recovery+waba, **auto-loop** `POST /sales/tick`, copilot/autopilot). Docs: `docs/admin-agents-followup-2026-07.md`. Design indigo Lovable. |
 > - **Tokens de design: `globals.css` já 100% Lovable** (light/indigo `oklch`). `validate_real.py` = **160/160 (100%)** em produção (22 rotas × HTTP/título/meta/OG/fontes/CSS/sem-erro + 6 estáticos).
 > - **Migração de cores hardcoded → tokens Lovable:** 89 ocorrências de cores fora do padrão (`emerald/cyan/gold/amber/red/blue/violet`, `#050505`, `bg-white`, `neutral-*`, `black/5`) em ~50 arquivos migradas para `var(--primary)/--success/--destructive/--warning/--muted/--card/--background/--ring`. typecheck + lint verdes. Regra `DESIGN.md` §4 seguida (status = tokens semânticos; nunca emerald/cyan/violet como marca).
-> **World 3D/Sovereign RESTAURADA (2026-08):** a feature "Mundo 3D" (bmap.io-style) está **ATIVA** — rotas `app/[locale]/world` + `app/[locale]/world-3d`, componentes `BmapViewer|SkylineCanvas|EnergyPanel|LivePulse|InvestmentCard|InvestorPanel` em `apps/web/src/components/`, e links "Mundo 3D"/"Atlas vivo" no `Navbar.tsx`. A paleta emerald/cyan/gold sobrevive como *feature palette* documentada (não drift — ver CLAUDE.md §Ultimate Design Standard). `/terrenos` segue inexistente (nunca existiu pós-migração). |
+> **World 3D/Sovereign RESTAURADA (2026-08):** a feature "Mundo 3D" (bmap.io-style) está **ATIVA** — rotas `app/[locale]/world` + `app/[locale]/world-3d`, componentes `BmapViewer|SkylineCanvas|EnergyPanel|LivePulse|InvestmentCard|InvestorPanel` em `apps/web/src/components/`, e links "Mundo 3D"/"Atlas vivo" no `Navbar.tsx`. A paleta emerald/cyan/gold sobrevive como *feature palette* documentada (não drift — ver CLAUDE.md §Ultimate Design Standard). `/terrenos` ATIVO (2026-08-03: rota `app/[locale]/terrenos` existe no disco, TRACKED). |
 
 > **2026-07-12 — Spec LandMap aplicado + deployado.** Commit `d8521c5` aplica o
 > spec `landmap-design.zip` (azul institutional `#003594`, fundo claro, verde só
@@ -61,8 +61,8 @@
 ---
 
 > **2026-07-24 — AUDITORIA DE PARIDADE (multi-agente patterns, executada inline).** Constatado descompasso DOC×CÓDIGO:
-> - **Rotas reais no disco = 63** `page.tsx` (não "19–30" como diziam DESIGN.md §4 / MEMORY §2/§4). O app é um **superset grande**, NÃO um clone 1:1 mínimo do Lovable.
-> - DESIGN.md §4 afirma "removidas/arquivadas em 2026-07-14": world, live, studio, calculator, chat, status, insights, sales, property, terrenos. **Realidade:** live/studio/calculator/chat/status/insights/sales/property/[id] **AINDA ESTÃO no disco**; só world e terrenos sumiram. Doc obsoleto.
+> - **Rotas reais no disco = 100+** `page.tsx` (recontado 2026-08-03: 108 com segments dinâmicos e admin aninhado; não "19–30" como diziam DESIGN.md §4 / MEMORY §2/§4). O app é um **superset grande**, NÃO um clone 1:1 mínimo do Lovable.
+> - DESIGN.md §4 afirmava "removidas/arquivadas em 2026-07-14": world, live, studio, calculator, chat, status, insights, sales, property, terrenos. **Realidade (reconfirmada 2026-08-03): TODAS continuam no disco e ativas** — world/world-3d/terrenos confirmadas presentes; nenhuma rota foi de fato removida. Doc obsoleto corrigido.
 > - Rotas LandMap-only NÃO documentadas (drift de doc): agents, cockpit, radar, heatmap, assistant, automations, pipeline, writer, knowledge, recommendations, workflows, leads, team, portfolio, alerts, cities, neighborhoods, valorization, market, notifications, activity, settings, api-keys, watchlist, reports, glossary, resources, developers, integrations, inspect, kpis, launch, plans/manage, admin/*(9), property/[id].
 > - **Tokens/cores/fontes:** ~95% Lovable-indigo OK (globals.css indigo oklch, DM Sans+Space Grotesk via <link>, system mono; 0 lucide-react). **Violação real:** `apps/web/src/app/[locale]/plans/page.tsx:139` usa `bg-emerald-500 text-white` (badge) — emerald-500 como marca é proibido por DESIGN §9; corrigir para `bg-[var(--success)] text-[var(--success-foreground)]`. `kpis/page.tsx` tone emerald/cyan/violet em MetricStat = LEGAL (§5 mapeia p/ tokens). map/page.tsx `#575ECF` só como fallback + `#fff` marker (ok §4.1); `bg-white/95` nos popovers do mapa = menor (Híbrido C).
 > - **NÃO verificado nesta sessão:** build/typecheck/lint/test (sem shell/terminal aqui; `delegate_task` 403 saldo) e paridade ao vivo vs Lovable (web_extract sem créditos Firecrawl). Scripts `validate_real.py`/`compare_live.py` só cobrem 15 rotas-amostra → "100% parity" anterior é baseada em amostra, não nas 63 reais. **AÇÃO:** usuário deve rodar `pnpm -r run typecheck && pnpm -r run lint` + `pnpm --filter @landmap/web run build` e `git status`/`git log`.
@@ -128,10 +128,14 @@ Workspace (`pnpm-workspace.yaml`): `packages/*` + `apps/*`.
 
 ## 4. Rotas do app web (`apps/web/src/app/[locale]/`)
 
-**63 rotas `page.tsx` (audit 2026-07-24).** Padrao: telas que existem no Lovable ficam
-100% iguais (home, regions, favorites, compare, dashboard, admin/*, plans, auth, map,
-search, onboarding); telas LandMap-only sao features de produto no mesmo design system
-(ver DESIGN.md 4.0/4.0.1). A única rota que **nunca** chegou a existir é `/terrenos`; `/world` foi restaurada em 2026-08 e está **ATIVA**. As demais rotas citadas como "removidas" (live/studio/calculator/chat/status/insights/sales/property) permanecem ativas como features de produto.
+**100+ rotas `page.tsx` (recontado 2026-08-03: 108 contando segments dinâmicos e
+admin aninhado).** Padrão: telas que existem no Lovable ficam 100% iguais (home, regions,
+favorites, compare, dashboard, admin/*, plans, auth, map, search, onboarding); telas
+LandMap-only são features de produto no mesmo design system (ver DESIGN.md 4.0/4.0.1).
+**TODAS as rotas citadas como "removidas" (world, world-3d, live, studio, calculator,
+chat, status, insights, sales, property, terrenos) estão ATIVAS no disco** — nenhuma foi
+de fato removida. `/world` e `/world-3d` e `/terrenos` foram restauradas/confirmadas em
+2026-08 e estão TRACKED.
 
 | Grupo | Rotas |
 |---|---|
