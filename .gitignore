@@ -10,6 +10,13 @@ build/
 .vercel-root/
 *.tsbuildinfo
 
+# ─── tsc emits left in source trees (regenerable; dist/ is the real output) ───
+# These get dropped inside packages/*/src when tsc runs without outDir hygiene.
+# Use `git clean -f packages/*/src/**/*.js packages/*/src/**/*.d.ts` to sweep.
+**/src/**/*.d.ts
+**/src/**/*.d.ts.map
+**/src/**/*.js
+
 # ─── Logs ───
 *.log
 npm-debug.log*

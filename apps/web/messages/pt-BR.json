@@ -535,6 +535,20 @@
       "description": "Junte-se a milhares de pessoas que estão realizando o sonho do próprio terreno através do consórcio.",
       "button1": "Simular minha cota",
       "button2": "Falar com um consultor"
+    },
+    "simulator": {
+      "title": "Simulador de cota",
+      "subtitle": "Estime sua parcela e a contemplação sem compromisso.",
+      "creditLabel": "Valor da cota (crédito)",
+      "monthsLabel": "Prazo (meses)",
+      "adminLabel": "Taxa de administração (% a.m.)",
+      "entryLabel": "Lance inicial (% da cota)",
+      "credit": "Crédito",
+      "installment": "Parcela mensal",
+      "totalAdmin": "Total de administração",
+      "contemplation": "Contemplação estimada (lance)",
+      "resultHint": "Sem juros: você paga apenas o crédito + taxa de administração. O lance antecipa sua contemplação.",
+      "disclaimer": "Simulação ilustrativa. Valores finais dependem da administradora e da assembleia do grupo."
     }
   },
   "LeilaoPage": {

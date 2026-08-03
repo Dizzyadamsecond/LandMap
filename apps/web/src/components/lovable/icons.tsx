@@ -711,3 +711,50 @@ export function LandMapWordmark({ className = '' }: { className?: string }) {
   );
 }
 
+export function Users({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}
+
+export function ListChecks({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M11 6h9" />
+      <path d="M11 12h9" />
+      <path d="M11 18h9" />
+      <path d="M3 6l1.5 1.5L7 4" />
+      <path d="M3 12l1.5 1.5L7 10" />
+      <path d="M3 18l1.5 1.5L7 16" />
+    </svg>
+  );
+}
+
+export function RefreshCw({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M21 2v6h-6" />
+      <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+      <path d="M3 22v-6h6" />
+      <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+    </svg>
+  );
+}
+
+export function Radio({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <circle cx="12" cy="12" r="2" />
+      <path d="M4.93 19.07a10 10 0 0 1 0-14.14" />
+      <path d="M7.76 16.24a6 6 0 0 1 0-8.48" />
+      <path d="M16.24 16.24a6 6 0 0 0 0-8.48" />
+      <path d="M19.07 19.07a10 10 0 0 0 0-14.14" />
+    </svg>
+  );
+}
+

@@ -31,6 +31,7 @@ import {
   type KpiSnapshot,
 } from '../../../lib/api';
 import { type Aggregates } from '../../../lib/opportunities';
+import { getRecentlyViewed, clearRecentlyViewed } from '../../../lib/recently-viewed';
 
 function fmtBRL(n: number): string {
   return new Intl.NumberFormat('pt-BR', {
@@ -53,6 +54,11 @@ function DashboardInner() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [aggregates, setAggregates] = useState<Aggregates | null>(null);
+  const [recent, setRecent] = useState<ReturnType<typeof getRecentlyViewed>>([]);
+
+  useEffect(() => {
+    setRecent(getRecentlyViewed());
+  }, []);
 
   useEffect(() => {
     let active = true;

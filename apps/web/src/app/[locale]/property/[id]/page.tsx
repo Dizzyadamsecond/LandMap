@@ -4,9 +4,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ProductPageShell } from '../../../../components/ProductPageShell';
 import { Card, Badge, Button } from '@landmap/ui';
-import { FileText, MapPin, TrendingUp, AlertTriangle, Lock, Layers } from '../../../../components/lovable/icons';
+import { FileText, MapPin, TrendingUp, AlertTriangle, Lock, Layers, Share2 } from '../../../../components/lovable/icons';
 import { apiUrl } from '../../../../lib/api';
 import { formatBRL } from '../../../../lib/plans';
+import { Gallery } from './gallery';
+import { PriceHistory } from './price-history';
+import { ShareButton } from './share-button';
+import AiInsights from './ai-insights';
+import { RecentlyViewedTracker } from './recently-viewed-tracker';
 
 interface Dossier {
   id: string;
@@ -58,6 +63,15 @@ export default function PropertyDossierPage() {
       description={p ? `${p.city}, ${p.state}${p.neighborhood ? ` · ${p.neighborhood}` : ''}` : 'Carregando…'}
       maxWidth="7xl"
     >
+      {p && (
+        <RecentlyViewedTracker
+          id={p.id}
+          title={p.title}
+          city={p.city}
+          price={p.price}
+        />
+      )}
+
       {loading ? (
         <div className="py-16 text-center text-[var(--muted-foreground)]">Carregando dossier…</div>
       ) : error || !p ? (
@@ -89,6 +103,13 @@ export default function PropertyDossierPage() {
                 </p>
               </Card>
             </div>
+
+            {p && (
+              <Gallery
+                images={[]}
+                title={p.title}
+              />
+            )}
 
             {p.thesis && p.thesis.length > 0 && (
               <Card variant="default" className="p-5">
@@ -191,7 +212,27 @@ export default function PropertyDossierPage() {
                 </p>
               )}
             </Card>
-          </div>
+
+            {p && (
+              <Card variant="default" className="flex items-center justify-between p-4">
+                <span className="text-sm text-[var(--muted-foreground)]">Compartilhar</span>
+                <ShareButton
+                  property={{
+                    title: p.title,
+                    price: p.price,
+                    city: p.city,
+                    state: p.state,
+                    areaM2: p.areaM2,
+                    type: p.tags?.[0],
+                  }}
+                />
+              </Card>
+            )}
+
+            {p && <PriceHistory history={[]} />}
+
+            {p && <AiInsights propertyId={p.id} propertyTitle={p.title} city={p.city} neighborhood={p.neighborhood} />}
+            </div>
         </div>
       )}
     </ProductPageShell>

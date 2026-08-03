@@ -6,6 +6,7 @@ import { Hono } from 'hono';
 import { createRagRouter } from './routes/rag.js';
 import { createWebhooksRouter } from './routes/webhooks.js';
 import { createSalesRouter } from './routes/sales.js';
+import { createIngestRouter } from './routes/ingest.js';
 
 export { createRagRouter } from './routes/rag.js';
 export { createWebhooksRouter } from './routes/webhooks.js';
@@ -16,6 +17,7 @@ const platform = new Hono();
 platform.route('/rag', createRagRouter());
 platform.route('/webhooks', createWebhooksRouter());
 platform.route('/sales', createSalesRouter());
+platform.route('/ingest', createIngestRouter(() => `ing_${Math.random().toString(36).slice(2, 10)}`));
 
 
 export default platform;

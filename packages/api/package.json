@@ -2,34 +2,34 @@
   "name": "@landmap/api",
   "version": "0.1.0",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/api/src/index.js",
+  "types": "dist/api/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/api/src/index.d.ts",
+      "import": "./dist/api/src/index.js"
     },
     "./platform": {
-      "types": "./dist/platform.d.ts",
-      "import": "./dist/platform.js"
+      "types": "./dist/api/src/platform.d.ts",
+      "import": "./dist/api/src/platform.js"
     },
     "./push": {
-      "types": "./dist/push.d.ts",
-      "import": "./dist/push.js"
+      "types": "./dist/api/src/push.d.ts",
+      "import": "./dist/api/src/push.js"
     },
     "./mailer": {
-      "types": "./dist/mailer.d.ts",
-      "import": "./dist/mailer.js"
+      "types": "./dist/api/src/mailer.d.ts",
+      "import": "./dist/api/src/mailer.js"
     },
     "./routes/sales": {
-      "types": "./dist/routes/sales.d.ts",
-      "import": "./dist/routes/sales.js"
+      "types": "./dist/api/src/routes/sales.d.ts",
+      "import": "./dist/api/src/routes/sales.js"
     }
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/index.js",
+    "start": "node dist/api/src/index.js",
     "serve": "tsx src/serve.ts",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit"

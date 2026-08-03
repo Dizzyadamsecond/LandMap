@@ -535,6 +535,20 @@
       "description": "Junte-se a milhares de pessoas que estão realizando o sonho do próprio terreno através do consórcio.",
       "button1": "Simular minha cota",
       "button2": "Falar com um consultor"
+    },
+    "simulator": {
+      "title": "Quota simulator",
+      "subtitle": "Estimate your installment and contemplation without commitment.",
+      "creditLabel": "Quota value (credit)",
+      "monthsLabel": "Term (months)",
+      "adminLabel": "Admin fee (% a.m.)",
+      "entryLabel": "Initial bid (% of quota)",
+      "credit": "Credit",
+      "installment": "Monthly installment",
+      "totalAdmin": "Total administration",
+      "contemplation": "Estimated contemplation (bid)",
+      "resultHint": "No interest: you pay only the credit + admin fee. The bid brings forward your contemplation.",
+      "disclaimer": "Illustrative simulation. Final values depend on the administrator and the group assembly."
     }
   },
   "LeilaoPage": {

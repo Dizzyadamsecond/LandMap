@@ -1,31 +1,15 @@
 import type { Metadata } from 'next';
-import { LANDMAP_OG_IMAGE } from '../../../lib/og-image';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale?: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale?: string }> }): Promise<Metadata> {
   const { locale } = await params;
   return {
-    title: 'Preços — LandMap',
-    description: 'Veja os planos LandMap e escolha entre Access, Plus, Pro e Business.',
-    alternates: {
-      canonical: `/${locale}/plans`,
-    },
+    title: 'Preços | LandMap',
+    description: 'Conheça os planos e preços do LandMap. Escolha o ideal para seu negócio: Gratuito, Profissional ou Enterprise.',
     openGraph: {
-      title: 'Preços — LandMap',
-      description: 'Veja os planos LandMap e escolha entre Access, Plus, Pro e Business.',
+      title: 'Preços | LandMap',
+      description: 'Planos e preços do LandMap.',
       url: `/${locale}/pricing`,
-      type: 'website',
       locale: locale,
-      images: [{ url: LANDMAP_OG_IMAGE, width: 1200, height: 630, alt: 'Preços — LandMap' }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Preços — LandMap',
-      description: 'Veja os planos LandMap e escolha entre Access, Plus, Pro e Business.',
-      images: [LANDMAP_OG_IMAGE],
     },
   };
 }

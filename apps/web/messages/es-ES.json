@@ -539,6 +539,20 @@
       "description": "Únase a miles de personas que están realizando el sueño de su propio terreno a través del consorcio.",
       "button1": "Simular mi quota",
       "button2": "Hablar con un asesor"
+    },
+    "simulator": {
+      "title": "Simulador de cuota",
+      "subtitle": "Estime su cuota y la contemplación sin compromiso.",
+      "creditLabel": "Valor de la cuota (crédito)",
+      "monthsLabel": "Plazo (meses)",
+      "adminLabel": "Tasa de administración (% m.m.)",
+      "entryLabel": "Lance inicial (% de la cuota)",
+      "credit": "Crédito",
+      "installment": "Cuota mensual",
+      "totalAdmin": "Administración total",
+      "contemplation": "Contemplación estimada (lance)",
+      "resultHint": "Sin intereses: paga solo el crédito + tasa de administración. El lance adelanta su contemplación.",
+      "disclaimer": "Simulación ilustrativa. Los valores finales dependen de la administradora y la asamblea del grupo."
     }
   },
   "LeilaoPage": {

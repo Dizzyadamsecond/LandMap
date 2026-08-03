@@ -20,6 +20,7 @@ import { createWebhooksRouter } from './routes/webhooks.js';
 import { createSalesRouter } from './routes/sales.js';
 import { createFunnelRouter } from './routes/funnel.js';
 import { createInspectRouter } from './routes/inspect.js';
+import { createIngestRouter } from './routes/ingest.js';
 import { createIntegrationsRouter } from './routes/integrations.js';
 import { createAutomationRouter } from './routes/automation.js';
 import { loadProperties } from './loadJson.js';
@@ -456,7 +457,10 @@ app.route('/funnel', createFunnelRouter());
 /* Inspection image analysis (proxies the Python serving service when configured) */
 app.route('/inspect', createInspectRouter());
 
-/* â”€â”€â”€ Integrations hub (WABA + CRIE + OpenDesign + registry) â”€â”€â”€ */
+/* â”€â”€â”€ Inbound B2B ingestion (empresas â†’ LandMap) â”€â”€â”€ */
+app.route('/ingest', createIngestRouter(() => String(nextId++)));
+
+/* Integrations hub (WABA + CRIE + OpenDesign + registry) */
 app.route('/integrations', createIntegrationsRouter());
 
 
