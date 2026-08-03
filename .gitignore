@@ -77,6 +77,43 @@ sprint-kpis-alerts.md
 .pw_prod_pid
 .pw_server_pid
 
+# ─── Python crawler service (Crawl4ai live data) ───
+# commit only source (server.py/README/_*.py helpers); never the venv/pycache
+crawl4ai_service/.venv/
+crawl4ai_service/**/__pycache__/
+crawl4ai_service/*.log
+crawl4ai_service/_log.txt
+crawl4ai_service/_srv.log
+
+# ─── Scratch / debug scripts at repo root (not app source) ───
+/_agg.mjs
+/_sweep*.py
+/_livetest*.txt
+/buttons_*.js
+/dev_check.js
+/devlog*.txt
+/mobile_test.js
+/onb_test.js
+/rt.js
+/routes_list.txt
+/compare_*.py
+/parity_live.py
+/warning
+
+# ─── Screenshots / visual probes (repo root) ───
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
+!apps/web/public/**/*.png
+
+# ─── Huge seed data dumps (keep out of git; served from /data or DB) ───
+/data/seeds/properties.json
+/packages/api/src/data/properties.json
+
+# ─── Reference Lovable HTML exports (audit only) ───
+apps/web/public/lovable_html_*.html
+
 # ─── Deploy log local ───
 apps/web/deploy_log.txt
 apps/web/public/landmap-logo-transparent.png
