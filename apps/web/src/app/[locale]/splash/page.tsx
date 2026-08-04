@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { LandMapWordmark } from '../../../components/lovable/icons';
 
@@ -15,6 +16,8 @@ import { LandMapWordmark } from '../../../components/lovable/icons';
 
 export default function SplashPage() {
   const t = useTranslations('splash');
+  const params = useParams();
+  const locale = params.locale || 'pt-BR';
 
   return (
     <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-[var(--background)] px-6 text-[var(--foreground)]">
@@ -45,13 +48,13 @@ export default function SplashPage() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link
-            href="./map"
+            href={`/${locale}/map`}
             className="inline-flex h-10 items-center rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
           >
             {t('ctaMap')}
           </Link>
           <Link
-            href="./onboarding"
+            href={`/${locale}/onboarding`}
             className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
           >
             {t('ctaStart')}

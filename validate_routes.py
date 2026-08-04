@@ -24,7 +24,7 @@ PT_ROUTES = [
     "/pt-BR/admin", "/pt-BR/plans", "/pt-BR/auth", "/pt-BR/map", "/pt-BR/onboarding",
     "/pt-BR/world", "/pt-BR/insights", "/pt-BR/sales", "/pt-BR/terrenos",
     "/pt-BR/chat", "/pt-BR/search", "/pt-BR/calculator", "/pt-BR/studio",
-    "/pt-BR/live", "/pt-BR/status",
+    "/pt-BR/live", "/pt-BR/status", "/pt-BR/splash",
 ]
 ALL_ROUTES = HOME_ROUTES + PT_ROUTES
 STATIC_ASSETS = [

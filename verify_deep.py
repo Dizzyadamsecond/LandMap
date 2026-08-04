@@ -25,6 +25,7 @@ SCREENS = {
     "auth":       ("/auth",       "/pt-BR/auth"),
     "map":        ("/map",        "/pt-BR/map"),
     "onboarding": ("/onboarding", "/pt-BR/onboarding"),
+    "splash":     ("/splash",     "/pt-BR/splash"),
 }
 NOISE = {"edit with", "preview", "publish", "share", "components", "code",
          "settings", "logout", "log out", "upgrade", "invite", "domain",
