@@ -118,78 +118,8 @@ export default function OnboardingPage() {
         </div>
       </header>
 
-      {/* DESKTOP: hero estático + CTA direto (mais simples e prático) */}
-      <section className="mx-auto hidden min-h-[78vh] max-w-5xl flex-col items-center justify-center px-6 py-16 text-center md:flex">
-        <div className="mb-8 grid h-24 w-24 place-items-center rounded-3xl bg-primary/10">
-          <MapPinned className="h-11 w-11 text-primary" strokeWidth={1.8} aria-hidden />
-        </div>
-        <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-          Mapa de valorização de terrenos em todo o Brasil
-        </h1>
-        <p className="mt-4 max-w-xl text-lg text-foreground/60">
-          Preço por m², ranking de regiões e alertas de oportunidade — grátis e sem complicação.
-        </p>
-
-        {/* Seletor de perfil (1:1 Lovable): corretor/investidor/fundo/incorporadora/comprador */}
-        <div className="mt-8 w-full max-w-xl text-left">
-          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-foreground/50">
-            Eu sou
-          </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {USER_TYPES.map((t) => {
-              const active = userType === t.id;
-              return (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => setUserType(t.id)}
-                  className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition ${
-                    active
-                      ? 'border-primary bg-primary/10'
-                      : 'border-foreground/10 bg-card hover:border-primary'
-                  }`}
-                >
-                  <span className="text-primary">{t.icon}</span>
-                  <span className="text-sm font-medium text-foreground">{t.label}</span>
-                  <span className="text-xs text-foreground/60">{t.hint}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
-          <button
-            type="button"
-            onClick={explore}
-            className="inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Explorar o mapa grátis
-            <ArrowRight className="ml-1 h-4 w-4" />
-          </button>
-          <Link
-            href={lh('/plans')}
-            className="inline-flex h-12 items-center justify-center rounded-xl px-6 text-sm font-medium text-foreground/70 transition hover:text-foreground"
-          >
-            Ver planos
-          </Link>
-        </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-3">
-          {SLIDES.map((s) => {
-            const SIcon = s.icon;
-            return (
-              <div key={s.title} className="rounded-2xl border border-foreground/10 bg-card p-5 text-left">
-                <SIcon className="h-6 w-6 text-primary" strokeWidth={1.8} aria-hidden />
-                <p className="mt-3 text-sm font-semibold">{s.title}</p>
-                <p className="mt-1 text-xs text-foreground/60">{s.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* MOBILE: carrossel de slides */}
-      <section className="mx-auto flex min-h-[80vh] max-w-md flex-col px-6 py-10 md:hidden">
+      {/* PAGINAÇÃO 1:1 LOVABLE — carrossel de slides com dots, prev/next e contador */}
+      <section className="mx-auto flex min-h-[80vh] max-w-md flex-col px-6 py-10 md:max-w-2xl">
         <main className="flex flex-1 flex-col items-center justify-center text-center">
           <div
             className={`flex flex-col items-center ${
@@ -201,23 +131,71 @@ export default function OnboardingPage() {
             <div className="mb-8 grid h-24 w-24 place-items-center rounded-3xl bg-primary/10">
               <Icon className="h-11 w-11 text-primary" strokeWidth={1.8} aria-hidden />
             </div>
-            <h1 className="text-3xl font-bold leading-tight tracking-tight">{current.title}</h1>
+            <h1 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl">{current.title}</h1>
             <p className="mt-4 max-w-sm text-base text-foreground/60">{current.desc}</p>
           </div>
         </main>
 
-        <div className="mb-6 flex justify-center gap-2">
-          {SLIDES.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={() => goTo(index)}
-              className={`h-1.5 rounded-full transition-all ${
-                index === display ? 'w-8 bg-primary' : 'w-1.5 bg-foreground/15'
-              }`}
-              aria-label={`Ir para slide ${index + 1}`}
-            />
-          ))}
+        {/* Seletor de perfil — exibido junto do último slide (1:1 Lovable) */}
+        {last && (
+          <div className="mb-6 w-full text-left">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-foreground/50">Eu sou</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {USER_TYPES.map((t) => {
+                const active = userType === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setUserType(t.id)}
+                    className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition ${
+                      active ? 'border-primary bg-primary/10' : 'border-foreground/10 bg-card hover:border-primary'
+                    }`}
+                  >
+                    <span className="text-primary">{t.icon}</span>
+                    <span className="text-sm font-medium text-foreground">{t.label}</span>
+                    <span className="text-xs text-foreground/60">{t.hint}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Barra de progresso da etapa */}
+        <div className="mb-5 h-1 w-full overflow-hidden rounded-full bg-foreground/10">
+          <div
+            className="h-full rounded-full bg-primary transition-all duration-300"
+            style={{ width: `${((display + 1) / SLIDES.length) * 100}%` }}
+          />
+        </div>
+
+        <div className="mb-6 flex items-center justify-between">
+          <span className="text-xs font-medium text-foreground/50">
+            {display + 1} / {SLIDES.length}
+          </span>
+          <div className="flex justify-center gap-2">
+            {SLIDES.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => goTo(index)}
+                className={`h-1.5 rounded-full transition-all ${
+                  index === display ? 'w-8 bg-primary' : 'w-1.5 bg-foreground/15'
+                }`}
+                aria-label={`Ir para slide ${index + 1}`}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => goTo(Math.max(0, display - 1))}
+            disabled={display === 0}
+            className="text-xs font-medium text-foreground/50 transition hover:text-foreground disabled:opacity-30"
+            aria-label="Slide anterior"
+          >
+            Voltar
+          </button>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -229,12 +207,21 @@ export default function OnboardingPage() {
             {last ? 'Explorar o mapa grátis' : 'Continuar'}
             <ArrowRight className="ml-1 h-4 w-4" />
           </button>
-          <Link
-            href={lh('/auth')}
-            className="inline-flex h-10 w-full items-center justify-center rounded-md px-8 text-sm font-medium text-foreground/70 transition hover:text-foreground"
-          >
-            Já tenho conta
-          </Link>
+          {last ? (
+            <Link
+              href={lh('/auth')}
+              className="inline-flex h-10 w-full items-center justify-center rounded-md px-8 text-sm font-medium text-foreground/70 transition hover:text-foreground"
+            >
+              Já tenho conta
+            </Link>
+          ) : (
+            <Link
+              href={lh('/auth')}
+              className="inline-flex h-10 w-full items-center justify-center rounded-md px-8 text-sm font-medium text-foreground/70 transition hover:text-foreground"
+            >
+              Pular introdução
+            </Link>
+          )}
         </div>
       </section>
     </div>

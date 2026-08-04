@@ -144,51 +144,58 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-[100dvh] bg-[var(--background)] text-[var(--foreground)]">
-      {/* Sidebar desktop 68px — indigo LandMap */}
+      {/* Sidebar desktop — lista de funcionalidades com NOME à esquerda (paridade Lovable) */}
       <aside
         data-tour="nav"
-        className="sticky top-0 hidden h-[100dvh] w-[68px] shrink-0 flex-col items-center border-r border-[var(--border)] bg-[var(--sidebar)] py-4 backdrop-blur-xl md:flex"
+        className="sticky top-0 hidden h-[100dvh] w-[244px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--sidebar)] backdrop-blur-xl md:flex"
       >
         <Link
           href={`/${locale}`}
           aria-label="LandMap"
           prefetch={false}
-          className={`mb-6 rounded-xl p-1.5 ${focusRing}`}
+          className={`flex items-center gap-2 px-4 py-4 ${focusRing}`}
         >
           <Image
             src="/landmap-logo-transparent.png"
             alt="LandMap"
-            width={24}
-            height={24}
-            className="h-6 w-auto object-contain"
+            width={28}
+            height={28}
+            className="h-7 w-auto object-contain"
           />
+          <span className="text-sm font-semibold tracking-tight text-[var(--foreground)]">
+            LandMap
+          </span>
         </Link>
+        <p className="px-4 pb-2 pt-1 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--muted-foreground)]">
+          Funcionalidades
+        </p>
         <nav
-          className="flex flex-1 flex-col items-center gap-1 overflow-y-auto w-full px-2 pb-6 scrollbar-none"
+          className="flex flex-1 flex-col gap-0.5 overflow-y-auto w-full px-2 pb-6 scrollbar-none"
           aria-label="Navegação do app"
         >
           {navItems.map((item) => (
-            <Tooltip key={item.href} content={item.label} side="right">
-              <Link
-                href={`/${locale}/${item.href}`}
-                prefetch={false}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-                data-tour={item.tour}
-                className={`group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition ${focusRing} ${
-                  isActive(item.href)
-                    ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
-                    : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
-                }`}
-              >
-                {isActive(item.href) && (
-                  <span className="absolute left-0 top-1/2 h-7 w-[3px] -translate-y-1/2 rounded-r bg-[var(--primary)]" />
-                )}
-                <item.Icon size={20} />
-                {item.emBreve && (
-                  <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[var(--primary)]" />
-                )}
-              </Link>
-            </Tooltip>
+            <Link
+              key={item.href}
+              href={`/${locale}/${item.href}`}
+              prefetch={false}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              data-tour={item.tour}
+              title={item.label}
+              className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${focusRing} ${
+                isActive(item.href)
+                  ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-semibold'
+                  : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
+              }`}
+            >
+              {isActive(item.href) && (
+                <span className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r bg-[var(--primary)]" />
+              )}
+              <item.Icon size={18} className="shrink-0" />
+              <span className="truncate">{item.label}</span>
+              {item.emBreve && (
+                <span className="ml-auto h-2 w-2 shrink-0 rounded-full bg-[var(--primary)]" />
+              )}
+            </Link>
           ))}
         </nav>
       </aside>
