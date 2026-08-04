@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { LANDMAP_OG_IMAGE } from '../../lib/og-image';
-import SplashPage from './splash/page';
 
 /**
  * Home pública (`/`) — no Lovable a raiz renderiza o splash
@@ -60,6 +59,13 @@ export async function generateMetadata({
   };
 }
 
-export default function LocaleHomePage() {
-  return <SplashPage />;
+import { redirect } from 'next/navigation';
+
+export default async function LocaleHomePage({
+  params,
+}: {
+  params: Promise<{ locale?: string }>;
+}) {
+  const { locale } = await params;
+  redirect(`/${locale || 'pt-BR'}/splash`);
 }
