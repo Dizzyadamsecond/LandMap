@@ -631,6 +631,13 @@
     "subtitle": "Mapa interactivo, precio por m² e IA para decidir — gratis y sin login.",
     "ctaMap": "Abrir el mapa",
     "ctaStart": "Empezar",
-    "footnote": "LandMap · Inteligencia territorial abierta"
+    "skip": "Saltar introducción",
+    "footnote": "LandMap · Inteligencia territorial abierta",
+    "loading": [
+      "Preparando tu mapa de terrenos...",
+      "Cargando ciudades y regiones de Brasil...",
+      "Organizando los precios por m²...",
+      "Casi listo..."
+    ]
   }
 }

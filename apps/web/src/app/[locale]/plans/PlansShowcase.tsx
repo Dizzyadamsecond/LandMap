@@ -22,6 +22,12 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
     } catch {
       // ignore
     }
+    // Free plan = no-paywall path → entra direto no mapa (CLAUDE.md regra 6).
+    // Planos pagos mantêm o checkout como vitrine de produto.
+    if (planId === 'free') {
+      router.push(`/${locale}/map`);
+      return;
+    }
     router.push(`/${locale}/checkout?plan=${planId}`);
   };
 

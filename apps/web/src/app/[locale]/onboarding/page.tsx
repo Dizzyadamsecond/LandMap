@@ -80,7 +80,8 @@ export default function OnboardingPage() {
 
   const continueOnboarding = () => {
     if (last) {
-      router.replace(lh('/map'));
+      // 1:1 Lovable: último slide segue para /plans (o fluxo free termina em /map lá).
+      router.replace(lh('/plans'));
       return;
     }
     setDirection('next');
@@ -204,7 +205,7 @@ export default function OnboardingPage() {
             onClick={continueOnboarding}
             className="inline-flex h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            {last ? 'Explorar o mapa grátis' : 'Continuar'}
+            {last ? 'Ver planos' : 'Continuar'}
             <ArrowRight className="ml-1 h-4 w-4" />
           </button>
           {last ? (

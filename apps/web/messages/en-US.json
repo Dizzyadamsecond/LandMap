@@ -627,6 +627,13 @@
     "subtitle": "Interactive map, price per m² and AI for decisions — free and no login.",
     "ctaMap": "Open the map",
     "ctaStart": "Get started",
-    "footnote": "LandMap · Open territorial intelligence"
+    "skip": "Skip intro",
+    "footnote": "LandMap · Open territorial intelligence",
+    "loading": [
+      "Preparing your land map...",
+      "Loading Brazilian cities and regions...",
+      "Organizing price per m²...",
+      "Almost ready..."
+    ]
   }
 }

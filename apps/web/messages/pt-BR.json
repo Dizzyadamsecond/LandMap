@@ -627,6 +627,13 @@
     "subtitle": "Mapa interativo, preço por m² e IA para decisão — sem custo e sem login.",
     "ctaMap": "Abrir o mapa",
     "ctaStart": "Começar",
-    "footnote": "LandMap · Inteligência territorial aberta"
+    "skip": "Pular introdução",
+    "footnote": "LandMap · Inteligência territorial aberta",
+    "loading": [
+      "Preparando seu mapa de terrenos...",
+      "Carregando cidades e regiões do Brasil...",
+      "Organizando os preços por m²...",
+      "Quase pronto..."
+    ]
   }
 }
