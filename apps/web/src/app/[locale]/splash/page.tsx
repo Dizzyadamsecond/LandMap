@@ -23,7 +23,8 @@ export default function SplashPage() {
     const timer = window.setTimeout(() => {
       try {
         if (window.localStorage.getItem('guest_mode') === '1') {
-          router.replace(`/${locale}/dashboard`);
+          // Free signup canonical landing surface is /map (CLAUDE.md regra 6 + mockAuth).
+          router.replace(`/${locale}/map`);
           return;
         }
       } catch {
