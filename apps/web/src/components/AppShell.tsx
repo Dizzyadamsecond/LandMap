@@ -23,6 +23,8 @@ import {
   Workflow,
   Zap,
   Briefcase,
+  Menu,
+  X,
 } from './lovable/icons';
 import { Tooltip, OnboardingTour, type TourStep } from '@landmap/ui';
 import { CommandPaletteHost } from './CommandPaletteHost';
@@ -111,6 +113,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const locale = (params.locale as string) || 'pt-BR';
   const [mobileNav, setMobileNav] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [tourOpen, setTourOpen] = useState(false);
 
@@ -135,6 +138,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     } catch {
       /* ignore */
     }
+  }, []);
+
+  // Fecha o drawer mobile com Esc.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileDrawerOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   const submitSearch = () => {
@@ -204,6 +216,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Header sticky h-16 */}
         <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-[var(--border)] bg-[var(--card)] px-4 backdrop-blur-xl md:px-6">
+          {/* Botão Funcionalidades (mobile) — abre drawer esquerdo com a lista completa + nomes */}
+          <button
+            type="button"
+            onClick={() => setMobileDrawerOpen((v) => !v)}
+            aria-label="Funcionalidades"
+            aria-expanded={mobileDrawerOpen}
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--muted)] text-[var(--foreground)] transition hover:border-[var(--primary)]/40 md:hidden ${focusRing}`}
+          >
+            <Menu size={18} />
+          </button>
+
           <div className="relative flex-1 max-w-xl">
             <Search
               size={16}
@@ -277,6 +300,62 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
         ))}
       </nav>
+
+      {/* Drawer mobile de funcionalidades — lista completa à esquerda com NOME (revela ao tocar; fecha ao navegar) */}
+      {mobileDrawerOpen && (
+        <div className="fixed inset-0 z-[60] md:hidden" role="dialog" aria-modal="true" aria-label="Funcionalidades">
+          <button
+            type="button"
+            aria-label="Fechar funcionalidades"
+            onClick={() => setMobileDrawerOpen(false)}
+            className="absolute inset-0 h-full w-full bg-black/50 backdrop-blur-sm"
+          />
+          <aside
+            data-tour="nav"
+            className="absolute left-0 top-0 flex h-full w-[260px] max-w-[82vw] flex-col border-r border-[var(--border)] bg-[var(--sidebar)] shadow-2xl animate-in slide-in-from-left duration-300"
+          >
+            <div className="flex items-center justify-between px-4 py-4">
+              <span className="text-sm font-semibold tracking-tight text-[var(--foreground)]">Funcionalidades</span>
+              <button
+                type="button"
+                aria-label="Fechar"
+                onClick={() => setMobileDrawerOpen(false)}
+                className={`inline-flex h-8 w-8 items-center justify-center rounded-lg text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-[var(--foreground)] ${focusRing}`}
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <nav
+              className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-2 pb-6 scrollbar-none"
+              aria-label="Lista de funcionalidades"
+            >
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={`/${locale}/${item.href}`}
+                  prefetch={false}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  onClick={() => setMobileDrawerOpen(false)}
+                  className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${focusRing} ${
+                    isActive(item.href)
+                      ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-semibold'
+                      : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
+                  }`}
+                >
+                  {isActive(item.href) && (
+                    <span className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r bg-[var(--primary)]" />
+                  )}
+                  <item.Icon size={18} className="shrink-0" />
+                  <span className="truncate">{item.label}</span>
+                  {item.emBreve && (
+                    <span className="ml-auto h-2 w-2 shrink-0 rounded-full bg-[var(--primary)]" />
+                  )}
+                </Link>
+              ))}
+            </nav>
+          </aside>
+        </div>
+      )}
 
       {/* Comando global ⌘K / Ctrl+K */}
       <CommandPaletteHost />
