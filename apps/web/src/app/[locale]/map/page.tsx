@@ -33,6 +33,8 @@ import {
   FileText,
   ChevronDown,
   ChevronUp,
+  SlidersHorizontal,
+  MessageSquare,
 } from '../../../components/lovable/icons';
 import {
   Badge,
@@ -80,6 +82,7 @@ function MapPageInner() {
   const [showHeat, setShowHeat] = useState(true);
   const [layersOpen, setLayersOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [streetViewOpen, setStreetViewOpen] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [mapReady, setMapReady] = useState(false);
   const [suggestOpen, setSuggestOpen] = useState(false);
@@ -971,16 +974,33 @@ function MapPageInner() {
                   <Meta label={COPY.floodRisk} value={selected.floodRisk} />
                 </div>
                 
-                <p className="mb-1.5 mt-3 font-display text-sm font-semibold text-[var(--foreground)]">Street View do Terreno</p>
-                <div className="overflow-hidden rounded-xl border border-[var(--border)] h-44 w-full bg-muted relative mb-2">
+                <div className="flex items-center justify-between mb-1.5 mt-3">
+                  <p className="font-display text-sm font-semibold text-[var(--foreground)]">Street View do Terreno</p>
+                  <button
+                    type="button"
+                    onClick={() => setStreetViewOpen(true)}
+                    className="text-[10px] font-semibold text-primary hover:underline"
+                  >
+                    Ampliar 360°
+                  </button>
+                </div>
+                <div 
+                  onClick={() => setStreetViewOpen(true)}
+                  className="group overflow-hidden rounded-xl border border-[var(--border)] h-44 w-full bg-muted relative mb-2 cursor-pointer transition-all hover:opacity-90"
+                >
                   <iframe
                     width="100%"
                     height="100%"
                     loading="lazy"
                     allowFullScreen
-                    style={{ border: 0 }}
+                    style={{ border: 0, pointerEvents: 'none' }}
                     src={`https://maps.google.com/maps?q=${selected.lat},${selected.lng}&cbll=${selected.lat},${selected.lng}&layer=c&cbp=12,20,0,0,0&output=embed`}
                   />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span className="text-white text-xs font-semibold px-3 py-1.5 rounded-lg bg-black/70 backdrop-blur-sm">
+                      Clique para ver em tela cheia 360°
+                    </span>
+                  </div>
                 </div>
 
                 <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.composition}</p>
@@ -1036,22 +1056,77 @@ function MapPageInner() {
                   </div>
                 )}
 
-                <div className="mt-3 flex flex-wrap gap-1.5">
+                <div className="mt-4 flex flex-col gap-2 border-t border-border/60 pt-4">
                   <Link
-                    href={`${lh('/compare')}?ids=${selected.id}`}
-                    className={cn(buttonVariants({ size: 'sm' }))}
+                    href={lh(`/viabilidade?region=${selected.id}`)}
+                    className={cn(buttonVariants({ size: 'md' }), "flex items-center justify-center gap-2 w-full text-sm font-semibold rounded-xl bg-primary text-primary-foreground shadow-sm hover:bg-primary/95 transition-all")}
                   >
-                    {COPY.compare}
+                    <SlidersHorizontal className="h-4 w-4" />
+                    Simular Viabilidade Construtiva
                   </Link>
-                  <Link
-                    href={lh('/regions')}
-                    className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
-                  >
-                    {COPY.regions}
-                  </Link>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link
+                      href={`${lh('/compare')}?ids=${selected.id}`}
+                      className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), "flex items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] bg-background/50 text-[11px] font-medium hover:bg-muted transition-all")}
+                    >
+                      <Layers className="h-3.5 w-3.5" />
+                      {COPY.compare}
+                    </Link>
+                    <Link
+                      href={lh(`/rag?query=Explicar+potencial+de+${selected.name}`)}
+                      className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), "flex items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] bg-background/50 text-[11px] font-medium hover:bg-muted transition-all")}
+                    >
+                      <MessageSquare className="h-3.5 w-3.5" />
+                      Falar com Corretor IA
+                    </Link>
+                  </div>
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {streetViewOpen && selected && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="relative w-full max-w-4xl rounded-2xl border border-border bg-background p-5 shadow-2xl animate-in zoom-in-95 duration-200 text-foreground">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h3 className="font-display text-base font-bold text-foreground">Visualização Imersiva Street View 360°</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {selected.name}, {selected.city} - {selected.state} · Lat: {selected.lat.toFixed(6)}, Lng: {selected.lng.toFixed(6)}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setStreetViewOpen(false)}
+                className="grid h-8 w-8 place-items-center rounded-full hover:bg-muted text-foreground transition-all"
+                aria-label="Fechar"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            
+            <div className="overflow-hidden rounded-xl border border-border h-[460px] w-full bg-black/10">
+              <iframe
+                width="100%"
+                height="100%"
+                loading="lazy"
+                allowFullScreen
+                style={{ border: 0 }}
+                src={`https://maps.google.com/maps?q=${selected.lat},${selected.lng}&cbll=${selected.lat},${selected.lng}&layer=c&cbp=12,20,0,0,0&output=embed`}
+              />
+            </div>
+
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setStreetViewOpen(false)}
+                className={cn(buttonVariants({ size: 'sm' }), "rounded-lg px-4 py-2 font-semibold transition-all")}
+              >
+                Fechar Painel
+              </button>
+            </div>
           </div>
         </div>
       )}
