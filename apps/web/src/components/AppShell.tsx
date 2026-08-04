@@ -54,14 +54,26 @@ function CameraGlyph({ size = 24, className }: { size?: number; className?: stri
   );
 }
 
+// Ordem 1:1 com a Lovable (telas compartilhadas na mesma sequência da referência):
+// Regiões → Favoritos → Comparar → Dashboard → Mapa → Insights → Perfil →
+// Onboarding → Planos → Sobre → Metodologia → Buscar. Depois, nossos diferenciais
+// LandMap (mantidos no fim, sem reordenar o produto).
 const navItems: { href: string; label: string; Icon: IconComponent; emBreve?: boolean; tour?: string }[] =
   [
+    // ─── Telas compartilhadas (ordem literal Lovable) ───
     { href: 'regions', label: 'Regiões', Icon: MapPin },
     { href: 'favorites', label: 'Favoritos', Icon: Star },
     { href: 'compare', label: 'Comparar', Icon: ArrowLeftRight },
     { href: 'dashboard', label: 'Dashboard', Icon: LayoutGrid },
-    { href: 'search', label: 'Buscar', Icon: Search },
     { href: 'map', label: 'Mapa', Icon: Map, tour: 'map' },
+    { href: 'insights', label: 'Insights', Icon: BellRing },
+    { href: 'profile', label: 'Perfil', Icon: User },
+    { href: 'onboarding', label: 'Onboarding', Icon: ArrowRight },
+    { href: 'plans', label: 'Planos', Icon: Briefcase },
+    { href: 'sobre', label: 'Sobre', Icon: FileText },
+    { href: 'metodologia', label: 'Metodologia', Icon: Layers },
+    { href: 'search', label: 'Buscar', Icon: Search },
+    // ─── Diferenciais LandMap (mantidos após as telas compartilhadas) ───
     { href: 'copilot', label: 'IA Field Copilot Scanner', Icon: CameraGlyph },
     { href: 'viabilidade', label: 'Viabilidade Construtiva', Icon: Activity },
     { href: 'compare/opportunities', label: 'Comparar Oportunidades', Icon: Workflow },
