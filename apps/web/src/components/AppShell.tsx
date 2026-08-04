@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ComponentType } from 'react';
 import {
   ArrowLeftRight,
@@ -22,8 +22,10 @@ import {
   Bot,
   Workflow,
   Zap,
-  Briefcase
+  Briefcase,
 } from './lovable/icons';
+import { Tooltip, OnboardingTour, type TourStep } from '@landmap/ui';
+import { CommandPaletteHost } from './CommandPaletteHost';
 
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]';
@@ -50,32 +52,67 @@ function CameraGlyph({ size = 24, className }: { size?: number; className?: stri
   );
 }
 
-const navItems: { href: string; label: string; Icon: IconComponent; emBreve?: boolean }[] = [
-  { href: 'regions', label: 'Regiões', Icon: MapPin },
-  { href: 'favorites', label: 'Favoritos', Icon: Star },
-  { href: 'compare', label: 'Comparar', Icon: ArrowLeftRight },
-  { href: 'dashboard', label: 'Dashboard', Icon: LayoutGrid },
-  { href: 'search', label: 'Buscar', Icon: Search },
-  { href: 'map', label: 'Mapa', Icon: Map },
-  { href: 'copilot', label: 'IA Field Copilot Scanner', Icon: CameraGlyph },
-  { href: 'viabilidade', label: 'Viabilidade Construtiva', Icon: Activity },
-  { href: 'compare/opportunities', label: 'Comparar Oportunidades', Icon: Workflow },
-  { href: 'risk-radar', label: 'Radar de Risco', Icon: Zap },
-  { href: 'market-index', label: 'Índice Regional', Icon: TrendingUp },
-  { href: 'investment-memo', label: 'Investment Memo', Icon: FileText },
-  { href: 'zoning', label: 'Zoneamento', Icon: Layers },
-  { href: 'syndicate', label: 'Sindicatos LPs', Icon: Briefcase },
-  { href: 'underwriting', label: 'Underwriting & Estresse', Icon: Activity },
-  { href: 'admin/crm-telemetry', label: 'Telemetria CRM', Icon: Bot },
-  { href: 'admin/cockpit/chats', label: 'Chats Autopilot', Icon: MessageSquare },
-  { href: 'admin', label: 'Painel Admin', Icon: Settings },
+const navItems: { href: string; label: string; Icon: IconComponent; emBreve?: boolean; tour?: string }[] =
+  [
+    { href: 'regions', label: 'Regiões', Icon: MapPin },
+    { href: 'favorites', label: 'Favoritos', Icon: Star },
+    { href: 'compare', label: 'Comparar', Icon: ArrowLeftRight },
+    { href: 'dashboard', label: 'Dashboard', Icon: LayoutGrid },
+    { href: 'search', label: 'Buscar', Icon: Search },
+    { href: 'map', label: 'Mapa', Icon: Map, tour: 'map' },
+    { href: 'copilot', label: 'IA Field Copilot Scanner', Icon: CameraGlyph },
+    { href: 'viabilidade', label: 'Viabilidade Construtiva', Icon: Activity },
+    { href: 'compare/opportunities', label: 'Comparar Oportunidades', Icon: Workflow },
+    { href: 'risk-radar', label: 'Radar de Risco', Icon: Zap },
+    { href: 'market-index', label: 'Índice Regional', Icon: TrendingUp },
+    { href: 'investment-memo', label: 'Investment Memo', Icon: FileText },
+    { href: 'zoning', label: 'Zoneamento', Icon: Layers },
+    { href: 'syndicate', label: 'Sindicatos LPs', Icon: Briefcase },
+    { href: 'underwriting', label: 'Underwriting & Estresse', Icon: Activity },
+    { href: 'admin/crm-telemetry', label: 'Telemetria CRM', Icon: Bot },
+    { href: 'admin/cockpit/chats', label: 'Chats Autopilot', Icon: MessageSquare },
+    { href: 'admin', label: 'Painel Admin', Icon: Settings, tour: 'admin' },
+  ];
+
+const TOUR_STEPS: TourStep[] = [
+  {
+    target: '[data-tour="search"]',
+    title: 'Busca global',
+    description:
+      'Digite cidades, bairros ou imóveis e pressione Enter. A qualquer momento, use ⌘K / Ctrl+K para abrir o atalho de navegação.',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-tour="map"]',
+    title: 'Mapa de valorização',
+    description:
+      'Veja o preço por m², heatmaps de valorização e camadas por região em tempo real.',
+    placement: 'right',
+  },
+  {
+    target: '[data-tour="nav"]',
+    title: 'Navegação completa',
+    description:
+      'Todas as 18 áreas do produto ficam aqui: comparar, viabilidade, radar de risco, zoneamento e mais. Passe o mouse para ver o nome.',
+    placement: 'right',
+  },
+  {
+    target: '[data-tour="admin"]',
+    title: 'Painel Admin & Agentes de IA',
+    description:
+      'CRM, cockpits e agentes autônomos de follow-up ficam aqui — o centro de operação do seu time.',
+    placement: 'right',
+  },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const pathname = usePathname();
+  const router = useRouter();
   const locale = (params.locale as string) || 'pt-BR';
   const [mobileNav, setMobileNav] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [tourOpen, setTourOpen] = useState(false);
 
   const isActive = (href: string) => {
     const full = `/${locale}/${href}`;
@@ -86,15 +123,38 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     ['search', 'map', 'copilot', 'compare', 'chat'].includes(item.href),
   );
 
+  // Dispara o tour de boas-vindas apenas na primeira visita (desktop).
   useEffect(() => {
-    setMobileNav(false);
-  }, [pathname]);
+    try {
+      if (typeof window !== 'undefined' && !window.matchMedia('(pointer: coarse)').matches) {
+        if (!localStorage.getItem('landmap:tour_done')) {
+          const t = setTimeout(() => setTourOpen(true), 600);
+          return () => clearTimeout(t);
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const submitSearch = () => {
+    const q = searchValue.trim();
+    router.push(`/${locale}/search${q ? `?q=${encodeURIComponent(q)}` : ''}`);
+  };
 
   return (
     <div className="flex min-h-[100dvh] bg-[var(--background)] text-[var(--foreground)]">
       {/* Sidebar desktop 68px — indigo LandMap */}
-      <aside className="sticky top-0 hidden h-[100dvh] w-[68px] shrink-0 flex-col items-center border-r border-[var(--border)] bg-[var(--sidebar)] py-4 backdrop-blur-xl md:flex">
-        <Link href={`/${locale}`} aria-label="LandMap" prefetch={false} className={`mb-6 rounded-xl p-1.5 ${focusRing}`}>
+      <aside
+        data-tour="nav"
+        className="sticky top-0 hidden h-[100dvh] w-[68px] shrink-0 flex-col items-center border-r border-[var(--border)] bg-[var(--sidebar)] py-4 backdrop-blur-xl md:flex"
+      >
+        <Link
+          href={`/${locale}`}
+          aria-label="LandMap"
+          prefetch={false}
+          className={`mb-6 rounded-xl p-1.5 ${focusRing}`}
+        >
           <Image
             src="/landmap-logo-transparent.png"
             alt="LandMap"
@@ -103,28 +163,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             className="h-6 w-auto object-contain"
           />
         </Link>
-        <nav className="flex flex-1 flex-col items-center gap-1 overflow-y-auto w-full px-2 pb-6 scrollbar-none" aria-label="Navegação do app">
+        <nav
+          className="flex flex-1 flex-col items-center gap-1 overflow-y-auto w-full px-2 pb-6 scrollbar-none"
+          aria-label="Navegação do app"
+        >
           {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={`/${locale}/${item.href}`}
-              prefetch={false}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-              title={item.label}
-              className={`group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition ${focusRing} ${
-                isActive(item.href)
-                  ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
-                  : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
-              }`}
-            >
-              {isActive(item.href) && (
-                <span className="absolute left-0 top-1/2 h-7 w-[3px] -translate-y-1/2 rounded-r bg-[var(--primary)]" />
-              )}
-              <item.Icon size={20} />
-              {item.emBreve && (
-                <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[var(--primary)]" />
-              )}
-            </Link>
+            <Tooltip key={item.href} content={item.label} side="right">
+              <Link
+                href={`/${locale}/${item.href}`}
+                prefetch={false}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                data-tour={item.tour}
+                className={`group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition ${focusRing} ${
+                  isActive(item.href)
+                    ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
+                    : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
+                }`}
+              >
+                {isActive(item.href) && (
+                  <span className="absolute left-0 top-1/2 h-7 w-[3px] -translate-y-1/2 rounded-r bg-[var(--primary)]" />
+                )}
+                <item.Icon size={20} />
+                {item.emBreve && (
+                  <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[var(--primary)]" />
+                )}
+              </Link>
+            </Tooltip>
           ))}
         </nav>
       </aside>
@@ -141,23 +205,36 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             />
             <input
               type="search"
-              placeholder="Buscar imóveis, cidades, bairros…"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') submitSearch();
+              }}
+              placeholder="Buscar imóveis, cidades, bairros…  (⌘K)"
               aria-label="Buscar"
+              data-tour="search"
               className="w-full rounded-full border border-[var(--border)] bg-[var(--muted)] py-2 pl-9 pr-12 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)]/50"
             />
-            <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded border border-[var(--border)] bg-[var(--card)] px-1.5 py-0.5 text-[10px] text-[var(--muted-foreground)]">
+            <button
+              type="button"
+              onClick={submitSearch}
+              aria-label="Abrir busca"
+              className="absolute right-2 top-1/2 inline-flex h-7 items-center rounded-md border border-[var(--border)] bg-[var(--card)] px-1.5 text-[10px] text-[var(--muted-foreground)] transition hover:border-[var(--primary)]/40 hover:text-[var(--foreground)]"
+            >
               ⌘K
-            </kbd>
+            </button>
           </div>
 
-          <button
-            type="button"
-            aria-label="Notificações"
-            className={`relative inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--muted)] text-[var(--foreground)] transition hover:border-[var(--primary)]/40 ${focusRing}`}
-          >
-            <Bell size={18} />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[var(--primary)]" />
-          </button>
+          <Tooltip content="Notificações e alertas de oportunidade" side="bottom">
+            <button
+              type="button"
+              aria-label="Notificações"
+              className={`relative inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--muted)] text-[var(--foreground)] transition hover:border-[var(--primary)]/40 ${focusRing}`}
+            >
+              <Bell size={18} />
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[var(--primary)]" />
+            </button>
+          </Tooltip>
 
           <div className="relative">
             <button
@@ -193,6 +270,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
         ))}
       </nav>
+
+      {/* Comando global ⌘K / Ctrl+K */}
+      <CommandPaletteHost />
+
+      {/* Tour de boas-vindas (primeira visita, desktop) */}
+      <OnboardingTour
+        open={tourOpen}
+        steps={TOUR_STEPS}
+        storageKey="landmap:tour_done"
+        onFinish={() => setTourOpen(false)}
+        onSkip={() => setTourOpen(false)}
+      />
     </div>
   );
 }

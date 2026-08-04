@@ -59,13 +59,19 @@ export default function SplashPage() {
         className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full bg-[var(--primary)]/10 blur-3xl"
       />
 
-      {/* Skip button top right */}
-      <div className="absolute top-6 right-6">
+      {/* Ações no topo direito — CTA claro + pular */}
+      <div className="absolute top-6 right-6 flex items-center gap-3">
+        <button
+          onClick={() => router.replace(`/${locale}/map`)}
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[var(--primary)] px-4 text-xs font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-card)] transition hover:bg-[var(--primary-glow)]"
+        >
+          Entrar no app
+        </button>
         <button
           onClick={() => router.replace(`/${locale}/onboarding`)}
           className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition"
         >
-          Pular Animação
+          Pular intro
         </button>
       </div>
 

@@ -75,6 +75,17 @@ function SearchPageInner() {
 
   const [query, setQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<SearchQuery['type'] | 'todos'>('todos');
+
+  // Sincroniza a busca inicial com ?q= (ex.: vindo da busca global do header).
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q');
+      if (q) setQuery(q);
+    } catch {
+      /* ignore */
+    }
+  }, []);
   const [modalityFilter, setModalityFilter] = useState<SearchQuery['modality'] | 'todos'>('todos');
   const [cityFilter, setCityFilter] = useState('');
   const [minPrice, setMinPrice] = useState(0);
