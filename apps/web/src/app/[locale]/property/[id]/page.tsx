@@ -85,22 +85,26 @@ export default function PropertyDossierPage() {
               <Card variant="default" className="p-4">
                 <p className="text-xs text-[var(--muted-foreground)]">Preço</p>
                 <p className="mt-1 text-lg font-semibold text-[var(--foreground)]">{formatBRL(p.price)}</p>
+                <p className="text-[10px] text-[var(--muted-foreground)] mt-1.5 leading-snug">Valor de aquisição negociado</p>
               </Card>
               <Card variant="default" className="p-4">
                 <p className="text-xs text-[var(--muted-foreground)]">Preço/m²</p>
                 <p className="mt-1 text-lg font-semibold text-[var(--foreground)]">
                   {p.pricePerM2 ? formatBRL(p.pricePerM2) : '—'}
                 </p>
+                <p className="text-[10px] text-[var(--muted-foreground)] mt-1.5 leading-snug">Custo médio por metro quadrado</p>
               </Card>
               <Card variant="default" className="p-4">
                 <p className="text-xs text-[var(--muted-foreground)]">Área</p>
                 <p className="mt-1 text-lg font-semibold text-[var(--foreground)]">{p.areaM2} m²</p>
+                <p className="text-[10px] text-[var(--muted-foreground)] mt-1.5 leading-snug">Dimensão total útil declarada</p>
               </Card>
               <Card variant="default" className="p-4">
                 <p className="text-xs text-[var(--muted-foreground)]">Cap rate</p>
                 <p className="mt-1 text-lg font-semibold text-[var(--foreground)]">
                   {p.capRate ? `${p.capRate}%` : '—'}
                 </p>
+                <p className="text-[10px] text-[var(--muted-foreground)] mt-1.5 leading-snug">Rendimento anual líquido (NOI)</p>
               </Card>
             </div>
 
@@ -198,18 +202,30 @@ export default function PropertyDossierPage() {
                 </div>
               </Card>
             )}
-            <Card variant="default" className="p-5">
-              <div className="mb-2 flex items-center gap-2">
+            <Card variant="default" className="p-5 space-y-3">
+              <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-[var(--primary)]" />
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--foreground)]">Local</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--foreground)]">Local & Google Street View</h2>
               </div>
               <p className="text-sm text-[var(--muted-foreground)]">
                 {p.neighborhood ?? 'Centro'} · {p.city}/{p.state}
               </p>
               {typeof p.latitude === 'number' && typeof p.longitude === 'number' && (
-                <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-                  {p.latitude.toFixed(4)}, {p.longitude.toFixed(4)}
-                </p>
+                <>
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    Coordenadas: {p.latitude.toFixed(4)}, {p.longitude.toFixed(4)}
+                  </p>
+                  <div className="overflow-hidden rounded-xl border border-[var(--border)] h-48 w-full mt-2 bg-muted relative">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      loading="lazy"
+                      allowFullScreen
+                      style={{ border: 0 }}
+                      src={`https://maps.google.com/maps?q=${p.latitude},${p.longitude}&cbll=${p.latitude},${p.longitude}&layer=c&cbp=12,20,0,0,0&output=embed`}
+                    />
+                  </div>
+                </>
               )}
             </Card>
 

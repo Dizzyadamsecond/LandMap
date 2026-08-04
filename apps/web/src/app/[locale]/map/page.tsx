@@ -970,6 +970,18 @@ function MapPageInner() {
                   <Meta label={COPY.envRisk} value={selected.environmentalRisk} />
                   <Meta label={COPY.floodRisk} value={selected.floodRisk} />
                 </div>
+                
+                <p className="mb-1.5 mt-3 font-display text-sm font-semibold text-[var(--foreground)]">Street View do Terreno</p>
+                <div className="overflow-hidden rounded-xl border border-[var(--border)] h-44 w-full bg-muted relative mb-2">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    loading="lazy"
+                    allowFullScreen
+                    style={{ border: 0 }}
+                    src={`https://maps.google.com/maps?q=${selected.lat},${selected.lng}&cbll=${selected.lat},${selected.lng}&layer=c&cbp=12,20,0,0,0&output=embed`}
+                  />
+                </div>
 
                 <p className="mb-1.5 mt-3 font-display text-sm font-semibold">{COPY.composition}</p>
                 <div className="space-y-1.5">
@@ -1048,10 +1060,25 @@ function MapPageInner() {
 }
 
 function Meta({ label, value }: { label: string; value: string }) {
+  const descriptions: Record<string, string> = {
+    'Preço médio m²': 'Média de custo por m²',
+    '12m': 'Evolução anual',
+    'Ranking estadual': 'Posição no estado',
+    'Ranking nacional': 'Posição no Brasil',
+    'População': 'Habitantes estimativos',
+    'Renda média': 'Ganhos mensais médios',
+    'IDH': 'Desenvolvimento Humano',
+    'Zoneamento': 'Plano diretor municipal',
+    'Risco ambiental': 'Score de risco físico',
+    'Risco enchente': 'Histórico de pluviosidade',
+  };
+  const desc = descriptions[label] || '';
+
   return (
     <div className="rounded-lg bg-muted/40 px-2.5 py-2">
       <p className="text-[10px] text-foreground/50">{label}</p>
       <p className="truncate text-xs font-semibold">{value}</p>
+      {desc && <p className="text-[9px] text-foreground/45 mt-0.5 leading-none">{desc}</p>}
     </div>
   );
 }
