@@ -2,3 +2,4 @@
 export * from './types.js';
 export * from './metrics.js';
 export * from './opportunity.js';
+export * from './landOpportunity.js';

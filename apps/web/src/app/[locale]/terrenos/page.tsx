@@ -9,6 +9,7 @@ import { SpotlightCard } from '../../../components/SpotlightCard';
 import { RealtimeValuator } from '../../../components/RealtimeValuator';
 import { getTerrain, type TerrainResponse } from '../../../lib/api';
 import { FEATURED_CITIES } from '../../../lib/constants';
+import { useLandOpportunities } from '../../../lib/useLandOpportunities';
 
 const brl = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -55,6 +56,123 @@ function scoreColor(v: number): string {
   if (v >= 55) return '#22d3ee';
   if (v >= 40) return '#c084fc';
   return '#f59e0b';
+}
+
+/** Painel nacional ao vivo — ranking de oportunidade de terreno de TODO o Brasil. */
+function NationalLandLive() {
+  const { snapshot, connected, error } = useLandOpportunities();
+  const brl = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    maximumFractionDigits: 0,
+  });
+
+  return (
+    <section className="mt-10 rounded-2xl border border-[var(--border)] bg-[var(--card)]/60 p-6">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{
+                background: connected ? 'var(--success)' : 'var(--muted-foreground)',
+                boxShadow: connected ? '0 0 10px rgba(52,211,153,0.9)' : 'none',
+              }}
+            />
+            <p className="text-sm font-medium text-[var(--primary)]">
+              Maiores oportunidades de terreno do Brasil — ao vivo
+            </p>
+          </div>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
+            Cobertura nacional em tempo real
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm text-[var(--muted-foreground)]">
+            Score recomputado a cada tick com Selic (Bacen) e IPCA (SIDRA) reais. Cobertura de 100% dos
+            municípios do IBGE — sem simulação de imóveis.
+          </p>
+        </div>
+        {snapshot && (
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <Badge className="tabular-nums">
+              {num.format(snapshot.coverage.municipios)} municípios
+            </Badge>
+            <Badge className="tabular-nums">{snapshot.coverage.ufs} UFs</Badge>
+            <Badge className="tabular-nums">
+              Selic {(snapshot.macro.selic * 100).toFixed(1)}%
+            </Badge>
+            <Badge className="tabular-nums">
+              IPCA {(snapshot.macro.ipca * 100).toFixed(1)}%
+            </Badge>
+            <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--muted)] px-3 py-1 font-medium text-[var(--muted-foreground)]">
+              {snapshot.live ? 'fontes vivas' : 'last-known'} ·{' '}
+              {new Date(snapshot.generatedAt).toLocaleTimeString('pt-BR')}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {error && (
+        <p className="mt-4 text-xs text-[var(--warning)]" role="status">
+          {error}
+        </p>
+      )}
+
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {(snapshot?.top ?? []).map((o, idx) => (
+          <motion.div
+            key={o.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: Math.min(idx * 0.02, 0.4) }}
+            className="rounded-xl border border-[var(--border)] bg-[var(--card)]/60 p-4"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-[var(--foreground)]">
+                  {idx + 1}. {o.municipio}
+                </p>
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
+                  {o.uf} · {o.regiao}
+                </p>
+              </div>
+              <div className="flex flex-col items-end">
+                <span
+                  className="rounded-lg px-2 py-1 text-sm font-bold tabular-nums"
+                  style={{ color: scoreColor(o.score), background: 'rgba(255,255,255,0.05)' }}
+                  title="Score de oportunidade 0–100"
+                >
+                  {o.score}
+                </span>
+                <span className="mt-0.5 text-[10px] uppercase tracking-wide text-[var(--muted-foreground)]">
+                  {o.grade}
+                </span>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-[var(--muted-foreground)]">
+              Ref. terreno:{' '}
+              <span className="font-medium text-[var(--foreground)]">{brl.format(o.pricePerM2)}/m²</span>
+            </p>
+            <ul className="mt-2 space-y-1">
+              {o.reasons.slice(0, 2).map((r) => (
+                <li key={r} className="flex items-start gap-1.5 text-[11px] text-[var(--muted-foreground)]">
+                  <span className="mt-0.5 text-[var(--success)]">✓</span>
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        ))}
+      </div>
+
+      {!snapshot && (
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-28 rounded-xl" />
+          ))}
+        </div>
+      )}
+    </section>
+  );
 }
 
 function KpiCard({
@@ -194,10 +312,13 @@ export default function TerrenosPage() {
                 className="h-2 w-2 rounded-full bg-[var(--primary)]"
                 style={{ boxShadow: '0 0 10px rgba(0,53,148,0.9)' }}
               />
-              dados vivos Â· {updatedAt}
+              dados vivos · {updatedAt}
             </span>
           )}
         </div>
+
+        {/* Ranking nacional ao vivo — oportunidade de terreno de TODO o Brasil */}
+        <NationalLandLive />
 
         {/* Status para leitores de tela */}
         <p className="sr-only" aria-live="polite">

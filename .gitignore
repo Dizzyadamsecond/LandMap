@@ -135,3 +135,6 @@ reference/assets/
 
 #waba-automate
 waba-data/
+
+# ─── Debug fetch de produção (não é fonte do app) ───
+docs/lovable_live_fetch.html

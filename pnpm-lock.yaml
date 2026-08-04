@@ -43,6 +43,9 @@ importers:
       '@landmap/integrations':
         specifier: workspace:*
         version: link:../../packages/integrations
+      '@landmap/invest':
+        specifier: workspace:*
+        version: link:../../packages/invest
       '@landmap/sales':
         specifier: workspace:*
         version: link:../../packages/sales
