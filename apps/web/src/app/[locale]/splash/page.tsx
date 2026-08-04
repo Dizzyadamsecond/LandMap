@@ -11,7 +11,7 @@ export default function SplashPage() {
   const locale = params.locale || 'pt-BR';
 
   const [progress, setProgress] = useState(0);
-  const [statusText, setStatusText] = useState('Iniciando o LandMap Engine...');
+  const [statusText, setStatusText] = useState('Preparando seu mapa de terrenos...');
 
   useEffect(() => {
     const duration = 2500; // 2.5 seconds total
@@ -27,16 +27,16 @@ export default function SplashPage() {
           router.replace(`/${locale}/onboarding`);
           return 100;
         }
-        
-        // Update status text based on progress
+
+        // Update status text based on progress (friendly, non-technical copy)
         if (next < 25) {
-          setStatusText('Inicializando módulos do Atlas...');
+          setStatusText('Preparando seu mapa de terrenos...');
         } else if (next < 50) {
-          setStatusText('Carregando topografia do território nacional...');
+          setStatusText('Carregando cidades e regiões do Brasil...');
         } else if (next < 75) {
-          setStatusText('Sincronizando índices regionais em tempo real...');
+          setStatusText('Organizando os preços por m²...');
         } else {
-          setStatusText('Otimizando modelos de sensibilidade financeira...');
+          setStatusText('Quase pronto...');
         }
 
         return next;
@@ -62,16 +62,16 @@ export default function SplashPage() {
       {/* Ações no topo direito — CTA claro + pular */}
       <div className="absolute top-6 right-6 flex items-center gap-3">
         <button
-          onClick={() => router.replace(`/${locale}/map`)}
+          onClick={() => router.replace(`/${locale}/onboarding`)}
           className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[var(--primary)] px-4 text-xs font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-card)] transition hover:bg-[var(--primary-glow)]"
         >
           Entrar no app
         </button>
         <button
-          onClick={() => router.replace(`/${locale}/onboarding`)}
-          className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition"
+          onClick={() => router.replace(`/${locale}/map`)}
+          className="inline-flex h-9 items-center rounded-lg border border-[var(--border)] px-3 text-xs font-semibold text-[var(--muted-foreground)] transition hover:border-[var(--ring)] hover:text-[var(--foreground)]"
         >
-          Pular intro
+          Pular introdução
         </button>
       </div>
 
@@ -79,9 +79,18 @@ export default function SplashPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col items-center text-center w-full max-w-sm space-y-8"
+        className="flex flex-col items-center text-center w-full max-w-sm space-y-6"
       >
         <LandMapWordmark className="h-10 text-[var(--primary)] animate-pulse" />
+
+        <div className="space-y-1">
+          <h1 className="text-xl font-semibold tracking-tight text-[var(--foreground)]">
+            Bem-vindo ao LandMap
+          </h1>
+          <p className="text-sm text-[var(--muted-foreground)]">
+            Inteligência de terrenos, valorização e preço por m² em todo o Brasil.
+          </p>
+        </div>
 
         <div className="w-full space-y-3">
           {/* Progress bar container */}
@@ -97,6 +106,13 @@ export default function SplashPage() {
             <span className="font-mono font-bold">{Math.round(progress)}%</span>
           </div>
         </div>
+
+        <button
+          onClick={() => router.replace(`/${locale}/onboarding`)}
+          className="text-xs font-semibold text-[var(--muted-foreground)] underline-offset-4 transition hover:text-[var(--foreground)] hover:underline"
+        >
+          Pular a animação e entrar agora
+        </button>
       </motion.div>
 
       <p className="absolute bottom-6 text-[10px] uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
