@@ -449,6 +449,26 @@ body {
   filter: hue-rotate(12deg) saturate(0.85) brightness(1.02) contrast(0.96);
 }
 
+/* ─── Splash logo reveal (1:1 Lovable: vertical draw-on wipe) ─── */
+.splash-logo-reveal {
+  clip-path: inset(100% 0 0 0);
+  animation: splash-wipe 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+@keyframes splash-wipe {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-logo-reveal {
+    clip-path: inset(0 0 0 0);
+    animation: none;
+  }
+}
+
 /* ─── Splash radar sweep (Lovable-style animated loader) ─── */
 .radar-sweep {
   background: conic-gradient(
