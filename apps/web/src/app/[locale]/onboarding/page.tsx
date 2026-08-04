@@ -38,6 +38,11 @@ const SLIDES = [
     title: 'Decisão com confiança',
     desc: 'Dados cruzados de fontes verificadas, com nível de confiança em cada registro.',
   },
+  {
+    icon: Briefcase,
+    title: 'Ecossistema Completo de Soluções',
+    desc: 'Acesse instantaneamente Comparadores, Viabilidade de Terrenos, Zoneamento Municipal, Sindicatos de LPs e OCR de Matrículas.',
+  },
 ] as const;
 
 /** Segmentos do mercado imobiliário — escolha de perfil (1:1 Lovable, inclui Comprador). */

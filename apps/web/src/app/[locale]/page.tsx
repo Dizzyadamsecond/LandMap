@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { LANDMAP_OG_IMAGE } from '../../lib/og-image';
-import OnboardingPage from './onboarding/page';
+import SplashPage from './splash/page';
 
 /**
- * Home pública (`/`) — no Lovable a raiz redireciona/renderiza o onboarding
+ * Home pública (`/`) — no Lovable a raiz renderiza o splash
  * ("Conheça o LandMap"). Mantemos o mesmo conteúdo e metadata autoritativos.
  */
 export async function generateMetadata({
@@ -61,5 +61,5 @@ export async function generateMetadata({
 }
 
 export default function LocaleHomePage() {
-  return <OnboardingPage />;
+  return <SplashPage />;
 }

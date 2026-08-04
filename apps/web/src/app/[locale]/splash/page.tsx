@@ -1,75 +1,101 @@
 'use client';
 
-import Link from 'next/link';
-import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { LandMapWordmark } from '../../../components/lovable/icons';
 
-/**
- * /[locale]/splash — tela de entrada animada, 1:1 com o padrão Lovable.
- * Hero central com wordmark, headline, subhead e CTAs idênticos:
- *  - "Abrir o mapa"  -> /map  (primary)
- *  - "Começar"       -> /onboarding (secondary)
- * Animação de entrada suave + respeita prefers-reduced-motion.
- */
-
 export default function SplashPage() {
-  const t = useTranslations('splash');
+  const router = useRouter();
   const params = useParams();
   const locale = params.locale || 'pt-BR';
 
+  const [progress, setProgress] = useState(0);
+  const [statusText, setStatusText] = useState('Iniciando o LandMap Engine...');
+
+  useEffect(() => {
+    const duration = 2500; // 2.5 seconds total
+    const intervalTime = 30; // ms
+    const increment = 100 / (duration / intervalTime);
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        const next = prev + increment;
+        if (next >= 100) {
+          clearInterval(timer);
+          // Redirect on complete
+          router.replace(`/${locale}/onboarding`);
+          return 100;
+        }
+        
+        // Update status text based on progress
+        if (next < 25) {
+          setStatusText('Inicializando módulos do Atlas...');
+        } else if (next < 50) {
+          setStatusText('Carregando topografia do território nacional...');
+        } else if (next < 75) {
+          setStatusText('Sincronizando índices regionais em tempo real...');
+        } else {
+          setStatusText('Otimizando modelos de sensibilidade financeira...');
+        }
+
+        return next;
+      });
+    }, intervalTime);
+
+    return () => clearInterval(timer);
+  }, [router, locale]);
+
   return (
     <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-[var(--background)] px-6 text-[var(--foreground)]">
-      {/* cadastre grid sutil de fundo */}
+      {/* Subtle background grid */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 cadastre-grid opacity-[0.05]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-15"
       />
-      {/* glow indigo Lovable */}
+      {/* Glow background */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full bg-[var(--primary)]/15 blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full bg-[var(--primary)]/10 blur-3xl"
       />
+
+      {/* Skip button top right */}
+      <div className="absolute top-6 right-6">
+        <button
+          onClick={() => router.replace(`/${locale}/onboarding`)}
+          className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition"
+        >
+          Pular Animação
+        </button>
+      </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col items-center text-center"
+        className="flex flex-col items-center text-center w-full max-w-sm space-y-8"
       >
-        <LandMapWordmark className="h-10" />
+        <LandMapWordmark className="h-10 text-[var(--primary)] animate-pulse" />
 
-        <h1 className="mt-8 max-w-xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
-          {t('title')}
-        </h1>
+        <div className="w-full space-y-3">
+          {/* Progress bar container */}
+          <div className="h-1.5 w-full bg-[var(--border)] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[var(--primary)] transition-all duration-300 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
 
-        <p className="mt-3 max-w-md text-[var(--muted-foreground)]">{t('subtitle')}</p>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href={`/${locale}/map`}
-            className="inline-flex h-10 items-center rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
-          >
-            {t('ctaMap')}
-          </Link>
-          <Link
-            href={`/${locale}/onboarding`}
-            className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-          >
-            {t('ctaStart')}
-          </Link>
+          <div className="flex items-center justify-between text-xs text-[var(--muted-foreground)] px-1">
+            <span className="font-medium animate-pulse">{statusText}</span>
+            <span className="font-mono font-bold">{Math.round(progress)}%</span>
+          </div>
         </div>
       </motion.div>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.35 }}
-        className="absolute bottom-6 text-xs text-[var(--muted-foreground)]"
-      >
-        {t('footnote')}
-      </motion.p>
+      <p className="absolute bottom-6 text-[10px] uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
+        LandMap · Inteligência Territorial Aberta
+      </p>
     </main>
   );
 }

@@ -15,6 +15,14 @@ import {
   Settings,
   Star,
   User,
+  Activity,
+  TrendingUp,
+  FileText,
+  Layers,
+  Bot,
+  Workflow,
+  Zap,
+  Briefcase
 } from './lovable/icons';
 
 const focusRing =
@@ -49,9 +57,18 @@ const navItems: { href: string; label: string; Icon: IconComponent; emBreve?: bo
   { href: 'dashboard', label: 'Dashboard', Icon: LayoutGrid },
   { href: 'search', label: 'Buscar', Icon: Search },
   { href: 'map', label: 'Mapa', Icon: Map },
-  { href: 'inspect', label: 'Capturar', Icon: CameraGlyph },
-  { href: 'chat', label: 'Chat', Icon: MessageSquare },
-  { href: 'admin', label: 'Admin', Icon: Settings },
+  { href: 'copilot', label: 'IA Field Copilot Scanner', Icon: CameraGlyph },
+  { href: 'viabilidade', label: 'Viabilidade Construtiva', Icon: Activity },
+  { href: 'compare/opportunities', label: 'Comparar Oportunidades', Icon: Workflow },
+  { href: 'risk-radar', label: 'Radar de Risco', Icon: Zap },
+  { href: 'market-index', label: 'Índice Regional', Icon: TrendingUp },
+  { href: 'investment-memo', label: 'Investment Memo', Icon: FileText },
+  { href: 'zoning', label: 'Zoneamento', Icon: Layers },
+  { href: 'syndicate', label: 'Sindicatos LPs', Icon: Briefcase },
+  { href: 'underwriting', label: 'Underwriting & Estresse', Icon: Activity },
+  { href: 'admin/crm-telemetry', label: 'Telemetria CRM', Icon: Bot },
+  { href: 'admin/cockpit/chats', label: 'Chats Autopilot', Icon: MessageSquare },
+  { href: 'admin', label: 'Painel Admin', Icon: Settings },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -66,7 +83,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   const bottomItems = navItems.filter((item) =>
-    ['search', 'map', 'inspect', 'compare', 'chat'].includes(item.href),
+    ['search', 'map', 'copilot', 'compare', 'chat'].includes(item.href),
   );
 
   useEffect(() => {
@@ -86,7 +103,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             className="h-6 w-auto object-contain"
           />
         </Link>
-        <nav className="flex flex-1 flex-col items-center gap-1" aria-label="Navegação do app">
+        <nav className="flex flex-1 flex-col items-center gap-1 overflow-y-auto w-full px-2 pb-6 scrollbar-none" aria-label="Navegação do app">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -94,7 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               prefetch={false}
               aria-current={isActive(item.href) ? 'page' : undefined}
               title={item.label}
-              className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition ${focusRing} ${
+              className={`group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition ${focusRing} ${
                 isActive(item.href)
                   ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
                   : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'

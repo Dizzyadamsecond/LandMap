@@ -130,6 +130,18 @@ function DashboardInner() {
     { href: lh('/reports'), icon: FileText, title: 'Relatórios', desc: 'Dossiês e PDFs' },
   ];
 
+  const investorTools = [
+    { href: lh('/viabilidade'), icon: Activity, title: 'Viabilidade Construtiva', desc: 'Estudo de potencial e valor residual' },
+    { href: lh('/compare/opportunities'), icon: GitCompare, title: 'Comparar Oportunidades', desc: 'Cap Rate e ROI de múltiplos ativos' },
+    { href: lh('/copilot'), icon: FileText, title: 'AI Copilot Scanner', desc: 'OCR de matrículas e fotos de campo' },
+    { href: lh('/risk-radar'), icon: BellRing, title: 'Radar de Risco', desc: 'Restrições ambientais e topografia' },
+    { href: lh('/market-index'), icon: TrendingUp, title: 'Índice Regional', desc: 'Evolução do preço por m² no Brasil' },
+    { href: lh('/investment-memo'), icon: FileText, title: 'Investment Memo', desc: 'Dossiês e comitê de investimentos' },
+    { href: lh('/zoning'), icon: Layers, title: 'Zoneamento', desc: 'Consulta de leis de uso de solo' },
+    { href: lh('/syndicate'), icon: Layers, title: 'Sindicatos de LPs', desc: 'Co-investimento coletivo estruturado' },
+    { href: lh('/underwriting'), icon: Activity, title: 'Underwriting & Estresse', desc: 'Sensibilidade de TIR e Selic' },
+  ];
+
   return (
     <main className="min-h-[100dvh] bg-background">
       <header className="sticky top-0 z-10 border-b border-[var(--border)] bg-background/90 backdrop-blur">
@@ -274,6 +286,32 @@ function DashboardInner() {
                   </ul>
                 </Card>
               </div>
+              <Card className="p-6 space-y-4">
+                <div>
+                  <h2 className="text-base font-semibold text-[var(--foreground)]">Ferramentas de Investimento Avançadas (YC-Spec)</h2>
+                  <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Modelagem financeira, auditoria territorial e ferramentas de inteligência em tempo real</p>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {investorTools.map((tool) => {
+                    const Icon = tool.icon;
+                    return (
+                      <Link
+                        key={tool.href}
+                        href={tool.href}
+                        className="flex flex-col justify-between rounded-2xl border border-border/50 bg-background/50 p-4 transition hover:border-primary/30 hover:bg-primary/5 text-left"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="grid h-7 w-7 place-items-center rounded-full bg-primary/10 text-primary shrink-0">
+                            <Icon className="h-3.5 w-3.5" />
+                          </span>
+                          <span className="text-sm font-semibold text-[var(--foreground)] line-clamp-1">{tool.title}</span>
+                        </div>
+                        <p className="text-[11px] text-[var(--muted-foreground)] leading-snug">{tool.desc}</p>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </Card>
             </>
           )}
 
