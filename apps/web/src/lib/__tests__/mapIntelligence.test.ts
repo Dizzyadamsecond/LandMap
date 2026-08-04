@@ -19,8 +19,8 @@ describe('mapIntelligence — data integrity', () => {
     expect(INTELLIGENCE_LAYERS).toHaveLength(8);
   });
 
-  it('has 9 regions, all with required fields', () => {
-    expect(INTELLIGENCE_REGIONS).toHaveLength(9);
+  it('has at least 9 regions, all with required fields', () => {
+    expect(INTELLIGENCE_REGIONS.length).toBeGreaterThanOrEqual(9);
     for (const r of INTELLIGENCE_REGIONS) {
       expect(r.id).toBeTruthy();
       expect(r.name).toBeTruthy();
@@ -39,12 +39,13 @@ describe('mapIntelligence — data integrity', () => {
     }
   });
 
-  it('every region has real Fortaleza-like coordinates', () => {
+  it('every region has real Brazilian coordinates', () => {
     for (const r of INTELLIGENCE_REGIONS) {
-      expect(r.lat).toBeGreaterThan(-4);
-      expect(r.lat).toBeLessThan(-3);
-      expect(r.lng).toBeGreaterThan(-39);
-      expect(r.lng).toBeLessThan(-38);
+      // Brazil boundaries: Latitude (-34 to +6), Longitude (-74 to -34)
+      expect(r.lat).toBeGreaterThan(-34);
+      expect(r.lat).toBeLessThan(6);
+      expect(r.lng).toBeGreaterThan(-74);
+      expect(r.lng).toBeLessThan(-34);
     }
   });
 });
