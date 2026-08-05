@@ -8,21 +8,6 @@ const nextConfig = {
   experimental: {
     // typedRoutes kept off to avoid build friction across the large route tree
   },
-  webpack: (config) => {
-    // @landmap/api is an ESM package ("type":"module") whose TS source uses
-    // NodeNext `.js` sibling imports (e.g. `./routes/ingest.js`). Those `.js`
-    // files are gitignored and absent on Vercel (tsc emits to `dist/`), so
-    // webpack must fall back `.js` -> `.ts`. ESM resolution sets
-    // `fullySpecified: true`, which bypasses extensionAlias, so we disable it
-    // to let the `.js` -> `.ts` alias take effect.
-    config.resolve = config.resolve || {};
-    config.resolve.fullySpecified = false;
-    config.resolve.extensionAlias = {
-      ...(config.resolve.extensionAlias || {}),
-      '.js': ['.js', '.ts', '.tsx'],
-    };
-    return config;
-  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 768, 1024, 1280, 1536],
