@@ -18,8 +18,15 @@ export function createBillingWebhooksRouter() {
     const event = gateway.parseWebhookEvent(rawBody, headers);
     if (!event) return c.json({ ok: true });
 
-    // TODO: update DB subscriptions/payments based on event
-    console.log('[webhook/mercadopago]', event.type, event.paymentId);
+    if (event.type === 'payment.approved' && event.paymentId) {
+      console.log('[webhook/mercadopago] Payment approved:', event.paymentId);
+      // TODO: 1. Update payments table: SET status = 'confirmed' WHERE gateway_payment_id = event.paymentId
+      // TODO: 2. Create settlement: INSERT INTO settlements (transaction_id, recipient_id, amount_cents, status) VALUES (...)
+      // TODO: 3. Emit event to sales/agente: transaction.confirmed
+    } else if (event.type === 'payment.rejected') {
+      console.log('[webhook/mercadopago] Payment rejected:', event.paymentId);
+      // TODO: Update payments table: SET status = 'rejected' WHERE gateway_payment_id = event.paymentId
+    }
 
     return c.json({ ok: true });
   });
@@ -38,7 +45,15 @@ export function createBillingWebhooksRouter() {
     const event = gateway.parseWebhookEvent(rawBody, headers);
     if (!event) return c.json({ ok: true });
 
-    console.log('[webhook/stripe]', event.type, event.paymentId);
+    if (event.type === 'payment.approved' && event.paymentId) {
+      console.log('[webhook/stripe] Payment succeeded:', event.paymentId);
+      // TODO: 1. Update payments table: SET status = 'confirmed' WHERE gateway_payment_id = event.paymentId
+      // TODO: 2. Create settlement: INSERT INTO settlements (transaction_id, recipient_id, amount_cents, status) VALUES (...)
+      // TODO: 3. Emit event to sales/agent: transaction.confirmed
+    } else if (event.type === 'payment.rejected') {
+      console.log('[webhook/stripe] Payment failed:', event.paymentId);
+      // TODO: Update payments table: SET status = 'rejected' WHERE gateway_payment_id = event.paymentId
+    }
 
     return c.json({ ok: true });
   });

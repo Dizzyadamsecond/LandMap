@@ -212,6 +212,19 @@ importers:
         specifier: ^5.4.0
         version: 5.5.4
 
+  packages/billing:
+    dependencies:
+      '@landmap/db':
+        specifier: workspace:*
+        version: link:../db
+      zod:
+        specifier: ^3.22.0
+        version: 3.25.76
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.5.4
+
   packages/config:
     devDependencies:
       '@types/node':
