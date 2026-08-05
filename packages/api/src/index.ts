@@ -10,6 +10,7 @@ import { createMarketRouter } from './market.js';
 import { createBillingRouter } from './routes/billing.js';
 import { createBillingWebhooksRouter } from './routes/billing-webhooks.js';
 import { createTokenRouter } from './routes/token.js';
+import { createCostsRouter } from './routes/costs.js';
 import { marketApp } from './routes/market.js';
 import { investApp } from './routes/invest.js';
 import { auctionsApp } from './routes/auctions.js';
@@ -426,6 +427,7 @@ app.route('/admin', createAdminRouter(allProperties as any, () => String(nextId+
 app.route('/billing', createBillingRouter());
 app.route('/billing/webhook', createBillingWebhooksRouter());
 app.route('/token', createTokenRouter());
+app.route('/admin/costs', createCostsRouter());
 
 /* â”€â”€â”€ Neighborhoods routes â”€â”€â”€ */
 app.route('/neighborhoods', createNeighborhoodsRouter());
