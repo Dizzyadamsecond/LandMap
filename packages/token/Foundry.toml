@@ -1,0 +1,15 @@
+[profile.default]
+src = "src/contracts"
+out = "out"
+libs = ["node_modules"]
+remappings = [
+  "@openzeppelin/=node_modules/@openzeppelin/"
+]
+
+[profile.default.optimizer]
+enabled = true
+runs = 200
+
+[rpc_endpoints]
+sepolia_base = "https://sepolia.base.org"
+base_mainnet = "https://mainnet.base.org"
