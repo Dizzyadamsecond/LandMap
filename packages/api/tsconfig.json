@@ -13,6 +13,9 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
+      "@landmap/billing": [
+        "../billing/dist/index.d.ts"
+      ],
       "@landmap/config": [
         "../config/dist/index.d.ts"
       ],
