@@ -50,12 +50,7 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Admin" className="grid grid-cols-2 gap-x-10 gap-y-2 sm:grid-cols-3">
-            <Link href={lh('/admin')} className="transition hover:text-[var(--foreground)]">Painel</Link>
-            <Link href={lh('/admin/analytics')} className="transition hover:text-[var(--foreground)]">Analytics</Link>
-            <Link href={lh('/admin/audit')} className="transition hover:text-[var(--foreground)]">Auditoria</Link>
-            <Link href={lh('/admin/exports')} className="transition hover:text-[var(--foreground)]">Exportações</Link>
-            <Link href={lh('/admin/properties')} className="transition hover:text-[var(--foreground)]">Imóveis</Link>
-            <Link href={lh('/admin/webhooks')} className="transition hover:text-[var(--foreground)]">Webhooks</Link>
+            <Link href={lh('/admin')} className="transition hover:text-[var(--foreground)]">Painel Admin</Link>
           </nav>
 
           <nav aria-label="Legal" className="grid grid-cols-2 gap-x-10 gap-y-2 sm:grid-cols-3">
