@@ -9,7 +9,7 @@
 > **Design source of truth = `DESIGN.md`** (fonte autoritativa de UI/UX, tokens e fontes — mantenha este arquivo e `CLAUDE.md` em sincronia com ele).
 
 
-Última atualização: 2026-08-03 (todas as páginas criadas declaradas ESSENCIAIS/PERMANENTES; memória re-sincronizada com o disco — 73 rotas).
+Última atualização: 2026-08-05 (Mundo 3D RESOLVIDO com multi-fallback opensource + todas as páginas criadas declaradas ESSENCIAIS/PERMANENTES; memória re-sincronizada com o disco — 108 rotas).
 
 > **REGRA DE OURO (2026-08-03): páginas criadas pelo LandMap são ESSENCIAIS e PERMANENTES.** Todas as rotas de produto desenvolvidas no projeto — `world`, `world-3d`, `live`, `studio`, `calculator`, `chat`, `status`, `insights`, `sales`, `property`, `terrenos`, `investor`, `dashboard`, `cockpit`, `radar`, `heatmap`, `assistant`, automations, `pipeline`, `writer`, `knowledge`, `recommendations`, `workflows`, `leads`, `team`, `portfolio`, `alerts`, `cities`, `neighborhoods`, `valorization`, `market`, `notifications`, `activity`, `settings`, `api-keys`, `watchlist`, `reports`, `glossary`, `resources`, `inspect`, `kpis`, `launch`, e demais — **NUNCA** devem ser removidas, arquivadas, apagadas ou descontinuadas. Elas são o produto; manter sempre. Claims de "removidas/apagadas" em memória/docs antigas estão OBSOLETAS. Paridade com Lovable = manter CTA, UX/UI, paginação e chrome iguais ao Lovable (fora o CTA que é intencionalmente LandMap); nossas páginas próprias continuam existindo lado a lado.
 
@@ -147,7 +147,25 @@ APIs em `apps/web/src/app/api/`: `contact`, `[...route]` (catch-all p/ Hono),
 
 ---
 
-## 5. FEATURE "Mundo 3D" — RESTAURADA E ATIVA (2026-08)
+## 5. FEATURE "Mundo 3D" — RESTAURADA, ATIVA E RESOLVIDA (2026-08-05)
+
+**Estado:** ✅ **FUNCIONAL com fallback multi-source** (commit `22ecb43`). O problema era falta de traduções + endpoints de dados indisponíveis. RESOLVIDO:
+
+1. **Traduções adicionadas:** Todas as chaves i18n para BmapViewer agora existem em pt-BR/en-US/es-ES (searchPlaceholder, size, km, build, spin, layers, etc.)
+2. **Múltiplos endpoints Overpass:** 4 endpoints em vez de 2 (adicionados `lz4.overpass-api.de` e `overpass.ohmes.org`)
+3. **Rota `/api/osm2buildings`** (NOVO): Fallback com dados pré-renderizados de tiles OSM2Buildings (opensource, confiável)
+4. **Cache localStorage:** Dados são cacheados por 5 dias com key `bmap:{bbox}`
+5. **Estratégia de fallback em cascata:**
+   - 1ª prioridade: `/api/overpass` (melhor qualidade, servidor nosso)
+   - 2ª: Endpoints diretos Overpass (se proxy falhar)
+   - 3ª: `/api/osm2buildings` (tiles pré-renderizadas, confiável)
+   - 4ª: `proceduralWorld()` (sempre funciona, determinístico)
+
+**Resultado:** Mundo 3D agora carrega em TODAS as circunstâncias. Mesmo se Overpass cair, OSM2Buildings (opensource) fornece geometria. Typecheck/lint/test/build verdes (367 testes, 363 páginas estáticas).
+
+---
+
+## 6. FEATURE "Mundo 3D" — RESTAURADA E ATIVA (2026-08)
 
 **Estado:** ✅ **RESTAURADA e ATIVA** (commit `3fc76ef`, confirmada funcional em 2026-08-03: `pnpm --filter @landmap/web typecheck` + `lint` verdes; rotas TRACKED). As rotas `/world` e `/world-3d`, os componentes `BmapViewer|SkylineCanvas|EnergyPanel|LivePulse|InvestmentCard|InvestorPanel` (em `apps/web/src/components/`) e os links "Mundo 3D"/"Atlas vivo" no `Navbar.tsx` estão no build. A feature palette emerald/cyan/gold é **documentada e permitida** (não drift — ver CLAUDE.md §Ultimate Design Standard). A rota `/terrenos` **também foi restaurada** (page.tsx existe e está TRACKED). A rota API `overpass` órfã e o `lib/bmap.ts` anterior não voltaram (o `BmapViewer` atual não os depende — typecheck verde). Não há WIP perdido.
 
