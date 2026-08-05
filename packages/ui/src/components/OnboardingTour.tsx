@@ -1,3 +1,4 @@
+"use client";
 'use client';
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -240,4 +241,3 @@ export function OnboardingTour({
 }
 
 OnboardingTour.displayName = 'OnboardingTour';
-

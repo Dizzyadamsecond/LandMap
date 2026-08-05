@@ -1,3 +1,4 @@
+"use client";
 import React, { forwardRef, useCallback, useId, useRef, useState } from 'react';
 import { cn } from '../lib/index';
 

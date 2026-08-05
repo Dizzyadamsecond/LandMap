@@ -10,22 +10,46 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "outDir": "src",
-    "rootDir": "src",
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "@landmap/config": ["../config/src/index.ts"],
-      "@landmap/db": ["../db/src/index.ts"],
-      "@landmap/geo": ["../geo/src/index.ts"],
-      "@landmap/integrations": ["../integrations/src/index.ts"],
-      "@landmap/invest": ["../invest/src/index.ts"],
-      "@landmap/llm": ["../llm/src/index.ts"],
-      "@landmap/llm/*": ["../llm/src/*"],
-      "@landmap/sales": ["../sales/src/index.ts"],
-      "@landmap/sales/*": ["../sales/src/*"],
-      "@landmap/automation": ["../automation/src/index.ts"]
+      "@landmap/config": [
+        "../config/dist/index.d.ts"
+      ],
+      "@landmap/db": [
+        "../db/dist/index.d.ts"
+      ],
+      "@landmap/geo": [
+        "../geo/dist/index.d.ts"
+      ],
+      "@landmap/integrations": [
+        "../integrations/dist/index.d.ts"
+      ],
+      "@landmap/invest": [
+        "../invest/dist/index.d.ts"
+      ],
+      "@landmap/llm": [
+        "../llm/dist/index.d.ts"
+      ],
+      "@landmap/llm/*": [
+        "../llm/dist/*"
+      ],
+      "@landmap/sales": [
+        "../sales/dist/index.d.ts"
+      ],
+      "@landmap/sales/*": [
+        "../sales/dist/*"
+      ],
+      "@landmap/automation": [
+        "../automation/dist/index.d.ts"
+      ]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

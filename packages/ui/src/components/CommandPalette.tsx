@@ -1,3 +1,4 @@
+"use client";
 'use client';
 
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
@@ -256,4 +257,3 @@ export function CommandPalette({
 }
 
 CommandPalette.displayName = 'CommandPalette';
-
