@@ -15,13 +15,13 @@
         "../../packages/api/src/*"
       ],
       "@landmap/ui": [
-        "../packages/ui/src/index.ts"
+        "../../packages/ui/src/index.ts"
       ],
       "@landmap/config": [
-        "../config/src/env.ts"
+        "../../config/src/env.ts"
       ],
       "@landmap/*": [
-        "../*/src/index.ts"
+        "../../*/src/index.ts"
       ]
     },
     "lib": [

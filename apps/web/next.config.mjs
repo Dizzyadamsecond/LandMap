@@ -8,6 +8,18 @@ const nextConfig = {
   experimental: {
     // typedRoutes kept off to avoid build friction across the large route tree
   },
+  webpack: (config) => {
+    // @landmap/api source uses NodeNext-style `.js` sibling imports, but the
+    // emitted `src/**/*.js` files are gitignored and absent on a fresh Vercel
+    // clone (only `.ts` is tracked). Fall back `.js` -> `.ts` so webpack can
+    // resolve transpiled package source without a pre-emit step.
+    config.resolve = config.resolve || {};
+    config.resolve.extensionAlias = {
+      ...(config.resolve.extensionAlias || {}),
+      '.js': ['.js', '.ts'],
+    };
+    return config;
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 768, 1024, 1280, 1536],
