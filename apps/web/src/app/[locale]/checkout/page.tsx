@@ -45,7 +45,8 @@ export default function CheckoutPage() {
       } catch {
         // ignore
       }
-      window.location.href = '/map';
+      // Mantém o locale atual (middleware usa localePrefix:'always').
+      window.location.href = `/${locale}/map`;
       return;
     }
     setSubmitted(true);
