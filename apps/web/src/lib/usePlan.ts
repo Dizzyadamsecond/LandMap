@@ -35,7 +35,7 @@ function writePlan(plan: PlanId) {
   }
 }
 
-/** plan = selected_plan (demo) if present, else user.plan, else free. */
+/** plan = backend subscription tier (real), fallback to localStorage (demo). */
 export function usePlan(): PlanState {
   const [user, setUser] = useState<MockUser | null>(null);
   const [plan, setPlan] = useState<PlanId>('free');
@@ -43,8 +43,31 @@ export function usePlan(): PlanState {
   useEffect(() => {
     const u = readMockUser();
     setUser(u);
-    const stored = readPlan();
-    setPlan(stored !== 'free' ? stored : (u?.plan as PlanId) ?? 'free');
+
+    const fetchRealPlan = async () => {
+      try {
+        const userId = u?.id || (typeof window !== 'undefined' ? localStorage.getItem('user_id') : null);
+        if (!userId) {
+          const stored = readPlan();
+          setPlan(stored !== 'free' ? stored : (u?.plan as PlanId) ?? 'free');
+          return;
+        }
+
+        const res = await fetch('/api/billing/subscription', {
+          headers: { 'x-user-id': userId }
+        });
+
+        if (!res.ok) throw new Error('failed to fetch subscription');
+
+        const data = await res.json();
+        setPlan((data.tier as PlanId) || 'free');
+      } catch (e) {
+        const stored = readPlan();
+        setPlan(stored !== 'free' ? stored : (u?.plan as PlanId) ?? 'free');
+      }
+    };
+
+    fetchRealPlan();
   }, []);
 
   const upgrade = (next: PlanId) => {
