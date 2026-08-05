@@ -6,10 +6,26 @@ import { Reveal } from '../../../components/Motion';
 import { Card } from '@landmap/ui';
 
 const SECTIONS: { title: string; body: string }[] = [
-  { title: 'Objeto', body: 'A LandMap oferece inteligência territorial baseada em dados para apoio à decisão de aquisição de terrenos e imóveis no Brasil. As informações são indicativas.' },
-  { title: 'Fontes', body: 'Os dados provêm de fontes públicas (IBGE, INEP, prefeituras), parceiros e modelos próprios. Não garantimos exatidão absoluta ou atualização em tempo real.' },
-  { title: 'Responsabilidade', body: 'Decisões de investimento são de responsabilidade do usuário. Recomendamos due diligence jurídica e técnica independente antes de qualquer negócio.' },
-  { title: 'Propriedade', body: 'A marca, o código e os modelos de IA são propriedade da LandMap. É vedada a reprodução sem autorização.' },
+  {
+    title: 'Aviso legal',
+    body: 'A LandMap é uma plataforma de inteligência territorial e organização de dados. As informações apresentadas possuem caráter informativo e não representam garantia de valorização, recomendação individual de investimento, avaliação oficial de imóvel ou substituição de análises jurídicas, ambientais, urbanísticas e financeiras.',
+  },
+  {
+    title: 'Escopo',
+    body: 'A LandMap organiza dados públicos e de mercado para apresentar indicadores territoriais. Nenhum indicador exibido constitui recomendação individualizada, laudo pericial, avaliação oficial de imóvel ou parecer profissional habilitado.',
+  },
+  {
+    title: 'Limitações',
+    body: 'A profundidade dos dados varia por município e por camada. A plataforma sinaliza níveis de confiança e informa a ausência de amostra suficiente quando aplicável. Decisões tomadas com base no conteúdo são de responsabilidade exclusiva do usuário.',
+  },
+  {
+    title: 'Projeções',
+    body: 'Projeções apresentam cenários (conservador, base e otimista) e não são garantias de valorização. Cenários dependem de premissas que podem se alterar sem aviso prévio.',
+  },
+  {
+    title: 'Consulta profissional',
+    body: 'Recomendamos que decisões de investimento imobiliário sejam apoiadas por profissionais habilitados — corretores, engenheiros, advogados, contadores e consultores financeiros — considerando o perfil e a realidade específica do usuário.',
+  },
 ];
 
 export default function AvisoLegalPage() {
@@ -30,13 +46,28 @@ export default function AvisoLegalPage() {
                 </span>
                 <div>
                   <h2 className="text-base font-semibold text-[var(--foreground)]">{s.title}</h2>
-                  <p className="mt-1 text-sm text-[var(--muted-foreground)]">{s.body}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted-foreground)]">{s.body}</p>
                 </div>
               </div>
             </Card>
           </Reveal>
         ))}
       </section>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a
+          href="./terms"
+          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
+        >
+          Termos de uso
+        </a>
+        <a
+          href="./privacy"
+          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
+        >
+          Privacidade
+        </a>
+      </div>
     </ProductPageShell>
   );
 }

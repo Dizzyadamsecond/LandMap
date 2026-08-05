@@ -1,47 +1,80 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { Link2 } from '../../../components/lovable/icons';
 import { ProductPageShell } from '../../../components/ProductPageShell';
 import { Card } from '@landmap/ui';
 
-/**
- * /[locale]/fontes — Fontes de Dados, 1:1 com o padrão Lovable.
- * Hero + 3 origens reais + CTA para o mapa.
- */
+const ROWS: { fonte: string; categoria: string; regiao: string; frequencia: string; tipo: string; status: string }[] = [
+  { fonte: 'Bases municipais — Nordeste', categoria: 'Dados públicos', regiao: 'CE, PE, RN', frequencia: 'Mensal', tipo: 'Zoneamento, IPTU agregado', status: 'Ativa' },
+  { fonte: 'Bases geográficas abertas', categoria: 'Dados públicos', regiao: 'Brasil', frequencia: 'Trimestral', tipo: 'Geometria e uso do solo', status: 'Ativa' },
+  { fonte: 'Indicadores demográficos e econômicos', categoria: 'Dados públicos', regiao: 'Brasil', frequencia: 'Anual', tipo: 'População, renda, PIB municipal', status: 'Ativa' },
+  { fonte: 'Parceiros imobiliários regionais', categoria: 'Dados de mercado', regiao: 'CE', frequencia: 'Semanal', tipo: 'Anúncios, transações', status: 'Ativa' },
+  { fonte: 'Rede de corretores parceiros', categoria: 'Dados de mercado', regiao: 'CE, PE', frequencia: 'Contínua', tipo: 'Preço praticado, tempo de mercado', status: 'Em integração' },
+  { fonte: 'Camadas processadas LandMap', categoria: 'Dados processados', regiao: 'Cobertura ativa', frequencia: 'Diária', tipo: 'Score, liquidez, comparações', status: 'Ativa' },
+];
+
 export default function FontesPage() {
-  const t = useTranslations('fontes');
-  const cards = [t('f1'), t('f2'), t('f3')];
-
   return (
-    <ProductPageShell eyebrow={t('eyebrow')} title={t('title')} description={t('description')}>
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        {cards.map((c, i) => (
-          <Card key={i} className="h-full p-5">
-            <p className="text-sm leading-relaxed text-[var(--foreground)]">{c}</p>
-          </Card>
-        ))}
-      </div>
+    <ProductPageShell
+      backHref="/map"
+      eyebrow={<><Link2 className="h-3 w-3" /> Fontes</>}
+      title="Fontes de dados"
+      description="Consulta pública de fontes e atualizações"
+      maxWidth="5xl"
+    >
+      <p className="mt-4 text-sm leading-relaxed text-[var(--muted-foreground)]">
+        A LandMap processa, padroniza e cruza informações de diferentes fontes. A presença de uma
+        fonte não significa que todos os dados estejam disponíveis para todas as regiões.
+      </p>
 
-      <div className="mt-10 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6">
-        <h2 className="font-display text-lg font-semibold">Explore os dados</h2>
-        <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">
-          Todo o catálogo alimenta o mapa de inteligência e os indicadores por
-          região, recalculados periodicamente.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <a
-            href="./map"
-            className="inline-flex h-10 items-center rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
-          >
-            Abrir o mapa
-          </a>
-          <a
-            href="./regions"
-            className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-          >
-            Ver regiões
-          </a>
+      <Card className="mt-6 overflow-hidden p-0">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[var(--border)] text-left text-xs uppercase tracking-wide text-[var(--muted-foreground)]">
+                <th className="px-4 py-3 font-medium">Fonte</th>
+                <th className="px-4 py-3 font-medium">Categoria</th>
+                <th className="px-4 py-3 font-medium">Região</th>
+                <th className="px-4 py-3 font-medium">Frequência</th>
+                <th className="px-4 py-3 font-medium">Tipo</th>
+                <th className="px-4 py-3 font-medium">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ROWS.map((r) => (
+                <tr key={r.fonte} className="border-b border-[var(--border)] last:border-0">
+                  <td className="px-4 py-3 font-medium text-[var(--foreground)]">{r.fonte}</td>
+                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.categoria}</td>
+                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.regiao}</td>
+                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.frequencia}</td>
+                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.tipo}</td>
+                  <td className={`px-4 py-3 font-medium ${r.status === 'Ativa' ? 'text-[var(--primary)]' : 'text-[var(--muted-foreground)]'}`}>{r.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+      </Card>
+
+      <p className="mt-4 text-xs text-[var(--muted-foreground)]">
+        O registro de fontes é mantido pelo time de dados da LandMap. Nomes de terceiros são
+        apresentados apenas quando existe autorização formal. Este conteúdo é editável pelo painel
+        administrativo.
+      </p>
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        <a
+          href="./map"
+          className="inline-flex h-10 items-center rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
+        >
+          Abrir o mapa
+        </a>
+        <a
+          href="./cobertura"
+          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
+        >
+          Cobertura
+        </a>
       </div>
     </ProductPageShell>
   );

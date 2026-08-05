@@ -31,6 +31,7 @@ import {
   Link2,
   ListChecks,
   Lock,
+  Menu,
   Map,
   MapPin,
   MapPinned,
@@ -51,6 +52,7 @@ import {
   Users,
   Wand2,
   Workflow,
+  X,
 } from './lovable/icons';
 import { Tooltip, OnboardingTour, type TourStep } from '@landmap/ui';
 import { CommandPaletteHost } from './CommandPaletteHost';
