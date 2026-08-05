@@ -1,0 +1,27 @@
+{
+  "name": "@landmap/token",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "LandMap $LAND token — ERC-20 on Base, bridge from LandCoins",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "src/contracts"],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "forge:test": "cd src/contracts && forge test",
+    "forge:build": "cd src/contracts && forge build"
+  },
+  "dependencies": {
+    "@landmap/db": "workspace:*",
+    "@landmap/gamification": "workspace:*",
+    "viem": "^2.21.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  }
+}
