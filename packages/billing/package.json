@@ -1,0 +1,23 @@
+{
+  "name": "@landmap/billing",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "LandMap billing core — payment gateways, subscriptions, API keys, cashback",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "echo 'no linter configured'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@landmap/db": "workspace:*",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

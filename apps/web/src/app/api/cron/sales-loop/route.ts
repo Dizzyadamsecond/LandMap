@@ -11,18 +11,30 @@ function origin(req: Request): string {
 }
 
 /**
- * Cron: roda o loop de vendas (bate meta de assinaturas) e envia relatório
- * por e-mail para o dono. Disparado pelo Vercel Cron (vercel.json) a cada 1h.
+ * Cron: roda o loop de vendas SINTÉTICO (bate meta de assinaturas fake) e envia relatório
+ * por e-mail para o dono. **APENAS PARA DEMO** — desabilitar em produção com env var.
+ * Disparado pelo Vercel Cron (vercel.json) uma vez por dia (2:00 AM UTC).
+ *
+ * Para desabilitar: não defina SALES_SYNTHETIC_DEMO_ENABLED ou deixe como falsy.
  */
 export async function GET(request: Request) {
+  const demoEnabled = process.env.SALES_SYNTHETIC_DEMO_ENABLED === 'true';
+  if (!demoEnabled) {
+    return Response.json({
+      ok: true,
+      message: 'Sintético demo disabled (SALES_SYNTHETIC_DEMO_ENABLED != true)',
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   const base = origin(request);
-  // 1. Roda o loop de agentes (reutiliza o store global do router /api/sales)
+  // 1. Roda o loop de agentes SINTÉTICO (apenas para demo, via `fastSellStep`/RNG)
   let loop: any = null;
   try {
     const r = await fetch(`${base}/api/sales/loop`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cycles: 400 }),
+      body: JSON.stringify({ cycles: 400, allowSynthetic: true }),
     });
     loop = await r.json();
   } catch {
