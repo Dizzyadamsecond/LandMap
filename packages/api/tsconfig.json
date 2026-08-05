@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "outDir": "dist",
+    "outDir": "src",
     "declaration": true,
     "declarationMap": true,
     "paths": {
