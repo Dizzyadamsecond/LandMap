@@ -219,21 +219,35 @@ export function proceduralWorld(bbox: BBox): WorldData {
   };
 }
 /**
- * Fetch a real 3D world for `bbox`. Tries each Overpass endpoint (with a
- * timeout); on any failure, returns a procedural world instead so the caller
- * always gets something renderable.
+ * Fetch a real 3D world for `bbox`. Tries:
+ * 1. Server-side Overpass proxy (/api/overpass)
+ * 2. Direct Overpass endpoints
+ * 3. OSM2Buildings fallback (more reliable, pre-rendered)
+ * 4. Procedural world (always works)
  */
 export async function fetchWorld(
   bbox: BBox,
   timeoutMs = 26000,
 ): Promise<WorldData> {
-  // Preferred path: our own server-side proxy (/api/overpass). The browser
-  // cannot hit the public Overpass endpoints directly (they lack CORS headers),
-  // so the proxy is what actually delivers REAL OpenStreetMap geometry. The
-  // direct-endpoint loop below is kept only as a best-effort fallback (e.g. when
-  // the viewer runs outside the app origin).
+  // Bbox key for caching
+  const cacheKey = `bmap:${bbox.join(',')}`;
+
+  // Try localStorage cache first (last 5 days)
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached) as { data: WorldData; timestamp: number };
+      if (Date.now() - timestamp < 5 * 24 * 60 * 60 * 1000) {
+        return data;
+      }
+    }
+  } catch {
+    // cache not available or corrupted
+  }
+
+  // Try 1: Server-side Overpass proxy (best quality, CORS-safe)
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const timer = setTimeout(() => controller.abort(), Math.min(8000, timeoutMs));
   try {
     const res = await fetch('/api/overpass', {
       method: 'POST',
@@ -245,16 +259,25 @@ export async function fetchWorld(
     if (res.ok) {
       const json = (await res.json()) as { elements?: OverpassElement[] };
       const parsed = parseOverpass(json.elements ?? [], bbox);
-      if (parsed.buildingCount > 0) return parsed;
+      if (parsed.buildingCount > 0) {
+        // Cache the result
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({ data: parsed, timestamp: Date.now() }));
+        } catch {
+          // quota exceeded or not available
+        }
+        return parsed;
+      }
     }
   } catch {
     clearTimeout(timer);
   }
 
+  // Try 2: Direct Overpass endpoints (fallback if proxy fails)
   const q = overpassQuery(bbox);
   for (const endpoint of OVERPASS_ENDPOINTS) {
     const c2 = new AbortController();
-    const t2 = setTimeout(() => c2.abort(), timeoutMs);
+    const t2 = setTimeout(() => c2.abort(), Math.min(6000, timeoutMs / 2));
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -266,11 +289,59 @@ export async function fetchWorld(
       if (!res.ok) continue;
       const json = (await res.json()) as { elements?: OverpassElement[] };
       const parsed = parseOverpass(json.elements ?? [], bbox);
-      if (parsed.buildingCount > 0) return parsed;
+      if (parsed.buildingCount > 0) {
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({ data: parsed, timestamp: Date.now() }));
+        } catch {
+          // quota exceeded
+        }
+        return parsed;
+      }
     } catch {
       clearTimeout(t2);
     }
   }
+
+  // Try 3: OSM2Buildings fallback (slower, but pre-rendered & reliable)
+  try {
+    const c3 = new AbortController();
+    const t3 = setTimeout(() => c3.abort(), Math.min(8000, timeoutMs / 2));
+    const res = await fetch('/api/osm2buildings', {
+      method: 'POST',
+      body: JSON.stringify({ bbox }),
+      headers: { 'content-type': 'application/json' },
+      signal: c3.signal,
+    });
+    clearTimeout(t3);
+    if (res.ok || res.status === 206) {
+      const json = (await res.json()) as { features?: any[] };
+      if (json.features && json.features.length > 0) {
+        const features = json.features.map((f: any) => ({
+          type: 'Feature' as const,
+          geometry: f.geometry,
+          properties: { height: f.properties?.height || 8, base: 0 },
+        }));
+        const result: WorldData = {
+          features,
+          buildingCount: features.length,
+          roadsKm: features.length * 0.3,
+          trees: Math.floor(features.length * 0.4),
+          areaKm2: Math.round(areaKm2(bbox) * 100) / 100,
+          source: 'procedural',
+        };
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({ data: result, timestamp: Date.now() }));
+        } catch {
+          // quota exceeded
+        }
+        return result;
+      }
+    }
+  } catch {
+    // OSM2Buildings also unavailable
+  }
+
+  // Fallback: procedural world (always works, deterministic)
   return proceduralWorld(bbox);
 }
 /* ───────────────────────────────────────────────────────────────────────────

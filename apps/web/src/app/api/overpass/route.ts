@@ -17,6 +17,8 @@ export const maxDuration = 30;
 const ENDPOINTS = [
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
+  'https://lz4.overpass-api.de/api/interpreter',
+  'https://overpass.ohsome.org/api/interpreter',
 ];
 
 type BBox = [number, number, number, number]; // [west, south, east, north]
