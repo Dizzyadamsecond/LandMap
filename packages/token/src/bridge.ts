@@ -1,5 +1,3 @@
-import type { UserProgress } from '@landmap/gamification';
-
 export interface TokenMintRequest {
   id: string;
   user_id: string;

@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@landmap/db": "workspace:*",
-    "@landmap/gamification": "workspace:*",
     "viem": "^2.21.0",
     "zod": "^3.22.0"
   },
