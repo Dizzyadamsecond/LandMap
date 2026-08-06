@@ -37,9 +37,9 @@ export function useProgress(userId?: string) {
       return;
     }
 
-    const fetch = async () => {
+    const fetchProgress = async () => {
       try {
-        const res = await fetch(`/api/gamification/progress/${userId}`);
+        const res = await (globalThis as any).fetch(`/api/gamification/progress/${userId}`);
         if (!res.ok) throw new Error('Failed to fetch progress');
         const data = await res.json();
         setProgress(data);
@@ -50,10 +50,11 @@ export function useProgress(userId?: string) {
       }
     };
 
-    fetch();
+    fetchProgress();
   }, [userId]);
 
   const reportEvent = async (type: string, amount?: number) => {
+    if (typeof window === 'undefined') return;
     try {
       const res = await fetch('/api/gamification/event', {
         method: 'POST',
@@ -64,8 +65,10 @@ export function useProgress(userId?: string) {
       // Refetch progress
       if (userId) {
         const res2 = await fetch(`/api/gamification/progress/${userId}`);
-        const data = await res2.json();
-        setProgress(data);
+        if (res2.ok) {
+          const data = await res2.json();
+          setProgress(data);
+        }
       }
     } catch (e) {
       console.error('Event report error:', e);

@@ -1,5 +1,16 @@
-import { cn } from '../lib/cn';
-import type { UserProgress } from '@landmap/web/lib/useProgress';
+import { cn } from '../lib';
+
+export interface UserProgress {
+  user_id: string;
+  xp: number;
+  level: number;
+  tier: 'bronze' | 'silver' | 'gold' | 'sovereign';
+  landcoins: number;
+  metrics: Record<string, number>;
+  streak: { current: number; best: number; lastActiveDate: string | null; freezes: number };
+  badges: string[];
+  updated_at: string;
+}
 
 export interface ProgressCardProps {
   progress: UserProgress | null;

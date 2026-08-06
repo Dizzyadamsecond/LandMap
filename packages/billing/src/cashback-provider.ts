@@ -1,4 +1,7 @@
-import type { CashbackProvider } from '@landmap/gamification';
+export interface CashbackProvider {
+  getBalance(userId: string): Promise<{ cents: number; pendingCents: number }>;
+  redeem(userId: string, amountCents: number, meta: any): Promise<{ id: string; status: 'pending' | 'confirmed' }>;
+}
 
 export class BillingCashbackProvider implements CashbackProvider {
   constructor(private dbClient: any) {} // TODO: inject actual DB client
