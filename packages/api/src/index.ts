@@ -11,6 +11,7 @@ import { createBillingRouter } from './routes/billing.js';
 import { createBillingWebhooksRouter } from './routes/billing-webhooks.js';
 import { createTokenRouter } from './routes/token.js';
 import { createCostsRouter } from './routes/costs.js';
+import { createGamificationRouter } from './routes/gamification.js';
 import { marketApp } from './routes/market.js';
 import { investApp } from './routes/invest.js';
 import { auctionsApp } from './routes/auctions.js';
@@ -428,6 +429,7 @@ app.route('/billing', createBillingRouter());
 app.route('/billing/webhook', createBillingWebhooksRouter());
 app.route('/token', createTokenRouter());
 app.route('/admin/costs', createCostsRouter());
+app.route('/gamification', createGamificationRouter());
 
 /* â”€â”€â”€ Neighborhoods routes â”€â”€â”€ */
 app.route('/neighborhoods', createNeighborhoodsRouter());

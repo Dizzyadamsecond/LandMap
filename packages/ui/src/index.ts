@@ -22,6 +22,8 @@ export { Avatar } from './components/Avatar';
 export type { AvatarProps } from './components/Avatar';
 export { Sparkline } from './components/Sparkline';
 export type { SparklineProps } from './components/Sparkline';
+export { ProgressCard } from './components/ProgressCard';
+export type { ProgressCardProps } from './components/ProgressCard';
 export { EmptyState } from './components/EmptyState';
 export type { EmptyStateProps } from './components/EmptyState';
 export { Tooltip } from './components/Tooltip';

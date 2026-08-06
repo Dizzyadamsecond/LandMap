@@ -10,23 +10,27 @@ import {
   Star,
 } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
-import { Card, Badge, Stat, buttonVariants, cn, EmptyState } from '@landmap/ui';
+import { Card, Badge, Stat, buttonVariants, cn, EmptyState, ProgressCard } from '@landmap/ui';
 import {
   INTELLIGENCE_REGIONS,
   fmtPriceSqm,
   scoreLabel,
 } from '../../../lib/mapIntelligence';
 import { getFavoriteIds } from '../../../lib/favorites';
+import { useProgress } from '../../../lib/useProgress';
 
 /** Carteira: favoritos de regiões (localStorage) + amostra intelligence. */
 export default function PortfolioPage() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
   const [favIds, setFavIds] = useState<string[]>([]);
+  const [userId, setUserId] = useState<string>('');
+  const { progress, loading: progressLoading } = useProgress(userId);
 
   useEffect(() => {
     try {
       setFavIds(getFavoriteIds());
+      setUserId(localStorage.getItem('user_id') || '');
     } catch {
       setFavIds([]);
     }
@@ -79,6 +83,12 @@ export default function PortfolioPage() {
         <Stat label="Score médio" value={String(avgScore)} />
         <Stat label="Proxy m²×200" value={fmtPriceSqm(totalValue)} />
       </section>
+
+      {userId && (
+        <div className="mt-4">
+          <ProgressCard progress={progress} loading={progressLoading} />
+        </div>
+      )}
 
       <div className="mt-4 flex flex-wrap gap-2">
         <Link href={lh('/favorites')} className={cn(buttonVariants({ size: 'sm' }))}>
