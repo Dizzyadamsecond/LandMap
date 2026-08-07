@@ -17,6 +17,8 @@
     "db:generate": "pnpm --filter @landmap/db run generate",
     "db:migrate": "pnpm --filter @landmap/db run migrate",
     "db:seed": "pnpm --filter @landmap/db run seed",
+    "seed:municipalities": "tsx scripts/seed-municipalities.ts",
+    "realign:lovable": "tsx scripts/realign-with-lovable.ts",
     "markdown:seed": "python scripts/seed_properties.py",
     "markdown:build": "python scripts/build_markdowns.py",
     "markdown:validate": "python scripts/validate_markdowns.py",
@@ -29,7 +31,7 @@
     "evals:upload:dry": "node evals/upload.mjs --dry-run",
     "dev": "pnpm --filter @landmap/web dev",
     "dev:api": "pnpm --filter @landmap/api dev",
-    "vercel-build": "pnpm --filter @landmap/config build && pnpm --filter @landmap/db build && pnpm --filter @landmap/geo build && pnpm --filter @landmap/integrations build && pnpm --filter @landmap/invest build && pnpm --filter @landmap/llm build && pnpm --filter @landmap/sales build && pnpm --filter @landmap/automation build && pnpm --filter @landmap/api build && pnpm --filter @landmap/ui build && pnpm --filter @landmap/web run build"
+    "vercel-build": "pnpm --filter @landmap/config build && pnpm --filter @landmap/db build && pnpm --filter @landmap/geo build && pnpm --filter @landmap/integrations build && pnpm --filter @landmap/invest build && pnpm --filter @landmap/llm build && pnpm --filter @landmap/sales build && pnpm --filter @landmap/automation build && pnpm --filter @landmap/billing build && pnpm --filter @landmap/api build && pnpm --filter @landmap/ui build && pnpm --filter @landmap/web run build"
   },
   "keywords": [
     "real-estate",
