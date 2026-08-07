@@ -39,6 +39,7 @@
     "@landmap/automation": "workspace:*",
     "@landmap/config": "workspace:*",
     "@landmap/db": "workspace:*",
+    "@landmap/billing": "workspace:*",
     "@landmap/geo": "workspace:*",
     "@landmap/integrations": "workspace:*",
     "@landmap/invest": "workspace:*",

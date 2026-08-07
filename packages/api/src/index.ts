@@ -28,6 +28,8 @@ import { createInspectRouter } from './routes/inspect.js';
 import { createIngestRouter } from './routes/ingest.js';
 import { createIntegrationsRouter } from './routes/integrations.js';
 import { createAutomationRouter } from './routes/automation.js';
+import { createProductEventsRouter } from './routes/product-events.js';
+import { vcFeaturesRoutes } from './routes/vc-features.js';
 import { loadProperties } from './loadJson.js';
 const allPropertiesData = loadProperties();
 import { createGeoRouter, createGeoSource } from '@landmap/geo';
@@ -466,6 +468,9 @@ app.route('/sales', createSalesRouter());
 /* Funnel analytics (self-hosted, NDJSON) */
 app.route('/funnel', createFunnelRouter());
 
+/* Product Events & Retention Analytics (self-hosted CTA tracking) */
+app.route('/events', createProductEventsRouter());
+
 /* Inspection image analysis (proxies the Python serving service when configured) */
 app.route('/inspect', createInspectRouter());
 
@@ -568,4 +573,7 @@ export default app;
 
 /* ─── Automation (omnichannel anti-ban dispatch + lead intel) ─── */
 app.route('/automation', createAutomationRouter());
+
+/* ─── VC-Essential Features (Risk, Compliance, Analytics, Matching, Fraud) ─── */
+app.route('/vc', vcFeaturesRoutes(app as any));
 

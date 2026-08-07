@@ -7,7 +7,9 @@
     "strict": true,
     "jsx": "preserve",
     "skipLibCheck": true,
+    "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@landmap/api": [
         "../../packages/api/src/index.ts"
       ],

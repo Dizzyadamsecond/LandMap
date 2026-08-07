@@ -1,0 +1,484 @@
+{
+  "pt-BR": {
+    "common": {
+      "app_name": "LandMap",
+      "app_tagline": "Sistema Operacional para Imóveis",
+      "search": "Buscar",
+      "save": "Salvar",
+      "delete": "Deletar",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "loading": "Carregando...",
+      "error": "Erro",
+      "success": "Sucesso"
+    },
+    "navigation": {
+      "home": "Início",
+      "marketplace": "Marketplace",
+      "portfolio": "Portfólio",
+      "map": "Mapa",
+      "investors": "Investidores",
+      "lenders": "Credores",
+      "settings": "Configurações",
+      "help": "Ajuda"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "MX": "México",
+      "CO": "Colômbia",
+      "AR": "Argentina",
+      "CL": "Chile",
+      "PE": "Peru"
+    },
+    "property": {
+      "title": "Imóvel",
+      "address": "Endereço",
+      "city": "Cidade",
+      "state": "Estado",
+      "price": "Preço",
+      "price_m2": "Preço por m²",
+      "area": "Área",
+      "bedrooms": "Quartos",
+      "bathrooms": "Banheiros",
+      "type": "Tipo",
+      "apartment": "Apartamento",
+      "house": "Casa",
+      "land": "Terreno",
+      "commercial": "Comercial",
+      "office": "Escritório",
+      "retail": "Varejo"
+    },
+    "compliance": {
+      "kyc": "Verificação de Identidade (KYC)",
+      "aml": "Prevenção de Lavagem de Dinheiro (AML)",
+      "approved": "Aprovado",
+      "pending": "Pendente",
+      "rejected": "Rejeitado",
+      "verified": "Verificado"
+    },
+    "latam": {
+      "multi_country": "Multi-país",
+      "select_country": "Selecionar País",
+      "available_countries": "Países Disponíveis",
+      "my_properties": "Meus Imóveis",
+      "convert_currency": "Converter Moeda",
+      "exchange_rate": "Taxa de Câmbio",
+      "regulatory_alerts": "Alertas Regulatórios",
+      "compliance_status": "Status de Conformidade"
+    }
+  },
+
+  "es-MX": {
+    "common": {
+      "app_name": "LandMap",
+      "app_tagline": "Sistema Operativo para Bienes Raíces",
+      "search": "Buscar",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "loading": "Cargando...",
+      "error": "Error",
+      "success": "Éxito"
+    },
+    "navigation": {
+      "home": "Inicio",
+      "marketplace": "Marketplace",
+      "portfolio": "Portafolio",
+      "map": "Mapa",
+      "investors": "Inversionistas",
+      "lenders": "Prestamistas",
+      "settings": "Configuración",
+      "help": "Ayuda"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "MX": "México",
+      "CO": "Colombia",
+      "AR": "Argentina",
+      "CL": "Chile",
+      "PE": "Perú"
+    },
+    "property": {
+      "title": "Propiedad",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Estado",
+      "price": "Precio",
+      "price_m2": "Precio por m²",
+      "area": "Área",
+      "bedrooms": "Recámaras",
+      "bathrooms": "Baños",
+      "type": "Tipo",
+      "apartment": "Departamento",
+      "house": "Casa",
+      "land": "Terreno",
+      "commercial": "Comercial",
+      "office": "Oficina",
+      "retail": "Comercio Minorista"
+    },
+    "compliance": {
+      "kyc": "Verificación de Identidad (KYC)",
+      "aml": "Prevención de Lavado de Dinero (AML)",
+      "approved": "Aprobado",
+      "pending": "Pendiente",
+      "rejected": "Rechazado",
+      "verified": "Verificado"
+    },
+    "latam": {
+      "multi_country": "Multi-país",
+      "select_country": "Seleccionar País",
+      "available_countries": "Países Disponibles",
+      "my_properties": "Mis Propiedades",
+      "convert_currency": "Convertir Moneda",
+      "exchange_rate": "Tipo de Cambio",
+      "regulatory_alerts": "Alertas Regulatorios",
+      "compliance_status": "Estado de Cumplimiento"
+    }
+  },
+
+  "es-CO": {
+    "common": {
+      "app_name": "LandMap",
+      "app_tagline": "Sistema Operativo para Bienes Raíces",
+      "search": "Buscar",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "loading": "Cargando...",
+      "error": "Error",
+      "success": "Éxito"
+    },
+    "navigation": {
+      "home": "Inicio",
+      "marketplace": "Marketplace",
+      "portfolio": "Portafolio",
+      "map": "Mapa",
+      "investors": "Inversionistas",
+      "lenders": "Prestamistas",
+      "settings": "Configuración",
+      "help": "Ayuda"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "MX": "México",
+      "CO": "Colombia",
+      "AR": "Argentina",
+      "CL": "Chile",
+      "PE": "Perú"
+    },
+    "property": {
+      "title": "Propiedad",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Departamento",
+      "price": "Precio",
+      "price_m2": "Precio por m²",
+      "area": "Área",
+      "bedrooms": "Habitaciones",
+      "bathrooms": "Baños",
+      "type": "Tipo",
+      "apartment": "Apartamento",
+      "house": "Casa",
+      "land": "Terreno",
+      "commercial": "Comercial",
+      "office": "Oficina",
+      "retail": "Comercio Minorista"
+    },
+    "compliance": {
+      "kyc": "Verificación de Identidad (KYC)",
+      "aml": "Prevención de Lavado de Dinero (AML)",
+      "approved": "Aprobado",
+      "pending": "Pendiente",
+      "rejected": "Rechazado",
+      "verified": "Verificado"
+    },
+    "latam": {
+      "multi_country": "Multi-país",
+      "select_country": "Seleccionar País",
+      "available_countries": "Países Disponibles",
+      "my_properties": "Mis Propiedades",
+      "convert_currency": "Convertir Moneda",
+      "exchange_rate": "Tipo de Cambio",
+      "regulatory_alerts": "Alertas Regulatorios",
+      "compliance_status": "Estado de Cumplimiento"
+    }
+  },
+
+  "es-AR": {
+    "common": {
+      "app_name": "LandMap",
+      "app_tagline": "Sistema Operativo para Bienes Raíces",
+      "search": "Buscar",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "loading": "Cargando...",
+      "error": "Error",
+      "success": "Éxito"
+    },
+    "navigation": {
+      "home": "Inicio",
+      "marketplace": "Marketplace",
+      "portfolio": "Portafolio",
+      "map": "Mapa",
+      "investors": "Inversores",
+      "lenders": "Prestamistas",
+      "settings": "Configuración",
+      "help": "Ayuda"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "MX": "México",
+      "CO": "Colombia",
+      "AR": "Argentina",
+      "CL": "Chile",
+      "PE": "Perú"
+    },
+    "property": {
+      "title": "Propiedad",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Provincia",
+      "price": "Precio",
+      "price_m2": "Precio por m²",
+      "area": "Área",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "type": "Tipo",
+      "apartment": "Departamento",
+      "house": "Casa",
+      "land": "Terreno",
+      "commercial": "Comercial",
+      "office": "Oficina",
+      "retail": "Comercio Minorista"
+    },
+    "compliance": {
+      "kyc": "Verificación de Identidad (KYC)",
+      "aml": "Prevención de Lavado de Dinero (AML)",
+      "approved": "Aprobado",
+      "pending": "Pendiente",
+      "rejected": "Rechazado",
+      "verified": "Verificado"
+    },
+    "latam": {
+      "multi_country": "Multi-país",
+      "select_country": "Seleccionar País",
+      "available_countries": "Países Disponibles",
+      "my_properties": "Mis Propiedades",
+      "convert_currency": "Convertir Moneda",
+      "exchange_rate": "Tipo de Cambio",
+      "regulatory_alerts": "Alertas Regulatorios",
+      "compliance_status": "Estado de Cumplimiento"
+    }
+  },
+
+  "es-CL": {
+    "common": {
+      "app_name": "LandMap",
+      "app_tagline": "Sistema Operativo para Bienes Raíces",
+      "search": "Buscar",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "loading": "Cargando...",
+      "error": "Error",
+      "success": "Éxito"
+    },
+    "navigation": {
+      "home": "Inicio",
+      "marketplace": "Marketplace",
+      "portfolio": "Portafolio",
+      "map": "Mapa",
+      "investors": "Inversionistas",
+      "lenders": "Prestamistas",
+      "settings": "Configuración",
+      "help": "Ayuda"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "MX": "México",
+      "CO": "Colombia",
+      "AR": "Argentina",
+      "CL": "Chile",
+      "PE": "Perú"
+    },
+    "property": {
+      "title": "Propiedad",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Región",
+      "price": "Precio",
+      "price_m2": "Precio por m²",
+      "area": "Área",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "type": "Tipo",
+      "apartment": "Departamento",
+      "house": "Casa",
+      "land": "Terreno",
+      "commercial": "Comercial",
+      "office": "Oficina",
+      "retail": "Comercio Minorista"
+    },
+    "compliance": {
+      "kyc": "Verificación de Identidad (KYC)",
+      "aml": "Prevención de Lavado de Dinero (AML)",
+      "approved": "Aprobado",
+      "pending": "Pendiente",
+      "rejected": "Rechazado",
+      "verified": "Verificado"
+    },
+    "latam": {
+      "multi_country": "Multi-país",
+      "select_country": "Seleccionar País",
+      "available_countries": "Países Disponibles",
+      "my_properties": "Mis Propiedades",
+      "convert_currency": "Convertir Moneda",
+      "exchange_rate": "Tipo de Cambio",
+      "regulatory_alerts": "Alertas Regulatorios",
+      "compliance_status": "Estado de Cumplimiento"
+    }
+  },
+
+  "es-PE": {
+    "common": {
+      "app_name": "LandMap",
+      "app_tagline": "Sistema Operativo para Bienes Raíces",
+      "search": "Buscar",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "loading": "Cargando...",
+      "error": "Error",
+      "success": "Éxito"
+    },
+    "navigation": {
+      "home": "Inicio",
+      "marketplace": "Marketplace",
+      "portfolio": "Portafolio",
+      "map": "Mapa",
+      "investors": "Inversionistas",
+      "lenders": "Prestamistas",
+      "settings": "Configuración",
+      "help": "Ayuda"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "MX": "México",
+      "CO": "Colombia",
+      "AR": "Argentina",
+      "CL": "Chile",
+      "PE": "Perú"
+    },
+    "property": {
+      "title": "Propiedad",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Región",
+      "price": "Precio",
+      "price_m2": "Precio por m²",
+      "area": "Área",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "type": "Tipo",
+      "apartment": "Departamento",
+      "house": "Casa",
+      "land": "Terreno",
+      "commercial": "Comercial",
+      "office": "Oficina",
+      "retail": "Comercio Minorista"
+    },
+    "compliance": {
+      "kyc": "Verificación de Identidad (KYC)",
+      "aml": "Prevención de Lavado de Dinero (AML)",
+      "approved": "Aprobado",
+      "pending": "Pendiente",
+      "rejected": "Rechazado",
+      "verified": "Verificado"
+    },
+    "latam": {
+      "multi_country": "Multi-país",
+      "select_country": "Seleccionar País",
+      "available_countries": "Países Disponibles",
+      "my_properties": "Mis Propiedades",
+      "convert_currency": "Convertir Moneda",
+      "exchange_rate": "Tipo de Cambio",
+      "regulatory_alerts": "Alertas Regulatorios",
+      "compliance_status": "Estado de Cumplimiento"
+    }
+  },
+
+  "en-US": {
+    "common": {
+      "app_name": "LandMap",
+      "app_tagline": "Operating System for Real Estate",
+      "search": "Search",
+      "save": "Save",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "close": "Close",
+      "loading": "Loading...",
+      "error": "Error",
+      "success": "Success"
+    },
+    "navigation": {
+      "home": "Home",
+      "marketplace": "Marketplace",
+      "portfolio": "Portfolio",
+      "map": "Map",
+      "investors": "Investors",
+      "lenders": "Lenders",
+      "settings": "Settings",
+      "help": "Help"
+    },
+    "countries": {
+      "BR": "Brazil",
+      "MX": "Mexico",
+      "CO": "Colombia",
+      "AR": "Argentina",
+      "CL": "Chile",
+      "PE": "Peru"
+    },
+    "property": {
+      "title": "Property",
+      "address": "Address",
+      "city": "City",
+      "state": "State",
+      "price": "Price",
+      "price_m2": "Price per m²",
+      "area": "Area",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "type": "Type",
+      "apartment": "Apartment",
+      "house": "House",
+      "land": "Land",
+      "commercial": "Commercial",
+      "office": "Office",
+      "retail": "Retail"
+    },
+    "compliance": {
+      "kyc": "Know Your Customer (KYC)",
+      "aml": "Anti-Money Laundering (AML)",
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "verified": "Verified"
+    },
+    "latam": {
+      "multi_country": "Multi-Country",
+      "select_country": "Select Country",
+      "available_countries": "Available Countries",
+      "my_properties": "My Properties",
+      "convert_currency": "Convert Currency",
+      "exchange_rate": "Exchange Rate",
+      "regulatory_alerts": "Regulatory Alerts",
+      "compliance_status": "Compliance Status"
+    }
+  }
+}

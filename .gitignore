@@ -138,3 +138,11 @@ waba-data/
 
 # ─── Debug fetch de produção (não é fonte do app) ───
 docs/lovable_live_fetch.html
+
+# secrets
+.ssh/
+*.pem
+*.key
+id_*
+*_rsa
+*_ed25519
