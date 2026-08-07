@@ -21,16 +21,19 @@ export default function SplashPage() {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
+      // Parity with Lovable: entering the site lands free on the public map
+      // (no forced onboarding/login wall). Free canonical landing = /map
+      // (CLAUDE.md regra 6 + mockAuth). /onboarding stays reachable via footer
+      // ("Como funciona") — same as Lovable.
       try {
         if (window.localStorage.getItem('guest_mode') === '1') {
-          // Free signup canonical landing surface is /map (CLAUDE.md regra 6 + mockAuth).
           router.replace(`/${locale}/map`);
           return;
         }
       } catch {
         /* ignore */
       }
-      router.replace(`/${locale}/onboarding`);
+      router.replace(`/${locale}/map`);
     }, 2300);
     return () => window.clearTimeout(timer);
   }, [router, locale]);
