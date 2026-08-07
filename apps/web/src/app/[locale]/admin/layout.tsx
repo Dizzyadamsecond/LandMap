@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { LANDMAP_OG_IMAGE } from '../../../lib/og-image';
 import { AdminSidebar } from '../../../components/AdminSidebar';
+import { AdminSidebarMobile } from '../../../components/AdminSidebarMobile';
+import { AdminBreadcrumb } from '../../../components/AdminBreadcrumb';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale?: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -27,9 +29,23 @@ export async function generateMetadata({ params }: { params: Promise<{ locale?: 
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-[calc(100vh-4rem)]">
-      <AdminSidebar />
-      <main className="flex-1 overflow-x-hidden px-4 py-8 sm:px-8">{children}</main>
-    </div>
+    <>
+      {/* Mobile header */}
+      <div className="md:hidden sticky top-0 z-40 flex items-center justify-between gap-2 border-b border-[var(--border)] bg-[var(--background)] h-14 px-4 py-2">
+        <h1 className="text-sm font-semibold">Admin</h1>
+        <AdminSidebarMobile />
+      </div>
+
+      {/* Main layout */}
+      <div className="flex min-h-[calc(100vh-4rem)]">
+        <AdminSidebar />
+        <main className="flex-1 overflow-x-hidden">
+          <div className="px-4 py-6 sm:px-8">
+            <AdminBreadcrumb />
+            {children}
+          </div>
+        </main>
+      </div>
+    </>
   );
 }

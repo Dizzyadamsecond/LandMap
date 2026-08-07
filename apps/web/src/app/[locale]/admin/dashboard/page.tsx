@@ -24,6 +24,8 @@ export default function AdminDashboardPage() {
     { title: 'Visitas', desc: 'Agendamentos e confirmações.', href: `/${locale}/admin/visits` },
     { title: 'Propostas', desc: 'Propostas e follow-ups.', href: `/${locale}/admin/proposals` },
     { title: 'Agentes', desc: 'Time e automações.', href: `/${locale}/admin/agents` },
+    { title: 'Analytics', desc: 'Tráfego e conversões.', href: `/${locale}/admin/analytics` },
+    { title: 'CTAs', desc: 'Impressões, cliques, variantes.', href: `/${locale}/admin/cta` },
     { title: 'Webhooks', desc: 'Integrações e eventos.', href: `/${locale}/admin/webhooks` },
   ];
 

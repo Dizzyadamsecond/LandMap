@@ -495,3 +495,91 @@ body {
     animation: none;
   }
 }
+
+/* ─── Lovable-style ambient animation utilities (glow blobs, float, aurora) ─── */
+@keyframes lm-float {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-14px) }
+}
+@keyframes lm-float-slow {
+  0%, 100% { transform: translateY(0) translateX(0) }
+  50% { transform: translateY(-22px) translateX(10px) }
+}
+@keyframes lm-aurora {
+  0% { transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1) }
+  50% { transform: translate3d(6%, 4%, 0) rotate(8deg) scale(1.12) }
+  100% { transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1) }
+}
+@keyframes lm-pulse-glow {
+  0%, 100% { opacity: 0.55; filter: blur(40px) }
+  50% { opacity: 0.85; filter: blur(56px) }
+}
+
+/* Ambient blurred color blobs (glow) — used behind hero/splash */
+.glow-emerald,
+.glow-dual,
+.glow-primary {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.glow-emerald {
+  background: radial-gradient(circle, color-mix(in oklab, var(--primary) 55%, transparent), transparent 70%);
+  animation: lm-pulse-glow 6s ease-in-out infinite;
+}
+.glow-dual {
+  background: radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--primary-glow) 60%, transparent), transparent 70%);
+  animation: lm-pulse-glow 7.5s ease-in-out infinite;
+}
+.glow-primary {
+  background: radial-gradient(circle, var(--primary-glow), transparent 70%);
+  animation: lm-pulse-glow 8s ease-in-out infinite;
+}
+
+/* Aurora gradient layer */
+.aurora {
+  position: absolute;
+  inset: -20% -10%;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 40% at 20% 20%, color-mix(in oklab, var(--primary) 40%, transparent), transparent 70%),
+    radial-gradient(45% 45% at 80% 30%, color-mix(in oklab, var(--gradient-accent) 40%, transparent), transparent 70%),
+    radial-gradient(50% 50% at 50% 90%, color-mix(in oklab, var(--primary-glow) 35%, transparent), transparent 70%);
+  filter: blur(60px);
+  opacity: 0.7;
+  animation: lm-aurora 14s ease-in-out infinite;
+}
+
+/* Floating accent (icon chip / orb) */
+.orb-float {
+  animation: lm-float 5s ease-in-out infinite;
+}
+.orb-float-slow {
+  animation: lm-float-slow 9s ease-in-out infinite;
+}
+
+/* Grain overlay */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Gradient text (display) */
+.text-aurora {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-emerald, .glow-dual, .glow-primary,
+  .aurora, .orb-float, .orb-float-slow {
+    animation: none !important;
+  }
+}

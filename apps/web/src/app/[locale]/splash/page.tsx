@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 import {
   MapPinned,
   Sparkles,
@@ -79,19 +80,45 @@ export default function SplashPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 cadastre-grid opacity-[0.04]" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="aurora" />
+          <div className="glow-primary orb-float-slow" style={{ top: '-10%', left: '-5%', width: '45vw', height: '45vw' }} />
+          <div className="glow-dual orb-float" style={{ bottom: '-15%', right: '-8%', width: '40vw', height: '40vw' }} />
+          <div className="grain" />
+        </div>
         <div className="mx-auto max-w-6xl px-6 py-20 text-center md:py-28">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs font-medium text-[var(--muted-foreground)]">
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs font-medium text-[var(--muted-foreground)]"
+          >
             <Sparkles className="h-3.5 w-3.5 text-[var(--primary)]" />
             Inteligência de terrenos no Brasil
-          </span>
-          <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl md:text-6xl">
-            Veja o futuro do mercado imobiliário antes dos outros.
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-base text-[var(--muted-foreground)] sm:text-lg">
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto mt-6 max-w-3xl text-4xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl md:text-6xl"
+          >
+            Veja o futuro do mercado imobiliário{' '}
+            <span className="text-aurora">antes dos outros.</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto mt-5 max-w-2xl text-base text-[var(--muted-foreground)] sm:text-lg"
+          >
             Descubra regiões antes da valorização, compare bairros, acompanhe tendências e tome decisões com inteligência.
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          >
             <Link
               href={href('/auth')}
               className="inline-flex items-center justify-center rounded-lg bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-sm transition hover:opacity-90"
@@ -101,7 +128,7 @@ export default function SplashPage() {
             <span className="text-xs text-[var(--muted-foreground)]">
               Sem cartão de crédito. Acesso completo ao LandMap Pro.
             </span>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -110,28 +137,51 @@ export default function SplashPage() {
         <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-[var(--foreground)]">
           O que você passa a enxergar
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={{ show: { transition: { staggerChildren: 0.07 } } }}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {FEATURES.map((f) => (
-            <div
+            <motion.div
               key={f.title}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 transition hover:border-[var(--primary)]"
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+              }}
+              className="group rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 transition hover:border-[var(--primary)] hover:shadow-[var(--shadow-card)]"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)] transition group-hover:scale-110">
                 <f.icon className="h-5 w-5" />
               </div>
               <h3 className="mt-4 text-sm font-semibold text-[var(--foreground)]">{f.title}</h3>
               <p className="mt-2 text-sm text-[var(--muted-foreground)]">{f.desc}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* How it works */}
       <section className="mx-auto max-w-6xl px-6 py-12">
         <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-[var(--foreground)]">Como funciona</h2>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={{ show: { transition: { staggerChildren: 0.1 } } }}
+          className="grid grid-cols-1 gap-6 md:grid-cols-3"
+        >
           {STEPS.map((s, i) => (
-            <div key={s.title} className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6">
+            <motion.div
+              key={s.title}
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+              }}
+              className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 transition hover:border-[var(--primary)]"
+            >
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold text-[var(--primary-foreground)]">
                   {i + 1}
@@ -140,14 +190,20 @@ export default function SplashPage() {
               </div>
               <h3 className="mt-4 text-base font-semibold text-[var(--foreground)]">{s.title}</h3>
               <p className="mt-2 text-sm text-[var(--muted-foreground)]">{s.desc}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* LandMap Score */}
       <section className="mx-auto max-w-6xl px-6 py-12">
-        <div className="grid items-center gap-8 rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 md:grid-cols-2">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="grid items-center gap-8 rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 md:grid-cols-2"
+        >
           <div>
             <div className="flex items-center gap-2 text-sm font-medium text-[var(--muted-foreground)]">
               <Star className="h-4 w-4 text-[var(--primary)]" />
@@ -180,12 +236,18 @@ export default function SplashPage() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Bottom CTA */}
       <section className="mx-auto max-w-6xl px-6 py-12">
-        <div className="rounded-3xl bg-[var(--primary)] px-8 py-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-3xl bg-[var(--primary)] px-8 py-12 text-center"
+        >
           <h2 className="text-2xl font-bold tracking-tight text-[var(--primary-foreground)]">Experimente antes de assinar.</h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-[var(--primary-foreground)]/80">
             7 dias com acesso completo ao LandMap Pro. Sem pagamento antecipado, sem fidelidade.
@@ -204,7 +266,7 @@ export default function SplashPage() {
               Ver planos
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Footer */}

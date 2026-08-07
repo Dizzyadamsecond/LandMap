@@ -8,6 +8,7 @@ import { Eye, EyeOff, LandMapWordmark } from '../../../components/lovable/icons'
 import { Briefcase, Building2, Gem, TrendingUp, User } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
 import { useMockUser, storeUserType, type UserType } from '../../../lib/mockAuth';
+import { track, trackCta } from '../../../track';
 
 /** Segmentos do mercado imobiliário — escolha obrigatória no cadastro (1:1 Lovable). */
 const USER_TYPE_OPTIONS: { id: UserType; label: string; icon: React.ReactNode; hint: string }[] = [
@@ -94,6 +95,7 @@ function AuthPageInner() {
     } catch {
       /* ignore */
     }
+    track('user_guest_access', undefined, {});
     signInGuest();
     router.replace(lh('/map'));
     router.refresh();
@@ -102,8 +104,10 @@ function AuthPageInner() {
   const onLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
+    track('user_login_attempt', undefined, { metadata: { method: 'email' } });
     try {
       await signInEmail({ email: loginEmail || undefined });
+      track('user_login_success', undefined, { metadata: { method: 'email' } });
       router.replace(lh('/map'));
       router.refresh();
     } finally {
@@ -125,6 +129,7 @@ function AuthPageInner() {
     if (!pwLenMet || !pwSpecialMet)
       return setError('A senha precisa de ao menos 8 caracteres e 1 caractere especial.');
     setSignupLoading(true);
+    track('user_signup_attempt', undefined, { metadata: { userType } });
     storeUserType(userType as UserType);
     try {
       await signInEmail({
@@ -132,9 +137,11 @@ function AuthPageInner() {
         name: fullName.trim(),
         userType: userType as UserType,
       });
+      track('user_signup_success', undefined, { metadata: { userType } });
       router.replace(lh('/map'));
       router.refresh();
     } catch {
+      track('user_signup_error', undefined, { metadata: { userType } });
       setError('Não foi possível concluir o cadastro. Tente novamente.');
     } finally {
       setSignupLoading(false);

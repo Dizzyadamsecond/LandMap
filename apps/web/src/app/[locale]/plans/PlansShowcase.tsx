@@ -9,6 +9,7 @@ import { Stagger, Reveal } from '../../../components/Motion';
 import { Card, Badge, buttonVariants, cn } from '@landmap/ui';
 import { PLANS, formatBRL } from '../../../lib/plans';
 import { ProductPageShell } from '../../../components/ProductPageShell';
+import { trackCta } from '../../../track';
 
 export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
@@ -22,6 +23,8 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
     } catch {
       // ignore
     }
+    // Track CTA click
+    trackCta('pricing_plan_select', 'click', { variant: planId });
     // Free plan = no-paywall path → entra direto no mapa (CLAUDE.md regra 6).
     // Planos pagos mantêm o checkout como vitrine de produto.
     if (planId === 'free') {
