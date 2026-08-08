@@ -602,6 +602,26 @@ function MapPageInner() {
                 <Layers className="mr-1 h-3 w-3 sm:mr-1.5 sm:h-3.5 sm:w-3.5" />
                 <span className="text-[11px] sm:text-xs">Camadas</span>
               </button>
+              <button
+                type="button"
+                aria-label="Valor do m² em qualquer ponto"
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'sm' }),
+                  'hidden h-8 min-h-8 rounded-full border-border/50 bg-white/95 px-2.5 text-[11px] shadow-sm sm:inline-flex sm:px-3 sm:text-xs',
+                )}
+              >
+                Valor do m² em qualquer ponto
+              </button>
+              <button
+                type="button"
+                aria-label="Marcar área"
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'sm' }),
+                  'hidden h-8 min-h-8 rounded-full border-border/50 bg-white/95 px-2.5 text-[11px] shadow-sm sm:inline-flex sm:px-3 sm:text-xs',
+                )}
+              >
+                Marcar área
+              </button>
               <Link
                 href={lh('/map')}
                 className={cn(
@@ -642,7 +662,7 @@ function MapPageInner() {
             KPIs completos
           </Link>
 
-          {/* Search — Lovable placeholder */}
+          {/* Search — Lovable placeholder "Onde você quer investir?" */}
           <div className="relative max-w-xl">
             <div className="flex items-center gap-1.5 rounded-2xl border border-border/50 bg-white/98 px-2.5 py-2 shadow-sm backdrop-blur sm:px-3">
               <Search className="h-3.5 w-3.5 shrink-0 text-foreground/50 sm:h-4 sm:w-4" />
@@ -682,8 +702,8 @@ function MapPageInner() {
                     /* ignore */
                   }
                 }}
-                placeholder={SEARCH_PLACEHOLDER}
-                aria-label={SEARCH_PLACEHOLDER}
+                placeholder="Onde você quer investir?"
+                aria-label="Onde você quer investir?"
                 className="h-9 w-full border-0 bg-transparent px-0 text-sm shadow-none outline-none focus-visible:ring-0"
               />
               {query && (

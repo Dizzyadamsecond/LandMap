@@ -480,13 +480,17 @@ body {
   }
 }
 
-/* ─── Mapa Leaflet → mesma cor da marca Lovable (indigo hue 265) ───
-   Basemap = CartoDB Positron (light_all) / DarkMatter (dark_all).
-   Tiles neutros recebem tint indigo via filtro (hue-rotate 265deg +
-   saturate) para casar com --primary oklch(34% .18 265) do app chrome.
-   Mesma abordagem do dashboard Lovable: mapa na cor da marca, não
-   cinza. Em claro tom levemente mais claro; em escuro mais profundo. */
+/* ─── Mapa Leaflet → cor da marca Lovable (indigo hue 265), robusto ───
+   Abordagem anterior (filtro sepia+hue-rotate) NÃO tingia tiles quase
+   pretos (dark_all) e só ativava sob :root.dark — classe que o app nunca
+   aplica (colorScheme: light, sem toggle de tema). Resultado: mapa cinza/
+   preto, divergente do chrome indigo. Substituído por overlay de duotone
+   com mix-blend-mode:color sobre o tile-pane: aplica o matiz indigo
+   preservando a luminância do tile, funciona em tiles claros/escuros e é
+   INDEPENDENTE da classe .dark. Marca sempre indigo, de uma vez por todas. */
 .landmap-tiles .leaflet-tile-pane {
+  position: absolute;
+  isolation: isolate; /* mantém o blend confinado aos tiles, sem vazar p/ página */
   transition: filter 0.3s ease;
 }
 
@@ -494,14 +498,28 @@ body {
   background: var(--background);
 }
 
-:root.dark .landmap-tiles .leaflet-tile-pane {
-  /* Duotone indigo (marca): sepia converte cinza em tom quente,
-     hue-rotate(~225deg) desloca para o índigo, saturate realça a cor. */
-  filter: sepia(1) hue-rotate(225deg) saturate(1.8) brightness(0.82) contrast(1.05);
+/* Duotone indigo: pseudo-elemento cobre o tile-pane e mescla apenas o
+   matiz (hue+saturation) de --primary; a luminância do tile é preservada.
+   pointer-events:none garante que cliques/zoom continuem funcionando. */
+.landmap-tiles .leaflet-tile-pane::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--primary, #575ecf);
+  mix-blend-mode: color;
+  opacity: 0.62;
 }
 
-:root:not(.dark) .landmap-tiles .leaflet-tile-pane {
-  filter: sepia(1) hue-rotate(228deg) saturate(1.4) brightness(1.04) contrast(0.98);
+/* Camada de profundidade (soft-light) para dar brilho indigo sutil no escuro. */
+.landmap-tiles .leaflet-tile-pane::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--primary-glow, #8b5cf6);
+  mix-blend-mode: soft-light;
+  opacity: 0.4;
 }
 
 /* Reveal suave do mapa (1:1 Lovable): fade + leve zoom-in ao entrar. */
