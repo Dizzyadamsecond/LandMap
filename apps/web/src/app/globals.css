@@ -9,6 +9,56 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
+/* ─── Leaflet dark theme (LandMap intelligence map = Lovable dark brand) ───
+   Base tiles use CartoDB dark_all; this themes popups/controls/attribution
+   so nothing reads as a bright box against the dark canvas. No biocolor palette. */
+.landmap-tiles {
+  background: var(--muted, #0a0a0f);
+}
+.leaflet-container,
+.leaflet-container a,
+.leaflet-container .leaflet-control-attribution {
+  background: transparent;
+  color: var(--muted-foreground, rgba(255, 255, 255, 0.55));
+  font-family: var(--font-sans, 'DM Sans', sans-serif);
+  font-size: 10px;
+}
+.leaflet-container .leaflet-control-attribution {
+  background: rgba(10, 10, 15, 0.55);
+  backdrop-filter: blur(4px);
+}
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--primary, #6366f1);
+}
+.leaflet-bar,
+.leaflet-bar a {
+  background: rgba(12, 12, 18, 0.9);
+  color: var(--foreground, #fff);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.leaflet-bar a:hover {
+  background: var(--primary, #6366f1);
+  color: #fff;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--card, #15151c);
+  color: var(--foreground, #fff);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+.leaflet-popup-content {
+  font-family: var(--font-sans, 'DM Sans', sans-serif);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.leaflet-popup-content b {
+  color: var(--primary, #6366f1);
+}
+.leaflet-popup-close-button {
+  color: var(--muted-foreground, rgba(255, 255, 255, 0.6)) !important;
+}
+
 /* ─── Semantic color tokens (1:1 with Lovable lovable_styles.css) ───
    Exposed as `@theme inline` so Tailwind generates native utilities
    (bg-background, text-foreground/60, border-border/60, bg-primary,
@@ -430,14 +480,13 @@ body {
   }
 }
 
-/* ─── Mapa Leaflet → cor Lovable (indigo) ───
-   O basemap padrão (OpenStreetMap) tem cores vivas/amarelas que não
-   correspondem à marca Lovable (indigo hue 265). Aplicamos um filtro
-   de tint no tile pane para tender ao tema, sem introduzir cor de
-   marca fora dos tokens do design system. */
+/* ─── Mapa Leaflet → basemap Lovable (neutral gray) ───
+   Basemap = CartoDB Positron (light_all) / DarkMatter (dark_all):
+   cinza neutro limpo, igual ao Google Maps de referência no Lovable.
+   Sem tiles OSM amarelos e sem tint indigo — a cor do mapa acompanha
+   o tema via troca de basemap, não via filtro. Em claro, sem filtro
+   (Positron já é neutro). Em escuro, leve ajuste de contraste. */
 .landmap-tiles .leaflet-tile-pane {
-  filter:
-    invert(1) hue-rotate(245deg) saturate(0.55) brightness(0.92) contrast(0.92);
   transition: filter 0.3s ease;
 }
 
@@ -445,8 +494,28 @@ body {
   background: var(--background);
 }
 
+:root.dark .landmap-tiles .leaflet-tile-pane {
+  filter: brightness(0.92) contrast(1.05) saturate(0.9);
+}
+
 :root:not(.dark) .landmap-tiles .leaflet-tile-pane {
-  filter: hue-rotate(12deg) saturate(0.85) brightness(1.02) contrast(0.96);
+  filter: none;
+}
+
+/* Reveal suave do mapa (1:1 Lovable): fade + leve zoom-in ao entrar. */
+.landmap-tiles {
+  animation: lm-map-reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes lm-map-reveal {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ─── Splash logo reveal (1:1 Lovable: vertical draw-on wipe) ─── */

@@ -54,7 +54,7 @@ Artefatos: `scripts/_shots/map_audit/lovable_dashboard_ui.json`, `lovable_layers
 | KPIs | Preço médio/m², Terrenos, Valorização YoY, Confiança 94% + sparkline |
 | Busca | “Buscar cidade…” + autocomplete geo |
 | Filtros | Raio (agora com centro), preço min/max, chip Terrenos Free, grade A–F, score min, heatmap por cidade |
-| Mapa | Leaflet 1.9.4 OSM, circleMarkers por grade, popup, fitBounds |
+| Mapa | Leaflet + CartoDB Positron (light_all) / DarkMatter (dark_all) — basemap cinza neutro igual ao Google Maps do Lovable; circleMarkers por grade, popup, fitBounds |
 | Lista | Sidebar + SpotlightCard + grade badge |
 | Detail | `AssetDossierDrawer` |
 | Auth | `RequireAuth` → free access (sem paywall) |

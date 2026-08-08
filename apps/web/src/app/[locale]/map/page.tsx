@@ -7,6 +7,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import 'leaflet/dist/leaflet.css';
@@ -76,6 +77,7 @@ function escapePopupText(value: string): string {
 function MapPageInner() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
+  const reduceMotion = useReducedMotion();
 
   const [query, setQuery] = useState('');
   const [activeLayer, setActiveLayer] = useState<LayerId>('valorization');
@@ -288,8 +290,13 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors',
+        // Basemap Lovable-style: CartoDB dark_all (clean neutral-dark, no API key).
+        // Matches the dark indigo brand chrome. No beige OSM tiles, no biocolor palette.
+        const baseUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        L.tileLayer(baseUrl, {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: 'abcd',
           maxZoom: 19,
         }).addTo(map);
         mapInstance.current = map;
@@ -517,11 +524,14 @@ function MapPageInner() {
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
       {/* Full-bleed map — iOS-friendly rendering */}
-      <div
+      <motion.div
         ref={mapRef}
         role="region"
         aria-label="Mapa de inteligência territorial"
         className="landmap-tiles absolute inset-0 z-0 h-full w-full touch-manipulation font-[system-ui,sans-serif]"
+        initial={reduceMotion ? undefined : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9, ease: 'easeOut' }}
       />
       {!mapReady && !mapError && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-sm animate-in fade-in duration-300">
@@ -546,7 +556,7 @@ function MapPageInner() {
       )}
 
       {/* Top chrome */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-2 sm:p-4">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 animate-in fade-in slide-in-from-top-4 duration-500 p-2 sm:p-4">
         <div className="pointer-events-auto mx-auto flex max-w-[1400px] flex-col gap-2 sm:gap-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 rounded-2xl border border-border/50 bg-white/95 px-2 py-1.5 shadow-sm backdrop-blur sm:px-2.5">
@@ -730,7 +740,7 @@ function MapPageInner() {
 
       {/* Layers panel — Lovable floating card */}
       {layersOpen && (
-        <div className="pointer-events-none absolute bottom-auto left-2 top-[7.5rem] z-20 flex w-[min(100%-1rem,18rem)] flex-col gap-2 sm:left-4 sm:top-[8rem] sm:w-[min(100%-2rem,22rem)]">
+        <div className="pointer-events-none absolute bottom-auto left-2 top-[7.5rem] z-20 animate-in fade-in zoom-in-95 duration-300 flex w-[min(100%-1rem,18rem)] flex-col gap-2 sm:left-4 sm:top-[8rem] sm:w-[min(100%-2rem,22rem)]">
           <div className="pointer-events-auto max-h-[calc(100dvh-16rem)] overflow-y-auto rounded-2xl border border-border/50 bg-white/98 p-3 shadow-lg backdrop-blur sm:p-4">
             <div className="mb-2 flex items-center justify-between">
               <p className="font-display text-sm font-semibold">{COPY.layersTitle}</p>
@@ -842,7 +852,7 @@ function MapPageInner() {
 
       {/* Bottom ranking cards */}
       {rankingsOpen && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-2 sm:p-4">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 animate-in fade-in zoom-in-95 duration-300 p-2 sm:p-4">
           <div className="pointer-events-auto flex snap-x snap-mandatory gap-2 overflow-x-auto pb-[max(0.25rem,env(safe-area-inset-bottom))] md:mx-auto md:max-w-[1400px] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 lg:grid-cols-3">
             <div className="w-[82vw] max-w-xs shrink-0 snap-start sm:w-72 md:w-auto md:max-w-none md:shrink">
               <RankCard
@@ -914,7 +924,7 @@ function MapPageInner() {
 
       {/* Region detail sheet */}
       {selected && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center p-2 pb-[max(9.5rem,env(safe-area-inset-bottom))] sm:bottom-auto sm:left-auto sm:right-3 sm:top-[7.5rem] sm:w-[20rem] sm:p-0 sm:pb-0">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 animate-in fade-in zoom-in-95 duration-300 flex justify-center p-2 pb-[max(9.5rem,env(safe-area-inset-bottom))] sm:bottom-auto sm:left-auto sm:right-3 sm:top-[7.5rem] sm:w-[20rem] sm:p-0 sm:pb-0">
           <div className="pointer-events-auto max-h-[min(66dvh,460px)] w-full max-w-md overflow-y-auto rounded-2xl border border-border/60 bg-white p-3 shadow-xl sm:max-w-none sm:p-4">
             <div className="flex items-start justify-between gap-2">
               <div>
