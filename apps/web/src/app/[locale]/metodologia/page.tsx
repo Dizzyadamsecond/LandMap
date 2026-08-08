@@ -2,6 +2,7 @@
 
 import { BookA, LandMapWordmark } from '../../../components/lovable/icons';
 import { ProductPageShell } from '../../../components/ProductPageShell';
+import { Stagger } from '../../../components/Motion';
 import { Card } from '@landmap/ui';
 
 type Section = {
@@ -81,14 +82,14 @@ export default function MetodologiaPage() {
         <MetaRow label="Última atualização" value="14 de julho de 2026" />
       </div>
 
-      <div className="mt-12 space-y-4">
+      <Stagger className="mt-12 space-y-4">
         {SECTIONS.map((s) => (
           <Card key={s.title} className="rounded-2xl border border-foreground/10 bg-background p-6">
             <h2 className="font-display text-lg font-semibold">{s.title}</h2>
             <p className="mt-3 text-[15px] leading-relaxed text-foreground/75">{s.body}</p>
           </Card>
         ))}
-      </div>
+      </Stagger>
 
       <div className="mt-12 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] p-6">
         <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">
