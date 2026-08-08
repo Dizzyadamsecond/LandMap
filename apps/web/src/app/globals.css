@@ -491,7 +491,7 @@ body {
   position: absolute;
   isolation: isolate;
   transition: filter 0.3s ease;
-  filter: sepia(1) hue-rotate(215deg) saturate(3.2) brightness(0.92) contrast(1.05);
+  filter: sepia(1) hue-rotate(200deg) saturate(4.5) brightness(0.72) contrast(1.15);
 }
 
 .landmap-tiles .leaflet-container {
