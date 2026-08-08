@@ -480,12 +480,12 @@ body {
   }
 }
 
-/* ─── Mapa Leaflet → basemap Lovable (neutral gray) ───
-   Basemap = CartoDB Positron (light_all) / DarkMatter (dark_all):
-   cinza neutro limpo, igual ao Google Maps de referência no Lovable.
-   Sem tiles OSM amarelos e sem tint indigo — a cor do mapa acompanha
-   o tema via troca de basemap, não via filtro. Em claro, sem filtro
-   (Positron já é neutro). Em escuro, leve ajuste de contraste. */
+/* ─── Mapa Leaflet → mesma cor da marca Lovable (indigo hue 265) ───
+   Basemap = CartoDB Positron (light_all) / DarkMatter (dark_all).
+   Tiles neutros recebem tint indigo via filtro (hue-rotate 265deg +
+   saturate) para casar com --primary oklch(34% .18 265) do app chrome.
+   Mesma abordagem do dashboard Lovable: mapa na cor da marca, não
+   cinza. Em claro tom levemente mais claro; em escuro mais profundo. */
 .landmap-tiles .leaflet-tile-pane {
   transition: filter 0.3s ease;
 }
@@ -495,11 +495,13 @@ body {
 }
 
 :root.dark .landmap-tiles .leaflet-tile-pane {
-  filter: brightness(0.92) contrast(1.05) saturate(0.9);
+  /* Duotone indigo (marca): sepia converte cinza em tom quente,
+     hue-rotate(~225deg) desloca para o índigo, saturate realça a cor. */
+  filter: sepia(1) hue-rotate(225deg) saturate(1.8) brightness(0.82) contrast(1.05);
 }
 
 :root:not(.dark) .landmap-tiles .leaflet-tile-pane {
-  filter: none;
+  filter: sepia(1) hue-rotate(228deg) saturate(1.4) brightness(1.04) contrast(0.98);
 }
 
 /* Reveal suave do mapa (1:1 Lovable): fade + leve zoom-in ao entrar. */
