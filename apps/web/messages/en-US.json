@@ -385,6 +385,9 @@
   "insights": {
     "eyebrow": "Insights",
     "title": "Market insights",
+    "brasil": {
+      "title": "Public APIs of Brazil"
+    },
     "description": "Automated appreciation, risk and opportunity reports per region, generated from 1,500 datasets.",
     "cta": "View regions",
     "f1": "Appreciation ranking by city",

@@ -389,6 +389,9 @@
   "insights": {
     "eyebrow": "Insights",
     "title": "Insights de mercado",
+    "brasil": {
+      "title": "APIs públicas de Brasil"
+    },
     "description": "Informes automáticos de valorización, riesgo y oportunidad por región, generados a partir de 1.500 datasets.",
     "cta": "Ver regiones",
     "f1": "Ranking de valorización por ciudad",

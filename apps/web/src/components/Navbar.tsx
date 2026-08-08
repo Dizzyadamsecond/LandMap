@@ -56,6 +56,7 @@ const marketLinks = [
   { href: 'notifications', labelKey: 'Notificações' },
   { href: 'settings', labelKey: 'Configurações' },
   { href: 'developers/api-reference', labelKey: 'API' },
+  { href: 'brasil', labelKey: 'APIs Brasil' },
   { href: 'portfolio', labelKey: 'Carteira' },
   { href: 'leads', labelKey: 'Leads' },
   { href: 'glossary', labelKey: 'Glossário' },
