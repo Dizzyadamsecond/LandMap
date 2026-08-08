@@ -13,8 +13,9 @@ import {
   Layers,
   GitCompare,
   SlidersHorizontal,
+  Star,
 } from '../../../components/lovable/icons';
-import { Card, Badge, buttonVariants, cn } from '@landmap/ui';
+import { Badge, buttonVariants, cn } from '@landmap/ui';
 import {
   INTELLIGENCE_REGIONS,
   topByScore,
@@ -24,7 +25,8 @@ import {
   type IntelligenceRegion,
 } from '../../../lib/mapIntelligence';
 
-// Radis de oportunidades — paridade literal com o Lovable (/insights → "Radar").
+// /insights com fotos reais de bairros (imagens estáveis, $0, sem API key).
+// O "Radar de oportunidades" (versão anterior) foi movido para /radar-insights.
 
 const scoreTone = (score: number) =>
   score >= 90
@@ -37,7 +39,11 @@ const scoreTone = (score: number) =>
 
 const SEARCH_PLACEHOLDER = 'Cidade, bairro ou região';
 
-function RegionCard({
+/** Foto estável por região — Picsum seedado pelo id (carrega 100%, sem chave). */
+const photoFor = (id: string) =>
+  `https://picsum.photos/seed/landmap-${encodeURIComponent(id)}/800/520`;
+
+function RegionPhotoCard({
   region,
   locale,
   onHover,
@@ -51,28 +57,35 @@ function RegionCard({
       href={`/${locale}/map?region=${region.id}`}
       onMouseEnter={() => onHover?.(region.id)}
       onMouseLeave={() => onHover?.(null)}
-      className="group block rounded-2xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-sm transition hover:border-[var(--primary)]/40 hover:shadow-md sm:p-4"
+      className="group block overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-sm transition hover:border-[var(--primary)]/40 hover:shadow-md"
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5 shrink-0 text-[var(--primary)]" />
-            <span className="truncate text-sm font-semibold text-[var(--foreground)]">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[var(--muted)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={photoFor(region.id)}
+          alt={`${region.name}, ${region.city}`}
+          loading="lazy"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+        <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-black/45 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
+          <Star className="h-3.5 w-3.5 text-[var(--primary)]" />
+          {region.score}
+          <span className="text-[10px] font-medium uppercase tracking-wider opacity-70">Score</span>
+        </div>
+        <div className="absolute bottom-3 left-3 right-3">
+          <div className="flex items-center gap-1.5 text-white">
+            <MapPin className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate text-sm font-semibold drop-shadow">
               {region.name}
             </span>
           </div>
-          <p className="mt-0.5 truncate text-xs text-[var(--muted-foreground)]">
+          <p className="mt-0.5 text-xs text-white/80 drop-shadow">
             {region.city} · {region.state}
           </p>
         </div>
-        <div className={cn('flex shrink-0 items-baseline gap-1', scoreTone(region.score))}>
-          <span className="text-lg font-bold leading-none">{region.score}</span>
-          <span className="text-[10px] font-medium uppercase tracking-wider opacity-70">
-            Score
-          </span>
-        </div>
       </div>
-      <div className="mt-3 flex items-end justify-between">
+      <div className="flex items-end justify-between gap-3 p-3 sm:p-4">
         <p className="text-lg font-bold text-[var(--foreground)]">
           {fmtPriceSqm(region.priceSqm)}
           <span className="text-xs font-medium text-[var(--muted-foreground)]"> /m²</span>
@@ -136,7 +149,7 @@ function Section({
               show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
             }}
           >
-            <RegionCard region={region} locale={locale} onHover={onHover} />
+            <RegionPhotoCard region={region} locale={locale} onHover={onHover} />
           </motion.div>
         ))}
       </motion.div>
@@ -164,7 +177,25 @@ export default function InsightsPage() {
 
   const wanted = useMemo(
     () =>
-      ['jardins', 'leblon', 'vila-nova-conceicao', 'ipanema', 'barra-sul', 'itaim-bibi', 'lago-sul', 'lourdes', 'batel', 'jurere', 'meireles', 'praia-do-futuro', 'coco', 'ponta-negra', 'plano-diretor-sul', 'eusebio-centro', 'sapiranga']
+      [
+        'jardins',
+        'leblon',
+        'vila-nova-conceicao',
+        'ipanema',
+        'barra-sul',
+        'itaim-bibi',
+        'lago-sul',
+        'lourdes',
+        'batel',
+        'jurere',
+        'meireles',
+        'praia-do-futuro',
+        'coco',
+        'ponta-negra',
+        'plano-diretor-sul',
+        'eusebio-centro',
+        'sapiranga',
+      ]
         .map((id) => INTELLIGENCE_REGIONS.find((r) => r.id === id))
         .filter(Boolean) as IntelligenceRegion[],
     [],
@@ -191,12 +222,17 @@ export default function InsightsPage() {
 
   return (
     <div className="min-h-[100dvh] bg-[var(--background)] text-[var(--foreground)]">
-      {/* Hero + busca global — espelha Lovable insights */}
+      {/* Hero com foto de capa + busca global */}
       <section className="relative overflow-hidden border-b border-[var(--border)]">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://picsum.photos/seed/landmap-insights-hero/1600/900"
+            alt=""
+            className="h-full w-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/80 via-[var(--background)]/55 to-[var(--background)]" />
           <div className="aurora" />
-          <div className="glow-primary orb-float-slow" style={{ top: '-12%', left: '-6%', width: '42vw', height: '42vw' }} />
-          <div className="glow-dual orb-float" style={{ bottom: '-18%', right: '-8%', width: '38vw', height: '38vw' }} />
           <div className="grain" />
         </div>
         <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20 lg:py-24">
@@ -207,7 +243,7 @@ export default function InsightsPage() {
             className="eyebrow inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs font-medium text-[var(--muted-foreground)]"
           >
             <Sparkles className="h-3.5 w-3.5 text-[var(--primary)]" />
-            Radar de oportunidades
+            Insights de bairros
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
@@ -215,7 +251,7 @@ export default function InsightsPage() {
             transition={{ duration: 0.6, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5 max-w-3xl font-display text-4xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl"
           >
-            Radar de oportunidades
+            Onde vale a pena investir
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -223,8 +259,8 @@ export default function InsightsPage() {
             transition={{ duration: 0.6, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
             className="mt-4 max-w-2xl text-base text-[var(--muted-foreground)] sm:text-lg"
           >
-            Os bairros mais desejados do Brasil, ranqueados por Score LandMap, valorização e
-            liquidez. Explore cada região no mapa de inteligência.
+            Veja os bairros mais desejados do Brasil em fotos, ranqueados por Score LandMap,
+            valorização e liquidez. Explore cada região no mapa de inteligência.
           </motion.p>
 
           {/* Busca global */}
@@ -292,8 +328,8 @@ export default function InsightsPage() {
               Abrir mapa
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
-            <Link href={lh('/compare')} className={buttonVariants({ size: 'lg', variant: 'outline' })}>
-              Comparar regiões
+            <Link href={lh('/radar-insights')} className={buttonVariants({ size: 'lg', variant: 'outline' })}>
+              Radar de oportunidades
             </Link>
           </motion.div>
         </div>
