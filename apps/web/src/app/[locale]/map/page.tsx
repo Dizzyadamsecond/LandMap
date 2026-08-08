@@ -290,9 +290,11 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        // Basemap Lovable-style: CartoDB dark_all (clean neutral-dark, no API key).
-        // Matches the dark indigo brand chrome. No beige OSM tiles, no biocolor palette.
-        const baseUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        // Basemap Lovable-style: CartoDB light_all. O tint indigo da marca Lovable
+        // (hue 265 / oklch) é aplicado via CSS em globals.css (.landmap-tiles
+        // .leaflet-tile-pane::after/::before com mix-blend-mode) — robusto,
+        // independente de tema e sem o conflito do filtro inline roxo anterior.
+        const baseUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
         L.tileLayer(baseUrl, {
           attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',

@@ -39,9 +39,23 @@ const scoreTone = (score: number) =>
 
 const SEARCH_PLACEHOLDER = 'Cidade, bairro ou região';
 
-/** Foto estável por região — Picsum seedado pelo id (carrega 100%, sem chave). */
-const photoFor = (id: string) =>
-  `https://picsum.photos/seed/landmap-${encodeURIComponent(id)}/800/520`;
+/**
+ * Foto estável por região — LoremFlickr por tags de cidade/bairro.
+ * Unsplash Source (source.unsplash.com) foi descontinuado (503) e quebrava as
+ * imagens; LoremFlickr devolve foto REAL de cidade, $0, sem API key, estável por
+ * `lock` (hash do id da região, então não muda a cada reload). Se no futuro
+ * tivermos as URLs da Lovable, basta trocar este helper.
+ */
+const stableLock = (s: string) => {
+  let h = 0;
+  for (let i = 0; i < s.length; i += 1) h = (h * 31 + s.charCodeAt(i)) % 100000;
+  return h;
+};
+
+const photoFor = (region: IntelligenceRegion) => {
+  const tags = encodeURIComponent(`${region.city}, ${region.name}, brazil, neighborhood`);
+  return `https://loremflickr.com/800/520/${tags}?lock=${stableLock(region.id)}`;
+};
 
 function RegionPhotoCard({
   region,
@@ -62,7 +76,7 @@ function RegionPhotoCard({
       <div className="relative aspect-[16/10] overflow-hidden bg-[var(--muted)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={photoFor(region.id)}
+          src={photoFor(region)}
           alt={`${region.name}, ${region.city}`}
           loading="lazy"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
@@ -227,7 +241,7 @@ export default function InsightsPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://picsum.photos/seed/landmap-insights-hero/1600/900"
+            src="https://loremflickr.com/1600/900/brazil,city,skyline,neighborhood?lock=4242"
             alt=""
             className="h-full w-full object-cover opacity-30"
           />
