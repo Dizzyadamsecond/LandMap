@@ -481,37 +481,36 @@ body {
 }
 
 /* ─── Mapa Leaflet → cor da marca Lovable (indigo hue 265), robusto ───
-   Abordagem anterior (filtro sepia+hue-rotate) NÃO tingia tiles quase
-   pretos (dark_all) e só ativava sob :root.dark — classe que o app nunca
-   aplica (colorScheme: light, sem toggle de tema). Resultado: mapa cinza/
-   preto, divergente do chrome indigo. Substituído por overlay de duotone
-   com mix-blend-mode:color sobre o tile-pane: aplica o matiz indigo
-   preservando a luminância do tile, funciona em tiles claros/escuros e é
-   INDEPENDENTE da classe .dark. Marca sempre indigo, de uma vez por todas. */
+   O basemap é CARTO light_all (quase branco). O blend `color` anterior
+   preservava a luminância do fundo branco e o indigo ficava INVISÍVEL
+   (mapa cinza). Agora usamos `multiply` (tinge áreas claras de fato) +
+   `soft-light` para brilho, e baixamos levemente o brilho do tile-pane
+   para dar peso ao indigo. Independente de tema, confinado ao tile-pane
+   via `isolation: isolate`. Marca sempre indigo visível. */
 .landmap-tiles .leaflet-tile-pane {
   position: absolute;
   isolation: isolate; /* mantém o blend confinado aos tiles, sem vazar p/ página */
   transition: filter 0.3s ease;
+  filter: brightness(0.94) contrast(1.04);
 }
 
 .landmap-tiles .leaflet-container {
   background: var(--background);
 }
 
-/* Duotone indigo: pseudo-elemento cobre o tile-pane e mescla apenas o
-   matiz (hue+saturation) de --primary; a luminância do tile é preservada.
-   pointer-events:none garante que cliques/zoom continuem funcionando. */
+/* Tom base indigo: multiply tinge as áreas claras do tile (CARTO light)
+   sem destruir o contraste das ruas/água. */
 .landmap-tiles .leaflet-tile-pane::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: var(--primary, #575ecf);
-  mix-blend-mode: color;
-  opacity: 0.62;
+  mix-blend-mode: multiply;
+  opacity: 0.28;
 }
 
-/* Camada de profundidade (soft-light) para dar brilho indigo sutil no escuro. */
+/* Brilho indigo sutil (soft-light) — realça o tom sobre áreas médias. */
 .landmap-tiles .leaflet-tile-pane::before {
   content: '';
   position: absolute;
@@ -519,7 +518,7 @@ body {
   pointer-events: none;
   background: var(--primary-glow, #8b5cf6);
   mix-blend-mode: soft-light;
-  opacity: 0.4;
+  opacity: 0.55;
 }
 
 /* Reveal suave do mapa (1:1 Lovable): fade + leve zoom-in ao entrar. */
