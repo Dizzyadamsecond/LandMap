@@ -481,44 +481,21 @@ body {
 }
 
 /* ─── Mapa Leaflet → cor da marca Lovable (indigo hue 265), robusto ───
-   O basemap é CARTO light_all (quase branco). O blend `color` anterior
-   preservava a luminância do fundo branco e o indigo ficava INVISÍVEL
-   (mapa cinza). Agora usamos `multiply` (tinge áreas claras de fato) +
-   `soft-light` para brilho, e baixamos levemente o brilho do tile-pane
-   para dar peso ao indigo. Independente de tema, confinado ao tile-pane
-   via `isolation: isolate`. Marca sempre indigo visível. */
+   Basemap CARTO light_all (claro). Para tingir cinza→azul-indigo de forma
+   DETERMINÍSTICA e consistente (funciona em tiles claros e escuros, sem
+   depender de blend frágil), aplicamos um filtro CSS no tile-pane:
+   sepia(1) deixa tudo amarelado (hue ~50); hue-rotate(215deg) gira para
+   ~265 (indigo Lovable); saturate intensifica; brightness/contrast evitam
+   queima. Independente de tema. O filtro roda no tile-pane isolado. */
 .landmap-tiles .leaflet-tile-pane {
   position: absolute;
-  isolation: isolate; /* mantém o blend confinado aos tiles, sem vazar p/ página */
+  isolation: isolate;
   transition: filter 0.3s ease;
-  filter: brightness(0.94) contrast(1.04);
+  filter: sepia(1) hue-rotate(215deg) saturate(2.1) brightness(0.96) contrast(1.02);
 }
 
 .landmap-tiles .leaflet-container {
   background: var(--background);
-}
-
-/* Tom base indigo: multiply tinge as áreas claras do tile (CARTO light)
-   sem destruir o contraste das ruas/água. */
-.landmap-tiles .leaflet-tile-pane::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--primary, #575ecf);
-  mix-blend-mode: multiply;
-  opacity: 0.28;
-}
-
-/* Brilho indigo sutil (soft-light) — realça o tom sobre áreas médias. */
-.landmap-tiles .leaflet-tile-pane::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--primary-glow, #8b5cf6);
-  mix-blend-mode: soft-light;
-  opacity: 0.55;
 }
 
 /* Reveal suave do mapa (1:1 Lovable): fade + leve zoom-in ao entrar. */
