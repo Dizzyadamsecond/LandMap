@@ -24,7 +24,7 @@ import {
   fmtDelta,
   type IntelligenceRegion,
 } from '../../../lib/mapIntelligence';
-import { loadPhotos, photoUrlForIndex } from '../../../lib/photos';
+import { loadPhotos, photoForCity } from '../../../lib/photos';
 
 // /insights com fotos reais de bairros (imagens estáveis, $0, sem API key).
 // O "Radar de oportunidades" (versão anterior) foi movido para /radar-insights.
@@ -191,7 +191,7 @@ function Section({
               region={region}
               locale={locale}
               onHover={onHover}
-              photo={photoUrlForIndex(photos ?? [], idx)}
+              photo={photoForCity(region.city, photos ?? [], idx)}
             />
           </motion.div>
         ))}
