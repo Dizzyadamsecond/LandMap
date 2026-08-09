@@ -522,7 +522,7 @@ export default function BmapViewer() {
                       : 'rounded-lg px-3 py-1 text-xs text-neutral-400 transition hover:bg-[var(--card)] hover:text-neutral-200'
                   }
                 >
-                  {t(`layers.${id === '3d' ? 'd3' : id}`)}
+                  {t(`layers${id === '3d' ? 'D3' : id.charAt(0).toUpperCase() + id.slice(1)}`)}
                 </button>
               ))}
             </div>
@@ -569,7 +569,7 @@ export default function BmapViewer() {
           {layer === '3d' && (
             <div className="pointer-events-auto rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 py-2 backdrop-blur-md">
               <div className="mb-1 text-[10px] uppercase tracking-wider text-[var(--muted-foreground)]">
-                {t('layers.d3')} · altura
+                {t('layersD3')} · altura
               </div>
               <div
                 className="h-2 w-28 rounded-full"
