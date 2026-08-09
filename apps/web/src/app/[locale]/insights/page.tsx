@@ -40,21 +40,22 @@ const scoreTone = (score: number) =>
 const SEARCH_PLACEHOLDER = 'Cidade, bairro ou região';
 
 /**
- * Foto estável por região — LoremFlickr por tags de cidade/bairro.
- * Unsplash Source (source.unsplash.com) foi descontinuado (503) e quebrava as
- * imagens; LoremFlickr devolve foto REAL de cidade, $0, sem API key, estável por
- * `lock` (hash do id da região, então não muda a cada reload). Se no futuro
- * tivermos as URLs da Lovable, basta trocar este helper.
+ * Foto estável por região — Picsum (picsum.photos) com seed por hash do id.
+ * Escolhido porque é $0, sem API key, HEADLESS-FRIENDLY (o LoremFlickr e o
+ * Unsplash Source quebravam no browser real: 27/27 imagens caíam com
+ * naturalWidth=0). Picsum devolve foto REAL estável por seed, então o card
+ * nunca fica quebrado. O gradiente indigo da marca (abaixo) sobrepõe a foto
+ * para casar com o chrome Lovable. Se no futuro tivermos as URLs da Lovable,
+ * basta trocar este helper.
  */
-const stableLock = (s: string) => {
+const stableSeed = (s: string) => {
   let h = 0;
   for (let i = 0; i < s.length; i += 1) h = (h * 31 + s.charCodeAt(i)) % 100000;
   return h;
 };
 
 const photoFor = (region: IntelligenceRegion) => {
-  const tags = encodeURIComponent(`${region.city}, ${region.name}, brazil, neighborhood`);
-  return `https://loremflickr.com/800/520/${tags}?lock=${stableLock(region.id)}`;
+  return `https://picsum.photos/seed/landmap-${stableSeed(region.id)}/800/520`;
 };
 
 function RegionPhotoCard({
@@ -241,7 +242,7 @@ export default function InsightsPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://loremflickr.com/1600/900/brazil,city,skyline,neighborhood?lock=4242"
+            src="https://picsum.photos/seed/landmap-hero-insights/1600/900"
             alt=""
             className="h-full w-full object-cover opacity-30"
           />
