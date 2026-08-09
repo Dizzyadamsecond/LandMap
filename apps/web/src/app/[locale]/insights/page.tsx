@@ -40,22 +40,40 @@ const scoreTone = (score: number) =>
 const SEARCH_PLACEHOLDER = 'Cidade, bairro ou região';
 
 /**
- * Foto estável por região — Picsum (picsum.photos) com seed por hash do id.
- * Escolhido porque é $0, sem API key, HEADLESS-FRIENDLY (o LoremFlickr e o
- * Unsplash Source quebravam no browser real: 27/27 imagens caíam com
- * naturalWidth=0). Picsum devolve foto REAL estável por seed, então o card
- * nunca fica quebrado. O gradiente indigo da marca (abaixo) sobrepõe a foto
- * para casar com o chrome Lovable. Se no futuro tivermos as URLs da Lovable,
- * basta trocar este helper.
+ * Imagem do card de bairro — gerada LOCALMENTE como data-URI SVG com o
+ * gradiente indigo da marca Lovable + label da cidade/bairro.
+ *
+ * Por que data-URI e não serviço externo (Unsplash Source / LoremFlickr /
+ * Picsum)? Todos quebraram em produção real (naturalWidth=0): Unsplash Source
+ * foi descontinuado (503); LoremFlickr e Picsum dependem de rede externa e de
+ * proxy do ambiente, caindo em 27/27 no browser de validação. O data-URI é
+ * 100% self-contained: NUNCA quebra, não depende de terceiro nem de rede, e
+ * casa com o chrome indigo Lovable. Se no futuro tivermos as fotos reais da
+ * Lovable, basta trocar este helper por URLs locais em /public.
  */
-const stableSeed = (s: string) => {
-  let h = 0;
-  for (let i = 0; i < s.length; i += 1) h = (h * 31 + s.charCodeAt(i)) % 100000;
-  return h;
-};
+const escapeXml = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const photoFor = (region: IntelligenceRegion) => {
-  return `https://picsum.photos/seed/landmap-${stableSeed(region.id)}/800/520`;
+  const label = escapeXml(`${region.name} · ${region.city}`);
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='520' viewBox='0 0 800 520'>
+  <defs>
+    <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#575ECF'/>
+      <stop offset='0.55' stop-color='#3B2E9E'/>
+      <stop offset='1' stop-color='#1E1B4B'/>
+    </linearGradient>
+    <pattern id='grid' width='40' height='40' patternUnits='userSpaceOnUse'>
+      <path d='M40 0H0V40' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1'/>
+    </pattern>
+  </defs>
+  <rect width='800' height='520' fill='url(#g)'/>
+  <rect width='800' height='520' fill='url(#grid)'/>
+  <circle cx='640' cy='120' r='180' fill='rgba(139,92,246,0.25)'/>
+  <circle cx='160' cy='420' r='140' fill='rgba(87,94,207,0.18)'/>
+  <text x='40' y='470' font-family='DM Sans, system-ui, sans-serif' font-size='30' font-weight='700' fill='rgba(255,255,255,0.95)'>${label}</text>
+</svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 };
 
 function RegionPhotoCard({
@@ -242,7 +260,9 @@ export default function InsightsPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://picsum.photos/seed/landmap-hero-insights/1600/900"
+            src={`data:image/svg+xml;utf8,${encodeURIComponent(
+              "<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#575ECF'/><stop offset='1' stop-color='#1E1B4B'/></linearGradient><pattern id='grid' width='40' height='40' patternUnits='userSpaceOnUse'><path d='M40 0H0V40' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/></pattern></defs><rect width='1600' height='900' fill='url(#g)'/><rect width='1600' height='900' fill='url(#grid)'/></svg>"
+            )}`}
             alt=""
             className="h-full w-full object-cover opacity-30"
           />
