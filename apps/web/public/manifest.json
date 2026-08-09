@@ -1,13 +1,34 @@
 {
-  "name": "LandMap",
+  "id": "/",
+  "name": "LandMap — Inteligência de terrenos",
   "short_name": "LandMap",
-  "description": "LandMap — Inteligência de terrenos e esquadrão de agentes de vendas",
+  "description": "Mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "oklch(100% 0 0)",
+  "orientation": "portrait",
+  "background_color": "oklch(20% .12 265)",
   "theme_color": "oklch(34% .18 265)",
-  "categories": ["business", "productivity"],
+  "categories": ["business", "productivity", "maps"],
   "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
     {
       "src": "/icons/icon-192.svg",
       "sizes": "192x192",
@@ -21,7 +42,6 @@
       "purpose": "any"
     }
   ],
-  "permissions": ["notifications"],
   "shortcuts": [
     {
       "name": "Agentes",
@@ -29,9 +49,14 @@
       "url": "/admin/agents"
     },
     {
-      "name": "Assinaturas",
-      "short_name": "Assinaturas",
-      "url": "/admin/subscriptions"
+      "name": "Mapa",
+      "short_name": "Mapa",
+      "url": "/map"
+    },
+    {
+      "name": "Planos",
+      "short_name": "Planos",
+      "url": "/plans"
     }
   ]
 }

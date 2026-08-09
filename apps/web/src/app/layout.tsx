@@ -14,9 +14,16 @@ import { LANDMAP_OG_IMAGE } from '../lib/og-image';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
+  manifest: '/manifest.json',
+  applicationName: 'LandMap',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'LandMap',
+  },
   icons: {
     icon: '/favicon.svg',
-    apple: '/icons/icon-192.svg',
+    apple: '/icons/apple-touch-icon.png',
   },
   openGraph: {
     title: 'LandMap — Inteligência de terrenos',
