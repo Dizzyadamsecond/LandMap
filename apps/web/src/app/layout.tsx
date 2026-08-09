@@ -16,6 +16,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   manifest: '/manifest.json',
   applicationName: 'LandMap',
+  themeColor: 'oklch(34% .18 265)',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -66,6 +67,7 @@ export default async function RootLayout({
             strategy="afterInteractive"
           />
         ) : null}
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
       <body>
         {children}
