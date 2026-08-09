@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
@@ -24,6 +24,7 @@ import {
   fmtDelta,
   type IntelligenceRegion,
 } from '../../../lib/mapIntelligence';
+import { loadPhotos, photoUrlForIndex } from '../../../lib/photos';
 
 // /insights com fotos reais de bairros (imagens estáveis, $0, sem API key).
 // O "Radar de oportunidades" (versão anterior) foi movido para /radar-insights.
@@ -80,10 +81,12 @@ function RegionPhotoCard({
   region,
   locale,
   onHover,
+  photo,
 }: {
   region: IntelligenceRegion;
   locale: string;
   onHover?: (id: string | null) => void;
+  photo?: string;
 }) {
   return (
     <Link
@@ -95,7 +98,7 @@ function RegionPhotoCard({
       <div className="relative aspect-[16/10] overflow-hidden bg-[var(--muted)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={photoFor(region)}
+          src={photo || photoFor(region)}
           alt={`${region.name}, ${region.city}`}
           loading="lazy"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
@@ -143,12 +146,14 @@ function Section({
   regions,
   locale,
   onHover,
+  photos,
 }: {
   title: string;
   subtitle: string;
   regions: IntelligenceRegion[];
   locale: string;
   onHover?: (id: string | null) => void;
+  photos?: string[];
 }) {
   return (
     <section className="mb-14">
@@ -174,7 +179,7 @@ function Section({
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
         className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        {regions.map((region) => (
+        {regions.map((region, idx) => (
           <motion.div
             key={region.id}
             variants={{
@@ -182,7 +187,12 @@ function Section({
               show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
             }}
           >
-            <RegionPhotoCard region={region} locale={locale} onHover={onHover} />
+            <RegionPhotoCard
+              region={region}
+              locale={locale}
+              onHover={onHover}
+              photo={photoUrlForIndex(photos ?? [], idx)}
+            />
           </motion.div>
         ))}
       </motion.div>
@@ -196,6 +206,11 @@ export default function InsightsPage() {
   const [query, setQuery] = useState('');
   const [suggestOpen, setSuggestOpen] = useState(false);
   const [, setHovered] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<string[]>([]);
+
+  useEffect(() => {
+    loadPhotos().then(setPhotos).catch(() => {});
+  }, []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -377,6 +392,7 @@ export default function InsightsPage() {
           regions={best}
           locale={locale}
           onHover={setHovered}
+          photos={photos}
         />
         <Section
           title="Melhores oportunidades hoje"
@@ -384,6 +400,7 @@ export default function InsightsPage() {
           regions={wanted}
           locale={locale}
           onHover={setHovered}
+          photos={photos}
         />
         <Section
           title="Em alta agora"
@@ -391,6 +408,7 @@ export default function InsightsPage() {
           regions={rising}
           locale={locale}
           onHover={setHovered}
+          photos={photos}
         />
         <Section
           title="Emergentes"
@@ -398,6 +416,7 @@ export default function InsightsPage() {
           regions={emerging}
           locale={locale}
           onHover={setHovered}
+          photos={photos}
         />
 
         {/* Hub de acesso rápido */}

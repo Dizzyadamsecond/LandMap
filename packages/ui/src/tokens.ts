@@ -11,28 +11,28 @@
 export const colors = {
   /* ── Core surface / text (flat mirror of --surface / --text / …) ── */
   bg: 'oklch(100% 0 0)',            // --background
-  text: 'oklch(18% 0.06 265)',      // --foreground
+  text: 'oklch(18% 0.06 276)',      // --foreground
   textStrong: 'oklch(100% 0 0)',
   surface: 'oklch(100% 0 0)',       // --surface (= --card)
   surface1: 'oklch(100% 0 0)',      // --surface-1
   surface2: 'oklch(96% 0.01 250)',  // --surface-2 (= --muted)
   surface3: 'oklch(96% 0.01 250)',  // --surface-3
   border: 'oklch(92% 0.015 250)',   // --border (= --border)
-  borderStrong: 'oklch(30% 0.09 265)', // --border-strong (= --sidebar-border)
-  muted: 'oklch(48% 0.04 265)',     // --muted (= --muted-foreground)
-  muted2: 'oklch(48% 0.04 265)',
+  borderStrong: 'oklch(30% 0.09 276)', // --border-strong (= --sidebar-border)
+  muted: 'oklch(48% 0.04 276)',     // --muted (= --muted-foreground)
+  muted2: 'oklch(48% 0.04 276)',
   accent: 'oklch(88% 0.06 250)',    // --accent (= --accent)
-  accentDim: 'oklch(28% 0.14 265)', // --accent-dim (= --accent-foreground)
+  accentDim: 'oklch(28% 0.14 276)', // --accent-dim (= --accent-foreground)
   danger: 'oklch(58% 0.22 27)',     // --danger (= --destructive)
 
   /* ── Primary Lovable indigo brand ramp ── */
   // Aligned to Lovable primary indigo token.
-  primary: 'oklch(34% .18 265)',
-  primaryBright: 'oklch(50% .18 265)',
-  primarySoft: 'oklch(55% .15 265)',
+  primary: 'oklch(34% .18 276)',
+  primaryBright: 'oklch(50% .18 276)',
+  primarySoft: 'oklch(55% .15 276)',
   primaryForeground: 'oklch(99% 0.005 250)',
-  primaryGlow: 'oklch(55% .2 265)',
-  secondary: 'oklch(24% 0.1 265)',
+  primaryGlow: 'oklch(55% .2 276)',
+  secondary: 'oklch(24% 0.1 276)',
   secondaryForeground: 'oklch(99% 0.005 250)',
   destructive: 'oklch(58% 0.22 27)',
   destructiveForeground: 'oklch(98% 0.01 27)',
@@ -41,21 +41,21 @@ export const colors = {
   warning: 'oklch(78% 0.15 78)',
   warningForeground: 'oklch(22% 0.05 78)',
   background: 'oklch(100% 0 0)',
-  foreground: 'oklch(18% 0.06 265)',
+  foreground: 'oklch(18% 0.06 276)',
   card: 'oklch(100% 0 0)',
-  cardForeground: 'oklch(18% 0.06 265)',
+  cardForeground: 'oklch(18% 0.06 276)',
   // Aligned to Lovable --ring (indigo color, used by focus-visible:ring-[var(--ring)]).
-  ring: 'oklch(50% .18 265)',
+  ring: 'oklch(50% .18 276)',
 
   /* ── Lovable reference design tokens (light / indigo) ── */
   lovable: {
     accent: 'oklch(88% 0.06 250)',
-    accentForeground: 'oklch(28% 0.14 265)',
+    accentForeground: 'oklch(28% 0.14 276)',
     muted: 'oklch(96% 0.01 250)',
-    mutedForeground: 'oklch(48% 0.04 265)',
+    mutedForeground: 'oklch(48% 0.04 276)',
     border: 'oklch(92% 0.015 250)',
     input: 'oklch(94% 0.012 250)',
-    ring: 'oklch(50% .18 265)',
+    ring: 'oklch(50% .18 276)',
     radius: '0.625rem',
   },
 

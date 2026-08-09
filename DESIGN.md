@@ -40,7 +40,7 @@ in sync with this file.
     `border-border`, `bg-primary`, …) to the `:root`/`.dark` vars below, so `.dark`
     overrides apply at runtime.
   - `:root` (light) and `.dark` define the **Lovable indigo `oklch`** tokens
-    (`--primary` hue ≈ 265, `--accent`, `--muted`, `--ring`, gradients, shadows, sidebar…).
+    (`--primary` hue ≈ 276, `--accent`, `--muted`, `--ring`, gradients, shadows, sidebar…).
   - Utility classes ported from the Lovable reference: `.cadastre-grid`, `.glass`,
     `.eyebrow`, `.link-underline`, `.ledger-num`, `.btn-primary`, `.btn-ghost`,
     animation utilities (`animate-in`, `fade-in`, `slide-in-*`, `zoom-in-*`, `marquee-*`).
@@ -55,7 +55,7 @@ in sync with this file.
 - **`#575ECF`** is the canonical Lovable brand indigo. It appears in the Lovable reference
   as the logo radial-gradient endpoint (`#FE7B02 → #FE3F21 → #F858BC → #575ECF`) and as
   the focus ring (`--focus-color: #575ECF`). In `globals.css` it maps to the indigo
-  `oklch` tokens (`--primary` hue ≈ 265, `--ring` hue ≈ 265). **Use `var(--primary)` /
+  `oklch` tokens (`--primary` hue ≈ 276, `--ring` hue ≈ 276). **Use `var(--primary)` /
   `var(--ring)` — never hardcode `#575ECF`** except where a raw hex is unavoidable.
 - **Lovable platform badge:** the `#lovable-badge` widget (bottom-right, "Made with Lovable")
   is a *platform* element, **NOT** LandMap brand. It must **NOT** be reproduced in the
@@ -109,19 +109,19 @@ and `.dark` define them; `@theme inline` exposes them as Tailwind utilities
 |---|---|---|
 | `--radius` | `0.625rem` | base radius (sm/md/lg/xl derived) |
 | `--background` | `oklch(100% 0 0)` | page bg (white) |
-| `--foreground` | `oklch(18% .06 265)` | body text (near-black indigo) |
+| `--foreground` | `oklch(18% .06 276)` | body text (near-black indigo) |
 | `--card` | `oklch(100% 0 0)` | card surface |
-| `--card-foreground` | `oklch(18% .06 265)` | |
+| `--card-foreground` | `oklch(18% .06 276)` | |
 | `--popover` | `oklch(100% 0 0)` | |
-| `--primary` | `oklch(34% .18 265)` | **brand indigo** (buttons/active) |
+| `--primary` | `oklch(34% .18 276)` | **brand indigo** (buttons/active) |
 | `--primary-foreground` | `oklch(99% .005 250)` | text on primary (white) |
-| `--primary-glow` | `oklch(55% .2 265)` | glow accent |
-| `--secondary` | `oklch(24% .1 265)` | |
+| `--primary-glow` | `oklch(55% .2 276)` | glow accent |
+| `--secondary` | `oklch(24% .1 276)` | |
 | `--secondary-foreground` | `oklch(99% .005 250)` | |
 | `--accent` | `oklch(88% .06 250)` | hover/active tint |
-| `--accent-foreground` | `oklch(28% .14 265)` | |
+| `--accent-foreground` | `oklch(28% .14 276)` | |
 | `--muted` | `oklch(96% .01 250)` | row/card hover bg |
-| `--muted-foreground` | `oklch(48% .04 265)` | secondary text |
+| `--muted-foreground` | `oklch(48% .04 276)` | secondary text |
 | `--destructive` | `oklch(58% .22 27)` | errors/danger |
 | `--destructive-foreground` | `oklch(98% .01 27)` | |
 | `--success` | `oklch(60% .15 155)` | positive (green) |
@@ -130,32 +130,32 @@ and `.dark` define them; `@theme inline` exposes them as Tailwind utilities
 | `--warning-foreground` | `oklch(22% .05 78)` | |
 | `--border` | `oklch(92% .015 250)` | hairlines |
 | `--input` | `oklch(94% .012 250)` | input borders |
-| `--ring` | `oklch(50% .18 265)` | focus ring (indigo) |
-| `--chart-1..5` | `oklch(34% .18 265)` … `oklch(78% .15 78)` | data-viz palette |
-| `--sidebar` | `oklch(22% .1 265)` | authenticated sidebar bg |
+| `--ring` | `oklch(50% .18 276)` | focus ring (indigo) |
+| `--chart-1..5` | `oklch(34% .18 276)` … `oklch(78% .15 78)` | data-viz palette |
+| `--sidebar` | `oklch(22% .1 276)` | authenticated sidebar bg |
 | `--sidebar-foreground` | `oklch(96% .01 250)` | |
-| `--sidebar-primary` | `oklch(55% .2 265)` | |
+| `--sidebar-primary` | `oklch(55% .2 276)` | |
 | `--sidebar-primary-foreground` | `oklch(99% .005 250)` | |
-| `--sidebar-accent` | `oklch(28% .11 265)` | |
+| `--sidebar-accent` | `oklch(28% .11 276)` | |
 | `--sidebar-accent-foreground` | `oklch(99% .005 250)` | |
-| `--sidebar-border` | `oklch(30% .09 265)` | |
-| `--sidebar-ring` | `oklch(55% .2 265)` | |
-| `--gradient-brand` | `linear-gradient(135deg, oklch(24% .1 265), oklch(34% .18 265))` | |
-| `--gradient-hero` | `linear-gradient(140deg, oklch(20% .08 265) 0%, oklch(30% .15 265) 55%, oklch(50% .2 265) 100%)` | |
-| `--gradient-accent` | `linear-gradient(135deg, oklch(34% .18 265), oklch(62% .18 250))` | |
+| `--sidebar-border` | `oklch(30% .09 276)` | |
+| `--sidebar-ring` | `oklch(55% .2 276)` | |
+| `--gradient-brand` | `linear-gradient(135deg, oklch(24% .1 276), oklch(34% .18 276))` | |
+| `--gradient-hero` | `linear-gradient(140deg, oklch(20% .08 276) 0%, oklch(30% .15 276) 55%, oklch(50% .2 276) 100%)` | |
+| `--gradient-accent` | `linear-gradient(135deg, oklch(34% .18 276), oklch(62% .18 250))` | |
 | `--shadow-elegant` | `0 20px 40px -20px oklab(24% -.00871557 -.0996195/.4)` | |
 | `--shadow-glow` | `0 0 40px oklab(55% -.0174311 -.199239/.35)` | |
 | `--shadow-card` | `0 1px 3px oklab(24% -.00871557 -.0996195/.12), 0 8px 24px -12px oklab(24% -.00871557 -.0996195/.15)` | |
 
 ### Dark (`.dark`) — overrides only
-`--background: oklch(14% .05 265)` · `--foreground: oklch(96% .01 250)` ·
-`--card/popover: oklch(19% .07 265)` · `--primary: oklch(62% .2 265)` ·
-`--primary-glow: oklch(75% .17 250)` · `--secondary: oklch(26% .08 265)` ·
-`--accent: oklch(55% .18 265)` · `--muted: oklch(22% .06 265)` ·
+`--background: oklch(14% .05 276)` · `--foreground: oklch(96% .01 250)` ·
+`--card/popover: oklch(19% .07 276)` · `--primary: oklch(62% .2 276)` ·
+`--primary-glow: oklch(75% .17 250)` · `--secondary: oklch(26% .08 276)` ·
+`--accent: oklch(55% .18 276)` · `--muted: oklch(22% .06 276)` ·
 `--muted-foreground: oklch(72% .03 250)` · `--destructive: oklch(65% .22 27)` ·
 `--success: oklch(72% .15 148)` · `--warning: oklch(82% .15 78)` ·
 `--border: oklch(100% 0 0/.1)` · `--input: oklch(100% 0 0/.12)` ·
-`--ring: oklch(62% .2 265)`.
+`--ring: oklch(62% .2 276)`.
 
 ### Utility classes (ported from Lovable)
 `.cadastre-grid`, `.glass`, `.eyebrow`, `.link-underline`, `.ledger-num`, `.btn-primary`
