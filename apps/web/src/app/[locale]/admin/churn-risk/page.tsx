@@ -29,7 +29,7 @@ function AdminChurnRiskPageInner() {
       email: 'joao@example.com',
       lastActive: '2026-06-15',
       daysSinceActive: 45,
-      plan: 'pro',
+      plan: 'plus',
       ltv: 2500,
       riskLevel: 'high',
     },

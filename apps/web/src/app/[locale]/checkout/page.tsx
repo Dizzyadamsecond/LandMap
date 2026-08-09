@@ -23,7 +23,7 @@ export default function CheckoutPage() {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const qp = params.get('plan') as PlanId | null;
-    if (qp && ['free', 'access', 'plus', 'pro', 'business'].includes(qp)) {
+    if (qp && ['free', 'access', 'plus', 'business'].includes(qp)) {
       setPlanId(qp);
     }
     try {
