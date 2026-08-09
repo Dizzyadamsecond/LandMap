@@ -290,16 +290,17 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        // Basemap Lovable-style: CartoDB light_all. O tint indigo da marca Lovable
-        // (hue 265 / oklch) é aplicado via CSS em globals.css (.landmap-tiles
-        // .leaflet-tile-pane::after/::before com mix-blend-mode) — robusto,
-        // independente de tema e sem o conflito do filtro inline roxo anterior.
-        const baseUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+        // Basemap Lovable-style: CARTO Voyager — canvas CINZA NEUTRO de alta
+        // fidelidade, igual ao Google Maps padrão do Lovable. O indigo da marca
+        // fica no chrome/marcadores/heat (--primary), NÃO no basemap. O CSS em
+        // globals.css (.landmap-tiles .leaflet-tile-pane { filter: none }) garante
+        // zero tint — paridade 1:1 com o Lovable.
+        const baseUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
         L.tileLayer(baseUrl, {
           attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
           subdomains: 'abcd',
-          maxZoom: 19,
+          maxZoom: 20,
         }).addTo(map);
         mapInstance.current = map;
         setMapReady(true);

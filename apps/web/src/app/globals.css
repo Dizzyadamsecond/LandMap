@@ -480,18 +480,20 @@ body {
   }
 }
 
-/* ─── Mapa Leaflet → cor da marca Lovable (indigo hue 276), robusto ───
-   Basemap CARTO light_all (claro). Para tingir cinza→azul-indigo de forma
-   DETERMINÍSTICA e consistente (funciona em tiles claros e escuros, sem
-   depender de blend frágil), aplicamos um filtro CSS no tile-pane:
-   sepia(1) deixa tudo amarelado (hue ~50); hue-rotate(215deg) gira para
-   ~265 (indigo Lovable); saturate intensifica; brightness/contrast evitam
-   queima. Independente de tema. O filtro roda no tile-pane isolado. */
+/* ─── Mapa Leaflet → cor fiel ao Lovable (basemap cinza neutro) ───
+   O Lovable usa Google Maps no estilo padrão = canvas CINZA NEUTRO (sem
+   tint de marca). O indigo da marca fica no chrome, marcadores e heat
+   (--primary), nunca no basemap. Por isso NÃO aplicamos filtro de cor:
+   o tile-pane roda sem tint, igual ao Google Maps do Lovable.
+   Basemap = CARTO Voyager (paleta leve/cinza neutra de alta fidelidade,
+   estradas e labels nítidos). Mantemos o isolamento do tile-pane apenas
+   para o reveal suave e para não herdar filtros acidentais. */
 .landmap-tiles .leaflet-tile-pane {
   position: absolute;
   isolation: isolate;
   transition: filter 0.3s ease;
-  filter: sepia(1) hue-rotate(200deg) saturate(4.5) brightness(0.72) contrast(1.15);
+  /* Sem filtro de cor: canvas neutro, paridade 1:1 com o Lovable. */
+  filter: none;
 }
 
 .landmap-tiles .leaflet-container {
