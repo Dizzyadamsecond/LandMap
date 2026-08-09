@@ -7,7 +7,12 @@ import { useState } from 'react';
 import { Eye, EyeOff, LandMapWordmark } from '../../../components/lovable/icons';
 import { Briefcase, Building2, Gem, TrendingUp, User } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
-import { useMockUser, storeUserType, type UserType } from '../../../lib/mockAuth';
+import {
+  useMockUser,
+  storeUserType,
+  getPostAuthRedirect,
+  type UserType,
+} from '../../../lib/mockAuth';
 import { track, trackCta } from '../../../track';
 
 /** Segmentos do mercado imobiliário — escolha obrigatória no cadastro (1:1 Lovable). */
@@ -63,6 +68,9 @@ function AuthPageInner() {
     params.get('mode') === 'request' ? 'signup' : 'login',
   );
 
+  /** Where to land after auth: honors ?returnTo=, persisted post-auth return, else /map. */
+  const postAuth = () => getPostAuthRedirect(params.get('returnTo') ?? undefined, locale);
+
   const [loginLoading, setLoginLoading] = useState(false);
   const [signupLoading, setSignupLoading] = useState(false);
   const [error, setError] = useState('');
@@ -97,7 +105,7 @@ function AuthPageInner() {
     }
     track('user_guest_access', undefined, {});
     signInGuest();
-    router.replace(lh('/map'));
+    router.replace(postAuth());
     router.refresh();
   };
 
@@ -108,7 +116,7 @@ function AuthPageInner() {
     try {
       await signInEmail({ email: loginEmail || undefined });
       track('user_login_success', undefined, { metadata: { method: 'email' } });
-      router.replace(lh('/map'));
+      router.replace(postAuth());
       router.refresh();
     } finally {
       setLoginLoading(false);
@@ -138,7 +146,7 @@ function AuthPageInner() {
         userType: userType as UserType,
       });
       track('user_signup_success', undefined, { metadata: { userType } });
-      router.replace(lh('/map'));
+      router.replace(postAuth());
       router.refresh();
     } catch {
       track('user_signup_error', undefined, { metadata: { userType } });

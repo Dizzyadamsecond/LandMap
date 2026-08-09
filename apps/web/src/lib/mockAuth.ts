@@ -145,39 +145,55 @@ export function signOutMock(): void {
   if (typeof window !== 'undefined') window.localStorage.removeItem(STORAGE_KEY);
 }
 
+const LOCALE_PREFIX = /^\/(pt-BR|en-US|es-ES)(?=\/|$)/;
+
+/** Strip any leading locale prefix, returning the bare path (always starts with /). */
+function stripLocale(path: string): string {
+  const without = path.replace(LOCALE_PREFIX, '');
+  return without.startsWith('/') ? without : `/${without}`;
+}
+
 /**
  * Post-auth redirect helpers.
  *
- * The canonical free landing surface is `/map`.
+ * The canonical free landing surface is `/map` (locale-prefixed, e.g. `/pt-BR/map`).
+ * Internal paths in this app are ALWAYS locale-prefixed, so we must match against
+ * `/pt-BR/map`, `/pt-BR/dashboard`, etc. — not the bare `/map`.
+ *
+ * `returnTo` may arrive either locale-prefixed (`/pt-BR/dashboard`) or bare
+ * (`/dashboard`); we normalize to the requested locale and prevent open redirects
+ * (only same-origin relative paths are honored).
  */
-export function getPostAuthRedirect(returnTo?: string): string {
+export function getPostAuthRedirect(returnTo?: string, locale = 'pt-BR'): string {
+  const candidates: string[] = [];
   if (typeof window !== 'undefined') {
     try {
       const stored = window.localStorage.getItem('landmap:post_auth_return');
       if (stored) {
         window.localStorage.removeItem('landmap:post_auth_return');
-        if (stored === '/map' || stored.startsWith('/map/')) {
-          return stored;
-        }
+        candidates.push(stored);
       }
     } catch {
       /* ignore */
     }
   }
-  if (returnTo && (returnTo === '/map' || returnTo.startsWith('/map/'))) {
-    return returnTo;
+  if (returnTo) candidates.push(returnTo);
+
+  for (const c of candidates) {
+    if (!c || c === '/' || c.startsWith('//') || /^[a-z]+:\/\//i.test(c)) continue;
+    return `/${locale}${stripLocale(c)}`;
   }
-  return '/map';
+  return `/${locale}/map`;
 }
 
+/** Persists the page the user should return to after auth (locale-prefixed path). */
 export function setPostAuthReturn(href: string | undefined | null): void {
   if (!href || typeof window === 'undefined') return;
-  if (href === '/map' || href.startsWith('/map/')) {
-    try {
-      window.localStorage.setItem('landmap:post_auth_return', href);
-    } catch {
-      /* ignore */
-    }
+  if (href === '/' || href.startsWith('//') || /^[a-z]+:\/\//i.test(href)) return;
+  try {
+    window.localStorage.setItem('landmap:post_auth_return', href);
+  } catch {
+    /* ignore */
   }
 }
 
