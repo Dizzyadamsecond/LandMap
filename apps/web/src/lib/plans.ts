@@ -72,7 +72,7 @@ export const PLANS: PlanMeta[] = [
     tagline: 'Time e operação',
     highlight: false,
     features: [
-      'Tudo do Pro',
+      'Tudo do Plus',
       'Usuários ilimitados',
       'White-label',
       'Integrações avançadas',
