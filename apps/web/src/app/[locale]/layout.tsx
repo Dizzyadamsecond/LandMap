@@ -12,8 +12,8 @@ import '../../app/globals.css';
 export const dynamic = 'force-dynamic';
 
 export const viewport = {
-  themeColor: '#ffffff',
-  colorScheme: 'light',
+  themeColor: 'oklch(34% .18 265)',
+  colorScheme: 'light dark',
 };
 
 export function generateStaticParams() {
