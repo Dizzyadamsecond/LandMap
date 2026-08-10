@@ -1,0 +1,376 @@
+{
+  "metadata": {
+    "created": "2026-08-06",
+    "target_companies": 20,
+    "series_a_target": "$100-200M",
+    "valuation_target": "$5-10B",
+    "sectors": ["real estate tech", "climate tech", "infrastructure", "marketplaces"],
+    "regions": ["US", "EU", "Asia"]
+  },
+  "vc_firms": [
+    {
+      "rank": 1,
+      "name": "Sequoia Capital",
+      "website": "sequoia.com",
+      "hq": "Menlo Park, CA",
+      "focus": ["enterprise software", "infrastructure", "real estate tech"],
+      "portfolio_relevant": ["Zillow", "Redfin", "CoreLogic acquired by", "Chime", "Airbnb"],
+      "series_a_check_size": "$50-150M",
+      "contact_partner": "Douglas Leone (partner) / Shaun Maguire (partner)",
+      "warm_intro_paths": [
+        "Google/Alphabet connections (earth/maps)",
+        "Energy/climate investor network",
+        "LatAm expansion (Sofina partnership)"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Best-in-class for infrastructure plays; has deployed $500M+ in real estate tech"
+    },
+    {
+      "rank": 2,
+      "name": "Andreessen Horowitz (a16z)",
+      "website": "a16z.com",
+      "hq": "Menlo Park, CA",
+      "focus": ["software", "climate tech", "LatAm"],
+      "portfolio_relevant": ["Zillow", "Opendoor", "Fundbox", "a16z LatAm fund"],
+      "series_a_check_size": "$30-100M",
+      "contact_partner": "Chris Dixon (crypto/infra) or Daniel Ek (marketplace)",
+      "warm_intro_paths": [
+        "Climate tech network",
+        "a16z LatAm team (Julio Vasconcellos)",
+        "Marketplace playbook experts"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Dedicated LatAm fund; strong real estate + climate expertise"
+    },
+    {
+      "rank": 3,
+      "name": "Founders Fund",
+      "website": "foundersfund.com",
+      "hq": "San Francisco, CA",
+      "focus": ["infrastructure", "energy", "space tech"],
+      "portfolio_relevant": ["Anduril", "Palantir", "Apollo", "energy startups"],
+      "series_a_check_size": "$25-75M",
+      "contact_partner": "Trae Stephens (infrastructure) or Cyan Banister",
+      "warm_intro_paths": [
+        "Infrastructure/energy investor network",
+        "Data-intensive systems (Palantir comparison)"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Perfect for tile architecture + energy revenue stream positioning"
+    },
+    {
+      "rank": 4,
+      "name": "Tiger Global Management",
+      "website": "tigerglobal.com",
+      "hq": "New York, NY",
+      "focus": ["global internet", "marketplaces", "LatAm"],
+      "portfolio_relevant": ["Carta", "Figma", "Domo", "multiple LatAm plays"],
+      "series_a_check_size": "$50-200M",
+      "contact_partner": "Lee Fixel (founder/CIO) or Scott Shleifer",
+      "warm_intro_paths": [
+        "Global marketplace track record",
+        "LatAm investment history",
+        "Late-stage growth (they can co-lead)"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Most aggressive check size; proven LatAm market expertise"
+    },
+    {
+      "rank": 5,
+      "name": "Accel Partners",
+      "website": "accel.com",
+      "hq": "Palo Alto, CA",
+      "focus": ["software", "marketplaces", "enterprise"],
+      "portfolio_relevant": ["Slack", "Etsy", "Kayak", "Shopify"],
+      "series_a_check_size": "$30-80M",
+      "contact_partner": "Rich Wong (partner) or Rich Beeson (marketplace)",
+      "warm_intro_paths": [
+        "Marketplace scaling expertise",
+        "Enterprise expansion experience"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Proven marketplace scale playbook; helped Etsy grow to $2B+"
+    },
+    {
+      "rank": 6,
+      "name": "Index Ventures",
+      "website": "indexventures.com",
+      "hq": "London / Menlo Park",
+      "focus": ["global software", "climate", "Europe/LatAm"],
+      "portfolio_relevant": ["Revolut", "Vestiaire Collective", "Nuvista"],
+      "series_a_check_size": "$25-75M",
+      "contact_partner": "Cristina Fonseca (climate/partner) or Sam Beardsley",
+      "warm_intro_paths": [
+        "Climate tech initiative",
+        "EU expansion connections (regulatory tailwind)",
+        "Global marketplace expertise"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Strong EU climate regulatory understanding; can help with energy mandates"
+    },
+    {
+      "rank": 7,
+      "name": "GGV Capital",
+      "website": "ggvc.com",
+      "hq": "Shanghai / Silicon Valley",
+      "focus": ["Asia-US, software, infrastructure"],
+      "portfolio_relevant": ["Airbnb (early)", "Canva", "Databricks", "LatAm plays"],
+      "series_a_check_size": "$30-80M",
+      "contact_partner": "Jenny Lee (co-founder/partner) or Glen Solomon",
+      "warm_intro_paths": [
+        "China real estate tech (parallel markets)",
+        "Infrastructure + data companies",
+        "Global expansion playbook"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Great for Asia expansion after LatAm success; proven infrastructure bets"
+    },
+    {
+      "rank": 8,
+      "name": "SoftBank Vision Fund",
+      "website": "svf.softbank.com",
+      "hq": "Tokyo / New York",
+      "focus": ["global infrastructure", "real estate tech", "energy"],
+      "portfolio_relevant": ["WeWork", "Arm", "T-Mobile", "energy transition"],
+      "series_a_check_size": "$100-500M",
+      "contact_partner": "Rajeev Misra (managing partner) or regional lead",
+      "warm_intro_paths": [
+        "LatAm expansion team",
+        "Energy transition investments",
+        "Real estate tech thesis"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Can deploy $100-200M checks; proven real estate + energy track record"
+    },
+    {
+      "rank": 9,
+      "name": "Mentech Ventures",
+      "website": "mentechvc.com",
+      "hq": "São Paulo, Brazil",
+      "focus": ["LatAm infrastructure", "climate", "real estate"],
+      "portfolio_relevant": ["Local LatAm tech ecosystem"],
+      "series_a_check_size": "$5-20M",
+      "contact_partner": "Local LatAm founder/partner network",
+      "warm_intro_paths": [
+        "Direct local connections",
+        "Brazilian government relationships",
+        "Regional market expertise"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Strategic for government deal flow (São Paulo SEMPLA); local credibility"
+    },
+    {
+      "rank": 10,
+      "name": "Lowercarbon Capital",
+      "website": "lowercarbon.com",
+      "hq": "San Francisco, CA",
+      "focus": ["climate tech", "energy transition", "infrastructure"],
+      "portfolio_relevant": ["Commonwealth Fusion", "Twelve", "Twelve", "energy companies"],
+      "series_a_check_size": "$10-50M",
+      "contact_partner": "Chris Sacca (founder) / team",
+      "warm_intro_paths": [
+        "Climate tech investor network",
+        "Energy efficiency positioning",
+        "Microgrid + renewable revenue streams"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Perfect for energy + climate revenue stream story; sustainability focus"
+    },
+    {
+      "rank": 11,
+      "name": "Breakthrough Energy Ventures",
+      "website": "breakthroughenergy.org",
+      "hq": "Palo Alto, CA",
+      "focus": ["climate tech", "energy", "infrastructure"],
+      "portfolio_relevant": ["Commonwealth Fusion", "Lilium", "TAE Technologies"],
+      "series_a_check_size": "$20-100M",
+      "contact_partner": "Carmichael Roberts (partner) or Varun Sivaram",
+      "warm_intro_paths": [
+        "Energy efficiency / building retrofit network",
+        "Government relationships (climate)",
+        "Infrastructure investor community"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Bill Gates backed; strong climate credibility; energy transition focus"
+    },
+    {
+      "rank": 12,
+      "name": "Khosla Ventures",
+      "website": "khosla.com",
+      "hq": "Menlo Park, CA",
+      "focus": ["deep tech", "climate", "infrastructure", "energy"],
+      "portfolio_relevant": ["Commonwealth Fusion", "Twelve", "LanzaTech", "climate plays"],
+      "series_a_check_size": "$25-100M",
+      "contact_partner": "Vinod Khosla (founder) or partner network",
+      "warm_intro_paths": [
+        "Climate tech + energy transition",
+        "Government tech relationships",
+        "Data infrastructure expertise"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Founder-friendly; proven ability to support infrastructure companies"
+    },
+    {
+      "rank": 13,
+      "name": "Thrive Capital",
+      "website": "thrivecap.com",
+      "hq": "New York, NY",
+      "focus": ["software", "marketplaces", "fintech"],
+      "portfolio_relevant": ["Figma", "Notion", "Stripe (early)", "modern tech"],
+      "series_a_check_size": "$30-100M",
+      "contact_partner": "Joshua Kushner (founder) or partner",
+      "warm_intro_paths": [
+        "Marketplace/software scale track record",
+        "Founder network in NYC"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Strong for SaaS + marketplace monetization playbooks"
+    },
+    {
+      "rank": 14,
+      "name": "Insight Partners",
+      "website": "insightpartners.com",
+      "hq": "New York, NY",
+      "focus": ["enterprise software", "infrastructure", "scale"],
+      "portfolio_relevant": ["Everstream", "Rapid7", "CrowdStrike (pre-IPO)"],
+      "series_a_check_size": "$50-150M",
+      "contact_partner": "Insight partners team",
+      "warm_intro_paths": [
+        "Enterprise scale-out expertise",
+        "Government software contracts"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Can deploy large checks; proven B2B SaaS scaling"
+    },
+    {
+      "rank": 15,
+      "name": "Balderton Capital",
+      "website": "balderton.com",
+      "hq": "London, UK",
+      "focus": ["European software", "climate", "marketplaces"],
+      "portfolio_relevant": ["Wise", "King", "Revolut (early)"],
+      "series_a_check_size": "$20-60M",
+      "contact_partner": "Europa-focused partner network",
+      "warm_intro_paths": [
+        "EU energy directive alignment (2023/1791)",
+        "European market expansion"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Strong for EU regulatory tailwind positioning; climate investment thesis"
+    },
+    {
+      "rank": 16,
+      "name": "Canaan Partners",
+      "website": "canaan.com",
+      "hq": "Menlo Park, CA / Israel",
+      "focus": ["software", "data infrastructure", "enterprise"],
+      "portfolio_relevant": ["Slack (early)", "Payoneer", "various tech"],
+      "series_a_check_size": "$15-50M",
+      "contact_partner": "Avi Zeevi or partner network",
+      "warm_intro_paths": [
+        "Data infrastructure companies",
+        "Enterprise software expertise"
+      ],
+      "meeting_priority": "TIER_3",
+      "notes": "Good secondary investor; data-intensive systems experience"
+    },
+    {
+      "rank": 17,
+      "name": "Presence Capital",
+      "website": "presencecap.com",
+      "hq": "São Paulo, Brazil",
+      "focus": ["LatAm software", "marketplaces", "infrastructure"],
+      "portfolio_relevant": ["Local LatAm ecosystem"],
+      "series_a_check_size": "$10-30M",
+      "contact_partner": "Local LatAm partner network",
+      "warm_intro_paths": [
+        "Direct Brazilian ecosystem access",
+        "Government relationship credibility"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "Local strategic partner for São Paulo SEMPLA and government deals"
+    },
+    {
+      "rank": 18,
+      "name": "Sapphire Ventures",
+      "website": "sapphireventures.com",
+      "hq": "Menlo Park, CA",
+      "focus": ["enterprise software", "infrastructure", "scale"],
+      "portfolio_relevant": ["Figma", "Notion", "Canva"],
+      "series_a_check_size": "$30-100M",
+      "contact_partner": "Partner network",
+      "warm_intro_paths": [
+        "Enterprise SaaS scale experience",
+        "Global expansion playbook"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Strong for late-stage Series A growth; proven scale expertise"
+    },
+    {
+      "rank": 19,
+      "name": "Glade Brook Capital",
+      "website": "gladebrook.com",
+      "hq": "London, UK",
+      "focus": ["infrastructure", "real estate", "climate"],
+      "portfolio_relevant": ["Real estate tech", "climate companies"],
+      "series_a_check_size": "$20-60M",
+      "contact_partner": "Partner network",
+      "warm_intro_paths": [
+        "Real estate infrastructure focus",
+        "EU climate regulatory expertise"
+      ],
+      "meeting_priority": "TIER_2",
+      "notes": "Specialized in real estate + infrastructure; EU connections"
+    },
+    {
+      "rank": 20,
+      "name": "Fuel Ventures",
+      "website": "fuelventures.io",
+      "hq": "São Paulo, Brazil / San Francisco",
+      "focus": ["LatAm tech", "infrastructure", "climate"],
+      "portfolio_relevant": ["LatAm portfolio companies"],
+      "series_a_check_size": "$10-30M",
+      "contact_partner": "LatAm partner team",
+      "warm_intro_paths": [
+        "Direct LatAm investor network",
+        "Infrastructure + climate focus",
+        "Regional expertise"
+      ],
+      "meeting_priority": "TIER_1",
+      "notes": "LatAm specialist; can co-lead regional deal components"
+    }
+  ],
+  "outreach_strategy": {
+    "phase_1": {
+      "timeline": "Week 1-2 August",
+      "targets": ["Sequoia Capital", "Andreessen Horowitz", "Founders Fund", "Tiger Global", "Accel Partners"],
+      "approach": "Tier 1 VCs with warm intros (priority meetings)",
+      "goal": "Lock 5 confirmed meetings"
+    },
+    "phase_2": {
+      "timeline": "Week 2-3 August",
+      "targets": ["Index Ventures", "GGV Capital", "SoftBank Vision Fund", "Lowercarbon Capital", "Khosla Ventures"],
+      "approach": "Follow-on tier 1 + tier 2 leaders",
+      "goal": "5-8 additional meetings"
+    },
+    "phase_3": {
+      "timeline": "Week 3-4 August",
+      "targets": ["Local LatAm: Mentech Ventures", "Presence Capital", "Fuel Ventures"],
+      "approach": "Strategic partnerships + government credibility",
+      "goal": "3 local validation meetings"
+    },
+    "phase_4": {
+      "timeline": "Week 4+ August",
+      "targets": ["All remaining Tier 2-3 investors"],
+      "approach": "Secondary momentum from Tier 1 interest",
+      "goal": "5+ additional meetings"
+    }
+  },
+  "success_metrics": {
+    "target_meetings": 15,
+    "target_seriousness_rate": "60% (9 VCs)",
+    "target_term_sheet_rate": "30% (3-5 VCs)",
+    "target_funding_goal": "$100-200M",
+    "target_lead_investor": "Sequoia / Tiger Global / a16z"
+  }
+}

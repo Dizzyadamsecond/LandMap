@@ -152,9 +152,9 @@ def main():
     if fails:
         print(f"\n  FAILURES ({len(fails)}):")
         for cat, item, ok, detail in fails:
-            print(f"    ✗ [{cat}] {item}  {detail[:90]}")
+            print(f"    [FAIL] [{cat}] {item}  {detail[:90]}")
     else:
-        print("\n  ✅ ALL CHECKS PASSED")
+        print("\n  [SUCCESS] ALL CHECKS PASSED")
     return 0 if not fails else 1
 
 

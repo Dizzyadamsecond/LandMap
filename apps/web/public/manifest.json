@@ -1,65 +1,72 @@
 {
-  "id": "/",
   "name": "LandMap — Inteligência de terrenos",
   "short_name": "LandMap",
-  "description": "Mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.",
+  "description": "Mapa de valorização, análise de regiões e inteligência imobiliária em tempo real",
   "start_url": "/pt-BR",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
-  "orientation": "portrait",
-  "dir": "ltr",
-  "lang": "pt-BR",
-  "background_color": "oklch(20% .12 265)",
-  "theme_color": "oklch(34% .18 265)",
-  "categories": ["business", "productivity", "maps"],
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#4F46E5",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-512-maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/icons/icon-192.svg",
-      "sizes": "192x192",
+      "src": "/favicon.svg",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-512.svg",
+      "src": "/landmap-logo-transparent.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     }
   ],
-  "shortcuts": [
+  "screenshots": [
     {
-      "name": "Agentes",
-      "short_name": "Agentes",
-      "url": "/pt-BR/admin/agents"
-    },
+      "src": "/landmap-logo-transparent.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "shortcuts": [
     {
       "name": "Mapa",
       "short_name": "Mapa",
-      "url": "/pt-BR/map"
+      "description": "Abra o mapa de terrenos",
+      "url": "/pt-BR/map",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
     },
     {
-      "name": "Planos",
-      "short_name": "Planos",
-      "url": "/pt-BR/plans"
+      "name": "Alertas",
+      "short_name": "Alertas",
+      "description": "Monitore oportunidades",
+      "url": "/pt-BR/alerts",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
     }
-  ]
+  ],
+  "share_target": {
+    "action": "/api/contact",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }

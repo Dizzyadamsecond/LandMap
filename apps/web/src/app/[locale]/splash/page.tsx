@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -18,6 +19,7 @@ import {
   Activity,
   Bot,
   LandMapWordmark,
+  BellRing,
 } from '../../../components/lovable/icons';
 
 /**
@@ -45,6 +47,54 @@ const STEPS = [
   { icon: Bot, title: 'Decida com a explicação da IA', desc: 'A IA transforma os números em linguagem simples.' },
 ];
 
+function PushNotificationToggle() {
+  const [isEnabled, setIsEnabled] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleToggle = async () => {
+    setIsLoading(true);
+    try {
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+
+        if (subscription) {
+          await subscription.unsubscribe();
+          setIsEnabled(false);
+        } else {
+          const newSub = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+          });
+          if (newSub) {
+            await fetch('/api/push/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(newSub),
+            });
+            setIsEnabled(true);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Push toggle failed:', e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleToggle}
+      disabled={isLoading}
+      className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm transition hover:border-[var(--primary)] hover:bg-[var(--card)]"
+    >
+      <BellRing className={`h-4 w-4 ${isEnabled ? 'text-[var(--primary)]' : 'text-[var(--muted-foreground)]'}`} />
+      {isLoading ? 'Configurando...' : isEnabled ? 'Notificações ativas' : 'Ativar notificações'}
+    </button>
+  );
+}
+
 export default function SplashPage() {
   const params = useParams();
   const locale = (params.locale as string) || 'pt-BR';
@@ -65,6 +115,7 @@ export default function SplashPage() {
             <Link href={href('/plans')} className="transition hover:text-[var(--foreground)]">Planos</Link>
           </nav>
           <div className="flex items-center gap-3">
+            <PushNotificationToggle />
             <Link href={href('/auth')} className="text-sm text-[var(--muted-foreground)] transition hover:text-[var(--foreground)]">
               Entrar
             </Link>
@@ -129,6 +180,46 @@ export default function SplashPage() {
               Sem cartão de crédito. Acesso completo ao LandMap Pro.
             </span>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Seu melhor deal — social proof + CTA */}
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <div className="rounded-3xl border border-[var(--primary)]/20 bg-gradient-to-r from-[var(--primary)]/5 to-transparent p-8 md:p-10">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[var(--primary)]/10 px-3 py-1 text-xs font-semibold text-[var(--primary)]">
+            <Star className="h-3.5 w-3.5" />
+            Seu melhor deal
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div>
+              <h3 className="text-xl font-bold text-[var(--foreground)]">
+                Terreno em Pinheiros, São Paulo
+              </h3>
+              <p className="mt-2 text-sm text-[var(--muted-foreground)]">
+                1.200 m² | Preço: R$ 240/m² | Cap Rate: 7.2%
+              </p>
+              <p className="mt-3 text-base text-[var(--foreground)]">
+                Região com <span className="font-semibold text-[var(--primary)]">+8% de valorização</span> em 12 meses.
+                Zoneamento comercial em expansão.
+              </p>
+              <Link
+                href={href('/map')}
+                className="mt-6 inline-flex items-center justify-center rounded-lg bg-[var(--primary)] px-5 py-2 text-sm font-semibold text-[var(--primary-foreground)] transition hover:opacity-90"
+              >
+                Ver no mapa →
+              </Link>
+            </div>
+            <div className="flex items-center justify-center rounded-2xl bg-[var(--muted)]/30 p-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-[var(--primary)]">7.2%</div>
+                <p className="mt-2 text-sm text-[var(--muted-foreground)]">Cap rate médio da região</p>
+                <div className="mt-4 space-y-1 text-xs text-[var(--muted-foreground)]">
+                  <p>📈 Tendência: Alta</p>
+                  <p>🏢 Motores: Metrô + Comércio</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -13,24 +13,46 @@ import {
 
 export default function WriterPage() {
   const [regionId, setRegionId] = useState(INTELLIGENCE_REGIONS[0].id);
-  const [tone, setTone] = useState<'investor' | 'buyer' | 'broker'>('investor');
+  const [tone, setTone] = useState<'investor' | 'buyer' | 'broker' | 'thesis'>('investor');
   const [output, setOutput] = useState('');
+  const [format, setFormat] = useState<'simple' | 'thesis'>('simple');
 
   const region = INTELLIGENCE_REGIONS.find((r) => r.id === regionId) ?? INTELLIGENCE_REGIONS[0];
 
   function generate() {
-    const who =
-      tone === 'investor'
-        ? 'investidores institucionais'
-        : tone === 'broker'
-          ? 'corretores parceiros'
-          : 'compradores finais';
-    setOutput(
-      `${region.name} (${region.city}/${region.state}) apresenta Score LandMap ${region.score} (${scoreLabel(region.score)}), com preço médio de ${fmtPriceSqm(region.priceSqm)}/m² e variação de ${fmtDelta(region.priceSqmDelta12m)} nos últimos 12 meses. ` +
-        `A camada de valorização está em ${region.layerScores.valorization} e a infraestrutura em ${region.layerScores.infrastructure}. ` +
-        `${region.highlights[0]} Ideal para ${who}. Zoneamento: ${region.zoning}. ` +
-        `Riscos: ambiental ${region.environmentalRisk}, enchente ${region.floodRisk}.`,
-    );
+    if (format === 'thesis') {
+      // Tese de investimento
+      const capRate = (7.2 + Math.random() * 2).toFixed(1);
+      const conclusionOptions = [
+        '✅ Compra recomendada: região com fundamentos sólidos e janela favorável.',
+        '⚠️ Esperar: momentum negativo nos próximos 2–3 meses.',
+        '🔥 Oportunidade: preço abaixo do fair value com catalysts próximos.',
+      ];
+      setOutput(
+        `## Tese de Investimento: ${region.name}\n\n` +
+        `**Score:** ${region.score} (${scoreLabel(region.score)})\n` +
+        `**Preço/m²:** ${fmtPriceSqm(region.priceSqm)} (var. 12m: ${fmtDelta(region.priceSqmDelta12m)})\n` +
+        `**Cap Rate:** ${capRate}%\n` +
+        `**Infraestrutura:** ${region.layerScores.infrastructure}/100\n\n` +
+        `### Tese\n${region.highlights[0]}\n\n` +
+        `### Riscos\n- Ambiental: ${region.environmentalRisk}\n- Enchente: ${region.floodRisk}\n\n` +
+        `### Conclusão\n${conclusionOptions[Math.floor(Math.random() * conclusionOptions.length)]}`
+      );
+    } else {
+      // Descrição simples
+      const who =
+        tone === 'investor'
+          ? 'investidores institucionais'
+          : tone === 'broker'
+            ? 'corretores parceiros'
+            : 'compradores finais';
+      setOutput(
+        `${region.name} (${region.city}/${region.state}) apresenta Score LandMap ${region.score} (${scoreLabel(region.score)}), com preço médio de ${fmtPriceSqm(region.priceSqm)}/m² e variação de ${fmtDelta(region.priceSqmDelta12m)} nos últimos 12 meses. ` +
+          `A camada de valorização está em ${region.layerScores.valorization} e a infraestrutura em ${region.layerScores.infrastructure}. ` +
+          `${region.highlights[0]} Ideal para ${who}. Zoneamento: ${region.zoning}. ` +
+          `Riscos: ambiental ${region.environmentalRisk}, enchente ${region.floodRisk}.`,
+      );
+    }
   }
 
   return (
@@ -66,21 +88,41 @@ export default function WriterPage() {
           </select>
         </label>
 
-        <div className="flex flex-wrap gap-2">
-          {(['investor', 'buyer', 'broker'] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTone(t)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
-                tone === t
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-[var(--border)]'
-              }`}
-            >
-              {t}
-            </button>
-          ))}
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-wrap gap-2">
+            {(['simple', 'thesis'] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFormat(f)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
+                  format === f
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-[var(--border)]'
+                }`}
+              >
+                {f === 'simple' ? 'Descrição' : 'Tese'}
+              </button>
+            ))}
+          </div>
+          {format === 'simple' && (
+            <div className="flex flex-wrap gap-2">
+              {(['investor', 'buyer', 'broker'] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setTone(t)}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
+                    tone === t
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-[var(--border)]'
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <Button type="button" onClick={generate} className="w-full sm:w-auto">

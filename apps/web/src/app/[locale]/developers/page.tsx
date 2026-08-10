@@ -36,6 +36,15 @@ const CURL_WH = `curl -X POST /api/webhooks/endpoints \\
   -H 'content-type: application/json' \\
   -d '{"name":"meu-app","url":"https://…/hooks","events":["rag.query","lead.created"]}'`;
 
+const CURL_ALERTS = `curl -X POST /api/webhooks/endpoints \\
+  -H 'content-type: application/json' \\
+  -d '{
+    "name":"alertas-oportunidades",
+    "url":"https://seu-dominio.com/webhook",
+    "events":["property.new","property.price_drop"],
+    "filters":{"minCapRate":6,"maxPrice":500000}
+  }'`;
+
 export default function DevelopersPage() {
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
@@ -98,6 +107,12 @@ export default function DevelopersPage() {
           <p className="text-xs font-medium text-primary">Registrar webhook</p>
           <pre className="mt-2 overflow-x-auto whitespace-pre-wrap font-mono text-[10px] text-muted-foreground">
             {CURL_WH}
+          </pre>
+        </Card>
+        <Card className="p-4">
+          <p className="text-xs font-medium text-primary">Alertas de oportunidades</p>
+          <pre className="mt-2 overflow-x-auto whitespace-pre-wrap font-mono text-[10px] text-muted-foreground">
+            {CURL_ALERTS}
           </pre>
         </Card>
       </div>

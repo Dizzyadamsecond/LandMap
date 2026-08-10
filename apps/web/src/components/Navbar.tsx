@@ -248,6 +248,11 @@ export function Navbar() {
           <NotificationCenter />
         </span>
 
+        {/* XP Badge (Gamificação) */}
+        <div className="hidden items-center gap-1.5 rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/5 px-3 py-1 md:flex">
+          <span className="text-xs font-semibold text-[var(--primary)]">⭐ 120 XP</span>
+        </div>
+
         <PlanBadge />
 
         <span className="hidden items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--card)] p-0.5 md:flex">

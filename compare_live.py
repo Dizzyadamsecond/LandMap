@@ -130,11 +130,12 @@ def main():
 
     total_missing = 0
     print("\n" + "=" * 80)
-    print("  HEAD-TO-HEAD PARITY  (Lovable phrase missing on prod)  — excluding editor noise")
+    print("\n" + "=" * 80)
+    print("  HEAD-TO-HEAD PARITY  (Lovable phrase missing on prod)  - excluding editor noise")
     print("=" * 80)
     for k, (lovr, prodr) in [(k, (lov[k], prod[k])) for k in items]:
         lstat, pstat = lovr["status"], prodr["status"]
-        print(f"\n■ {k:11}  lov={lstat} prod={pstat}")
+        print(f"\n* {k:11}  lov={lstat} prod={pstat}")
         if lstat != 200:
             print(f"     ! Lovable unreachable: {lovr['err']}")
             continue
@@ -151,7 +152,7 @@ def main():
             if not any(m.lower() in x.lower() or x.lower() in m.lower() for x in pp):
                 fuzzy_miss.append(m)
         for m in fuzzy_miss[:30]:
-            print(f"     ✗ {m[:92]}")
+            print(f"     [MISSING] {m[:92]}")
         total_missing += len(fuzzy_miss)
     print(f"\nTOTAL MISSING (fuzzy): {total_missing}")
 

@@ -41,7 +41,7 @@ export function Reveal({
       gsap.from(ref.current, {
         opacity: 0,
         y,
-        duration: 0.8,
+        duration: 1.4,
         delay,
         ease: 'power3.out',
       });
@@ -81,7 +81,7 @@ export function Stagger({
       gsap.from(ref.current!.querySelectorAll(selector), {
         opacity: 0,
         y,
-        duration: 0.7,
+        duration: 1.2,
         stagger,
         ease: 'power3.out',
         scrollTrigger: {

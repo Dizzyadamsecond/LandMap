@@ -21,27 +21,17 @@ const SLIDES = [
   {
     icon: MapPinned,
     title: 'Todo o Brasil no mapa',
-    desc: 'Explore terrenos e regiões nas principais cidades com preço por m², filtros e camadas de calor.',
+    desc: 'Explore terrenos e regiões com preço por m², filtros inteligentes e visualização de valorização.',
   },
   {
     icon: TrendingUp,
     title: 'Valorização em tempo real',
-    desc: 'Veja tendências de subida, estabilidade ou queda por bairro e o histórico de preço da região.',
+    desc: 'Veja tendências de subida, estabilidade ou queda. Cap rate, ROI e análise comparativa ao toque.',
   },
   {
     icon: BellRing,
-    title: 'Radar de oportunidades',
-    desc: 'Alertas inteligentes de valorização e queda de preço direto no seu bolso — não perca janelas.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Decisão com confiança',
-    desc: 'Dados cruzados de fontes verificadas, com nível de confiança em cada registro.',
-  },
-  {
-    icon: Briefcase,
-    title: 'Ecossistema Completo de Soluções',
-    desc: 'Acesse instantaneamente Comparadores, Viabilidade de Terrenos, Zoneamento Municipal, Sindicatos de LPs e OCR de Matrículas.',
+    title: 'Alertas + Radar de oportunidades',
+    desc: 'Notificações inteligentes de janelas de preço e valorização. Webhook para CRM ou Slack.',
   },
 ] as const;
 
@@ -80,8 +70,8 @@ export default function OnboardingPage() {
 
   const continueOnboarding = () => {
     if (last) {
-      // 1:1 Lovable: último slide segue para /plans (o fluxo free termina em /map lá).
-      router.replace(lh('/plans'));
+      // Redirect direto pro mapa (90s onboarding).
+      explore();
       return;
     }
     setDirection('next');

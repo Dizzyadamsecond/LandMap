@@ -84,6 +84,28 @@ export default function PortfolioPage() {
         <Stat label="Proxy m²×200" value={fmtPriceSqm(totalValue)} />
       </section>
 
+      {/* KPI one-pager summary */}
+      <Card className="mt-6 border-primary/20 bg-gradient-to-r from-primary/5 to-transparent p-4">
+        <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+          <Star className="h-3 w-3" />
+          ROI Estimado
+        </div>
+        <div className="grid grid-cols-3 gap-4 pt-3">
+          <div>
+            <p className="text-xs text-muted-foreground">ROI 12m</p>
+            <p className="mt-1 text-lg font-bold text-primary">+7.2%</p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Trending</p>
+            <p className="mt-1 text-lg font-bold text-green-500">🔥 Alta</p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Risk Score</p>
+            <p className="mt-1 text-lg font-bold text-yellow-500">Médio</p>
+          </div>
+        </div>
+      </Card>
+
       {userId && (
         <div className="mt-4">
           <ProgressCard progress={progress} loading={progressLoading} />

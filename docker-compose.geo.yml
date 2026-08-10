@@ -1,0 +1,264 @@
+---
+# ============================================================================
+# LANDMAP GEO SYSTEM — Docker Compose
+# ============================================================================
+# Orquestra serviços para visualização geoespacial do Brasil
+#
+# Serviços:
+#   - PostgreSQL 18 + PostGIS 3.7 (database com geometrias)
+#   - TiTiler (raster tile server para COG imagery)
+#   - Redis (cache para tiles + queries)
+#   - Minio S3 (local; em prod seria AWS S3)
+#   - Airflow (scheduler para ETL)
+#
+# Uso:
+#   docker-compose -f docker-compose.geo.yml up -d
+#   docker-compose -f docker-compose.geo.yml down
+# ============================================================================
+
+version: '3.9'
+
+services:
+  # =========================================================================
+  # PostgreSQL 18 + PostGIS 3.7
+  # =========================================================================
+  postgres-geo:
+    image: postgis/postgis:16-3.4  # PostGIS official image
+    container_name: landmap-postgres-geo
+    environment:
+      POSTGRES_USER: landmap
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-landmap123}
+      POSTGRES_DB: landmap_geo
+      POSTGRES_INITDB_ARGS: "-c shared_buffers=2GB -c work_mem=512MB -c maintenance_work_mem=2GB"
+    ports:
+      - "5433:5432"  # Port distinct from main postgres
+    volumes:
+      - postgres-geo-data:/var/lib/postgresql/data
+      - ./supabase/migrations/0007_geospatial.sql:/docker-entrypoint-initdb.d/01_geo_schema.sql
+    networks:
+      - landmap
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "landmap", "-d", "landmap_geo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # =========================================================================
+  # TiTiler — Raster Tile Server (Cloud Optimized GeoTIFF)
+  # =========================================================================
+  titiler:
+    image: ghcr.io/developmentseed/titiler:latest
+    container_name: landmap-titiler
+    ports:
+      - "8008:8000"
+    environment:
+      TITILER_WORKERS: 4
+      TITILER_TIMEOUT: 30
+    volumes:
+      - ./data/geo-output:/data:ro
+    networks:
+      - landmap
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # =========================================================================
+  # Redis — Cache para vector tiles + query results
+  # =========================================================================
+  redis-geo:
+    image: redis:7-alpine
+    container_name: landmap-redis-geo
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis-geo-data:/data
+    networks:
+      - landmap
+    command: >
+      redis-server
+      --maxmemory 2gb
+      --maxmemory-policy allkeys-lru
+      --save 60 1000
+      --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # =========================================================================
+  # Minio S3 (Local; para dev/test — em prod é AWS S3)
+  # =========================================================================
+  minio:
+    image: minio/minio:latest
+    container_name: landmap-minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - "9000:9000"    # API
+      - "9001:9001"    # Console UI
+    volumes:
+      - minio-data:/minio/data
+    networks:
+      - landmap
+    command: server /minio/data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Criar buckets Minio no startup
+  minio-init:
+    image: minio/mc:latest
+    container_name: landmap-minio-init
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add minio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb minio/landmap-tiles 2>/dev/null || true;
+      /usr/bin/mc mb minio/landmap-imagery 2>/dev/null || true;
+      /usr/bin/mc mb minio/landmap-dem 2>/dev/null || true;
+      /usr/bin/mc version enable minio/landmap-tiles;
+      exit 0;
+      "
+    depends_on:
+      - minio
+    networks:
+      - landmap
+
+  # =========================================================================
+  # Airflow (Scheduler + Executor para ETL)
+  # =========================================================================
+  # NOTE: Airflow requer postgres separado. Para MVP, usar postgres-geo acima.
+
+  airflow-db:
+    image: postgres:16-alpine
+    container_name: landmap-airflow-db
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow-db-data:/var/lib/postgresql/data
+    networks:
+      - landmap
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  airflow-init:
+    image: apache/airflow:2.7.3-python3.11
+    container_name: landmap-airflow-init
+    environment:
+      AIRFLOW_HOME: /airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW_UID: 0
+    command: >
+      bash -c "
+      airflow db migrate &&
+      airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@landmap.local
+      "
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+    networks:
+      - landmap
+
+  airflow-scheduler:
+    image: apache/airflow:2.7.3-python3.11
+    container_name: landmap-airflow-scheduler
+    environment:
+      AIRFLOW_HOME: /airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__PARALLELISM: 4
+      AIRFLOW_UID: 0
+    volumes:
+      - ./dags:/airflow/dags
+      - ./data/geo-output:/airflow/data
+    ports:
+      - "8080:8080"
+    command: scheduler
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    networks:
+      - landmap
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  airflow-webserver:
+    image: apache/airflow:2.7.3-python3.11
+    container_name: landmap-airflow-webserver
+    environment:
+      AIRFLOW_HOME: /airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW_UID: 0
+    volumes:
+      - ./dags:/airflow/dags
+      - ./data/geo-output:/airflow/data
+    ports:
+      - "8081:8080"
+    command: webserver
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    networks:
+      - landmap
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # =========================================================================
+  # Nginx — Reverse proxy + CDN sim (cache headers)
+  # =========================================================================
+  nginx-geo:
+    image: nginx:alpine
+    container_name: landmap-nginx-geo
+    ports:
+      - "8090:80"
+    volumes:
+      - ./nginx-geo.conf:/etc/nginx/nginx.conf:ro
+      - ./data/geo-output:/var/www/tiles:ro
+    networks:
+      - landmap
+    depends_on:
+      - postgres-geo
+      - redis-geo
+      - titiler
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres-geo-data:
+    driver: local
+  redis-geo-data:
+    driver: local
+  minio-data:
+    driver: local
+  airflow-db-data:
+    driver: local
+
+networks:
+  landmap:
+    driver: bridge
