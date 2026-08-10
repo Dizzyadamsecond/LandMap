@@ -269,17 +269,21 @@ LandMap's real-estate-intelligence flow:
   Regiões, Mapa, Comparar, Favoritos, Planos, Entrar) + `Footer` + `MobileBottomNav`.
 - **Authenticated shell** (`ShellSwitch` → authed): `Sidebar` (68px) + header +
   `MobileBottomNav`; reaches `dashboard`, `admin/*`, `onboarding`.
-- **Plans** (`/plans`): "Escolha seu plano · Comece a analisar o mercado agora ·
-  Cancele quando quiser. Sem fidelidade." Cards:
-  - **LandMap Access** — R$ 69,90/mês
-  - **LandMap Plus** — R$ 119,90/mês *(Mais popular)* — Tudo do Access + Radar de
-    oportunidades + Alertas inteligentes de valorização + Alertas de queda de preço +
-    Ranking de oportunidades por cidade + Comparação entre regiões + Notas automáticas
-    sobre potencial da área + Salvar até 25 áreas favoritas
-  - **LandMap Pro** — R$ 249,90/mês
-  - **LandMap Business** — R$ 699,90/mês
-  - Footer CTA: "Já tem conta? Entrar" / "Assinar LandMap Plus — R$ 119,90/mês" /
-    "Pagamento não ativado — fluxo de demonstração."
+- **Plans** (`/plans`): eyebrow "7 dias grátis, sem cartão" · título "Experimente antes de assinar" ·
+  descrição "Comece com acesso completo ao LandMap Pro. Cancele quando quiser." · CTA secundário
+  "Começar gratuitamente por 7 dias" · quote “Quero tomar decisões melhores e encontrar oportunidades.”
+  · seção enterprise "Precisa de uma solução para sua empresa?" (mailto business@landmap.com.br).
+  Cards (fonte `lib/plans.ts`, single source of truth):
+  - **LandMap Free** — R$ 0,00/mês
+  - **LandMap Starter** — R$ 39,90/mês
+  - **LandMap Pro** — R$ 89,90/mês *(Mais popular)* — Tudo do Starter + Radar de oportunidades +
+    Comparação entre regiões + Alertas inteligentes + Alertas de valorização + Alertas de queda de
+    preço + Histórico completo da área + Avaliação automática do terreno + Relatórios mensais +
+    Até 50 áreas favoritas
+  - **LandMap Elite** — R$ 119,90/mês — Tudo do Pro + IA explicando o potencial da região + Score
+    LandMap + Exportação em PDF + Exportação em Excel + Relatórios ilimitados + Favoritos
+    ilimitados + Acesso antecipado + Suporte prioritário
+  - Footer: "Já tem conta? Entrar" / "Pagamento não ativado — fluxo de demonstração."
 
 ## 7. Porting Rules (CTO)
 

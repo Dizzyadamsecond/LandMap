@@ -48,7 +48,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         backHref="/map"
         eyebrow={
           <>
-            <Sparkles className="h-3 w-3" /> Escolha seu plano
+            <Sparkles className="h-3 w-3" /> 7 dias grátis, sem cartão
           </>
         }
         title="Experimente antes de assinar"
@@ -95,6 +95,40 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
             </Card>
           ))}
         </Reveal>
+
+        <div className="mt-8 flex flex-col items-center gap-4">
+          <button
+            type="button"
+            onClick={() => handleDesktopPlan('pro')}
+            className={cn(
+              buttonVariants({ variant: 'outline' }),
+              'min-h-11 rounded-xl border-primary px-6 text-sm font-semibold text-primary hover:bg-primary/10',
+            )}
+          >
+            Começar gratuitamente por 7 dias
+          </button>
+          <blockquote className="max-w-md text-center text-sm italic text-foreground/70">
+            “Quero tomar decisões melhores e encontrar oportunidades.”
+          </blockquote>
+        </div>
+
+        <section className="mt-8 rounded-2xl border border-border bg-card p-6 text-center">
+          <h2 className="font-display text-xl font-bold">Precisa de uma solução para sua empresa?</h2>
+          <p className="mx-auto mt-2 max-w-lg text-sm text-foreground/60">
+            Tem uma imobiliária, loteadora, incorporadora ou equipe comercial? Oferecemos planos
+            personalizados com múltiplos usuários, painel administrativo, relatórios com a identidade
+            da sua empresa e soluções sob medida.
+          </p>
+          <a
+            href="mailto:business@landmap.com.br"
+            className={cn(
+              buttonVariants({ variant: 'default' }),
+              'mt-4 inline-flex min-h-11 items-center justify-center rounded-xl px-6 text-sm font-semibold',
+            )}
+          >
+            Falar com nossa equipe
+          </a>
+        </section>
       </ProductPageShell>
     );
   }
@@ -115,7 +149,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
 
       <div className="px-4 pt-8 sm:px-6">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          <Sparkles className="h-3 w-3" /> Escolha seu plano
+          <Sparkles className="h-3 w-3" /> 7 dias grátis, sem cartão
         </div>
         <h1 className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight">
           Experimente antes de assinar
@@ -123,6 +157,13 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         <p className="mt-2 text-sm text-foreground/60">
           Comece com acesso completo ao LandMap Pro. Cancele quando quiser.
         </p>
+        <button
+          type="button"
+          onClick={mobileSubscribe}
+          className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-primary bg-primary/5 px-4 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary/10"
+        >
+          Começar gratuitamente por 7 dias
+        </button>
       </div>
 
       <Stagger className="mt-6 flex flex-col gap-3 px-4 sm:px-6" stagger={0.18} y={30}>
@@ -193,6 +234,29 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
           Já tem conta? <span className="font-medium text-primary">Entrar</span>
         </Link>
       </div>
+
+      <section className="mx-4 mt-8 rounded-2xl border border-border bg-card p-5 sm:mx-6">
+        <blockquote className="text-sm italic text-foreground/70">
+          “Quero tomar decisões melhores e encontrar oportunidades.”
+        </blockquote>
+      </section>
+
+      <section className="mx-4 mt-4 rounded-2xl border border-border bg-card p-5 sm:mx-6">
+        <h2 className="font-display text-lg font-bold">Precisa de uma solução para sua empresa?</h2>
+        <p className="mt-1 text-sm text-foreground/60">
+          Tem uma imobiliária, loteadora, incorporadora ou equipe comercial? Oferecemos planos
+          personalizados com múltiplos usuários, painel administrativo, relatórios com a identidade
+          da sua empresa e soluções sob medida.
+        </p>
+        <a
+          href="mailto:business@landmap.com.br"
+          className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+        >
+          Falar com nossa equipe
+        </a>
+      </section>
+
+      <div className="h-6" />
 
       <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-md border-t border-border bg-background/95 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur sm:px-6">
         <button
