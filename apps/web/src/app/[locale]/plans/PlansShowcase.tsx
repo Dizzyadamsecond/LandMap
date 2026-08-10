@@ -48,7 +48,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         backHref="/map"
         eyebrow={
           <>
-            <Sparkles className="h-3 w-3" /> Planos
+            <Sparkles className="h-3 w-3" /> Escolha seu plano
           </>
         }
         title="Comece a analisar o mercado agora"

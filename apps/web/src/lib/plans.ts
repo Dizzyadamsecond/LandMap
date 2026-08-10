@@ -1,13 +1,14 @@
 // Plan tiers for LandMap — single source of truth (mirrors pricing/plans pages).
 // Demo-mode: "paid" plan is selected in localStorage, never enforced server-side.
 
-export type PlanId = 'free' | 'access' | 'plus' | 'business';
+export type PlanId = 'free' | 'access' | 'plus' | 'pro' | 'business';
 
 export const PLAN_TIER: Record<PlanId, number> = {
   free: 0,
   access: 1,
   plus: 2,
-  business: 3,
+  pro: 3,
+  business: 4,
 };
 
 export type PlanMeta = {
@@ -66,13 +67,27 @@ export const PLANS: PlanMeta[] = [
     ],
   },
   {
+    id: 'pro',
+    name: 'LandMap Pro',
+    priceBRL: 249.9,
+    tagline: 'Para profissionais',
+    highlight: false,
+    features: [
+      'Tudo do Plus',
+      'Radar de oportunidades ilimitado',
+      'Dossiês completos por região',
+      'Comparação multivariável',
+      'Exportação de relatórios avançada',
+    ],
+  },
+  {
     id: 'business',
     name: 'LandMap Business',
     priceBRL: 699.9,
     tagline: 'Time e operação',
     highlight: false,
     features: [
-      'Tudo do Plus',
+      'Tudo do Pro',
       'Usuários ilimitados',
       'White-label',
       'Integrações avançadas',
@@ -85,6 +100,7 @@ export const PLAN_REQUIREMENTS: Record<string, PlanId> = {
   free: 'free',
   access: 'access',
   plus: 'plus',
+  pro: 'pro',
   business: 'business',
 };
 
