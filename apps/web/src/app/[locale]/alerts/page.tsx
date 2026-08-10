@@ -142,6 +142,28 @@ export default function AlertsPage() {
         </Link>
         </div>
 
+        <Card className="mt-6 border-primary/20 bg-gradient-to-r from-primary/5 to-transparent p-5">
+          <div className="mb-4 flex items-center gap-2">
+            <BellRing className="h-4 w-4 text-primary" />
+            <h3 className="text-sm font-semibold">Criar alerta personalizado</h3>
+          </div>
+          <p className="text-xs text-muted-foreground mb-3">Gatilhos automáticos: preço drop, cap rate, valorização trending</p>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <button className="rounded-lg border border-border/50 bg-background px-3 py-2 hover:border-primary/30 transition">
+              📍 Por região
+            </button>
+            <button className="rounded-lg border border-border/50 bg-background px-3 py-2 hover:border-primary/30 transition">
+              📊 Por indicador
+            </button>
+            <button className="rounded-lg border border-border/50 bg-background px-3 py-2 hover:border-primary/30 transition">
+              🔔 Canais: Email + Push
+            </button>
+            <button className="rounded-lg border border-border/50 bg-background px-3 py-2 hover:border-primary/30 transition">
+              ⚡ Webhook + Slack
+            </button>
+          </div>
+        </Card>
+
         <Reveal className="mt-6 space-y-3">
         {alerts.map((a) => (
           <Card key={a.id} className="p-4">

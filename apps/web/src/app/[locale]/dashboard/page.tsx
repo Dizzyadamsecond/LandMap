@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { RequireAuth } from '../../../components/RequireAuth';
+import { RecommendationWidget } from '../../../components/RecommendationWidget';
 import {
   LandMapWordmark,
   TrendingUp,
@@ -226,6 +227,19 @@ function DashboardInner() {
                 <Stat label="Mais aquecida" value={hottest} />
                 <Stat label="Score LandMap" value={loading || !kpis ? '—' : String(score)} />
               </section>
+
+              {topOpp.length > 0 && (
+                <RecommendationWidget
+                  locale={locale}
+                  recommendations={topOpp.map((o) => ({
+                    id: (o as any).id || 'opp-1',
+                    name: (o as any).name || (o as any).region || 'Região',
+                    city: (o as any).city || '—',
+                    score: o.score,
+                    trend: o.deltaPct ?? 0,
+                  }))}
+                />
+              )}
 
               <Card className="p-4">
                 <div className="mb-3 flex items-center gap-2">

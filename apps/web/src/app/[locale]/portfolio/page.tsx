@@ -106,6 +106,37 @@ export default function PortfolioPage() {
         </div>
       </Card>
 
+      {/* Seu portfólio vs Mercado */}
+      <Card className="mt-6 border-accent/20 bg-gradient-to-r from-accent/5 to-transparent p-4">
+        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-2.5 py-1 text-xs font-semibold text-accent">
+          📊 Seu portfólio vs Mercado
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2 border-r border-border/50 pr-4">
+            <p className="text-[10px] font-semibold text-muted-foreground">SUA CARTEIRA</p>
+            <div>
+              <p className="text-xs text-muted-foreground">Score médio</p>
+              <p className="text-lg font-bold">{avgScore}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Diversificação</p>
+              <p className="text-sm font-semibold">✓ Balanceada</p>
+            </div>
+          </div>
+          <div className="space-y-2 pl-4">
+            <p className="text-[10px] font-semibold text-muted-foreground">MERCADO</p>
+            <div>
+              <p className="text-xs text-muted-foreground">Score médio BR</p>
+              <p className="text-lg font-bold">72</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Comparação</p>
+              <p className="text-sm font-semibold text-green-500">↑ +{avgScore - 72} vs BR</p>
+            </div>
+          </div>
+        </div>
+      </Card>
+
       {userId && (
         <div className="mt-4">
           <ProgressCard progress={progress} loading={progressLoading} />

@@ -12,6 +12,7 @@ import { PriceHistory } from './price-history';
 import { ShareButton } from './share-button';
 import AiInsights from './ai-insights';
 import { RecentlyViewedTracker } from './recently-viewed-tracker';
+import { InvestmentAnalysis } from './investment-analysis';
 
 interface Dossier {
   id: string;
@@ -107,6 +108,8 @@ export default function PropertyDossierPage() {
                 <p className="text-[10px] text-[var(--muted-foreground)] mt-1.5 leading-snug">Rendimento anual líquido (NOI)</p>
               </Card>
             </div>
+
+            <InvestmentAnalysis score={p.score} capRate={p.capRate} grade={p.grade} />
 
             {p && (
               <Gallery
