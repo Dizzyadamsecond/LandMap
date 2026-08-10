@@ -31,7 +31,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
       router.push(`/${locale}/map`);
       return;
     }
-    router.push(`/${locale}/checkout?plan=${planId}`);
+    router.push(`/${locale}/auth?returnTo=/checkout?plan=${planId}`);
   };
 
   const handleDesktopPlan = (planId: string) => {
