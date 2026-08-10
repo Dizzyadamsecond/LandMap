@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -110,7 +111,13 @@ export default function OnboardingPage() {
       <header className="border-b border-foreground/5">
         <div className="mx-auto flex max-w-md items-center justify-between px-6 py-4 md:max-w-5xl">
           <div className="flex items-center">
-            <img src="/landmap-logo-transparent.png" alt="LandMap" className="w-auto object-contain h-12" />
+            <Image
+              src="/landmap-logo-transparent.png"
+              alt="LandMap"
+              width={180}
+              height={48}
+              className="w-auto object-contain h-12"
+            />
           </div>
           <Link href={lh('/auth')} className="text-sm text-foreground/70 hover:text-foreground">
             Entrar

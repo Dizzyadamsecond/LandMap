@@ -117,9 +117,11 @@ function MapPageInner() {
   const selectedRef = useRef(selectedId);
   const layerRef = useRef(activeLayer);
   const heatRef = useRef(showHeat);
+  const mapErrorRef = useRef(mapError);
   selectedRef.current = selectedId;
   layerRef.current = activeLayer;
   heatRef.current = showHeat;
+  mapErrorRef.current = mapError;
 
   const localSuggestions = useMemo(() => filterRegions(query).slice(0, 8), [query]);
   const suggestions = useMemo(() => {
@@ -323,7 +325,7 @@ function MapPageInner() {
 
     // Fallback: se mapa não carregar em 5s, mostrar erro
     const timeout = setTimeout(() => {
-      if (!mapInstance.current && !mapError) {
+      if (!mapInstance.current && !mapErrorRef.current) {
         console.warn('[MAP] Timeout: Leaflet não respondeu em 5s');
         setMapError(true);
       }
