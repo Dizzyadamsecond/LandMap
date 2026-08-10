@@ -312,13 +312,23 @@ function MapPageInner() {
             /* ignore */
           }
         }, 120);
-      } catch {
+      } catch (err) {
+        console.error('[MAP] Leaflet initialization failed:', err instanceof Error ? err.message : String(err));
         setMapError(true);
       }
     })();
 
+    // Fallback: se mapa não carregar em 5s, mostrar erro
+    const timeout = setTimeout(() => {
+      if (!mapInstance.current && !mapError) {
+        console.warn('[MAP] Timeout: Leaflet não respondeu em 5s');
+        setMapError(true);
+      }
+    }, 5000);
+
     return () => {
       cancelled = true;
+      clearTimeout(timeout);
       window.removeEventListener('resize', onResize);
       if (mapInstance.current) {
         mapInstance.current.remove();
