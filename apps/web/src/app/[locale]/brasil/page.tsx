@@ -16,6 +16,7 @@ import {
   X,
 } from '../../../components/lovable/icons';
 import { Card, Badge, cn } from '@landmap/ui';
+import { MacroTicker } from '../../../components/MacroTicker';
 import { BR_APIS, BR_API_CATEGORIES, type BrApi } from '../../../lib/brApis';
 
 const CATEGORY_ICON: Record<BrApi['category'], React.ComponentType<{ className?: string }>> = {
@@ -132,6 +133,9 @@ export default function BrasilApisPage() {
           Live: <span className="font-medium text-[var(--foreground)]">{testedOk}</span> de{' '}
           {Object.keys(probes).length} testadas com sucesso.
         </p>
+        <div className="mt-4">
+          <MacroTicker />
+        </div>
       </header>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   MapPinned,
@@ -39,7 +39,9 @@ const SLIDES = [
   },
 ];
 
-const CHECKOUT_FADE = { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const };
+// Transição lenta e suave, no ritmo do onboarding Lovable (não um flash).
+const CHECKOUT_FADE = { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const };
+const SLIDE_DWELL_MS = 4200; // tempo em cada slide antes do auto-avanço
 
 export default function IntroPage() {
   const locale = useLocale();
@@ -49,6 +51,14 @@ export default function IntroPage() {
   const isPlansSlide = step === SLIDES.length;
   const slide = isPlansSlide ? null : SLIDES[step];
   const Icon = slide?.icon;
+
+  // Auto-avanço tipo Lovable: passa pelos slides e para no de planos (último),
+  // onde o usuário decide (Pular / Ver planos).
+  useEffect(() => {
+    if (step >= SLIDES.length) return; // parado no slide de planos
+    const t = setTimeout(() => setStep((s) => Math.min(SLIDES.length, s + 1)), SLIDE_DWELL_MS);
+    return () => clearTimeout(t);
+  }, [step]);
 
   return (
     <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-[var(--background)] px-6 py-10 text-[var(--foreground)]">

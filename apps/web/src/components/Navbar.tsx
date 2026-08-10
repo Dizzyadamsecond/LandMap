@@ -8,6 +8,7 @@ import { Button, NotificationCenter } from '@landmap/ui';
 import { PlanBadge } from './PlanGate';
 import { ensureFreeAccess, useMockUser } from '../lib/mockAuth';
 import { Menu, X } from './lovable/icons';
+import { MacroTicker } from './MacroTicker';
 
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
@@ -152,8 +153,12 @@ export function Navbar() {
         />
       </Link>
 
+      <span className="hidden lg:block">
+        <MacroTicker variant="bar" />
+      </span>
+
       <nav
-        aria-label="NavegaÃ§Ã£o principal"
+        aria-label="Navegação principal"
         className="hidden items-center gap-1 text-sm text-[var(--muted-foreground)] md:flex"
       >
         {primaryLinks.map((link) => {

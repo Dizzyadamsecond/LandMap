@@ -16,6 +16,7 @@ import {
   Star,
 } from '../../../components/lovable/icons';
 import { Badge, buttonVariants, cn } from '@landmap/ui';
+import { MacroTicker } from '../../../components/MacroTicker';
 import {
   INTELLIGENCE_REGIONS,
   topByScore,
@@ -201,6 +202,7 @@ function Section({
 }
 
 export default function InsightsPage() {
+  // (MacroTicker is rendered below, before the first section)
   const locale = useLocale();
   const lh = (p: string) => `/${locale}${p}`;
   const [query, setQuery] = useState('');
@@ -312,6 +314,16 @@ export default function InsightsPage() {
             Veja os bairros mais desejados do Brasil em fotos, ranqueados por Score LandMap,
             valorização e liquidez. Explore cada região no mapa de inteligência.
           </motion.p>
+
+          {/* Indicadores macroeconômicos ao vivo (IPCA/Selic/CDI/USD) */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-6"
+          >
+            <MacroTicker />
+          </motion.div>
 
           {/* Busca global */}
           <motion.div
