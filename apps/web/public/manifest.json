@@ -3,10 +3,13 @@
   "name": "LandMap — Inteligência de terrenos",
   "short_name": "LandMap",
   "description": "Mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.",
-  "start_url": "/",
+  "start_url": "/pt-BR",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
+  "dir": "ltr",
+  "lang": "pt-BR",
   "background_color": "oklch(20% .12 265)",
   "theme_color": "oklch(34% .18 265)",
   "categories": ["business", "productivity", "maps"],
@@ -46,17 +49,17 @@
     {
       "name": "Agentes",
       "short_name": "Agentes",
-      "url": "/admin/agents"
+      "url": "/pt-BR/admin/agents"
     },
     {
       "name": "Mapa",
       "short_name": "Mapa",
-      "url": "/map"
+      "url": "/pt-BR/map"
     },
     {
       "name": "Planos",
       "short_name": "Planos",
-      "url": "/plans"
+      "url": "/pt-BR/plans"
     }
   ]
 }
