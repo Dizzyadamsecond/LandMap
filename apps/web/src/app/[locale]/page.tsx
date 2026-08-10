@@ -59,13 +59,8 @@ export async function generateMetadata({
   };
 }
 
-import { redirect } from 'next/navigation';
+import SplashPage from './splash/page';
 
-export default async function LocaleHomePage({
-  params,
-}: {
-  params: Promise<{ locale?: string }>;
-}) {
-  const { locale } = await params;
-  redirect(`/${locale || 'pt-BR'}/splash`);
+export default async function LocaleHomePage() {
+  return <SplashPage />;
 }
