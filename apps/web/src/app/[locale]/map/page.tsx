@@ -291,7 +291,7 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        // Basemap Lovable-style: CARTO Voyager — canvas CINZA NEUTRO de alta
+        // Basemap Lovable-style: CARTO Voyager — canvas colorido/esverdeado de alta
         // fidelidade, igual ao Google Maps padrão do Lovable. O indigo da marca
         // fica no chrome/marcadores/heat (--primary), NÃO no basemap. O CSS em
         // globals.css (.landmap-tiles .leaflet-tile-pane { filter: none }) garante

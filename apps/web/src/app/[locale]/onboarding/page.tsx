@@ -21,17 +21,22 @@ const SLIDES = [
   {
     icon: MapPinned,
     title: 'Todo o Brasil no mapa',
-    desc: 'Explore terrenos e regiões com preço por m², filtros inteligentes e visualização de valorização.',
+    desc: 'Explore terrenos e regiões nas principais cidades com preço por m², filtros e camadas de calor.',
   },
   {
     icon: TrendingUp,
     title: 'Valorização em tempo real',
-    desc: 'Veja tendências de subida, estabilidade ou queda. Cap rate, ROI e análise comparativa ao toque.',
+    desc: 'Veja tendências de subida, estabilidade ou queda por bairro e o histórico de preço da região.',
   },
   {
     icon: BellRing,
-    title: 'Alertas + Radar de oportunidades',
-    desc: 'Notificações inteligentes de janelas de preço e valorização. Webhook para CRM ou Slack.',
+    title: 'Radar de oportunidades',
+    desc: 'Alertas inteligentes de valorização e queda de preço direto no seu bolso — não perca janelas.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Decisão com confiança',
+    desc: 'Dados cruzados de fontes verificadas, com nível de confiança em cada registro.',
   },
 ] as const;
 
@@ -198,21 +203,12 @@ export default function OnboardingPage() {
             {last ? 'Ver planos' : 'Continuar'}
             <ArrowRight className="ml-1 h-4 w-4" />
           </button>
-          {last ? (
-            <Link
-              href={lh('/auth')}
-              className="inline-flex h-10 w-full items-center justify-center rounded-md px-8 text-sm font-medium text-foreground/70 transition hover:text-foreground"
-            >
-              Já tenho conta
-            </Link>
-          ) : (
-            <Link
-              href={lh('/auth')}
-              className="inline-flex h-10 w-full items-center justify-center rounded-md px-8 text-sm font-medium text-foreground/70 transition hover:text-foreground"
-            >
-              Pular introdução
-            </Link>
-          )}
+          <Link
+            href={lh('/auth')}
+            className="inline-flex h-10 w-full items-center justify-center rounded-md px-8 text-sm font-medium text-foreground/70 transition hover:text-foreground"
+          >
+            Já tenho conta
+          </Link>
         </div>
       </section>
     </div>
