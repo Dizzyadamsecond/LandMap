@@ -1,0 +1,23 @@
+
+> @landmap/web@0.1.0 dev C:\Users\forrydev\Desktop\LandMap\apps\web
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3137
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 10.8s
+ ✓ Compiled /src/middleware in 242ms (113 modules)
+ ○ Compiling /[locale]/live ...
+ ✓ Compiled /[locale]/live in 7.4s (1332 modules)
+ ○ Compiling /[locale]/live ...
+ GET /pt-BR/live 200 in 4700ms
+ ✓ Compiled /[locale]/live in 14.4s (746 modules)
+ GET /pt-BR/live 200 in 1162ms
+ GET /pt-BR/live 200 in 335ms
+ ○ Compiling /api/[[...path]] ...
+ ✓ Compiled /api/[[...path]] in 10.7s (1421 modules)
+[2026-08-03T18:45:20.146Z] GET /live â†’ 404 (1ms)
+ GET /api/live 404 in 14198ms
+ ✓ Compiled in 868ms (746 modules)

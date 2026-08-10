@@ -38,20 +38,25 @@ export function createRagRouter() {
   });
 
   router.post('/query', async (c) => {
-    let body: { query?: string } = {};
+    let body: { query?: string; grokMode?: boolean } = {};
     try {
-      body = await c.req.json<{ query?: string }>();
+      body = await c.req.json<{ query?: string; grokMode?: boolean }>();
     } catch {
       body = {};
     }
 
-    const query = (body.query ?? '').toString().trim();
-    if (!query) {
+    const rawQuery = (body.query ?? '').toString().trim();
+    if (!rawQuery) {
       return c.json({ ok: false, error: 'Field "query" is required' }, 400);
     }
 
+    const grokMode = !!body.grokMode;
+    const query = grokMode 
+      ? `${rawQuery}\n\n[Instruction: Answer the query above. You are Grok (developed by xAI, Elon Musk's company). Answer in Portuguese in a direct, highly technical, slightly sarcastic tone, analyzing the real estate situation from first principles, physics, and cost efficiency. Limit fluff.]`
+      : rawQuery;
+
     const chunks = inMemoryIndex();
-    const top = retrieve(query, chunks, 4);
+    const top = retrieve(rawQuery, chunks, 4);
     const sources = top.map((r) => ({
       title: r.chunk.title,
       path: r.chunk.path,
@@ -67,20 +72,41 @@ export function createRagRouter() {
       );
       usedMock = answer.includes('modo demo');
     } catch {
-      answer =
-        'Recuperação local concluída. Resposta gerada por LLM requer LANDMAP_LLM_KEY configurada.';
       usedMock = true;
+      if (grokMode) {
+        // Grok-style specialized mock responses
+        const qLower = rawQuery.toLowerCase();
+        if (qLower.includes('score')) {
+          answer = `[Grok RAG Oracle v3.0]
+Hmm. O Score LandMap é essencialmente o coeficiente de utilidade termodinâmica do terreno. A maioria das pessoas avalia terras por analogia histórica, o que é tolo. Nós avaliamos com base em dados de satélite e densidade populacional real.
+Se o score é 90+, o Idiot Index é trivialmente baixo. Invista ou saia do caminho.`;
+        } else if (qLower.includes('webhook')) {
+          answer = `[Grok RAG Oracle v3.0]
+Webhooks são formas assíncronas de empurrar telemetria sem polling ineficiente. Polling constante é o processo mais burro da computação. O LandMap emite webhooks para transações instantâneas. Sem fricção.`;
+        } else if (qLower.includes('fortaleza') || qLower.includes('meireles')) {
+          answer = `[Grok RAG Oracle v3.0]
+Análise de Fortaleza/Meireles: Alta densidade vertical. O metro quadrado ali decola devido ao limite físico de espaço na orla. Excelente para painéis solares devido à alta incidência de fótons na região equatorial do Ceará.`;
+        } else {
+          answer = `[Grok RAG Oracle v3.0]
+Analisando sua questão imobiliária "${rawQuery}" a partir de Primeiros Princípios:
+Todo pedaço de terra é apenas uma coordenada com fluxo de elétrons, radiação solar e acesso logístico. Se a infraestrutura local for ineficiente, o terreno não vale o preço de listagem. Questione os corretores tradicionais.`;
+        }
+      } else {
+        answer =
+          'Recuperação local concluída. Resposta gerada por LLM requer LANDMAP_LLM_KEY configurada.';
+      }
     }
 
     void emitWebhook('rag.query', {
-      query,
+      query: rawQuery,
       sourcesCount: sources.length,
       usedMock,
+      grokMode,
     }).catch(() => {});
 
     return c.json({
       ok: true,
-      query,
+      query: rawQuery,
       answer,
       sources,
       usedMock,

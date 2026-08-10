@@ -1,4 +1,5 @@
 name: CI
+
 on:
   push:
     branches: [main]
@@ -6,49 +7,33 @@ on:
     branches: [main]
 
 jobs:
-  lint:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22, cache: pnpm}
-      - run: pnpm install --frozen-lockfile
-      # Pacotes workspace precisam estar construídos p/ o lint (tsc --noEmit)
-      # resolver imports como '@landmap/llm/rag.js'.
-      - run: pnpm -r --filter './packages/*' run build
-      - run: pnpm -r run lint
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22, cache: pnpm}
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm -r run build
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.6.0
 
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22, cache: pnpm}
-      - run: pnpm install --frozen-lockfile
-      # Garante que pacotes workspace (ex.: @landmap/llm dist) estejam
-      # construídos antes do typecheck que importa esses módulos.
-      - run: pnpm -r --filter './packages/*' run build
-      - run: pnpm -r run typecheck
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
 
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22, cache: pnpm}
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm -r --filter './packages/*' run build
-      - run: pnpm run test
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm -r run typecheck
+
+      - name: Lint
+        run: pnpm -r run lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build

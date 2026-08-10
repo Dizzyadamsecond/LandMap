@@ -37,4 +37,20 @@ export class IbgeClient {
     const json = (await res.json()) as Array<{ id: number; nome: string }>;
     return json.map((c) => ({ id: c.id, nome: c.nome }));
   }
+
+  async listAllCities(): Promise<Array<{ id: number; nome: string; uf: string }>> {
+    const res = await fetch(`${this.baseUrl}/localidades/municipios`);
+    if (!res.ok) throw new Error(`IBGE error ${res.status}`);
+    const json = (await res.json()) as any[];
+    return json.map((c) => {
+      const ufSigla = c.microrregiao?.mesorregiao?.UF?.sigla 
+        || c['regiao-imediata']?.['regiao-intermediaria']?.UF?.sigla 
+        || '';
+      return {
+        id: c.id,
+        nome: c.nome,
+        uf: ufSigla,
+      };
+    });
+  }
 }

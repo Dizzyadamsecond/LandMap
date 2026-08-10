@@ -1,0 +1,53 @@
+
+> @landmap/web@0.1.0 dev C:\Users\forrydev\Desktop\LandMap\apps\web
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3139
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 3.3s
+ ✓ Compiled /src/middleware in 175ms
+ ✓ Compiled (113 modules)
+ ○ Compiling /[locale]/live ...
+ ✓ Compiled /[locale]/live in 4.7s (1318 modules)
+
+<--- Last few GCs --->
+
+[18112:000001D1F3539000]     9903 ms: Mark-Compact 270.5 (295.9) -> 270.4 (295.4) MB, pooled: 10 MB, 25.99 / 0.00 ms  (+ 0.2 ms in 11 steps since start of marking, biggest step 0.1 ms, walltime since start of marking 28 ms) (average mu = 0.851, current mu
+FATAL ERROR: Zone Allocation failed - process out of memory
+----- Native stack trace -----
+
+ GET /pt-BR/live 200 in 4202ms
+ GET /pt-BR/live 200 in 4991ms
+ 1: 00007FF66528403F 
+ 2: 00007FF665ECFAA7 
+ 3: 00007FF665849986 
+ 4: 00007FF66540AC76 
+ 5: 00007FF66540ABB7 
+ 6: 00007FF666BE0953 
+ 7: 00007FF666BE8040 
+ 8: 00007FF666BE7D9B 
+ 9: 00007FF666C1FC3B 
+10: 00007FF666C263E1 
+11: 00007FF666BE703E 
+12: 00007FF666BE39AA 
+13: 00007FF666BE0527 
+14: 00007FF666BE0099 
+15: 00007FF666BDFB54 
+16: 00007FF666BDEFAF 
+17: 00007FF666BDEC2E 
+18: 00007FF6668CC726 
+19: 00007FF6668C38D8 
+20: 00007FF6668C2DE0 
+21: 00007FF665E4376F 
+22: 00007FF665E087FD 
+23: 00007FF665E084F5 
+24: 00007FF6666B0C5F 
+25: 00007FF6651D2E0E 
+26: 00007FF665F24A36 
+27: 00007FF667185A73 
+28: 00007FFE3511E957 BaseThreadInitThunk+23
+29: 00007FFE3592AD6C RtlUserThreadStart+44
+[?25h

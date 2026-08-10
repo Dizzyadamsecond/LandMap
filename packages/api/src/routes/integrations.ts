@@ -148,6 +148,21 @@ export function createIntegrationsRouter() {
     }
   });
 
+  router.get('/ibge/cities', async (c) => {
+    const client = new IbgeClient();
+    try {
+      const cities = await client.listAllCities();
+      return c.json({
+        configured: client.configured,
+        mock: client.mock,
+        count: cities.length,
+        cities,
+      });
+    } catch (e) {
+      return c.json({ configured: client.configured, error: (e as Error).message }, 200);
+    }
+  });
+
   router.get('/ibge/cities/:uf', async (c) => {
     const client = new IbgeClient();
     try {

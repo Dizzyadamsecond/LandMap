@@ -5,6 +5,18 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: true },
   reactStrictMode: true,
   transpilePackages: ['@landmap/api', '@landmap/sales', '@landmap/ui', '@landmap/automation', '@landmap/integrations'],
+  webpack: (config) => {
+    // @landmap/api / packages are consumed from source (tsconfig paths -> packages/*/src).
+    // Their NodeNext imports reference `.js` extensions that must resolve to `.ts`/`.tsx`.
+    // Without this, the build silently depends on stray compiled .js files in src/ — which we
+    // have now removed. extensionAlias restores correct .js -> .ts resolution.
+    config.resolve.extensionAlias = {
+      ...(config.resolve.extensionAlias || {}),
+      '.js': ['.ts', '.tsx', '.js'],
+      '.jsx': ['.tsx', '.jsx'],
+    };
+    return config;
+  },
   experimental: {
     // typedRoutes kept off to avoid build friction across the large route tree
   },

@@ -1,0 +1,271 @@
+
+> landmap@0.1.0 test C:\Users\forrydev\Desktop\LandMap
+> vitest run
+
+
+[7m[1m[36m RUN [39m[22m[27m [36mv2.1.0[39m [90mC:/Users/forrydev/Desktop/LandMap[39m
+
+ [32m✓[39m packages/invest/src/metrics.spec.ts [2m ([22m[2m38 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [31m❯[39m tests/integration.test.ts [2m ([22m[2m19 tests[22m [2m|[22m [31m19 failed[39m[2m)[22m[90m 53[2mms[22m[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 2: Tile Query Performance[2m > [22mshould query single tile with latency < 100ms[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 2: Tile Query Performance[2m > [22mshould handle multi-tile queries efficiently[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 2: Tile Query Performance[2m > [22mshould support drill-down queries (z20 → z22)[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 3: Government Integration[2m > [22mshould accept property registration requests[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 3: Government Integration[2m > [22mshould track registration status[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 3: Government Integration[2m > [22mshould validate compliance checks (KYC)[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 4: Energy Analysis[2m > [22mshould calculate solar potential[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 4: Energy Analysis[2m > [22mshould estimate storage capacity[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 4: Energy Analysis[2m > [22mshould detect microgrid opportunities[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 4: AI Agent Analysis[2m > [22mshould generate property valuation[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 4: AI Agent Analysis[2m > [22mshould analyze cash flow potential[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mDAY 4: AI Agent Analysis[2m > [22mshould assess investment risk[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mPerformance Baseline Metrics[2m > [22mshould maintain sub-100ms p95 for property queries[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mPerformance Baseline Metrics[2m > [22mshould handle concurrent requests without degradation[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mCache Validation[2m > [22mshould return cached responses efficiently[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould handle invalid tile coordinates gracefully[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould handle missing required parameters[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould validate input data before processing[39m
+[31m     → fetch failed[39m
+[31m   [31m×[31m LandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould return meaningful error messages[39m
+[31m     → fetch failed[39m
+ [32m✓[39m packages/invest/src/opportunity.spec.ts [2m ([22m[2m36 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m packages/gamification/src/engine.spec.ts [2m ([22m[2m24 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32m✓[39m packages/db/__tests__/query.spec.ts [2m ([22m[2m13 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m packages/sales/src/__tests__/engine.spec.ts [2m ([22m[2m11 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mmarket intelligence routes[2m > [22m[2mGET /market/neighborhoods retorna bairros agregados[22m[39m
+[2026-08-07T22:48:19.393Z] GET /market/neighborhoods â†’ 200 (2ms)
+
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mmarket intelligence routes[2m > [22m[2mGET /market/price-trend retorna série de 12 meses ancorada no atual[22m[39m
+[2026-08-07T22:48:19.394Z] GET /market/price-trend â†’ 200 (1ms)
+
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mmarket intelligence routes[2m > [22m[2mGET /market/heatmap retorna pontos com peso normalizado 0-1[22m[39m
+[2026-08-07T22:48:19.395Z] GET /market/heatmap â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mmarket intelligence routes[2m > [22m[2mGET /market/neighborhoods sem "city" retorna 400[22m[39m
+[2026-08-07T22:48:19.396Z] GET /market/neighborhoods â†’ 400 (1ms)
+
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mterrain intelligence route (/market/terrain)[2m > [22m[2mretorna KPIs, tendência, rankings e melhores lotes[22m[39m
+[2026-08-07T22:48:19.398Z] GET /market/terrain â†’ 200 (2ms)
+
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mterrain intelligence route (/market/terrain)[2m > [22m[2msó considera imóveis do tipo terreno[22m[39m
+[2026-08-07T22:48:19.399Z] GET /market/terrain â†’ 200 (1ms)
+
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mterrain intelligence route (/market/terrain)[2m > [22m[2mcidade sem terrenos retorna total 0 e kpis null[22m[39m
+[2026-08-07T22:48:19.400Z] GET /market/terrain â†’ 200 (0ms)
+
+ [32m✓[39m packages/api/__tests__/market.spec.ts [2m ([22m[2m11 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/market.spec.ts[2m > [22m[2mterrain intelligence route (/market/terrain)[2m > [22m[2msem "city" retorna 400[22m[39m
+[2026-08-07T22:48:19.400Z] GET /market/terrain â†’ 400 (0ms)
+
+ [32m✓[39m apps/web/src/lib/__tests__/mapIntelligence.test.ts [2m ([22m[2m47 tests[22m[2m)[22m[90m 26[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/completion.spec.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m packages/config/__tests__/env-parse.spec.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mGET /favorites retorna imóveis por IDs[22m[39m
+[2026-08-07T22:48:19.780Z] GET /favorites â†’ 200 (1ms)
+
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mGET /favorites sem ids retorna vazio[22m[39m
+[2026-08-07T22:48:19.780Z] GET /favorites â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mGET /compare compara 2 imóveis[22m[39m
+[2026-08-07T22:48:19.781Z] GET /compare â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mGET /compare com < 2 IDs retorna 400[22m[39m
+[2026-08-07T22:48:19.782Z] GET /compare â†’ 400 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mGET /cities retorna agregação em items[][22m[39m
+[2026-08-07T22:48:19.784Z] GET /cities â†’ 200 (2ms)
+
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mGET /stats retorna estatísticas[22m[39m
+[2026-08-07T22:48:19.786Z] GET /stats â†’ 200 (2ms)
+
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mPOST /properties cria novo imóvel e retorna direto[22m[39m
+[2026-08-07T22:48:19.787Z] POST /properties â†’ 201 (0ms)
+
+ [32m✓[39m packages/api/__tests__/new-routes.spec.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mPUT /properties/:id atualiza imóvel e retorna direto[22m[39m
+[2026-08-07T22:48:19.787Z] PUT /properties/1 â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/new-routes.spec.ts[2m > [22m[2mpackages/api — novas rotas[2m > [22m[2mDELETE /properties/:id faz soft delete[22m[39m
+[2026-08-07T22:48:19.788Z] DELETE /properties/1 â†’ 200 (0ms)
+
+ [32m✓[39m packages/invest/src/landOpportunity.spec.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m✓[39m packages/geo/__tests__/memory.spec.ts [2m ([22m[2m11 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/pgvector-store.spec.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+[90mstdout[2m | packages/llm/__tests__/runtime.spec.ts[2m > [22m[2mruntime/logger[2m > [22m[2mdoes not throw when emitting logs[22m[39m
+2026-08-07T22:48:20.015Z [info] info (l2uqpzpu)
+2026-08-07T22:48:20.015Z [warn] warn (hfpjsi8f)
+2026-08-07T22:48:20.015Z [error] error (z946bhfx)
+
+ [32m✓[39m packages/llm/__tests__/runtime.spec.ts [2m ([22m[2m7 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m packages/api/__tests__/invest.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 49[2mms[22m[39m
+ [32m✓[39m packages/sales/src/__tests__/sales.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m packages/sales/src/__tests__/agents.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/rag.spec.ts [2m ([22m[2m7 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/api/__tests__/embeddings.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m packages/api/__tests__/webhooks.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/config.spec.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/valuation.spec.ts[2m > [22m[2mreal-time valuation (/value/realtime)[2m > [22m[2mGET retorna estimativa com telemetria de latência[22m[39m
+[2026-08-07T22:48:20.449Z] GET /value/realtime â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/valuation.spec.ts[2m > [22m[2mreal-time valuation (/value/realtime)[2m > [22m[2mPOST valida e calcula[22m[39m
+[2026-08-07T22:48:20.449Z] POST /value/realtime â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/valuation.spec.ts[2m > [22m[2mreal-time valuation (/value/realtime)[2m > [22m[2mareaM2 inválido retorna 400[22m[39m
+[2026-08-07T22:48:20.450Z] GET /value/realtime â†’ 400 (0ms)
+
+ [32m✓[39m packages/api/__tests__/valuation.spec.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/valuation.spec.ts[2m > [22m[2mreal-time valuation (/value/realtime)[2m > [22m[2mbatch retorna agregados de latência[22m[39m
+[2026-08-07T22:48:20.450Z] POST /value/realtime/batch â†’ 200 (0ms)
+
+ [32m✓[39m packages/scraper/__tests__/scraper.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/langflow.registry.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 88[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/summary-memory.spec.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/scraper/__tests__/apify.spec.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/kpi.spec.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/langflow.spec.ts[2m > [22m[2mpackages/api — langflow + rag[2m > [22m[2mGET /langflow/workflows lists built-in workflows[22m[39m
+[2026-08-07T22:48:20.989Z] GET /langflow/workflows â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/langflow.spec.ts[2m > [22m[2mpackages/api — langflow + rag[2m > [22m[2mPOST /langflow/workflows/market-report/run executes the workflow[22m[39m
+[2026-08-07T22:48:20.990Z] POST /langflow/workflows/market-report/run â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/langflow.spec.ts[2m > [22m[2mpackages/api — langflow + rag[2m > [22m[2mPOST /langflow/workflows/unknown/run returns 422[22m[39m
+[2026-08-07T22:48:20.991Z] POST /langflow/workflows/unknown/run â†’ 422 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/langflow.spec.ts[2m > [22m[2mpackages/api — langflow + rag[2m > [22m[2mPOST /rag/query returns answer + sources[22m[39m
+[2026-08-07T22:48:21.043Z] POST /rag/query â†’ 200 (52ms)
+
+ [32m✓[39m packages/api/__tests__/langflow.spec.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 56[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/langflow.spec.ts[2m > [22m[2mpackages/api — langflow + rag[2m > [22m[2mPOST /rag/query rejects empty query[22m[39m
+[2026-08-07T22:48:21.043Z] POST /rag/query â†’ 400 (0ms)
+
+ [32m✓[39m packages/api/__tests__/rag.spec.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 67[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/vector.spec.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/copywriter.spec.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/integrations/__tests__/opendesign.spec.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/api/__tests__/llm-rag.spec.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 35[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/bilingual.spec.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/twenty/__tests__/client.spec.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 0[2mms[22m[39m
+ [32m✓[39m packages/scraper/__tests__/normalize.spec.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/ui/__tests__/components.spec.tsx [2m ([22m[2m2 tests[22m[2m)[22m[90m 34[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/server.spec.ts[2m > [22m[2mpackages/api[2m > [22m[2mresponde em /health[22m[39m
+[2026-08-07T22:48:21.922Z] GET /health â†’ 200 (0ms)
+
+[90mstdout[2m | packages/api/__tests__/server.spec.ts[2m > [22m[2mpackages/api[2m > [22m[2mresponde em /markdowns com filtro simples[22m[39m
+[2026-08-07T22:48:21.926Z] GET /markdowns â†’ 200 (3ms)
+
+ [32m✓[39m packages/api/__tests__/server.spec.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/server.spec.ts[2m > [22m[2mpackages/api[2m > [22m[2maceita /search via body e valida schema[22m[39m
+[2026-08-07T22:48:21.929Z] POST /search â†’ 200 (1ms)
+
+[90mstdout[2m | packages/api/__tests__/features.spec.ts[2m > [22m[2mpackages/api feature-injection[2m > [22m[2mGET /kpi returns market KPIs and the three rulers[22m[39m
+[2026-08-07T22:48:22.133Z] GET /kpi â†’ 200 (5ms)
+
+ [32m✓[39m packages/api/__tests__/features.spec.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+[90mstdout[2m | packages/api/__tests__/features.spec.ts[2m > [22m[2mpackages/api feature-injection[2m > [22m[2mGET /integrations/opendesign/feed works without credentials (mock)[22m[39m
+[2026-08-07T22:48:22.134Z] GET /integrations/opendesign/feed â†’ 200 (0ms)
+
+ [32m✓[39m packages/llm/__tests__/chain.spec.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 0[2mms[22m[39m
+ [32m✓[39m apps/web/src/lib/__tests__/format.spec.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/api/__tests__/due-alerts.spec.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/config/__tests__/env.spec.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 1[2mms[22m[39m
+ [32m✓[39m packages/db/__tests__/migrations.spec.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 0[2mms[22m[39m
+ [32m✓[39m apps/docs/__tests__/build.spec.ts [2m ([22m[2m1 test[22m[2m)[22m[33m 339[2mms[22m[39m
+ [32m✓[39m packages/llm/__tests__/pipeline.spec.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m46 passed[39m[22m[90m (47)[39m
+[2m      Tests [22m [1m[31m19 failed[39m[22m[2m | [22m[1m[32m367 passed[39m[22m[90m (386)[39m
+[2m   Start at [22m 19:48:16
+[2m   Duration [22m 6.21s[2m (transform 507ms, setup 32ms, collect 4.51s, tests 895ms, environment 348ms, prepare 62ms)[22m
+
+ ELIFECYCLE  Test failed. See above for more details.
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 19 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 2: Tile Query Performance[2m > [22mshould query single tile with latency < 100ms
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 2: Tile Query Performance[2m > [22mshould handle multi-tile queries efficiently
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 2: Tile Query Performance[2m > [22mshould support drill-down queries (z20 → z22)
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 3: Government Integration[2m > [22mshould accept property registration requests
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 3: Government Integration[2m > [22mshould track registration status
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 3: Government Integration[2m > [22mshould validate compliance checks (KYC)
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 4: Energy Analysis[2m > [22mshould calculate solar potential
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 4: Energy Analysis[2m > [22mshould estimate storage capacity
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 4: Energy Analysis[2m > [22mshould detect microgrid opportunities
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 4: AI Agent Analysis[2m > [22mshould generate property valuation
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 4: AI Agent Analysis[2m > [22mshould analyze cash flow potential
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mDAY 4: AI Agent Analysis[2m > [22mshould assess investment risk
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mPerformance Baseline Metrics[2m > [22mshould maintain sub-100ms p95 for property queries
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mPerformance Baseline Metrics[2m > [22mshould handle concurrent requests without degradation
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mCache Validation[2m > [22mshould return cached responses efficiently
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould handle invalid tile coordinates gracefully
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould handle missing required parameters
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould validate input data before processing
+[31m[1m[7m FAIL [27m[22m[39m tests/integration.test.ts[2m > [22mLandMap Integration Tests[2m > [22mError Handling & Edge Cases[2m > [22mshould return meaningful error messages
+[31m[1mTypeError[22m: fetch failed[39m
+{
+  stack: 'AggregateError: \n' +
+    '    at internalConnectMultiple (node:net:1193:18)\n' +
+    '    at afterConnectMultiple (node:net:1783:7)',
+  errors: [
+    {
+      stack: 'Error: connect ECONNREFUSED ::1:3000\n' +
+        '    at createConnectionError (node:net:1746:14)\n' +
+        '    at afterConnectMultiple (node:net:1776:16)',
+      message: 'connect ECONNREFUSED ::1:3000',
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000,
+      constructor: 'Function<Error>',
+      name: 'Error',
+      toString: 'Function<toString>'
+    },
+    {
+      stack: 'Error: connect ECONNREFUSED 127.0.0.1:3000\n' +
+        '    at createConnectionError (node:net:1746:14)\n' +
+        '    at afterConnectMultiple (node:net:1776:16)',
+      message: 'connect ECONNREFUSED 127.0.0.1:3000',
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000,
+      constructor: 'Function<Error>',
+      name: 'Error',
+      toString: 'Function<toString>'
+    }
+  ],
+  code: 'ECONNREFUSED',
+  stackStr: 'AggregateError: \n' +
+    '    at internalConnectMultiple (node:net:1193:18)\n' +
+    '    at afterConnectMultiple (node:net:1783:7)',
+  nameStr: 'AggregateError',
+  expected: 'undefined',
+  actual: 'undefined',
+  message: '',
+  constructor: 'Function<AggregateError>',
+  name: 'Caused by: AggregateError',
+  toString: 'Function<toString>',
+  stacks: []
+}
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22m[39m
+[31m[1mSerialized Error:[22m[39m [90m{ errors: [ { stack: 'Error: connect ECONNREFUSED ::1:3000\n    at createConnectionError (node:net:1746:14)\n    at afterConnectMultiple (node:net:1776:16)', message: 'connect ECONNREFUSED ::1:3000', errno: -4078, code: 'ECONNREFUSED', syscall: 'connect', address: '::1', port: 3000, constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' }, { stack: 'Error: connect ECONNREFUSED 127.0.0.1:3000\n    at createConnectionError (node:net:1746:14)\n    at afterConnectMultiple (node:net:1776:16)', message: 'connect ECONNREFUSED 127.0.0.1:3000', errno: -4078, code: 'ECONNREFUSED', syscall: 'connect', address: '127.0.0.1', port: 3000, constructor: 'Function<Error>', name: 'Error', toString: 'Function<toString>' } ], code: 'ECONNREFUSED' }[39m
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯[22m[39m
+
