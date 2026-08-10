@@ -159,7 +159,7 @@ export default function TeamPage() {
   const seatsFull = usedSeats >= MAX_SEATS;
 
   return (
-    <PlanGate required="business">
+    <PlanGate required="elite">
       <ProductPageShell
         backHref="/plans"
         eyebrow={

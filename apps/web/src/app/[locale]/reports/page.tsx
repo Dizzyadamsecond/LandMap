@@ -112,7 +112,7 @@ export default function ReportsPage() {
       description="Gere um relatório em PDF com a marca da sua empresa, reunindo as regiões mais promissoras, preço médio do m², score LandMap e histórico de valorização."
       maxWidth="5xl"
     >
-      <PlanGate required="plus">
+      <PlanGate required="pro">
         <div className="grid gap-6 xl:grid-cols-[16rem_minmax(0,1fr)]">
           <aside className="space-y-3 self-start">
             <Card className="p-4">

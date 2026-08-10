@@ -1,0 +1,145 @@
+{
+  "/pt-BR": {
+    "status": 200,
+    "title": "LandMap — Inteligência de terrenos",
+    "h1": "Veja o futuro do mercado imobiliário antes dos outros.",
+    "main_len": 2284,
+    "main_headings": [
+      "h1: Veja o futuro do mercado imobiliário antes dos outros.",
+      "h3: Terreno em Pinheiros, São Paulo",
+      "h2: O que você passa a enxergar",
+      "h3: Panorama da região",
+      "h3: Histórico",
+      "h3: Projeções",
+      "h3: Motores de valorização",
+      "h3: Índices próprios",
+      "h3: Comparações",
+      "h3: Oportunidades",
+      "h3: Análise LandMap AI",
+      "h2: Como funciona"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/regions": {
+    "status": 200,
+    "title": "Regiões — LandMap",
+    "h1": "Cidades",
+    "main_len": 198,
+    "main_headings": [
+      "h1: Cidades"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/favorites": {
+    "status": 200,
+    "title": "Favoritos — LandMap",
+    "h1": "Terrenos e regiões salvos",
+    "main_len": 67,
+    "main_headings": [
+      "h1: Terrenos e regiões salvos"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/compare": {
+    "status": 200,
+    "title": "Comparação de regiões — LandMap",
+    "h1": "Comparar bairros",
+    "main_len": 335,
+    "main_headings": [
+      "h1: Comparar bairros"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/dashboard": {
+    "status": 200,
+    "title": "Mapa — LandMap",
+    "h1": "Visão geral do mercado",
+    "main_len": 1397,
+    "main_headings": [
+      "h1: Visão geral do mercado",
+      "h2: 📊 Regiões em alta (tempo real)",
+      "h2: Fluxo do índice",
+      "h2: Top valorização (12m)",
+      "h2: Top oportunidades",
+      "h2: Ferramentas de Investimento Avançadas (YC-Spec)"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/admin": {
+    "status": 200,
+    "title": "Administração — LandMap",
+    "h1": "Admin",
+    "main_len": 528,
+    "main_headings": [
+      "h1: Admin",
+      "h1: Dashboard"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/plans": {
+    "status": 200,
+    "title": "Planos — LandMap",
+    "h1": "Comece a analisar o mercado agora",
+    "main_len": 1084,
+    "main_headings": [
+      "h1: Comece a analisar o mercado agora",
+      "h3: LandMap Free",
+      "h3: LandMap Access",
+      "h3: LandMap Plus",
+      "h3: LandMap Pro",
+      "h3: LandMap Business"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/auth": {
+    "status": 200,
+    "title": "Entrar — LandMap",
+    "h1": "Entrar",
+    "main_len": 133,
+    "main_headings": [
+      "h2: Inteligência de terrenos, do mapa à decisão.",
+      "h1: Entrar"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/search": {
+    "status": 200,
+    "title": "LandMap — Inteligência de terrenos",
+    "h1": "Busca inteligente",
+    "main_len": 270,
+    "main_headings": [
+      "h1: Busca inteligente"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  },
+  "/pt-BR/onboarding": {
+    "status": 200,
+    "title": "LandMap — Inteligência territorial baseada em dados",
+    "h1": "Todo o Brasil no mapa",
+    "main_len": 117,
+    "main_headings": [
+      "h1: Todo o Brasil no mapa"
+    ],
+    "tokens_primary": true,
+    "font_dm_sans": true,
+    "hardcoded_hex_count": 0
+  }
+}

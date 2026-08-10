@@ -101,9 +101,11 @@ function RegionsPageInner() {
       <aside className="space-y-3 self-start">
         <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
           <p className="text-sm font-medium text-primary">Regiões monitoradas</p>
-          <h1 className="mt-2 font-display text-2xl font-semibold">Cidades</h1>
+          <h1 className="mt-2 font-display text-2xl font-semibold">Todas as regiões</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Cobertura nacional do dataset LandMap — preço médio, faixa e confiança.
+            {regions.length === 0
+              ? 'Carregando a cobertura nacional do dataset LandMap…'
+              : `${regions.length} ${regions.length === 1 ? 'região monitorada' : 'regiões monitoradas'}.`}
           </p>
         </div>
         <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">

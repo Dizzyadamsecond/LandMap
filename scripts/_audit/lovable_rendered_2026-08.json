@@ -1,0 +1,102 @@
+{
+  "/": {
+    "title": "LandMap",
+    "final_url": "/splash",
+    "h1": "Veja o futuro do mercado imobiliário antes dos outros.",
+    "public": true,
+    "headings": [
+      "h1: Veja o futuro do mercado imobiliário antes dos outros.",
+      "h2: O que você passa a enxergar",
+      "h3: Descubra regiões antes delas valorizarem",
+      "h3: Saiba o potencial da região em um número",
+      "h3: Compare bairros e descubra qual oferece maior potencial",
+      "h3: Seja avisado quando a janela abrir",
+      "h2: Como funciona",
+      "h2: LandMap Score",
+      "h2: Experimente antes de assinar."
+    ],
+    "cta": [
+      "Começar gratuitamente por 7 dias",
+      "Ver planos"
+    ],
+    "footer_cols": [
+      "SOBRE",
+      "PRODUTO",
+      "TRANSPARÊNCIA",
+      "LEGAL"
+    ]
+  },
+  "/regions": {
+    "final_url": "/auth",
+    "public": false,
+    "reason": "auth-gated no Lovable anônimo"
+  },
+  "/favorites": {
+    "final_url": "/auth",
+    "public": false,
+    "reason": "auth-gated no Lovable anônimo"
+  },
+  "/compare": {
+    "final_url": "/auth",
+    "public": false,
+    "reason": "auth-gated no Lovable anônimo"
+  },
+  "/dashboard": {
+    "final_url": "/auth",
+    "public": false,
+    "reason": "auth-gated no Lovable anônimo (title 'Mapa — LandMap')"
+  },
+  "/admin": {
+    "final_url": "/auth",
+    "public": false,
+    "reason": "auth-gated no Lovable anônimo (title 'Administração — LandMap')"
+  },
+  "/plans": {
+    "public": true,
+    "h1": "Experimente antes de assinar",
+    "plans": [
+      "LandMap Starter R$39,90/mês",
+      "LandMap Pro R$89,90/mês (MAIS POPULAR)",
+      "LandMap Elite R$119,90/mês"
+    ],
+    "cta": [
+      "Começar gratuitamente por 7 dias",
+      "Assinar LandMap Pro",
+      "Iniciar teste"
+    ]
+  },
+  "/search": {
+    "final_url": "/auth",
+    "public": false,
+    "reason": "auth-gated no Lovable anônimo (title 'Buscar no Brasil')"
+  },
+  "/onboarding": {
+    "public": true,
+    "h1": "Todo o Brasil no mapa",
+    "slides": 4,
+    "cta": [
+      "Continuar",
+      "Já tenho conta"
+    ]
+  },
+  "/auth": {
+    "public": true,
+    "h1": "Entrar",
+    "tabs": [
+      "Entrar",
+      "Criar conta"
+    ],
+    "fields": [
+      "E-mail",
+      "Senha"
+    ],
+    "social": [
+      "Continuar com Google",
+      "Continuar com Apple"
+    ],
+    "extra": [
+      "Entrar sem cadastro",
+      "← Voltar para o site"
+    ]
+  }
+}

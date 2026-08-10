@@ -349,7 +349,7 @@ export default function WatchlistPage() {
       description="Acompanhe regiões com notas automáticas e alertas de valorização. Monitore o mercado sem esforço."
       maxWidth="7xl"
     >
-      <PlanGate required="plus">
+      <PlanGate required="pro">
         <WatchlistContent />
       </PlanGate>
     </ProductPageShell>

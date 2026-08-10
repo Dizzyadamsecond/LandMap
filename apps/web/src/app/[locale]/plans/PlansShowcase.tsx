@@ -14,7 +14,7 @@ import { trackCta } from '../../../track';
 export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
-  const [selected, setSelected] = useState<string>('plus');
+  const [selected, setSelected] = useState<string>('pro');
   const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[0];
 
   const handleSubscribe = (planId: string) => {
@@ -28,7 +28,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
     // Free plan = no-paywall path → entra direto no mapa (CLAUDE.md regra 6).
     // Planos pagos mantêm o checkout como vitrine de produto.
     if (planId === 'free') {
-      router.push(`/${locale}/map`);
+      router.push(`/${locale}/auth?returnTo=/map`);
       return;
     }
     router.push(`/${locale}/auth?returnTo=/checkout?plan=${planId}`);
@@ -51,8 +51,8 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
             <Sparkles className="h-3 w-3" /> Escolha seu plano
           </>
         }
-        title="Comece a analisar o mercado agora"
-        description="Cancele quando quiser. Sem fidelidade."
+        title="Experimente antes de assinar"
+        description="Comece com acesso completo ao LandMap Pro. Cancele quando quiser."
         maxWidth="5xl"
       >
         <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -90,7 +90,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
                   'mt-4 w-full',
                 )}
               >
-                {pl.id === 'free' ? 'Assinar LandMap Free' : `Assinar ${pl.name.replace('LandMap ', '')}`}
+                {pl.id === 'free' ? 'Assinar LandMap Free' : `Assinar o ${pl.name.replace('LandMap ', '')}`}
               </button>
             </Card>
           ))}
@@ -118,10 +118,10 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
           <Sparkles className="h-3 w-3" /> Escolha seu plano
         </div>
         <h1 className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight">
-          Comece a analisar o mercado agora
+          Experimente antes de assinar
         </h1>
         <p className="mt-2 text-sm text-foreground/60">
-          Cancele quando quiser. Sem fidelidade.
+          Comece com acesso completo ao LandMap Pro. Cancele quando quiser.
         </p>
       </div>
 

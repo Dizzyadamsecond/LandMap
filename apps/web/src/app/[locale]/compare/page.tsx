@@ -147,9 +147,9 @@ function CompareInner() {
             <GitCompare className="h-3.5 w-3.5" />
             Comparação
           </p>
-          <h1 className="mt-2 font-display text-2xl font-semibold">Comparar bairros</h1>
+          <h1 className="mt-2 font-display text-2xl font-semibold">Comparar duas regiões</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Compare bairros, cidades ou regiões lado a lado por preço e score.
+            Preço por m², volume de dados, confiança, infraestrutura e tendência histórica.
           </p>
         </div>
 
@@ -248,8 +248,8 @@ function CompareInner() {
 
         {rows.length === 0 ? (
           <EmptyState
-            title="Nenhuma região selecionada para comparação."
-            description="Adicione bairros, cidades ou regiões para compará-los lado a lado."
+            title="Selecione duas regiões para começar a comparação."
+            description="Adicione regiões, cidades ou bairros para compará-los lado a lado."
           />
         ) : (
           <div className="rounded-lg border border-[var(--border)] bg-[var(--card)]">

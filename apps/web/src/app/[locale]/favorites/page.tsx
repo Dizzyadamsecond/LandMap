@@ -117,9 +117,9 @@ function FavoritesPageInner() {
     <div className="mx-auto max-w-7xl space-y-8 opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-medium text-[var(--primary)]">Meus favoritos</p>
+          <p className="text-sm font-medium text-[var(--primary)]">Biblioteca pessoal</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
-            Terrenos e regiões salvos
+            Meus favoritos
           </h1>
         </div>
         <div className="flex items-center gap-3">

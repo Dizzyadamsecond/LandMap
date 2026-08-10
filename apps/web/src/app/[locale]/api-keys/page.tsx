@@ -165,7 +165,7 @@ export default function ApiKeysPage() {
       description="Acesso programático ao seu intelligence de imóveis. Gere chaves, monitore o consumo e conecte webhooks em tempo real."
       maxWidth="5xl"
     >
-      <PlanGate required="business">
+      <PlanGate required="elite">
         {/* Chaves de API */}
         <Card className="p-5">
           <div className="flex items-center justify-between gap-3">
