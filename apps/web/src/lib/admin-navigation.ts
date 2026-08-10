@@ -182,7 +182,7 @@ export const ADMIN_NAVIGATION: AdminNavCategory[] = [
       },
       {
         id: 'churnrisk',
-        href: '/admin/retention/churn-risk',
+        href: '/admin/churn-risk',
         label: 'Risco de Churn',
         description: 'Clientes com risco de cancelamento',
         icon: AlertTriangle,

@@ -55,7 +55,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         description="Cancele quando quiser. Sem fidelidade."
         maxWidth="5xl"
       >
-        <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {PLANS.map((pl) => (
             <Card
               key={pl.id}
@@ -100,7 +100,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
   }
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-32 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-32 animate-in fade-in slide-in-from-bottom-4 duration-1000">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
         <Link
           href={`/${locale}/onboarding`}
@@ -115,8 +115,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
 
       <div className="px-4 pt-8 sm:px-6">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          <Sparkles className="h-3 w-3" />
-          Escolha seu plano
+          <Sparkles className="h-3 w-3" /> Escolha seu plano
         </div>
         <h1 className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight">
           Comece a analisar o mercado agora
@@ -126,7 +125,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         </p>
       </div>
 
-      <Stagger className="mt-6 flex flex-col gap-3 px-4 sm:px-6" stagger={0.08} y={20}>
+      <Stagger className="mt-6 flex flex-col gap-3 px-4 sm:px-6" stagger={0.18} y={30}>
         {PLANS.map((p) => {
           const isSel = p.id === selected;
           return (
