@@ -75,8 +75,12 @@ export default function OnboardingPage() {
 
   const continueOnboarding = () => {
     if (last) {
-      // Redirect direto pro mapa (90s onboarding).
-      explore();
+      try {
+        if (userType) storeUserType(userType);
+      } catch {
+        /* ignore */
+      }
+      router.replace(lh('/plans'));
       return;
     }
     setDirection('next');

@@ -283,6 +283,9 @@ function MapPageInner() {
         if (cancelled || !mapRef.current || mapInstance.current) return;
         const leafletMod = await import('leaflet');
         const L = (leafletMod as any).default ?? leafletMod;
+        if (typeof window !== 'undefined') {
+          (window as any).L = L;
+        }
         const map = L.map(mapRef.current, {
           center: MAP_CENTER,
           zoom: MAP_DEFAULT_ZOOM,
