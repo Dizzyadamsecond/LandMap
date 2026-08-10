@@ -224,7 +224,7 @@ export default function ViabilidadePage() {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-[var(--muted-foreground)]">Valor da Permuta:</span>
-              <span className="font-medium text-blue-500">R$ {valorPermuta.toLocaleString()}</span>
+              <span className="font-medium text-primary">R$ {valorPermuta.toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-[var(--muted-foreground)]">Lucro Incorporador:</span>

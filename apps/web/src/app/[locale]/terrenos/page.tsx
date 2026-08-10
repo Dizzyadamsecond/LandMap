@@ -52,8 +52,8 @@ function ScoreRing({ score, label, color }: { score: number; label: string; colo
 }
 
 function scoreColor(v: number): string {
-  if (v >= 75) return '#34d399';
-  if (v >= 55) return '#22d3ee';
+  if (v >= 75) return 'var(--success)';
+  if (v >= 55) return 'var(--primary)';
   if (v >= 40) return '#c084fc';
   return '#f59e0b';
 }

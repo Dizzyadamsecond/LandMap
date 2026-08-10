@@ -16,7 +16,7 @@ export default function AdminDashboardPage() {
   }, []);
 
   if (loading) return <div className="mx-auto max-w-6xl px-4 py-10 text-sm text-[var(--muted-foreground)]">Carregando dashboard...</div>;
-  if (error) return <div className="mx-auto max-w-6xl px-4 py-10 text-sm text-red-400">{error}</div>;
+  if (error) return <div className="mx-auto max-w-6xl px-4 py-10 text-sm text-destructive">{error}</div>;
 
   const cards = [
     { title: 'Terrenos', desc: 'Catálogo e validação de imóveis.', href: `/${locale}/admin/properties` },

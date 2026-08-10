@@ -23,9 +23,9 @@ export type InvestmentGrade = 'A' | 'B' | 'C' | 'D' | 'F';
  * mesmas cores da legenda (sem divergência visual).
  */
 export const INVESTMENT_GRADE_COLORS: Record<InvestmentGrade, string> = {
-  A: 'var(--emerald-bright, #34d399)',
-  B: 'var(--cyan, #22d3ee)',
-  C: 'var(--violet, #a78bfa)',
+  A: 'var(--emerald-bright, var(--success))',
+  B: 'var(--cyan, var(--primary))',
+  C: 'var(--violet, var(--accent))',
   D: 'var(--gold-soft, #e8c873)',
   F: 'var(--danger, #ff4d4d)',
 };

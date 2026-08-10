@@ -75,7 +75,7 @@ function AdminChurnRiskPageInner() {
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
           <p className="text-[11px] uppercase tracking-wider text-[var(--muted-foreground)]">Risco Alto</p>
-          <p className="mt-2 text-2xl font-semibold text-red-600">{highRiskCount}</p>
+          <p className="mt-2 text-2xl font-semibold text-destructive">{highRiskCount}</p>
           <p className="mt-1 text-[11px] text-[var(--muted-foreground)]">+45 dias sem atividade</p>
         </div>
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
@@ -85,14 +85,14 @@ function AdminChurnRiskPageInner() {
         </div>
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
           <p className="text-[11px] uppercase tracking-wider text-[var(--muted-foreground)]">Risco Baixo</p>
-          <p className="mt-2 text-2xl font-semibold text-green-600">{users.filter((u) => u.riskLevel === 'low').length}</p>
+          <p className="mt-2 text-2xl font-semibold text-success">{users.filter((u) => u.riskLevel === 'low').length}</p>
           <p className="mt-1 text-[11px] text-[var(--muted-foreground)]">14-20 dias sem atividade</p>
         </div>
       </div>
 
       <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
         <div className="flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-red-500" />
+          <AlertTriangle className="h-5 w-5 text-destructive" />
           <h3 className="font-semibold text-[var(--foreground)]">Lista de Usuários</h3>
         </div>
 
@@ -139,10 +139,10 @@ function AdminChurnRiskPageInner() {
                   <td className="py-3 text-center">
                     <span className={`rounded-full px-2 py-1 text-[10px] font-semibold uppercase ${
                       user.riskLevel === 'high'
-                        ? 'bg-red-500/20 text-red-700'
+                        ? 'bg-destructive/20 text-destructive'
                         : user.riskLevel === 'medium'
                           ? 'bg-yellow-500/20 text-yellow-700'
-                          : 'bg-green-500/20 text-green-700'
+                          : 'bg-success/20 text-success'
                     }`}>
                       {user.riskLevel}
                     </span>

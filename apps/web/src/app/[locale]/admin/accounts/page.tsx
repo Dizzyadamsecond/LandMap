@@ -51,7 +51,7 @@ function AdminAccountsPageInner() {
                 <td className="py-3 text-center text-[var(--foreground)]">R$ {acc.mrr.toLocaleString('pt-BR')}</td>
                 <td className="py-3 text-center">
                   <span className={`rounded-full px-2 py-1 text-[10px] font-semibold uppercase ${
-                    acc.health === 'healthy' ? 'bg-green-500/20 text-green-700' : 'bg-red-500/20 text-red-700'
+                    acc.health === 'healthy' ? 'bg-success/20 text-success' : 'bg-destructive/20 text-destructive'
                   }`}>
                     {acc.health}
                   </span>

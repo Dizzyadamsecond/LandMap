@@ -50,7 +50,7 @@ export default function CostsPage() {
         <div className="text-center">Loading...</div>
       ) : (
         <>
-          <Card className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <Card className="mb-6 p-4 bg-gradient-to-r from-primary/5 to-accent/5">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="text-sm text-gray-600">Monthly (USD)</div>

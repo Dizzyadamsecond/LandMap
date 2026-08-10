@@ -61,7 +61,7 @@ const photoFor = (region: IntelligenceRegion) => {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='520' viewBox='0 0 800 520'>
   <defs>
     <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
-      <stop offset='0' stop-color='#575ECF'/>
+      <stop offset='0' stop-color='var(--primary)'/>
       <stop offset='0.55' stop-color='#3B2E9E'/>
       <stop offset='1' stop-color='#1E1B4B'/>
     </linearGradient>
@@ -278,7 +278,7 @@ export default function InsightsPage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`data:image/svg+xml;utf8,${encodeURIComponent(
-              "<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#575ECF'/><stop offset='1' stop-color='#1E1B4B'/></linearGradient><pattern id='grid' width='40' height='40' patternUnits='userSpaceOnUse'><path d='M40 0H0V40' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/></pattern></defs><rect width='1600' height='900' fill='url(#g)'/><rect width='1600' height='900' fill='url(#grid)'/></svg>"
+              "<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='var(--primary)'/><stop offset='1' stop-color='#1E1B4B'/></linearGradient><pattern id='grid' width='40' height='40' patternUnits='userSpaceOnUse'><path d='M40 0H0V40' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/></pattern></defs><rect width='1600' height='900' fill='url(#g)'/><rect width='1600' height='900' fill='url(#grid)'/></svg>"
             )}`}
             alt=""
             className="h-full w-full object-cover opacity-30"

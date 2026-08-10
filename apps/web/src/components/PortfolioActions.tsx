@@ -67,7 +67,7 @@ export function PortfolioActions() {
           >
             <Copy className="h-3 w-3" />
           </button>
-          {copied && <span className="text-[10px] font-medium text-green-500">Copiado!</span>}
+          {copied && <span className="text-[10px] font-medium text-success">Copiado!</span>}
         </div>
       )}
 

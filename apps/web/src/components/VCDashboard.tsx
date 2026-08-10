@@ -59,7 +59,7 @@ export function VCDashboard() {
             </div>
             <div>
               <p className="text-muted-foreground">ROI</p>
-              <p className={`font-semibold ${analytics.roi_pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <p className={`font-semibold ${analytics.roi_pct >= 0 ? 'text-success' : 'text-destructive'}`}>
                 {analytics.roi_pct.toFixed(2)}%
               </p>
             </div>

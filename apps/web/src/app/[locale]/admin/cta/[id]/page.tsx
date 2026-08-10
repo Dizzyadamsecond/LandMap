@@ -58,7 +58,7 @@ function AdminCtaDrilldownPageInner() {
             <tr>
               <td className="py-3 text-[var(--foreground)]">treatment_a</td>
               <td className="py-3 text-center text-[var(--foreground)]">617</td>
-              <td className="py-3 text-center text-green-600 font-semibold">14.2%</td>
+              <td className="py-3 text-center text-success font-semibold">14.2%</td>
             </tr>
           </tbody>
         </table>

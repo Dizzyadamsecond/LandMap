@@ -232,7 +232,7 @@ export default function GeoViewer({
       {isLoading && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
           <div className="text-white text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400 mx-auto mb-2" />
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-2" />
             <p>Carregando mapa...</p>
           </div>
         </div>
@@ -246,11 +246,11 @@ export default function GeoViewer({
             placeholder="Buscar terrenos por nome, município, estado..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 px-4 py-2 rounded-lg bg-white/90 text-neutral-900 placeholder-neutral-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="flex-1 px-4 py-2 rounded-lg bg-white/90 text-neutral-900 placeholder-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <button
             type="submit"
-            className="px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition font-medium"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition font-medium"
           >
             Buscar
           </button>
@@ -277,7 +277,7 @@ export default function GeoViewer({
             <h3 className="font-semibold text-base">{selectedFeature.properties?.name || 'Terreno'}</h3>
             <button
               onClick={() => setSelectedFeature(null)}
-              className="text-xl font-bold hover:text-red-500"
+              className="text-xl font-bold hover:text-destructive"
             >
               ✕
             </button>
@@ -345,7 +345,7 @@ export default function GeoViewer({
               // TODO: Abrir modal com detalhes completos
               console.log('View full details:', selectedFeature);
             }}
-            className="mt-4 w-full px-3 py-2 bg-emerald-500 text-white rounded text-xs font-medium hover:bg-emerald-600 transition"
+            className="mt-4 w-full px-3 py-2 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 transition"
           >
             Ver detalhes completos
           </button>
@@ -357,15 +357,15 @@ export default function GeoViewer({
         <h4 className="font-semibold mb-2">Legenda</h4>
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-emerald-400/40 border border-emerald-500" />
+            <div className="w-4 h-4 rounded bg-success/40 border border-success" />
             <span>Terrenos pequenos (&lt;1k ha)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-cyan-400/40 border border-cyan-500" />
+            <div className="w-4 h-4 rounded bg-primary/40 border border-primary" />
             <span>Médios (1–5k ha)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-indigo-400/40 border border-indigo-500" />
+            <div className="w-4 h-4 rounded bg-accent/40 border border-accent" />
             <span>Grandes (&gt;5k ha)</span>
           </div>
         </div>

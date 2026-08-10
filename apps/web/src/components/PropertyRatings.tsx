@@ -77,7 +77,7 @@ export function PropertyRatings({ propertyId }: { propertyId: string }) {
               Enviar ✓
             </button>
           )}
-          {submitted && <p className="mt-2 text-[10px] font-medium text-green-500">Obrigado! ✓</p>}
+          {submitted && <p className="mt-2 text-[10px] font-medium text-success">Obrigado! ✓</p>}
         </div>
       </div>
 

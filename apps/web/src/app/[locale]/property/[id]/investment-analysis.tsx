@@ -42,7 +42,7 @@ export function InvestmentAnalysis({
         {capRate !== undefined && (
           <div>
             <p className="text-xs text-muted-foreground">Cap Rate</p>
-            <p className="mt-1 text-2xl font-bold text-green-500">{capRate.toFixed(1)}%</p>
+            <p className="mt-1 text-2xl font-bold text-success">{capRate.toFixed(1)}%</p>
             <p className="mt-1 text-[10px] text-muted-foreground">12m previsto</p>
           </div>
         )}

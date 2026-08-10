@@ -37,7 +37,7 @@ function AdminGrowthPageInner() {
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
           <p className="text-[11px] uppercase tracking-wider text-[var(--muted-foreground)]">Signups (7d)</p>
           <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">342</p>
-          <p className="mt-1 text-[11px] text-green-600">+28% vs semana passada</p>
+          <p className="mt-1 text-[11px] text-success">+28% vs semana passada</p>
         </div>
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
           <p className="text-[11px] uppercase tracking-wider text-[var(--muted-foreground)]">Activation Rate</p>

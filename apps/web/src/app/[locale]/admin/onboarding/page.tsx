@@ -56,7 +56,7 @@ function AdminOnboardingPageInner() {
               <div className="flex items-center gap-4 text-xs">
                 <span className="text-[var(--foreground)] font-semibold">{step.users.toLocaleString('pt-BR')}</span>
                 <span className="text-[var(--foreground)] font-semibold">{step.conversionRate}%</span>
-                {step.dropoff > 0 && <span className="text-red-600">-{step.dropoff}%</span>}
+                {step.dropoff > 0 && <span className="text-destructive">-{step.dropoff}%</span>}
               </div>
             </div>
             <div className="h-12 rounded-lg bg-[var(--muted)] overflow-hidden flex items-center">
@@ -82,7 +82,7 @@ function AdminOnboardingPageInner() {
           {funnelSteps.slice(1).map((step) => (
             <div key={step.name} className="flex items-center justify-between border-b border-[var(--border)] pb-2 last:border-0 last:pb-0">
               <span className="text-sm text-[var(--foreground)]">{step.name}</span>
-              <span className="text-sm font-medium text-red-600">{step.dropoff}% dropoff</span>
+              <span className="text-sm font-medium text-destructive">{step.dropoff}% dropoff</span>
             </div>
           ))}
         </div>

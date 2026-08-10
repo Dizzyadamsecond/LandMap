@@ -47,13 +47,13 @@ function AdminFeatureFlagsPageInner() {
                 onClick={() => handleToggle(flag.id)}
                 className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
                   flag.enabled
-                    ? 'bg-green-500/20 text-green-700'
+                    ? 'bg-success/20 text-success'
                     : 'bg-gray-500/20 text-gray-700'
                 }`}
               >
                 {flag.enabled ? 'ON' : 'OFF'}
               </button>
-              <button className="text-[var(--muted-foreground)] transition hover:text-red-500">
+              <button className="text-[var(--muted-foreground)] transition hover:text-destructive">
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>

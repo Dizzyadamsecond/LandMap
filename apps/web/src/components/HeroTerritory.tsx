@@ -21,16 +21,16 @@ export function HeroTerritory({ className = '' }: { className?: string }) {
         <defs>
           <linearGradient id="ht-emerald" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#6ee7b7" />
-            <stop offset="55%" stopColor="#34d399" />
-            <stop offset="100%" stopColor="#22d3ee" />
+            <stop offset="55%" stopColor="var(--success)" />
+            <stop offset="100%" stopColor="var(--primary)" />
           </linearGradient>
           <linearGradient id="ht-gold" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#f4e2a1" />
             <stop offset="100%" stopColor="#d4af37" />
           </linearGradient>
           <radialGradient id="ht-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--success)" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="var(--success)" stopOpacity="0" />
           </radialGradient>
           <filter id="ht-blur" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="3" />

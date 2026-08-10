@@ -41,10 +41,10 @@ export function LiveTicker({ locale = 'pt-BR' }) {
                 <p className="text-[10px] text-muted-foreground">{ticker.city}</p>
               </div>
               {ticker.trend === 'up' && (
-                <TrendingUp className="h-3.5 w-3.5 text-green-500 shrink-0 ml-1" />
+                <TrendingUp className="h-3.5 w-3.5 text-success shrink-0 ml-1" />
               )}
               {ticker.trend === 'down' && (
-                <TrendingDown className="h-3.5 w-3.5 text-red-500 shrink-0 ml-1" />
+                <TrendingDown className="h-3.5 w-3.5 text-destructive shrink-0 ml-1" />
               )}
               {ticker.trend === 'stable' && (
                 <Activity className="h-3.5 w-3.5 text-yellow-500 shrink-0 ml-1" />
@@ -54,7 +54,7 @@ export function LiveTicker({ locale = 'pt-BR' }) {
             <div className="mb-2.5">
               <p className="text-lg font-bold text-foreground">R$ {ticker.price.toLocaleString('pt-BR')}</p>
               <p className={`text-xs font-semibold ${
-                ticker.delta > 0 ? 'text-green-500' : ticker.delta < 0 ? 'text-red-500' : 'text-yellow-600'
+                ticker.delta > 0 ? 'text-success' : ticker.delta < 0 ? 'text-destructive' : 'text-yellow-600'
               }`}>
                 {ticker.delta > 0 ? '+' : ''}{ticker.delta.toFixed(1)}% · {ticker.volume} transações
               </p>

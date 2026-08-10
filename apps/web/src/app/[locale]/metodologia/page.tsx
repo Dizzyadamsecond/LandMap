@@ -91,8 +91,8 @@ export default function MetodologiaPage() {
         ))}
       </Stagger>
 
-      <div className="mt-12 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] p-6">
-        <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">
+      <div className="mt-12 rounded-2xl border border-warning/20 bg-warning/[0.04] p-6">
+        <p className="text-xs font-semibold uppercase tracking-widest text-warning">
           Observação
         </p>
         <p className="mt-3 text-sm leading-relaxed text-foreground/80">

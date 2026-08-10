@@ -188,12 +188,12 @@ export default function BrasilApisPage() {
                   </button>
                 </div>
                 {probe?.status === 'ok' && (
-                  <p className="text-[11px] text-emerald-500">
+                  <p className="text-[11px] text-success">
                     ✓ {probe.statusCode} · {probe.bytes ? `${probe.bytes} B` : 'ok'}
                   </p>
                 )}
                 {probe?.status === 'error' && (
-                  <p className="text-[11px] text-red-500">
+                  <p className="text-[11px] text-destructive">
                     ✗ {probe.statusCode || 'erro'} · {probe.message || 'falhou'}
                   </p>
                 )}
@@ -211,6 +211,6 @@ function ProbeBadge({ probe }: { probe?: ProbeState }) {
   if (probe.status === 'loading')
     return <RefreshCw className="h-4 w-4 animate-spin text-[var(--muted-foreground)]" />;
   if (probe.status === 'ok')
-    return <Check className="h-4 w-4 text-emerald-500" />;
-  return <X className="h-4 w-4 text-red-500" />;
+    return <Check className="h-4 w-4 text-success" />;
+  return <X className="h-4 w-4 text-destructive" />;
 }

@@ -130,8 +130,8 @@ export default function LivePage() {
             className={cn(
               'mt-4 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px]',
               data
-                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
-                : 'border-amber-500/30 bg-amber-500/10 text-amber-400',
+                ? 'border-success/30 bg-success/10 text-success'
+                : 'border-warning/30 bg-warning/10 text-warning',
             )}
           >
             <Activity className="h-3 w-3 animate-pulse" />

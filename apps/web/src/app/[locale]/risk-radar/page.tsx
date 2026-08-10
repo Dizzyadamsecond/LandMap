@@ -140,7 +140,7 @@ export default function RiskRadarPage() {
 
           <div className="my-6 aspect-video rounded-2xl bg-[var(--background)] border border-[var(--border)] grid place-items-center relative overflow-hidden">
             {/* Topographic mock lines */}
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500 via-emerald-500 to-transparent" />
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/50 via-emerald-500 to-transparent" />
             <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full border border-[var(--primary)]/20 animate-ping" />
             <div className="absolute top-1/3 left-1/3 w-16 h-16 rounded-full border border-warning/30" />
             <div className="absolute top-1/2 left-1/2 w-8 h-8 rounded-full border border-destructive/40" />

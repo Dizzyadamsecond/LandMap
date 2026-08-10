@@ -56,7 +56,7 @@ function AdminEngagementPageInner() {
               </div>
               <div className="w-16 text-right">
                 <p className="text-sm font-semibold text-[var(--foreground)]">{feature.percentage}%</p>
-                <p className="text-xs text-green-600">{feature.trend}</p>
+                <p className="text-xs text-success">{feature.trend}</p>
               </div>
             </div>
           ))}

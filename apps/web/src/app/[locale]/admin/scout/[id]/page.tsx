@@ -155,9 +155,9 @@ export default function AdminScoutJobPage() {
 
   const stats = useMemo(() => job?.stats || { processed: 0, found: 0, duplicates: 0, enriched: 0, exported: 0 }, [job]);
 
-  if (!id) return <div className="mx-auto max-w-5xl px-4 py-10 text-sm text-red-400">Job não informado.</div>;
+  if (!id) return <div className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive">Job não informado.</div>;
   if (loading) return <div className="mx-auto max-w-5xl px-4 py-10 text-sm text-[var(--muted-foreground)]">Carregando job...</div>;
-  if (error && !job) return <div className="mx-auto max-w-5xl px-4 py-10 text-sm text-red-400">{error}</div>;
+  if (error && !job) return <div className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive">{error}</div>;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">

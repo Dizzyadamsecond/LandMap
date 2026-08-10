@@ -147,9 +147,9 @@ function AdminExperimentsPageInner() {
                   <h3 className="text-sm font-semibold text-[var(--foreground)]">{exp.name}</h3>
                   <span className={`rounded-full px-2 py-1 text-[10px] font-semibold uppercase ${
                     exp.status === 'running'
-                      ? 'bg-green-500/20 text-green-700'
+                      ? 'bg-success/20 text-success'
                       : exp.status === 'completed'
-                        ? 'bg-blue-500/20 text-blue-700'
+                        ? 'bg-primary/20 text-primary'
                         : 'bg-gray-500/20 text-gray-700'
                   }`}>
                     {exp.status}
@@ -171,7 +171,7 @@ function AdminExperimentsPageInner() {
               </div>
               <button
                 onClick={() => handleDeleteExperiment(exp.id)}
-                className="rounded-lg p-2 text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-red-500"
+                className="rounded-lg p-2 text-[var(--muted-foreground)] transition hover:bg-[var(--muted)] hover:text-destructive"
                 title="Deletar"
               >
                 <Trash2 className="h-4 w-4" />

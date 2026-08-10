@@ -33,7 +33,7 @@ export function RecommendationWidget({
             <div className="flex items-center gap-2">
               <div className="text-right">
                 <p className="text-sm font-bold text-primary">{rec.score}</p>
-                <p className={`text-xs font-medium ${rec.trend > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                <p className={`text-xs font-medium ${rec.trend > 0 ? 'text-success' : 'text-destructive'}`}>
                   {rec.trend > 0 ? '↑' : '↓'} {Math.abs(rec.trend).toFixed(1)}%
                 </p>
               </div>

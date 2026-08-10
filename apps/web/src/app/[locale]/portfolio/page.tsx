@@ -98,7 +98,7 @@ export default function PortfolioPage() {
           </div>
           <div>
             <p className="text-xs text-muted-foreground">Trending</p>
-            <p className="mt-1 text-lg font-bold text-green-500">🔥 Alta</p>
+            <p className="mt-1 text-lg font-bold text-success">🔥 Alta</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground">Risk Score</p>
@@ -132,7 +132,7 @@ export default function PortfolioPage() {
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Comparação</p>
-              <p className="text-sm font-semibold text-green-500">↑ +{avgScore - 72} vs BR</p>
+              <p className="text-sm font-semibold text-success">↑ +{avgScore - 72} vs BR</p>
             </div>
           </div>
         </div>
