@@ -38,7 +38,7 @@ export default function ValorizationPage() {
   return (
     <main className="mx-auto grid min-h-screen max-w-7xl gap-6 bg-background px-4 py-6 xl:grid-cols-[16rem_minmax(0,1fr)]">
       <aside className="space-y-3 self-start">
-        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+        <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
           <div className="flex items-center justify-between">
             <Link
               href={lh('/market')}
@@ -61,7 +61,7 @@ export default function ValorizationPage() {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+        <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
             Navegação
           </p>

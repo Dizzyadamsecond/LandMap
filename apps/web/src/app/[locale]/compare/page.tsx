@@ -142,7 +142,7 @@ function CompareInner() {
   return (
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500 xl:grid-cols-[16rem_minmax(0,1fr)]">
       <aside className="space-y-3 self-start">
-        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+        <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-foreground/50">
             <GitCompare className="h-3.5 w-3.5" />
             Comparação
@@ -153,7 +153,7 @@ function CompareInner() {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+        <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
             Navegação
           </p>
@@ -195,7 +195,7 @@ function CompareInner() {
             </Link>
             <Link
               href={lh('/neighborhoods')}
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-[var(--border)] bg-white/90 px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-muted"
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-[var(--border)] bg-card px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-muted"
             >
               <MapPin className="h-4 w-4" /> Bairros
             </Link>

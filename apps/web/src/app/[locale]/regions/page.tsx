@@ -99,7 +99,7 @@ function RegionsPageInner() {
   return (
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500 xl:grid-cols-[16rem_minmax(0,1fr)]">
       <aside className="space-y-3 self-start">
-        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+        <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
           <p className="text-sm font-medium text-primary">Regiões monitoradas</p>
           <h1 className="mt-2 font-display text-2xl font-semibold">Todas as regiões</h1>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -108,7 +108,7 @@ function RegionsPageInner() {
               : `${regions.length} ${regions.length === 1 ? 'região monitorada' : 'regiões monitoradas'}.`}
           </p>
         </div>
-        <div className="rounded-3xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+        <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">Hub</p>
           <div className="mt-3 space-y-2">
             {hubLinks.map((item) => {
@@ -223,7 +223,7 @@ function RegionsPageInner() {
               {regions.map((region) => {
                 const active = hydrated && isFavorite(region.id);
                 return (
-                  <article key={region.id} className="rounded-2xl border border-border/50 bg-white/95 p-4 shadow-sm backdrop-blur">
+                  <article key={region.id} className="rounded-2xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/50">Cidade</p>
