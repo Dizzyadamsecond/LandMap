@@ -14,6 +14,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { RequireAuth } from '../../../components/RequireAuth';
 import { RecommendationWidget } from '../../../components/RecommendationWidget';
+import { LiveTicker } from '../../../components/LiveTicker';
 import {
   LandMapWordmark,
   TrendingUp,
@@ -227,6 +228,11 @@ function DashboardInner() {
                 <Stat label="Mais aquecida" value={hottest} />
                 <Stat label="Score LandMap" value={loading || !kpis ? '—' : String(score)} />
               </section>
+
+              <div className="mt-6">
+                <h2 className="text-sm font-semibold mb-3">📊 Regiões em alta (tempo real)</h2>
+                <LiveTicker locale={locale} />
+              </div>
 
               {topOpp.length > 0 && (
                 <RecommendationWidget

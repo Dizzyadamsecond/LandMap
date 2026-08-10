@@ -11,6 +11,7 @@ import {
 } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
 import { Card, Badge, Stat, buttonVariants, cn, EmptyState, ProgressCard } from '@landmap/ui';
+import { PortfolioActions } from '../../../components/PortfolioActions';
 import {
   INTELLIGENCE_REGIONS,
   fmtPriceSqm,
@@ -151,6 +152,7 @@ export default function PortfolioPage() {
         <Link href={lh('/compare')} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
           Comparar
         </Link>
+        <PortfolioActions />
         <Link href={lh('/map')} className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
           Mapa
         </Link>

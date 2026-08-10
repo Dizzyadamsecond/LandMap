@@ -82,6 +82,7 @@ function MapPageInner() {
   const [query, setQuery] = useState('');
   const [activeLayer, setActiveLayer] = useState<LayerId>('valorization');
   const [showHeat, setShowHeat] = useState(true);
+  const [showTrending, setShowTrending] = useState(false);
   const [layersOpen, setLayersOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [streetViewOpen, setStreetViewOpen] = useState(false);

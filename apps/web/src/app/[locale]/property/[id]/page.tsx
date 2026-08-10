@@ -13,6 +13,7 @@ import { ShareButton } from './share-button';
 import AiInsights from './ai-insights';
 import { RecentlyViewedTracker } from './recently-viewed-tracker';
 import { InvestmentAnalysis } from './investment-analysis';
+import { PropertyRatings } from '../../../../components/PropertyRatings';
 
 interface Dossier {
   id: string;
@@ -110,6 +111,8 @@ export default function PropertyDossierPage() {
             </div>
 
             <InvestmentAnalysis score={p.score} capRate={p.capRate} grade={p.grade} />
+
+            <PropertyRatings propertyId={p.id} />
 
             {p && (
               <Gallery
