@@ -480,14 +480,15 @@ body {
   }
 }
 
-/* ─── Mapa Leaflet → cor fiel ao Lovable (basemap cinza neutro) ───
-   O Lovable usa Google Maps no estilo padrão = canvas CINZA NEUTRO (sem
+/* ─── Mapa Leaflet → cor fiel ao Lovable (basemap dark/neutro) ───
+   O Lovable usa Google Maps no estilo DARK = canvas ESCURO/NEUTRO (sem
    tint de marca). O indigo da marca fica no chrome, marcadores e heat
    (--primary), nunca no basemap. Por isso NÃO aplicamos filtro de cor:
-   o tile-pane roda sem tint, igual ao Google Maps do Lovable.
-   Basemap = CARTO Voyager (paleta leve/cinza neutra de alta fidelidade,
-   estradas e labels nítidos). Mantemos o isolamento do tile-pane apenas
-   para o reveal suave e para não herdar filtros acidentais. */
+   o tile-pane roda sem tint, igual ao Google Maps dark do Lovable.
+   Basemap = CARTO Dark Matter (canvas escuro de alta fidelidade, estradas
+   e labels nítidos) — combina com o chrome dark/indigo da marca. Mantemos
+   o isolamento do tile-pane apenas para o reveal suave e para não herdar
+   filtros acidentais. */
 .landmap-tiles .leaflet-tile-pane {
   position: absolute;
   isolation: isolate;

@@ -60,6 +60,7 @@ import {
   resolveVar,
   topByScore,
   topByValorization,
+  FALLBACK_PRIMARY,
   type IntelligenceRegion,
   type LayerId,
 } from '../../../lib/mapIntelligence';
@@ -234,8 +235,8 @@ function MapPageInner() {
       const marker = L.circleMarker([r.lat, r.lng], {
         radius,
         fillColor: color,
-        color: isSel ? '#ffffff' : '#ffffff',
-        weight: isSel ? 3 : 2,
+        color: isSel ? resolveVar('--primary', FALLBACK_PRIMARY) : 'rgba(255,255,255,0.75)',
+        weight: isSel ? 3 : 1.5,
         fillOpacity: heat ? 0.35 + (w / 100) * 0.45 : 0.92,
         opacity: 1,
       });
@@ -296,12 +297,13 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        // Basemap Lovable-style: CARTO Voyager — canvas colorido/esverdeado de alta
-        // fidelidade, igual ao Google Maps padrão do Lovable. O indigo da marca
-        // fica no chrome/marcadores/heat (--primary), NÃO no basemap. O CSS em
+        // Basemap Lovable-style: CARTO Dark Matter — canvas escuro/neutro de alta
+        // fidelidade, combinando com o chrome dark/indigo da marca (paridade 1:1
+        // com o Google Maps dark do Lovable). O indigo da marca fica no
+        // chrome/marcadores/heat (--primary), NÃO no basemap. O CSS em
         // globals.css (.landmap-tiles .leaflet-tile-pane { filter: none }) garante
-        // zero tint — paridade 1:1 com o Lovable.
-        const baseUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+        // zero tint de marca no tile — só escurecemos o canvas, sem viés de cor.
+        const baseUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
         L.tileLayer(baseUrl, {
           attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',

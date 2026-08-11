@@ -123,10 +123,10 @@ export function resolveVar(name: string, fallback?: string): string {
 }
 
 // Valores Lovable indigo (globals.css :root/.dark) — fallback semântico.
-const FALLBACK_PRIMARY = 'oklch(62% .2 265)'; // dark primary
-const FALLBACK_RING = 'oklch(62% .2 265)';
-const FALLBACK_WARNING = 'oklch(70% .15 70)';
-const FALLBACK_DESTRUCTIVE = 'oklch(58% .22 25)';
+export const FALLBACK_PRIMARY = 'oklch(62% .2 265)'; // dark primary
+export const FALLBACK_RING = 'oklch(62% .2 265)';
+export const FALLBACK_WARNING = 'oklch(70% .15 70)';
+export const FALLBACK_DESTRUCTIVE = 'oklch(58% .22 25)';
 
 /**
  * Cor do score por banda — 100% tokenizada com a marca Lovable (indigo).
