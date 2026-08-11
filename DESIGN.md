@@ -273,8 +273,8 @@ LandMap's real-estate-intelligence flow:
   descrição "Comece com acesso completo ao LandMap Pro. Cancele quando quiser." · CTA secundário
   "Começar gratuitamente por 7 dias" · quote “Quero tomar decisões melhores e encontrar oportunidades.”
   · seção enterprise "Precisa de uma solução para sua empresa?" (mailto business@landmap.com.br).
-  Cards (fonte `lib/plans.ts`, single source of truth):
-  - **LandMap Free** — R$ 0,00/mês
+  Cards (fonte `lib/plans.ts`, single source of truth; ORDEM = Starter → Pro → Elite → Free,
+  espelhando o Lovable live que NÃO tem Free no topo):
   - **LandMap Starter** — R$ 39,90/mês
   - **LandMap Pro** — R$ 89,90/mês *(Mais popular)* — Tudo do Starter + Radar de oportunidades +
     Comparação entre regiões + Alertas inteligentes + Alertas de valorização + Alertas de queda de

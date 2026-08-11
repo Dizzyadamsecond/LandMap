@@ -21,21 +21,6 @@ export type PlanMeta = {
 
 export const PLANS: PlanMeta[] = [
   {
-    id: 'free',
-    name: 'LandMap Free',
-    priceBRL: 0,
-    tagline: 'Comece sem custo',
-    highlight: false,
-    features: [
-      'Mapa de calor',
-      'Histórico do preço por m²',
-      'Tendências de valorização',
-      'Busca por cidade, bairro e região',
-      'Ranking das regiões',
-      'Até 10 áreas favoritas',
-    ],
-  },
-  {
     id: 'starter',
     name: 'LandMap Starter',
     priceBRL: 39.9,
@@ -85,6 +70,21 @@ export const PLANS: PlanMeta[] = [
       'Favoritos ilimitados',
       'Acesso antecipado a novas funcionalidades',
       'Suporte prioritário',
+    ],
+  },
+  {
+    id: 'free',
+    name: 'LandMap Free',
+    priceBRL: 0,
+    tagline: 'Comece sem custo',
+    highlight: false,
+    features: [
+      'Mapa de calor',
+      'Histórico do preço por m²',
+      'Tendências de valorização',
+      'Busca por cidade, bairro e região',
+      'Ranking das regiões',
+      'Até 10 áreas favoritas',
     ],
   },
 ];

@@ -92,6 +92,15 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
               >
                 {pl.id === 'free' ? 'Assinar LandMap Free' : `Assinar o ${pl.name.replace('LandMap ', '')}`}
               </button>
+              {pl.highlight && (
+                <button
+                  type="button"
+                  onClick={() => handleDesktopPlan(pl.id)}
+                  className="mt-2 w-full text-sm font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  Iniciar teste
+                </button>
+              )}
             </Card>
           ))}
         </Reveal>
@@ -266,6 +275,15 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         >
           {`Assinar ${selectedPlan.name} — R$ ${formatBRL(selectedPlan.priceBRL)}/mês`}
         </button>
+        {selectedPlan.id === 'pro' && (
+          <button
+            type="button"
+            onClick={mobileSubscribe}
+            className="mt-2 w-full text-sm font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Iniciar teste
+          </button>
+        )}
         <p className="mt-2 text-center text-[11px] text-foreground/40">
           Pagamento não ativado — fluxo de demonstração.
         </p>
