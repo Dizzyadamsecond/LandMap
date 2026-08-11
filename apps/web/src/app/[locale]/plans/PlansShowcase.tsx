@@ -90,7 +90,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
                   'mt-4 w-full',
                 )}
               >
-                {pl.id === 'free' ? 'Assinar LandMap Free' : `Assinar o ${pl.name.replace('LandMap ', '')}`}
+                {pl.id === 'free' ? 'Assinar LandMap Free' : `Assinar ${pl.name}`}
               </button>
               {pl.highlight && (
                 <button
@@ -238,12 +238,6 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         })}
       </Stagger>
 
-      <div className="mt-6 px-4 text-center sm:px-6">
-        <Link href={`/${locale}/auth`} className="text-sm text-foreground/60 hover:text-foreground">
-          Já tem conta? <span className="font-medium text-primary">Entrar</span>
-        </Link>
-      </div>
-
       <section className="mx-4 mt-8 rounded-2xl border border-border bg-card p-5 sm:mx-6">
         <blockquote className="text-sm italic text-foreground/70">
           “Quero tomar decisões melhores e encontrar oportunidades.”
@@ -264,6 +258,12 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
           Falar com nossa equipe
         </a>
       </section>
+
+      <div className="mt-6 px-4 text-center sm:px-6">
+        <Link href={`/${locale}/auth`} className="text-sm text-foreground/60 hover:text-foreground">
+          Já tem conta? <span className="font-medium text-primary">Entrar</span>
+        </Link>
+      </div>
 
       <div className="h-6" />
 

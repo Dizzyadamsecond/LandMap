@@ -72,22 +72,24 @@ export const PLANS: PlanMeta[] = [
       'Suporte prioritário',
     ],
   },
-  {
-    id: 'free',
-    name: 'LandMap Free',
-    priceBRL: 0,
-    tagline: 'Comece sem custo',
-    highlight: false,
-    features: [
-      'Mapa de calor',
-      'Histórico do preço por m²',
-      'Tendências de valorização',
-      'Busca por cidade, bairro e região',
-      'Ranking das regiões',
-      'Até 10 áreas favoritas',
-    ],
-  },
 ];
+
+/** Plano gratuito (referência; NÃO exibido no grid de /plans — Lovable live não tem Free no grid). */
+export const FREE_PLAN: PlanMeta = {
+  id: 'free',
+  name: 'LandMap Free',
+  priceBRL: 0,
+  tagline: 'Comece sem custo',
+  highlight: false,
+  features: [
+    'Mapa de calor',
+    'Histórico do preço por m²',
+    'Tendências de valorização',
+    'Busca por cidade, bairro e região',
+    'Ranking das regiões',
+    'Até 10 áreas favoritas',
+  ],
+};
 
 export const PLAN_REQUIREMENTS: Record<string, PlanId> = {
   free: 'free',
