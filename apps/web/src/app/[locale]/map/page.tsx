@@ -61,6 +61,7 @@ import {
   topByScore,
   topByValorization,
   FALLBACK_PRIMARY,
+  FALLBACK_WARNING,
   type IntelligenceRegion,
   type LayerId,
 } from '../../../lib/mapIntelligence';
@@ -448,7 +449,7 @@ function MapPageInner() {
       return L.circleMarker([p.lat, p.lng], {
         radius: 26 + w * 46,
         stroke: false,
-        fillColor: resolveVar('--primary', 'oklch(62% .2 265)'),
+        fillColor: resolveVar('--primary', FALLBACK_PRIMARY),
         fillOpacity: 0.1 + w * 0.22,
       }).bindPopup(
         `<strong>${p.neighborhood}</strong><br/>Preço médio: <b>${fmtPriceSqm(p.avgPrice)}/m²</b>`,
@@ -472,7 +473,7 @@ function MapPageInner() {
       .filter((item) => item.latitude != null && item.longitude != null)
       .map((item) => L.circleMarker([item.latitude, item.longitude], {
         radius: 7,
-        fillColor: resolveVar('--warning', 'oklch(70% .15 70)'),
+        fillColor: resolveVar('--warning', FALLBACK_WARNING),
         color: '#ffffff',
         weight: 2,
         fillOpacity: 0.95,
