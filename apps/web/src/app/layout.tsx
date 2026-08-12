@@ -70,6 +70,7 @@ export default async function RootLayout({
           />
         ) : null}
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <meta name="theme-color" content="#4F46E5" />
       </head>
       <body>
         {children}
