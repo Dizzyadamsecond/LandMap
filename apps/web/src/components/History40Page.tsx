@@ -63,7 +63,7 @@ export default function History40Page() {
 
   const totalPoints = snapshot?.meta.totalPoints ?? 0;
   const years = snapshot?.meta
-    ? `${snapshot.meta.start.slice(3)} → ${snapshot.meta.end.slice(3)}`
+    ? `${snapshot.meta.start.slice(0, 7)} → ${snapshot.meta.end.slice(0, 7)}`
     : '…';
 
   const points = snapshot?.series[selected] ?? [];

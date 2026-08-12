@@ -47,8 +47,14 @@ export function useHistory40() {
       if (disposed) return;
       try {
         const msg = JSON.parse(raw) as History40Message;
-        if (msg.type === 'history40.snapshot') setSnapshot(msg);
-        else if (msg.type === 'history40.tick') setLastTick(msg);
+        if (msg.type === 'history40.snapshot') {
+          setSnapshot(msg);
+          // dados chegaram → transporte ativo (WS ou SSE)
+          setStatus((s) => (s === 'connecting' ? 'fallback' : s));
+        } else if (msg.type === 'history40.tick') {
+          setLastTick(msg);
+          setStatus((s) => (s === 'connecting' ? 'fallback' : s));
+        }
       } catch {
         /* ignore malformed frames */
       }
