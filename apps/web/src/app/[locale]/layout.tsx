@@ -6,13 +6,17 @@ import { ScrollToTop } from '../../components/ScrollToTop';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
 import { ToastProvider } from '@landmap/ui';
 import { ShellSwitch } from '../../components/ShellSwitch';
+import { InstallPrompt } from '../../components/InstallPrompt';
+import { OfflineBanner } from '../../components/OfflineBanner';
+import { UpdateBanner } from '../../components/UpdateBanner';
+import { SyncStatus } from '../../components/SyncStatus';
 import '@landmap/ui/styles.css';
 import '../../app/globals.css';
 
 export const dynamic = 'force-dynamic';
 
 export const viewport = {
-  themeColor: 'oklch(34% .18 265)',
+  themeColor: '#4F46E5',
   colorScheme: 'light dark',
 };
 
@@ -131,6 +135,11 @@ export default async function RootLayout({
                 <ErrorBoundary>{children}</ErrorBoundary>
               </ToastProvider>
             </ShellSwitch>
+            {/* PWA expert (skill pwa-expert): install prompt, offline banner, update banner, sync status */}
+            <InstallPrompt />
+            <OfflineBanner />
+            <UpdateBanner />
+            <SyncStatus />
             <ScrollToTop />
           </div>
         </NextIntlClientProvider>

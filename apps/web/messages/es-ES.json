@@ -707,5 +707,26 @@
     "lastTick": "Último tick",
     "live": "EN VIVO",
     "connecting": "conectando…"
+  },
+  "pwa": {
+    "install": {
+      "title": "Instalar LandMap",
+      "subtitle": "Acceso rápido, pantalla completa y soporte sin conexión en tu móvil.",
+      "cta": "Instalar",
+      "later": "Ahora no",
+      "dismiss": "Descartar"
+    },
+    "offline": {
+      "banner": "Estás sin conexión — la app sigue funcionando con datos guardados."
+    },
+    "update": {
+      "title": "Actualización disponible",
+      "subtitle": "Una nueva versión está lista. Recarga para ver las novedades.",
+      "cta": "Recargar ahora"
+    },
+    "sync": {
+      "pending": "{count} acción(es) esperando conexión",
+      "cta": "Sincronizar"
+    }
   }
 }

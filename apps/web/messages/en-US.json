@@ -703,5 +703,26 @@
     "lastTick": "Last tick",
     "live": "LIVE",
     "connecting": "connecting…"
+  },
+  "pwa": {
+    "install": {
+      "title": "Install LandMap",
+      "subtitle": "Quick access, full screen and offline support on your phone.",
+      "cta": "Install",
+      "later": "Not now",
+      "dismiss": "Dismiss"
+    },
+    "offline": {
+      "banner": "You're offline — the app keeps working with saved data."
+    },
+    "update": {
+      "title": "Update available",
+      "subtitle": "A new version is ready. Reload to get the latest features.",
+      "cta": "Reload now"
+    },
+    "sync": {
+      "pending": "{count} action(s) waiting for connection",
+      "cta": "Sync"
+    }
   }
 }
