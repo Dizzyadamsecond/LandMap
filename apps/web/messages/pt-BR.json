@@ -385,9 +385,9 @@
   "insights": {
     "eyebrow": "Insights",
     "title": "Insights de mercado",
-  "brasil": {
-    "title": "APIs Públicas do Brasil"
-  },
+    "brasil": {
+      "title": "APIs Públicas do Brasil"
+    },
     "description": "Relatórios automáticos de valorização, risco e oportunidade por região, gerados a partir de 1.500 datasets.",
     "cta": "Ver regiões",
     "f1": "Ranking de valorização por cidade",
@@ -660,5 +660,35 @@
       "Organizando os preços por m²...",
       "Quase pronto..."
     ]
+  },
+  "worldmonitor": {
+    "eyebrow": "Monitoramento em tempo real",
+    "title": "WorldMonitor",
+    "description": "Oportunidades solares e de datacenter em 36 cidades — dados reais de Open-Meteo, OpenStreetMap e WRI, atualizados 24/7 por scraper PyTorch.",
+    "lastUpdate": "Atualizado",
+    "solarTitle": "Oportunidade solar",
+    "datacenterTitle": "Oportunidade datacenter",
+    "rankingTitle": "Ranking combinado",
+    "solarScore": "Score solar",
+    "dcScore": "Score datacenter",
+    "annualYield": "kWh/kWp ano",
+    "sunHours": "h sol pico",
+    "stability": "Estabilidade",
+    "avgTemp": "Temp média",
+    "dcOsm": "Datacenters OSM",
+    "substations": "Subestações",
+    "solarGenerators": "Geradores solares",
+    "plantsNear": "Usinas próximas",
+    "renewableNear": "Renováveis",
+    "grade": "Grade",
+    "city": "Cidade",
+    "source": "Fontes",
+    "openmeteo": "Open-Meteo (radiação solar + clima, previsão 16d)",
+    "overpass": "OpenStreetMap Overpass (datacenters, subestações, geradores solares)",
+    "wri": "WRI Global Power Plant Database (usinas reais)",
+    "torch": "PyTorch SolarYieldNet (previsão de geração treinada em radiação ao vivo)",
+    "noData": "Snapshot ainda não disponível — aguardando primeira coleta 24/7.",
+    "refresh": "Atualizar agora",
+    "loading": "Carregando dados ao vivo…"
   }
 }

@@ -1,0 +1,1586 @@
+[
+  {
+    "city": "Aracaju",
+    "state": "SE",
+    "lat": -10.9132,
+    "lng": -37.0707,
+    "avg_temp_c": 24.9,
+    "forecast_days": 18,
+    "score": 83.6,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2089.0,
+    "peak_sun_hours": 5.72,
+    "stability": 49.3,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.969
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.344081+00:00"
+  },
+  {
+    "city": "Balneário Camboriú",
+    "state": "SC",
+    "lat": -26.9923,
+    "lng": -48.6303,
+    "avg_temp_c": 17.3,
+    "forecast_days": 18,
+    "score": 33.8,
+    "grade": "F",
+    "annual_kwh_per_kwp": 846.0,
+    "peak_sun_hours": 2.32,
+    "stability": 45.4,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.979
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.989
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.913
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.945
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.854
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.848
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.857
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.345089+00:00"
+  },
+  {
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "lat": -19.9158,
+    "lng": -43.9351,
+    "avg_temp_c": 22.9,
+    "forecast_days": 18,
+    "score": 79.5,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1987.0,
+    "peak_sun_hours": 5.44,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.895
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.896
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.901
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.903
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.908
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.347088+00:00"
+  },
+  {
+    "city": "Belém",
+    "state": "PA",
+    "lat": -1.4527,
+    "lng": -48.4973,
+    "avg_temp_c": 27.9,
+    "forecast_days": 18,
+    "score": 91.7,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2293.0,
+    "peak_sun_hours": 6.28,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.929
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.924
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.925
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.927
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.923
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.934
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.953
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.349085+00:00"
+  },
+  {
+    "city": "Boa Vista",
+    "state": "RR",
+    "lat": 2.8098,
+    "lng": -60.6731,
+    "avg_temp_c": 27.9,
+    "forecast_days": 18,
+    "score": 86.2,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2154.0,
+    "peak_sun_hours": 5.9,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.350086+00:00"
+  },
+  {
+    "city": "Brasília",
+    "state": "DF",
+    "lat": -15.7804,
+    "lng": -47.9303,
+    "avg_temp_c": 25.5,
+    "forecast_days": 18,
+    "score": 87.8,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2194.0,
+    "peak_sun_hours": 6.01,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.351590+00:00"
+  },
+  {
+    "city": "Campinas",
+    "state": "SP",
+    "lat": -22.9138,
+    "lng": -47.0639,
+    "avg_temp_c": 22.8,
+    "forecast_days": 18,
+    "score": 74.6,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1865.0,
+    "peak_sun_hours": 5.11,
+    "stability": 49.1,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.916
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.902
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.911
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.904
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.9
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.907
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.352144+00:00"
+  },
+  {
+    "city": "Campo Grande",
+    "state": "MS",
+    "lat": -20.4635,
+    "lng": -54.6243,
+    "avg_temp_c": 26.7,
+    "forecast_days": 18,
+    "score": 77.0,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1926.0,
+    "peak_sun_hours": 5.28,
+    "stability": 49.3,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.91
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.82
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.354662+00:00"
+  },
+  {
+    "city": "Cuiabá",
+    "state": "MT",
+    "lat": -15.6261,
+    "lng": -56.1114,
+    "avg_temp_c": 31.0,
+    "forecast_days": 18,
+    "score": 84.2,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2105.0,
+    "peak_sun_hours": 5.77,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.356166+00:00"
+  },
+  {
+    "city": "Curitiba",
+    "state": "PR",
+    "lat": -25.4314,
+    "lng": -49.2658,
+    "avg_temp_c": 16.1,
+    "forecast_days": 18,
+    "score": 51.6,
+    "grade": "C",
+    "annual_kwh_per_kwp": 1291.0,
+    "peak_sun_hours": 3.54,
+    "stability": 45.8,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 1.022
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 1.046
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 1.024
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 1.098
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.994
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.937
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.991
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.357172+00:00"
+  },
+  {
+    "city": "Florianópolis",
+    "state": "SC",
+    "lat": -27.5936,
+    "lng": -48.549,
+    "avg_temp_c": 17.2,
+    "forecast_days": 18,
+    "score": 32.8,
+    "grade": "F",
+    "annual_kwh_per_kwp": 821.0,
+    "peak_sun_hours": 2.25,
+    "stability": 45.8,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.953
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.951
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.901
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.958
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.884
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.853
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.858
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.359170+00:00"
+  },
+  {
+    "city": "Fortaleza",
+    "state": "CE",
+    "lat": -3.7161,
+    "lng": -38.5444,
+    "avg_temp_c": 27.3,
+    "forecast_days": 18,
+    "score": 93.2,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2330.0,
+    "peak_sun_hours": 6.38,
+    "stability": 50.2,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.941
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.360675+00:00"
+  },
+  {
+    "city": "Goiânia",
+    "state": "GO",
+    "lat": -16.6872,
+    "lng": -49.2652,
+    "avg_temp_c": 29.0,
+    "forecast_days": 18,
+    "score": 85.6,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2140.0,
+    "peak_sun_hours": 5.86,
+    "stability": 49.8,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.361681+00:00"
+  },
+  {
+    "city": "Itajaí",
+    "state": "SC",
+    "lat": -26.9088,
+    "lng": -48.6612,
+    "avg_temp_c": 17.5,
+    "forecast_days": 18,
+    "score": 34.5,
+    "grade": "F",
+    "annual_kwh_per_kwp": 862.0,
+    "peak_sun_hours": 2.36,
+    "stability": 45.6,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.961
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.9
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.94
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.854
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.846
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.855
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.363208+00:00"
+  },
+  {
+    "city": "Joinville",
+    "state": "SC",
+    "lat": -26.3052,
+    "lng": -48.8482,
+    "avg_temp_c": 18.1,
+    "forecast_days": 18,
+    "score": 34.7,
+    "grade": "F",
+    "annual_kwh_per_kwp": 866.0,
+    "peak_sun_hours": 2.37,
+    "stability": 45.4,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.928
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.953
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.886
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.934
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.889
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.857
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.839
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.363714+00:00"
+  },
+  {
+    "city": "João Pessoa",
+    "state": "PB",
+    "lat": -7.1371,
+    "lng": -34.8406,
+    "avg_temp_c": 25.3,
+    "forecast_days": 18,
+    "score": 85.7,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2143.0,
+    "peak_sun_hours": 5.87,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.942
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.945
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.943
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.964
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.946
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.943
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.949
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.366227+00:00"
+  },
+  {
+    "city": "Londrina",
+    "state": "PR",
+    "lat": -23.3113,
+    "lng": -51.163,
+    "avg_temp_c": 21.3,
+    "forecast_days": 18,
+    "score": 73.8,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1845.0,
+    "peak_sun_hours": 5.05,
+    "stability": 45.8,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.927
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.953
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.911
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.92
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.891
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.905
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.933
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.367227+00:00"
+  },
+  {
+    "city": "Macapá",
+    "state": "AP",
+    "lat": 0.0368,
+    "lng": -51.0664,
+    "avg_temp_c": 28.2,
+    "forecast_days": 18,
+    "score": 95.5,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2388.0,
+    "peak_sun_hours": 6.54,
+    "stability": 54.2,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.969
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.368228+00:00"
+  },
+  {
+    "city": "Maceió",
+    "state": "AL",
+    "lat": -9.6527,
+    "lng": -35.7439,
+    "avg_temp_c": 24.9,
+    "forecast_days": 18,
+    "score": 83.2,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2080.0,
+    "peak_sun_hours": 5.7,
+    "stability": 49.3,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.969
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.370227+00:00"
+  },
+  {
+    "city": "Manaus",
+    "state": "AM",
+    "lat": -3.1248,
+    "lng": -60.0266,
+    "avg_temp_c": 30.5,
+    "forecast_days": 18,
+    "score": 91.1,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2276.0,
+    "peak_sun_hours": 6.24,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.371731+00:00"
+  },
+  {
+    "city": "Maringá",
+    "state": "PR",
+    "lat": -23.42,
+    "lng": -51.932,
+    "avg_temp_c": 22.3,
+    "forecast_days": 18,
+    "score": 73.2,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1831.0,
+    "peak_sun_hours": 5.02,
+    "stability": 45.8,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.947
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.931
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.853
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.842
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.85
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.877
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.921
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.372735+00:00"
+  },
+  {
+    "city": "Natal",
+    "state": "RN",
+    "lat": -5.7836,
+    "lng": -35.2094,
+    "avg_temp_c": 25.7,
+    "forecast_days": 18,
+    "score": 86.9,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2172.0,
+    "peak_sun_hours": 5.95,
+    "stability": 50.9,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.969
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.374239+00:00"
+  },
+  {
+    "city": "Niterói",
+    "state": "RJ",
+    "lat": -22.8856,
+    "lng": -43.1036,
+    "avg_temp_c": 22.1,
+    "forecast_days": 18,
+    "score": 56.8,
+    "grade": "B",
+    "annual_kwh_per_kwp": 1420.0,
+    "peak_sun_hours": 3.89,
+    "stability": 49.5,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.896
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.376248+00:00"
+  },
+  {
+    "city": "Palmas",
+    "state": "TO",
+    "lat": -10.2518,
+    "lng": -48.2973,
+    "avg_temp_c": 31.1,
+    "forecast_days": 18,
+    "score": 95.4,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2385.0,
+    "peak_sun_hours": 6.53,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.377245+00:00"
+  },
+  {
+    "city": "Porto Alegre",
+    "state": "RS",
+    "lat": -30.035,
+    "lng": -51.2161,
+    "avg_temp_c": 16.2,
+    "forecast_days": 18,
+    "score": 42.7,
+    "grade": "D",
+    "annual_kwh_per_kwp": 1068.0,
+    "peak_sun_hours": 2.93,
+    "stability": 45.4,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 1.028
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 1.031
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 1.01
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 1.019
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.887
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.852
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.865
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.378243+00:00"
+  },
+  {
+    "city": "Porto Velho",
+    "state": "RO",
+    "lat": -8.7644,
+    "lng": -63.8843,
+    "avg_temp_c": 28.9,
+    "forecast_days": 18,
+    "score": 81.3,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2032.0,
+    "peak_sun_hours": 5.57,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.380245+00:00"
+  },
+  {
+    "city": "Recife",
+    "state": "PE",
+    "lat": -8.0469,
+    "lng": -34.8778,
+    "avg_temp_c": 25.2,
+    "forecast_days": 18,
+    "score": 84.4,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2110.0,
+    "peak_sun_hours": 5.78,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.922
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.967
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.966
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.944
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.947
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.943
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.946
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.381750+00:00"
+  },
+  {
+    "city": "Ribeirão Preto",
+    "state": "SP",
+    "lat": -21.1791,
+    "lng": -47.8118,
+    "avg_temp_c": 25.1,
+    "forecast_days": 18,
+    "score": 79.3,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1982.0,
+    "peak_sun_hours": 5.43,
+    "stability": 49.5,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.903
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.382755+00:00"
+  },
+  {
+    "city": "Rio Branco",
+    "state": "AC",
+    "lat": -9.9671,
+    "lng": -67.837,
+    "avg_temp_c": 27.1,
+    "forecast_days": 18,
+    "score": 71.0,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1776.0,
+    "peak_sun_hours": 4.87,
+    "stability": 49.5,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.952
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.955
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.969
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.915
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.384256+00:00"
+  },
+  {
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "lat": -22.9055,
+    "lng": -43.1731,
+    "avg_temp_c": 22.1,
+    "forecast_days": 18,
+    "score": 57.0,
+    "grade": "B",
+    "annual_kwh_per_kwp": 1426.0,
+    "peak_sun_hours": 3.91,
+    "stability": 49.3,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.895
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.385766+00:00"
+  },
+  {
+    "city": "Salvador",
+    "state": "BA",
+    "lat": -12.9779,
+    "lng": -38.5036,
+    "avg_temp_c": 24.7,
+    "forecast_days": 18,
+    "score": 82.6,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2066.0,
+    "peak_sun_hours": 5.66,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.917
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.922
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.92
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.914
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.915
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.916
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.937
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.386771+00:00"
+  },
+  {
+    "city": "São Luís",
+    "state": "MA",
+    "lat": -2.5239,
+    "lng": -44.3067,
+    "avg_temp_c": 28.0,
+    "forecast_days": 18,
+    "score": 89.1,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2228.0,
+    "peak_sun_hours": 6.11,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.387772+00:00"
+  },
+  {
+    "city": "São Paulo",
+    "state": "SP",
+    "lat": -23.5502,
+    "lng": -46.6334,
+    "avg_temp_c": 20.0,
+    "forecast_days": 18,
+    "score": 65.3,
+    "grade": "A",
+    "annual_kwh_per_kwp": 1633.0,
+    "peak_sun_hours": 4.47,
+    "stability": 47.7,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.931
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.926
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.934
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.912
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.903
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.913
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.390280+00:00"
+  },
+  {
+    "city": "Teresina",
+    "state": "PI",
+    "lat": -5.1093,
+    "lng": -42.8044,
+    "avg_temp_c": 30.6,
+    "forecast_days": 18,
+    "score": 97.0,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2424.0,
+    "peak_sun_hours": 6.64,
+    "stability": 50.0,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.391810+00:00"
+  },
+  {
+    "city": "Uberlândia",
+    "state": "MG",
+    "lat": -18.918,
+    "lng": -48.2769,
+    "avg_temp_c": 27.1,
+    "forecast_days": 18,
+    "score": 83.3,
+    "grade": "A",
+    "annual_kwh_per_kwp": 2083.0,
+    "peak_sun_hours": 5.71,
+    "stability": 49.8,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.392815+00:00"
+  },
+  {
+    "city": "Vitória",
+    "state": "ES",
+    "lat": -20.2983,
+    "lng": -40.3213,
+    "avg_temp_c": 22.8,
+    "forecast_days": 18,
+    "score": 62.2,
+    "grade": "B",
+    "annual_kwh_per_kwp": 1555.0,
+    "peak_sun_hours": 4.26,
+    "stability": 48.6,
+    "daily": [
+      {
+        "date": "2026-08-21",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-22",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-23",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-24",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-25",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-26",
+        "kwh_per_kwp": 0.894
+      },
+      {
+        "date": "2026-08-27",
+        "kwh_per_kwp": 0.894
+      }
+    ],
+    "updatedAt": "2026-08-12T19:08:29.394318+00:00"
+  }
+]

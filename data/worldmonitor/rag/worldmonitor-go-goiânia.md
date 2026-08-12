@@ -1,0 +1,16 @@
+# WorldMonitor Goiânia (GO)
+
+> Dados em tempo real coletados em 2026-08-12T19:08:29.450160+00:00 via Open-Meteo + OSM + WRI.
+
+## Oportunidade solar
+- Score: 85.6/100 (grade A)
+- Produção anual estimada: 2140.0 kWh/kWp
+- Horas de sol pico: 5.86 h/dia
+- Estabilidade de radiação: 49.8/100
+- Temperatura média: 29.0 °C
+
+## Oportunidade datacenter
+- Score: 85.0/100 (grade A)
+- Datacenters OSM: 0 | Subestações: 29
+- Usinas próximas: 7 (renováveis: 0)
+- Grade datacenter: A | Grade solar: A

@@ -660,5 +660,35 @@
       "Organizing price per m²...",
       "Almost ready..."
     ]
+  },
+  "worldmonitor": {
+    "eyebrow": "Real-time monitoring",
+    "title": "WorldMonitor",
+    "description": "Solar and datacenter opportunities across 36 cities — real data from Open-Meteo, OpenStreetMap and WRI, refreshed 24/7 by a PyTorch scraper.",
+    "lastUpdate": "Updated",
+    "solarTitle": "Solar opportunity",
+    "datacenterTitle": "Datacenter opportunity",
+    "rankingTitle": "Combined ranking",
+    "solarScore": "Solar score",
+    "dcScore": "Datacenter score",
+    "annualYield": "kWh/kWp year",
+    "sunHours": "peak sun h",
+    "stability": "Stability",
+    "avgTemp": "Avg temp",
+    "dcOsm": "OSM datacenters",
+    "substations": "Substations",
+    "solarGenerators": "Solar generators",
+    "plantsNear": "Plants nearby",
+    "renewableNear": "Renewables",
+    "grade": "Grade",
+    "city": "City",
+    "source": "Sources",
+    "openmeteo": "Open-Meteo (solar radiation + weather, 16d forecast)",
+    "overpass": "OpenStreetMap Overpass (datacenters, substations, solar generators)",
+    "wri": "WRI Global Power Plant Database (real power plants)",
+    "torch": "PyTorch SolarYieldNet (yield forecast trained on live radiation)",
+    "noData": "Snapshot not ready yet — waiting for the first 24/7 collection.",
+    "refresh": "Refresh now",
+    "loading": "Loading live data…"
   }
 }

@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/sales-loop",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/worldmonitor",
+      "schedule": "0 */6 * * *"
     }
   ]
 }

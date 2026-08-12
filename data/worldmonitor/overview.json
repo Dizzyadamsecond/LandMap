@@ -1,0 +1,657 @@
+{
+  "generatedAt": "2026-08-12T19:08:29.446649+00:00",
+  "cities": 36,
+  "records": 15552,
+  "solar": {
+    "Aracaju": {
+      "score": 83.6,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2089.0
+    },
+    "Balneário Camboriú": {
+      "score": 33.8,
+      "grade": "F",
+      "annual_kwh_per_kwp": 846.0
+    },
+    "Belo Horizonte": {
+      "score": 79.5,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1987.0
+    },
+    "Belém": {
+      "score": 91.7,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2293.0
+    },
+    "Boa Vista": {
+      "score": 86.2,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2154.0
+    },
+    "Brasília": {
+      "score": 87.8,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2194.0
+    },
+    "Campinas": {
+      "score": 74.6,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1865.0
+    },
+    "Campo Grande": {
+      "score": 77.0,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1926.0
+    },
+    "Cuiabá": {
+      "score": 84.2,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2105.0
+    },
+    "Curitiba": {
+      "score": 51.6,
+      "grade": "C",
+      "annual_kwh_per_kwp": 1291.0
+    },
+    "Florianópolis": {
+      "score": 32.8,
+      "grade": "F",
+      "annual_kwh_per_kwp": 821.0
+    },
+    "Fortaleza": {
+      "score": 93.2,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2330.0
+    },
+    "Goiânia": {
+      "score": 85.6,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2140.0
+    },
+    "Itajaí": {
+      "score": 34.5,
+      "grade": "F",
+      "annual_kwh_per_kwp": 862.0
+    },
+    "Joinville": {
+      "score": 34.7,
+      "grade": "F",
+      "annual_kwh_per_kwp": 866.0
+    },
+    "João Pessoa": {
+      "score": 85.7,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2143.0
+    },
+    "Londrina": {
+      "score": 73.8,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1845.0
+    },
+    "Macapá": {
+      "score": 95.5,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2388.0
+    },
+    "Maceió": {
+      "score": 83.2,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2080.0
+    },
+    "Manaus": {
+      "score": 91.1,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2276.0
+    },
+    "Maringá": {
+      "score": 73.2,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1831.0
+    },
+    "Natal": {
+      "score": 86.9,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2172.0
+    },
+    "Niterói": {
+      "score": 56.8,
+      "grade": "B",
+      "annual_kwh_per_kwp": 1420.0
+    },
+    "Palmas": {
+      "score": 95.4,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2385.0
+    },
+    "Porto Alegre": {
+      "score": 42.7,
+      "grade": "D",
+      "annual_kwh_per_kwp": 1068.0
+    },
+    "Porto Velho": {
+      "score": 81.3,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2032.0
+    },
+    "Recife": {
+      "score": 84.4,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2110.0
+    },
+    "Ribeirão Preto": {
+      "score": 79.3,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1982.0
+    },
+    "Rio Branco": {
+      "score": 71.0,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1776.0
+    },
+    "Rio de Janeiro": {
+      "score": 57.0,
+      "grade": "B",
+      "annual_kwh_per_kwp": 1426.0
+    },
+    "Salvador": {
+      "score": 82.6,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2066.0
+    },
+    "São Luís": {
+      "score": 89.1,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2228.0
+    },
+    "São Paulo": {
+      "score": 65.3,
+      "grade": "A",
+      "annual_kwh_per_kwp": 1633.0
+    },
+    "Teresina": {
+      "score": 97.0,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2424.0
+    },
+    "Uberlândia": {
+      "score": 83.3,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2083.0
+    },
+    "Vitória": {
+      "score": 62.2,
+      "grade": "B",
+      "annual_kwh_per_kwp": 1555.0
+    }
+  },
+  "datacenter": {
+    "Aracaju": {
+      "score": 95.7,
+      "grade": "A"
+    },
+    "Balneário Camboriú": {
+      "score": 97.3,
+      "grade": "A"
+    },
+    "Belo Horizonte": {
+      "score": 62.4,
+      "grade": "C"
+    },
+    "Belém": {
+      "score": 93.3,
+      "grade": "A"
+    },
+    "Boa Vista": {
+      "score": 80.5,
+      "grade": "A"
+    },
+    "Brasília": {
+      "score": 89.6,
+      "grade": "A"
+    },
+    "Campinas": {
+      "score": 96.8,
+      "grade": "A"
+    },
+    "Campo Grande": {
+      "score": 82.5,
+      "grade": "A"
+    },
+    "Cuiabá": {
+      "score": 47.4,
+      "grade": "D"
+    },
+    "Curitiba": {
+      "score": 100.0,
+      "grade": "A"
+    },
+    "Florianópolis": {
+      "score": 62.3,
+      "grade": "C"
+    },
+    "Fortaleza": {
+      "score": 59.2,
+      "grade": "C"
+    },
+    "Goiânia": {
+      "score": 85.0,
+      "grade": "A"
+    },
+    "Itajaí": {
+      "score": 62.2,
+      "grade": "C"
+    },
+    "Joinville": {
+      "score": 92.5,
+      "grade": "A"
+    },
+    "João Pessoa": {
+      "score": 60.5,
+      "grade": "C"
+    },
+    "Londrina": {
+      "score": 86.5,
+      "grade": "A"
+    },
+    "Macapá": {
+      "score": 44.5,
+      "grade": "D"
+    },
+    "Maceió": {
+      "score": 60.6,
+      "grade": "C"
+    },
+    "Manaus": {
+      "score": 55.1,
+      "grade": "C"
+    },
+    "Maringá": {
+      "score": 93.2,
+      "grade": "A"
+    },
+    "Natal": {
+      "score": 95.2,
+      "grade": "A"
+    },
+    "Niterói": {
+      "score": 60.0,
+      "grade": "C"
+    },
+    "Palmas": {
+      "score": 76.0,
+      "grade": "B"
+    },
+    "Porto Alegre": {
+      "score": 100.0,
+      "grade": "A"
+    },
+    "Porto Velho": {
+      "score": 47.5,
+      "grade": "D"
+    },
+    "Recife": {
+      "score": 95.4,
+      "grade": "A"
+    },
+    "Ribeirão Preto": {
+      "score": 94.8,
+      "grade": "A"
+    },
+    "Rio Branco": {
+      "score": 48.1,
+      "grade": "D"
+    },
+    "Rio de Janeiro": {
+      "score": 95.0,
+      "grade": "A"
+    },
+    "Salvador": {
+      "score": 95.8,
+      "grade": "A"
+    },
+    "São Luís": {
+      "score": 45.8,
+      "grade": "D"
+    },
+    "São Paulo": {
+      "score": 98.8,
+      "grade": "A"
+    },
+    "Teresina": {
+      "score": 86.8,
+      "grade": "A"
+    },
+    "Uberlândia": {
+      "score": 58.0,
+      "grade": "C"
+    },
+    "Vitória": {
+      "score": 60.0,
+      "grade": "C"
+    }
+  },
+  "topSolar": [
+    {
+      "city": "Teresina",
+      "state": "PI",
+      "lat": -5.1093,
+      "lng": -42.8044,
+      "avg_temp_c": 30.6,
+      "forecast_days": 18,
+      "score": 97.0,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2424.0,
+      "peak_sun_hours": 6.64,
+      "stability": 50.0,
+      "daily": [
+        {
+          "date": "2026-08-21",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-22",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-23",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-24",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-25",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-26",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-27",
+          "kwh_per_kwp": 0.894
+        }
+      ],
+      "updatedAt": "2026-08-12T19:08:29.391810+00:00"
+    },
+    {
+      "city": "Macapá",
+      "state": "AP",
+      "lat": 0.0368,
+      "lng": -51.0664,
+      "avg_temp_c": 28.2,
+      "forecast_days": 18,
+      "score": 95.5,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2388.0,
+      "peak_sun_hours": 6.54,
+      "stability": 54.2,
+      "daily": [
+        {
+          "date": "2026-08-21",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-22",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-23",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-24",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-25",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-26",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-27",
+          "kwh_per_kwp": 0.969
+        }
+      ],
+      "updatedAt": "2026-08-12T19:08:29.368228+00:00"
+    },
+    {
+      "city": "Palmas",
+      "state": "TO",
+      "lat": -10.2518,
+      "lng": -48.2973,
+      "avg_temp_c": 31.1,
+      "forecast_days": 18,
+      "score": 95.4,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2385.0,
+      "peak_sun_hours": 6.53,
+      "stability": 50.0,
+      "daily": [
+        {
+          "date": "2026-08-21",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-22",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-23",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-24",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-25",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-26",
+          "kwh_per_kwp": 0.894
+        },
+        {
+          "date": "2026-08-27",
+          "kwh_per_kwp": 0.894
+        }
+      ],
+      "updatedAt": "2026-08-12T19:08:29.377245+00:00"
+    },
+    {
+      "city": "Fortaleza",
+      "state": "CE",
+      "lat": -3.7161,
+      "lng": -38.5444,
+      "avg_temp_c": 27.3,
+      "forecast_days": 18,
+      "score": 93.2,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2330.0,
+      "peak_sun_hours": 6.38,
+      "stability": 50.2,
+      "daily": [
+        {
+          "date": "2026-08-21",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-22",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-23",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-24",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-25",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-26",
+          "kwh_per_kwp": 0.969
+        },
+        {
+          "date": "2026-08-27",
+          "kwh_per_kwp": 0.941
+        }
+      ],
+      "updatedAt": "2026-08-12T19:08:29.360675+00:00"
+    },
+    {
+      "city": "Belém",
+      "state": "PA",
+      "lat": -1.4527,
+      "lng": -48.4973,
+      "avg_temp_c": 27.9,
+      "forecast_days": 18,
+      "score": 91.7,
+      "grade": "A",
+      "annual_kwh_per_kwp": 2293.0,
+      "peak_sun_hours": 6.28,
+      "stability": 50.0,
+      "daily": [
+        {
+          "date": "2026-08-21",
+          "kwh_per_kwp": 0.929
+        },
+        {
+          "date": "2026-08-22",
+          "kwh_per_kwp": 0.924
+        },
+        {
+          "date": "2026-08-23",
+          "kwh_per_kwp": 0.925
+        },
+        {
+          "date": "2026-08-24",
+          "kwh_per_kwp": 0.927
+        },
+        {
+          "date": "2026-08-25",
+          "kwh_per_kwp": 0.923
+        },
+        {
+          "date": "2026-08-26",
+          "kwh_per_kwp": 0.934
+        },
+        {
+          "date": "2026-08-27",
+          "kwh_per_kwp": 0.953
+        }
+      ],
+      "updatedAt": "2026-08-12T19:08:29.349085+00:00"
+    }
+  ],
+  "topDataCenter": [
+    {
+      "city": "Curitiba",
+      "state": "PR",
+      "lat": -25.4314,
+      "lng": -49.2658,
+      "score": 100.0,
+      "grade": "A",
+      "temp_score": 96.7,
+      "grid_score": 35.0,
+      "renewable_score": 20.0,
+      "plants_near": 16,
+      "renewable_near": 0,
+      "datacenters_osm": 0,
+      "substations_osm": 63,
+      "solar_generators_osm": 70,
+      "power_lines_osm": 240,
+      "datacenter_grade": "A",
+      "solar_grade": "C",
+      "updatedAt": "2026-08-12T19:08:29.411857+00:00"
+    },
+    {
+      "city": "Porto Alegre",
+      "state": "RS",
+      "lat": -30.035,
+      "lng": -51.2161,
+      "score": 100.0,
+      "grade": "A",
+      "temp_score": 96.4,
+      "grid_score": 35.0,
+      "renewable_score": 20.0,
+      "plants_near": 23,
+      "renewable_near": 0,
+      "datacenters_osm": 0,
+      "substations_osm": 63,
+      "solar_generators_osm": 227,
+      "power_lines_osm": 169,
+      "datacenter_grade": "A",
+      "solar_grade": "D",
+      "updatedAt": "2026-08-12T19:08:29.435582+00:00"
+    },
+    {
+      "city": "São Paulo",
+      "state": "SP",
+      "lat": -23.5502,
+      "lng": -46.6334,
+      "score": 98.8,
+      "grade": "A",
+      "temp_score": 85.0,
+      "grid_score": 35.0,
+      "renewable_score": 20.0,
+      "plants_near": 125,
+      "renewable_near": 0,
+      "datacenters_osm": 0,
+      "substations_osm": 289,
+      "solar_generators_osm": 71,
+      "power_lines_osm": 477,
+      "datacenter_grade": "A",
+      "solar_grade": "A",
+      "updatedAt": "2026-08-12T19:08:29.443137+00:00"
+    },
+    {
+      "city": "Balneário Camboriú",
+      "state": "SC",
+      "lat": -26.9923,
+      "lng": -48.6303,
+      "score": 97.3,
+      "grade": "A",
+      "temp_score": 93.1,
+      "grid_score": 35.0,
+      "renewable_score": 20.0,
+      "plants_near": 13,
+      "renewable_near": 0,
+      "datacenters_osm": 0,
+      "substations_osm": 11,
+      "solar_generators_osm": 19,
+      "power_lines_osm": 32,
+      "datacenter_grade": "A",
+      "solar_grade": "F",
+      "updatedAt": "2026-08-12T19:08:29.398831+00:00"
+    },
+    {
+      "city": "Campinas",
+      "state": "SP",
+      "lat": -22.9138,
+      "lng": -47.0639,
+      "score": 96.8,
+      "grade": "A",
+      "temp_score": 76.6,
+      "grid_score": 35.0,
+      "renewable_score": 20.0,
+      "plants_near": 61,
+      "renewable_near": 1,
+      "datacenters_osm": 0,
+      "substations_osm": 73,
+      "solar_generators_osm": 243,
+      "power_lines_osm": 210,
+      "datacenter_grade": "A",
+      "solar_grade": "A",
+      "updatedAt": "2026-08-12T19:08:29.406843+00:00"
+    }
+  ]
+}

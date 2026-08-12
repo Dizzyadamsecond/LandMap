@@ -7,10 +7,12 @@ import { createRagRouter } from './routes/rag.js';
 import { createWebhooksRouter } from './routes/webhooks.js';
 import { createSalesRouter } from './routes/sales.js';
 import { createIngestRouter } from './routes/ingest.js';
+import { createWorldMonitorRouter } from './routes/worldmonitor.js';
 
 export { createRagRouter } from './routes/rag.js';
 export { createWebhooksRouter } from './routes/webhooks.js';
 export { createSalesRouter } from './routes/sales.js';
+export { createWorldMonitorRouter } from './routes/worldmonitor.js';
 export { emitWebhook, signBody } from './webhooks/store.js';
 
 const platform = new Hono();
@@ -18,6 +20,7 @@ platform.route('/rag', createRagRouter());
 platform.route('/webhooks', createWebhooksRouter());
 platform.route('/sales', createSalesRouter());
 platform.route('/ingest', createIngestRouter(() => `ing_${Math.random().toString(36).slice(2, 10)}`));
+platform.route('/worldmonitor', createWorldMonitorRouter());
 
 
 export default platform;

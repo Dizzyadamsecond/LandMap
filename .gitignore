@@ -146,3 +146,10 @@ docs/lovable_live_fetch.html
 id_*
 *_rsa
 *_ed25519
+
+
+# ─── WorldMonitor scraper 24/7 (regenerável — só dados JSON vão pro git) ───
+data/worldmonitor/cache/
+data/worldmonitor/*.log
+data/worldmonitor/*.log.err
+data/worldmonitor/dbg.*
