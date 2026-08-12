@@ -27,6 +27,7 @@
 - **packages/ui** (`@landmap/ui`): componentes React + design tokens. Build com `tsup`. Exporta `./styles.css` e tokens JS (`tokens.ts`).
 - Outros pacotes: `@landmap/api` (Hono), `@landmap/llm` (LangGraph/RAG/PgVector), `@landmap/db`, `@landmap/config`, `@landmap/sales`.
 - **RAG + Webhooks (2026-07-17):** UI `/rag` e `/chat` → `POST /api/rag/query` (proxy Next → `@landmap/api/platform`). Webhooks outbound multi-projeto: `POST /api/webhooks/endpoints`, HMAC `X-LandMap-Signature`, admin `/admin/webhooks`. Docs: `docs/platform-rag-webhooks-2026-07.md`.
+- **WorldMonitor (2026-08-12):** scraper 24/7 em Python/PyTorch (`tools/worldmonitor/`) com dados REAIS sem chave — Open-Meteo (radiação solar horária, 36 cidades), Overpass/OSM (datacenters/subestações/geradores solares), WRI Global Power Plant DB (13k usinas). Modelo `SolarYieldNet` prevê geração solar; scoring de oportunidade solar/datacenter (grades A–F). Rota `/[locale]/worldmonitor` + API `/api/worldmonitor/*` (Hono no platform) + cron Vercel `/api/cron/worldmonitor` a cada 6h + cron local Hermes. Dossiês indexados no RAG (namespace `worldmonitor`). Detalhes no topo do `MEMORY.md`.
 - **Admin agentes (2026-07-17):** `/admin/agents` — time de **14** em espera; squad FU (followup + cold_recovery + waba); **auto-loop** com countdown → `POST /api/sales/tick`; autonomia off|copilot|autopilot. Doc: `docs/admin-agents-followup-2026-07.md`. **Não** expor cockpit no app público.
 - Diagramas/planos: `docs/`, `landmap-complete-plan.md`, `ARCHITECTURE.md`.
 
