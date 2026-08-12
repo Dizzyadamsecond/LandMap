@@ -1,10 +1,11 @@
-const CACHE = 'landmap-v2';
+const CACHE = 'landmap-v3';
 const PRECACHE = [
   '/',
   '/pt-BR',
   '/en-US',
   '/es-ES',
   '/offline.html',
+  '/manifest.json',
   '/favicon.svg',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
@@ -16,6 +17,10 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE).then((c) => c.addAll(PRECACHE).catch(() => {})).then(() => self.skipWaiting())
   );
+});
+
+self.addEventListener('message', (e) => {
+  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {

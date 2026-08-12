@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { getLocale } from 'next-intl/server';
 import { LANDMAP_OG_IMAGE } from '../lib/og-image';
@@ -13,10 +13,18 @@ import { LANDMAP_OG_IMAGE } from '../lib/og-image';
 
 export const dynamic = 'force-dynamic';
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#4F46E5',
+  viewportFit: 'cover',
+};
+
 export const metadata: Metadata = {
   manifest: '/manifest.json',
   applicationName: 'LandMap',
-  themeColor: 'oklch(34% .18 265)',
+  themeColor: '#4F46E5',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -70,7 +78,6 @@ export default async function RootLayout({
           />
         ) : null}
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-        <meta name="theme-color" content="#4F46E5" />
       </head>
       <body>
         {children}
