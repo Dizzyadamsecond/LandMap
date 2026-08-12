@@ -690,5 +690,18 @@
     "noData": "Snapshot ainda não disponível — aguardando primeira coleta 24/7.",
     "refresh": "Atualizar agora",
     "loading": "Carregando dados ao vivo…"
+  },
+  "history40": {
+    "eyebrow": "40 anos em tempo real",
+    "title": "History40",
+    "description": "Séries macroeconômicas reais de 1986 até hoje (Bacen SGS) — juros, inflação e construção civil — transmitidas ao vivo por WebSocket/SSE.",
+    "years": "Período",
+    "points": "Pontos",
+    "series": "Séries",
+    "transport": "Transporte",
+    "source": "Fonte",
+    "lastTick": "Último tick",
+    "live": "AO VIVO",
+    "connecting": "conectando…"
   }
 }

@@ -41,6 +41,7 @@ const marketLinks = [
   { href: 'world', labelKey: 'Mundo 3D' },
   { href: 'world-3d', labelKey: 'Atlas vivo' },
   { href: 'worldmonitor', labelKey: 'WorldMonitor' },
+  { href: 'history40', labelKey: 'History40' },
   { href: 'v2', labelKey: 'Atlas' },
   { href: 'terrenos', labelKey: 'Terrenos (legado)' },
   { href: 'calculator', labelKey: 'Calculadora' },

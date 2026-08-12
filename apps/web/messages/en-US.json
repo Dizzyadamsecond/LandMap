@@ -690,5 +690,18 @@
     "noData": "Snapshot not ready yet — waiting for the first 24/7 collection.",
     "refresh": "Refresh now",
     "loading": "Loading live data…"
+  },
+  "history40": {
+    "eyebrow": "40 years in real time",
+    "title": "History40",
+    "description": "Real macroeconomic series from 1986 to today (Bacen SGS) — rates, inflation and construction — streamed live over WebSocket/SSE.",
+    "years": "Period",
+    "points": "Points",
+    "series": "Series",
+    "transport": "Transport",
+    "source": "Source",
+    "lastTick": "Last tick",
+    "live": "LIVE",
+    "connecting": "connecting…"
   }
 }

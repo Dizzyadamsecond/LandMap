@@ -24,6 +24,10 @@
     "./routes/sales": {
       "types": "./dist/api/src/routes/sales.d.ts",
       "import": "./dist/api/src/routes/sales.js"
+    },
+    "./history40": {
+      "types": "./dist/api/src/history40.d.ts",
+      "import": "./dist/api/src/history40.js"
     }
   },
   "scripts": {

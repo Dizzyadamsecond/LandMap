@@ -73,7 +73,7 @@ export {
 export {
   MarketAnalyzerAgent,
 } from './agents/MarketAnalyzerAgent.js';
-export {
+export type {
   SegmentationOutput,
   RerankCandidate,
   AnalyzeResult,
@@ -205,6 +205,7 @@ export {
   type ExecutionResult,
 } from './agents/executor.js';
 export { SalesAgent } from './agents/SalesAgent.js';
-export { BaseAgent, AgentConfig, AgentMessage, AgentResult } from './agents/base.js';
+export { BaseAgent } from './agents/base.js';
+export type { AgentConfig, AgentMessage, AgentResult } from './agents/base.js';
 export { AgentMemory, type MemoryChunk } from './agents/memory.js';
 export { AGENT_TOOLS, getTool, getAllTools } from './agents/tools.js';
