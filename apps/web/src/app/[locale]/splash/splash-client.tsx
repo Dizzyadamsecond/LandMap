@@ -30,15 +30,13 @@ import {
  * Links apontam para rotas existentes do LandMap (preserva tudo que já temos).
  */
 
+// 1:1 com a ordem do Lovable live (landmap-insight.lovable.app/splash):
+// "O que você passa a enxergar" = 4 blocos na sequência exata abaixo.
 const FEATURES = [
-  { icon: MapPinned, title: 'Panorama da região', desc: 'Visão completa de uma região: preço/m², tendências e contexto em um só lugar.' },
-  { icon: LineChart, title: 'Histórico', desc: 'Evolução de 1, 3 e 5 anos vs CDI e inflação, com séries limpas e comparáveis.' },
-  { icon: BarChart, title: 'Projeções', desc: 'Projeções de 1, 3 e 5 anos fundamentadas em dados locais.' },
-  { icon: Building2, title: 'Motores de valorização', desc: 'Obras, metrô, shoppings e zoneamento que puxam o valor para cima.' },
-  { icon: Activity, title: 'Índices próprios', desc: 'Potencial, risco e atratividade em uma escala própria de 0 a 100.' },
-  { icon: GitCompare, title: 'Comparações', desc: 'Bairros lado a lado, com os mesmos indicadores para decisão justa.' },
-  { icon: Layers, title: 'Oportunidades', desc: 'Áreas promissoras e subavaliadas mapeadas automaticamente.' },
-  { icon: Bot, title: 'Análise LandMap AI', desc: 'A IA traduz os números para a linguagem de investimento.' },
+  { icon: MapPinned, title: 'Descubra regiões antes delas valorizarem', desc: 'Veja onde a valorização está começando, antes do mercado.' },
+  { icon: Star, title: 'Saiba o potencial da região em um número', desc: 'O LandMap Score resume potencial, risco e atratividade de 0 a 100.' },
+  { icon: GitCompare, title: 'Compare bairros e descubra qual oferece maior potencial', desc: 'Lado a lado, sem planilha: preço, tendência, histórico e risco de cada região.' },
+  { icon: BellRing, title: 'Seja avisado quando a janela abrir', desc: 'Receba notificação quando uma região entrar em alta.' },
 ];
 
 const STEPS = [
@@ -180,46 +178,6 @@ export default function SplashPage() {
               Sem cartão de crédito. Acesso completo ao LandMap Pro.
             </span>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Seu melhor deal — social proof + CTA */}
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <div className="rounded-3xl border border-[var(--primary)]/20 bg-gradient-to-r from-[var(--primary)]/5 to-transparent p-8 md:p-10">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[var(--primary)]/10 px-3 py-1 text-xs font-semibold text-[var(--primary)]">
-            <Star className="h-3.5 w-3.5" />
-            Seu melhor deal
-          </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div>
-              <h3 className="text-xl font-bold text-[var(--foreground)]">
-                Terreno em Pinheiros, São Paulo
-              </h3>
-              <p className="mt-2 text-sm text-[var(--muted-foreground)]">
-                1.200 m² | Preço: R$ 240/m² | Cap Rate: 7.2%
-              </p>
-              <p className="mt-3 text-base text-[var(--foreground)]">
-                Região com <span className="font-semibold text-[var(--primary)]">+8% de valorização</span> em 12 meses.
-                Zoneamento comercial em expansão.
-              </p>
-              <Link
-                href={href('/map')}
-                className="mt-6 inline-flex items-center justify-center rounded-lg bg-[var(--primary)] px-5 py-2 text-sm font-semibold text-[var(--primary-foreground)] transition hover:opacity-90"
-              >
-                Ver no mapa →
-              </Link>
-            </div>
-            <div className="flex items-center justify-center rounded-2xl bg-[var(--muted)]/30 p-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-[var(--primary)]">7.2%</div>
-                <p className="mt-2 text-sm text-[var(--muted-foreground)]">Cap rate médio da região</p>
-                <div className="mt-4 space-y-1 text-xs text-[var(--muted-foreground)]">
-                  <p>📈 Tendência: Alta</p>
-                  <p>🏢 Motores: Metrô + Comércio</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
