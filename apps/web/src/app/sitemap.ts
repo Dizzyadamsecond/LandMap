@@ -7,17 +7,14 @@ const SITE_URL = (
 
 // Rotas públicas indexáveis (LandMap + Lovable-parity). Excluímos intencionalmente
 // painéis autenticados/app-only e rotas de sistema para não vazar área privada no SEO.
+// Regra: se a rota exige login (dashboard, leads, cockpit, portfolio, alerts, etc.),
+// ela NÃO entra no sitemap — página autenticada indexada só desperdiça crawl budget.
 const PUBLIC_ROUTES = [
   "",
   "search",
   "map",
-  "favorites",
-  "compare",
   "regions",
-  "onboarding",
   "plans",
-  "auth",
-  "dashboard",
   "insights",
   "market",
   "cities",
@@ -32,24 +29,12 @@ const PUBLIC_ROUTES = [
   "chat",
   "rag",
   "assistant",
-  "agents",
-  "cockpit",
-  "radar",
-  "heatmap",
-  "pipeline",
-  "leads",
-  "portfolio",
-  "alerts",
-  "reports",
-  "watchlist",
   "glossary",
   "resources",
   "world",
   "world-3d",
   "worldmonitor",
   "history40",
-  "kpis",
-  "launch",
   "developers",
   "integrations",
   "sobre",
@@ -59,7 +44,6 @@ const PUBLIC_ROUTES = [
   "aviso-legal",
   "metodologia",
   "cobertura",
-  "consent",
   "fontes",
   "brasil",
   "syndicate",
@@ -70,10 +54,6 @@ const PUBLIC_ROUTES = [
   "risk-radar",
   "radar-insights",
   "market-index",
-  "warroom",
-  "copilot",
-  "checkout",
-  "profile",
 ] as const;
 
 const PRIORITY_BY_ROUTE: Record<string, number> = {

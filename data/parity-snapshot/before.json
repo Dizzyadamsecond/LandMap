@@ -1,0 +1,9 @@
+{
+ "apps\\web\\src\\app\\globals.css": 20211,
+ "packages\\ui\\src\\styles.css": 2242,
+ "packages\\ui\\src\\tokens.ts": 4983,
+ "apps\\web\\src\\app\\[locale]\\page.tsx": 1983,
+ "apps\\web\\src\\app\\[locale]\\plans\\page.tsx": 61,
+ "apps\\web\\src\\app\\[locale]\\dashboard\\page.tsx": 15842,
+ "apps\\web\\src\\components\\AppShell.tsx": 20567
+}

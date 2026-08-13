@@ -24,6 +24,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale?: 
       description: 'LandMap: mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.',
       images: [LANDMAP_OG_IMAGE],
     },
+    // Painel administrativo NUNCA deve ser indexado pelo Google.
+    robots: { index: false, follow: false },
   };
 }
 

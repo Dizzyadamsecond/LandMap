@@ -1,0 +1,273 @@
+[
+ {
+  "route": "/dashboard",
+  "lov": {
+   "title": "Entrar — LandMap",
+   "h1": [
+    "Entrar"
+   ],
+   "h2": [
+    "Inteligência de terrenos, do mapa à decisão."
+   ],
+   "buttons": [
+    "Entrar",
+    "Criar conta",
+    "Entrar",
+    "Continuar com Google",
+    "Continuar com Apple",
+    "Entrar sem cadastro",
+    "← Voltar para o site",
+    "Edit with"
+   ]
+  },
+  "prod": {
+   "title": "Mapa — LandMap",
+   "h1": [
+    "Visão geral do mercado"
+   ],
+   "h2": [
+    "📊 Regiões em alta (tempo real)",
+    "Fluxo do índice",
+    "Top valorização (12m)",
+    "Top oportunidades",
+    "Ferramentas de Investimento Avançadas (YC-Spec)",
+    "Busca global"
+   ],
+   "buttons": [
+    "Pular para o conteúdo",
+    "LandMap",
+    "Mapa",
+    "Dashboard",
+    "Comparador",
+    "Favoritos",
+    "Alertas",
+    "Relatórios",
+    "IA LandMap",
+    "Configurações",
+    "Regiões",
+    "Insights",
+    "Perfil",
+    "Onboarding",
+    "Planos"
+   ]
+  }
+ },
+ {
+  "route": "/regions",
+  "lov": {
+   "title": "Entrar — LandMap",
+   "h1": [
+    "Entrar"
+   ],
+   "h2": [
+    "Inteligência de terrenos, do mapa à decisão."
+   ],
+   "buttons": [
+    "Entrar",
+    "Criar conta",
+    "Entrar",
+    "Continuar com Google",
+    "Continuar com Apple",
+    "Entrar sem cadastro",
+    "← Voltar para o site",
+    "Edit with"
+   ]
+  },
+  "prod": {
+   "title": "Regiões — LandMap",
+   "h1": [
+    "Todas as regiões"
+   ],
+   "h2": [
+    "Busca global"
+   ],
+   "buttons": [
+    "Pular para o conteúdo",
+    "LandMap",
+    "Mapa",
+    "Dashboard",
+    "Comparador",
+    "Favoritos",
+    "Alertas",
+    "Relatórios",
+    "IA LandMap",
+    "Configurações",
+    "Regiões",
+    "Insights",
+    "Perfil",
+    "Onboarding",
+    "Planos"
+   ]
+  }
+ },
+ {
+  "route": "/compare",
+  "lov": {
+   "title": "Entrar — LandMap",
+   "h1": [
+    "Entrar"
+   ],
+   "h2": [
+    "Inteligência de terrenos, do mapa à decisão."
+   ],
+   "buttons": [
+    "Entrar",
+    "Criar conta",
+    "Entrar",
+    "Continuar com Google",
+    "Continuar com Apple",
+    "Entrar sem cadastro",
+    "← Voltar para o site",
+    "Edit with"
+   ]
+  },
+  "prod": {
+   "title": "Comparação de regiões — LandMap",
+   "h1": [
+    "Comparar duas regiões"
+   ],
+   "h2": [
+    "Busca global"
+   ],
+   "buttons": [
+    "Pular para o conteúdo",
+    "LandMap",
+    "Mapa",
+    "Dashboard",
+    "Comparador",
+    "Favoritos",
+    "Alertas",
+    "Relatórios",
+    "IA LandMap",
+    "Configurações",
+    "Regiões",
+    "Insights",
+    "Perfil",
+    "Onboarding",
+    "Planos"
+   ]
+  }
+ },
+ {
+  "route": "/favorites",
+  "lov": {
+   "title": "Entrar — LandMap",
+   "h1": [
+    "Entrar"
+   ],
+   "h2": [
+    "Inteligência de terrenos, do mapa à decisão."
+   ],
+   "buttons": [
+    "Entrar",
+    "Criar conta",
+    "Entrar",
+    "Continuar com Google",
+    "Continuar com Apple",
+    "Entrar sem cadastro",
+    "← Voltar para o site",
+    "Edit with"
+   ]
+  },
+  "prod": {
+   "title": "Favoritos — LandMap",
+   "h1": [
+    "Meus favoritos"
+   ],
+   "h2": [
+    "Terrenos favoritos",
+    "Busca global"
+   ],
+   "buttons": [
+    "Pular para o conteúdo",
+    "LandMap",
+    "Mapa",
+    "Dashboard",
+    "Comparador",
+    "Favoritos",
+    "Alertas",
+    "Relatórios",
+    "IA LandMap",
+    "Configurações",
+    "Regiões",
+    "Insights",
+    "Perfil",
+    "Onboarding",
+    "Planos"
+   ]
+  }
+ },
+ {
+  "route": "/plans",
+  "lov": {
+   "title": "Planos — LandMap",
+   "h1": [
+    "Experimente antes de assinar"
+   ],
+   "h2": [
+    "Precisa de uma solução para sua empresa?"
+   ],
+   "buttons": [
+    "Começar gratuitamente por 7 dias",
+    "LandMap Starter Ideal para quem está começando a analisar terrenos. R$ 39,90 /mês",
+    "MAIS POPULAR LandMap Pro A melhor escolha para investidores e corretores. R$ 89,90 /mês “Quero tomar decisões melhores e encontrar oportunidades.” Tudo do Starter Radar de oportunidades Comparação entre regiões Alertas inteligentes Alertas de valorização Alertas de queda de preço Histórico completo da área Avaliação automática do terreno Relatórios mensais Até 50 áreas favoritas",
+    "Assinar LandMap Pro",
+    "Iniciar teste",
+    "LandMap Elite Para quem quer toda a inteligência da LandMap e economizar tempo. R$ 119,90 /mês",
+    "business@landmap.com.br",
+    "Falar com nossa equipe",
+    "Já tem conta? Entrar",
+    "Edit with"
+   ]
+  },
+  "prod": {
+   "title": "Planos — LandMap",
+   "h1": [
+    "Experimente antes de assinar"
+   ],
+   "h2": [
+    "Precisa de uma solução para sua empresa?"
+   ],
+   "buttons": [
+    "Pular para o conteúdo",
+    "LandMap Starter R$ 39,90 /mês",
+    "MAIS POPULAR LandMap Pro R$ 89,90 /mês Tudo do Starter Radar de oportunidades Comparação entre regiões Alertas inteligentes Alertas de valorização Alertas de queda de preço Histórico completo da área Avaliação automática do terreno Relatórios mensais Até 50 áreas favoritas",
+    "LandMap Elite R$ 119,90 /mês",
+    "Já tem conta? Entrar",
+    "Falar com nossa equipe",
+    "Assinar LandMap Pro — R$ 89,90/mês",
+    "Instalar"
+   ]
+  }
+ },
+ {
+  "route": "/onboarding",
+  "lov": {
+   "title": "LandMap — Inteligência territorial baseada em dados",
+   "h1": [
+    "Todo o Brasil no mapa"
+   ],
+   "h2": [],
+   "buttons": [
+    "Entrar",
+    "Continuar",
+    "Já tenho conta",
+    "Edit with"
+   ]
+  },
+  "prod": {
+   "title": "LandMap — Inteligência territorial baseada em dados",
+   "h1": [
+    "Todo o Brasil no mapa"
+   ],
+   "h2": [],
+   "buttons": [
+    "Pular para o conteúdo",
+    "Pular",
+    "Continuar",
+    "Já tenho conta",
+    "Instalar"
+   ]
+  }
+ }
+]
