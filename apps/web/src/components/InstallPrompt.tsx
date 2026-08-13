@@ -9,10 +9,9 @@ import { X } from './lovable/icons';
 /**
  * InstallPrompt — UI customizada de instalação (skill pwa-expert).
  *
- * Aparece só com engajamento (skill: "Don't show immediately, wait for user
- * engagement"): mínimo 2 visitas OU 30s de permanência, e nunca antes de 8s.
- * Respeita dismiss via localStorage; no iOS (sem beforeinstallprompt) não
- * aparece — o iOS tem instruções próprias.
+ * Aparece com engajamento leve: 4s de permanência OU primeiro scroll —
+ * nunca antes de 4s (skill: "Don't show immediately"). Respeita dismiss
+ * via localStorage; iOS usa o InstallButton com instruções próprias.
  */
 export function InstallPrompt() {
   const t = useTranslations('pwa');
@@ -28,22 +27,17 @@ export function InstallPrompt() {
       /* noop */
     }
 
-    // Engajamento: 2ª visita ou 30s de permanência — nunca antes de 8s.
-    let visits = 0;
-    try {
-      visits = Number(localStorage.getItem('landmap-pwa-visits') || '0');
-      localStorage.setItem('landmap-pwa-visits', String(visits + 1));
-    } catch {
-      /* noop */
-    }
-    const minDelay = setTimeout(() => {
-      if (visits >= 1 || document.visibilityState === 'visible') {
-        // 2ª visita (visits>=1 antes do incremento) → pode mostrar
-        setReady(true);
-      }
-    }, 8000);
-
-    return () => clearTimeout(minDelay);
+    // Engajamento leve: 4s de permanência ou primeiro scroll.
+    const timer = setTimeout(() => setReady(true), 4000);
+    const onScroll = () => {
+      clearTimeout(timer);
+      setReady(true);
+    };
+    window.addEventListener('scroll', onScroll, { once: true, passive: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   if (!isInstallable || dismissed || !ready) return null;

@@ -723,6 +723,13 @@
     "sync": {
       "pending": "{count} action(s) waiting for connection",
       "cta": "Sync"
+    },
+    "ios": {
+      "title": "Install on iPhone/iPad",
+      "step1": "Tap the Share button (square with up arrow)",
+      "step2": "Scroll to 'Add to Home Screen'",
+      "step3": "Tap 'Add' — LandMap becomes an app on your home screen",
+      "done": "Got it"
     }
   },
   "publicRoutes": {

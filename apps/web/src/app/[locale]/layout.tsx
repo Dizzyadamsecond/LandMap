@@ -7,6 +7,7 @@ import { ErrorBoundary } from '../../components/ErrorBoundary';
 import { ToastProvider } from '@landmap/ui';
 import { ShellSwitch } from '../../components/ShellSwitch';
 import { InstallPrompt } from '../../components/InstallPrompt';
+import { InstallButton } from '../../components/InstallButton';
 import { OfflineBanner } from '../../components/OfflineBanner';
 import { UpdateBanner } from '../../components/UpdateBanner';
 import { SyncStatus } from '../../components/SyncStatus';
@@ -153,6 +154,10 @@ export default async function RootLayout({
             <StructuredData />
             {/* PWA expert (skill pwa-expert): install prompt, offline banner, update banner, sync status */}
             <InstallPrompt />
+            {/* Botão de instalação sempre visível (quando instalável) — descoberta intuitiva */}
+            <div className="fixed bottom-24 right-4 z-[85] md:bottom-6 md:right-6">
+              <InstallButton />
+            </div>
             <OfflineBanner />
             <UpdateBanner />
             <SyncStatus />

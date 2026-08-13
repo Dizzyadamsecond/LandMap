@@ -723,6 +723,13 @@
     "sync": {
       "pending": "{count} ação(s) aguardando conexão",
       "cta": "Sincronizar"
+    },
+    "ios": {
+      "title": "Instalar no iPhone/iPad",
+      "step1": "Toque no botão Compartilhar (quadrado com seta para cima)",
+      "step2": "Role até 'Adicionar à Tela de Início'",
+      "step3": "Toque em 'Adicionar' — o LandMap vira um app na sua tela inicial",
+      "done": "Entendi"
     }
   },
   "publicRoutes": {
