@@ -544,7 +544,7 @@ function MapPageInner() {
   ];
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
+    <div className="fixed inset-0 z-0 h-[100dvh] w-full overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
       {/* Full-bleed map — iOS-friendly rendering */}
       <motion.div
         ref={mapRef}
