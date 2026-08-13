@@ -25,8 +25,11 @@ import {
   BellRing,
   GitCompare,
   FileText,
+  Flame,
+  Gem,
+  Satellite,
 } from '../../../components/lovable/icons';
-import { Card, Badge, Stat, Sparkline, buttonVariants, cn } from '@landmap/ui';
+import { Card, Badge, Sparkline, buttonVariants, cn } from '@landmap/ui';
 import {
   getOpportunities,
   type Opportunity,
@@ -34,14 +37,11 @@ import {
 } from '../../../lib/api';
 import { type Aggregates } from '../../../lib/opportunities';
 import { getRecentlyViewed, clearRecentlyViewed } from '../../../lib/recently-viewed';
-
-function fmtBRL(n: number): string {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    maximumFractionDigits: 0,
-  }).format(n);
-}
+import {
+  INTELLIGENCE_REGIONS,
+  scoreLabel,
+  fmtPriceSqm,
+} from '../../../lib/mapIntelligence';
 
 function fmtPct(n: number): string {
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
@@ -111,6 +111,19 @@ function DashboardInner() {
     () => Array.from({ length: 7 }, (_, i) => Math.round(avgPrice * (0.72 + i * 0.045))),
     [avgPrice],
   );
+  // Bloomberg-style indicators (paridade com dashboard Lovable 37KB) —
+  // derivados do dataset de inteligência territorial (INTELLIGENCE_REGIONS).
+  const indicators = useMemo(() => {
+    const regions = INTELLIGENCE_REGIONS;
+    const avgPrice = regions.reduce((s, r) => s + r.priceSqm, 0) / regions.length;
+    const avgDelta = regions.reduce((s, r) => s + r.priceSqmDelta12m, 0) / regions.length;
+    const hottest = [...regions].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m)[0];
+    const bestOpp = [...regions].sort((a, b) => b.score - a.score)[0];
+    const indexLandmap = Math.round(regions.reduce((s, r) => s + r.score, 0) / regions.length);
+    const timeLabel = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return { avgPrice, avgDelta, hottest, bestOpp, indexLandmap, timeLabel };
+  }, []);
+
   const topVal = useMemo(
     () =>
       [...opportunities]
@@ -123,8 +136,6 @@ function DashboardInner() {
     () => [...opportunities].sort((a, b) => b.score - a.score).slice(0, 3),
     [opportunities],
   );
-  const hottest = kpis?.topCities[0]?.city ?? '—';
-  const score = kpis?.confidence ?? '—';
   const hubLinks = [
     { href: lh('/map'), icon: Layers, title: 'Mapa', desc: 'Camadas, heatmap e score ao vivo' },
     { href: lh('/compare'), icon: GitCompare, title: 'Comparador', desc: 'Regiões lado a lado' },
@@ -222,11 +233,40 @@ function DashboardInner() {
             </div>
           ) : (
             <>
-              <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <Stat label="Preço médio m²" value={loading || !kpis ? '—' : fmtBRL(avgPrice)} />
-                <Stat label="Cidades" value={loading || !kpis ? '—' : String(kpis.topCities.length)} />
-                <Stat label="Mais aquecida" value={hottest} />
-                <Stat label="Score LandMap" value={loading || !kpis ? '—' : String(score)} />
+              <section className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-5">
+                <TickerCard
+                  icon={<TrendingUp className="h-4 w-4" />}
+                  label="Valorização média"
+                  value={fmtPriceSqm(Math.round(indicators.avgPrice))}
+                  delta={`↑ ${indicators.avgDelta.toFixed(1)}%`}
+                  deltaPositive
+                />
+                <TickerCard
+                  icon={<Flame className="h-4 w-4" />}
+                  label="Região mais aquecida"
+                  value={indicators.hottest.name}
+                  hint={`${indicators.hottest.city} · +${indicators.hottest.priceSqmDelta12m.toFixed(1)}%`}
+                  accent
+                />
+                <TickerCard
+                  icon={<Gem className="h-4 w-4" />}
+                  label="Melhor oportunidade"
+                  value={indicators.bestOpp.name}
+                  hint={`Score ${indicators.bestOpp.score}`}
+                />
+                <TickerCard
+                  icon={<Activity className="h-4 w-4" />}
+                  label="Índice LandMap"
+                  value={String(indicators.indexLandmap)}
+                  hint={scoreLabel(indicators.indexLandmap)}
+                  large
+                />
+                <TickerCard
+                  icon={<Satellite className="h-4 w-4" />}
+                  label="Atualização"
+                  value={indicators.timeLabel}
+                  hint="Hoje · tempo real"
+                />
               </section>
 
               <div className="mt-6">
@@ -346,6 +386,61 @@ function DashboardInner() {
         </section>
       </div>
     </main>
+  );
+}
+
+function TickerCard({
+  icon,
+  label,
+  value,
+  delta,
+  deltaPositive,
+  hint,
+  accent,
+  large,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  delta?: string;
+  deltaPositive?: boolean;
+  hint?: string;
+  accent?: boolean;
+  large?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        'group relative overflow-hidden rounded-2xl border border-border/50 bg-card p-3 shadow-sm backdrop-blur transition hover:border-primary/25 hover:shadow-elegant sm:p-4',
+        accent && 'ring-1 ring-primary/15',
+      )}
+    >
+      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/45">
+        <span className="grid h-5 w-5 place-items-center rounded-md bg-primary/10 text-primary">
+          {icon}
+        </span>
+        {label}
+      </div>
+      <p
+        className={cn(
+          'mt-1.5 font-display font-bold tabular-nums leading-tight',
+          large ? 'text-2xl' : 'text-lg',
+        )}
+      >
+        {value}
+      </p>
+      {(delta || hint) && (
+        <p className="mt-0.5 flex items-center gap-1.5 text-[11px] font-medium">
+          {delta && (
+            <span className={cn('font-semibold', deltaPositive ? 'text-primary' : 'text-destructive')}>
+              {delta}
+            </span>
+          )}
+          {hint && <span className="text-foreground/50">{hint}</span>}
+        </p>
+      )}
+      <div className="pointer-events-none absolute -bottom-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br from-primary/10 to-transparent opacity-0 transition group-hover:opacity-100" />
+    </div>
   );
 }
 

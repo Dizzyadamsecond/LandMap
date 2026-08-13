@@ -20,7 +20,7 @@ const USER_TYPE_OPTIONS: { id: UserType; label: string; icon: React.ReactNode; h
   { id: 'corretor', label: 'Corretor', icon: <Briefcase size={18} />, hint: 'Comissão e carteira de clientes' },
   { id: 'investidor', label: 'Investidor', icon: <TrendingUp size={18} />, hint: 'Valorização e ROI de terrenos' },
   { id: 'fundo', label: 'Fundo de investimento', icon: <Gem size={18} />, hint: 'Gestão de portfólio institucional' },
-  { id: 'incorporadora', label: 'Incorporadora', icon: <Building2 size={18} />, hint: 'Aquisição e desenvolvimento' },
+  { id: 'incorporadora', label: 'Construtora', icon: <Building2 size={18} />, hint: 'Aquisição e desenvolvimento' },
   { id: 'comprador', label: 'Comprador', icon: <User size={18} />, hint: 'Busca direta de terreno' },
 ];
 
@@ -246,7 +246,7 @@ function AuthPageInner() {
             <form onSubmit={onSignup} className="mt-8 space-y-4">
               <h1 className="text-2xl font-bold tracking-tight">Criar conta</h1>
               <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-                Cadastre-se para liberar o mapa completo, filtros e alertas.
+                Preencha seus dados para começar a usar o LandMap.
               </p>
               <Field
                 label="Nome completo"

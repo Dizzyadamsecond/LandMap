@@ -724,5 +724,54 @@
       "pending": "{count} action(s) waiting for connection",
       "cta": "Sync"
     }
+  },
+  "publicRoutes": {
+    "onboarding": {
+      "skip": "Skip",
+      "goToPlans": "See plans",
+      "continue": "Continue",
+      "alreadyHaveAccount": "I already have an account",
+      "slideLabel": "Go to slide {n}"
+    },
+    "plans": {
+      "eyebrow": "Choose your plan",
+      "title": "Start analyzing the market now",
+      "subtitle": "Cancel anytime. No commitment.",
+      "alreadyMember": "Already have an account?",
+      "signIn": "Sign in",
+      "subscribe": "Subscribe {name} — R$ {price}/month",
+      "demoNote": "Payment not enabled — demo flow.",
+      "plan": "plan"
+    },
+    "auth": {
+      "login": "Sign in",
+      "signup": "Create account",
+      "loginTitle": "Sign in",
+      "loginSubtitle": "Access the platform with your account.",
+      "signupTitle": "Create account",
+      "signupSubtitle": "Fill in your details to start using LandMap.",
+      "or": "or",
+      "guest": "Continue without signing up",
+      "backToSite": "← Back to the site",
+      "brandTitle": "Land intelligence, from map to decision.",
+      "brandSubtitle": "Verified prices, region comparison and history — all in one platform.",
+      "email": "Email",
+      "password": "Password",
+      "fullName": "Full name",
+      "phone": "Phone",
+      "phonePlaceholder": "(11) 98765-4321",
+      "userType": "User type",
+      "userTypePlaceholder": "Select your profile",
+      "userTypeCorretor": "Broker",
+      "userTypeConstrutora": "Developer",
+      "userTypeInvestidor": "Investor",
+      "userTypeEmpresario": "Business owner",
+      "passwordMin": "At least 8 characters",
+      "passwordSpecial": "At least 1 special character",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "loginLoading": "Signing in...",
+      "signupLoading": "Submitting..."
+    }
   }
 }

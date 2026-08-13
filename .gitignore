@@ -153,3 +153,7 @@ data/worldmonitor/cache/
 data/worldmonitor/*.log
 data/worldmonitor/*.log.err
 data/worldmonitor/dbg.*
+
+# Paridade Lovable — material de referência (zip + extração)
+reference-lovable/
+landmap-complete.zip

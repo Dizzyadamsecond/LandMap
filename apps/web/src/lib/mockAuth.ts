@@ -18,7 +18,7 @@ export type MockUser = {
   email: string;
   provider: 'google' | 'email' | 'guest';
   /** Plano efetivo — guest/free liberam o produto sem paywall. */
-  plan?: 'free' | 'starter' | 'pro' | 'elite';
+  plan?: 'free' | 'access' | 'plus' | 'pro' | 'business';
   userType?: UserType;
 };
 

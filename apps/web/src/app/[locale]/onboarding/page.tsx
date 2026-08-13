@@ -59,8 +59,8 @@ export default function OnboardingPage() {
       <header className="border-b border-foreground/5">
         <div className="mx-auto flex max-w-md items-center justify-between px-6 py-4">
           <LandMapWordmark />
-          <Link href={lh('/auth')} className="text-sm text-foreground/70 hover:text-foreground">
-            Entrar
+          <Link href={lh('/plans')} className="text-sm text-foreground/70 hover:text-foreground">
+            Pular
           </Link>
         </div>
       </header>

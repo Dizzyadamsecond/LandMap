@@ -17,14 +17,14 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#4F46E5',
+  themeColor: '#003594',
   viewportFit: 'cover',
 };
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
   applicationName: 'LandMap',
-  themeColor: '#4F46E5',
+  themeColor: '#003594',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',

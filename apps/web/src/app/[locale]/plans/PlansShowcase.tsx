@@ -14,7 +14,7 @@ import { trackCta } from '../../../track';
 export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
-  const [selected, setSelected] = useState<string>('pro');
+  const [selected, setSelected] = useState<string>('plus');
   const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[0];
 
   const handleSubscribe = (planId: string) => {
@@ -38,21 +38,17 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
     handleSubscribe(planId);
   };
 
-  const mobileSubscribe = () => {
-    handleSubscribe(selected);
-  };
-
   if (variant === 'desktop') {
     return (
       <ProductPageShell
         backHref="/map"
         eyebrow={
           <>
-            <Sparkles className="h-3 w-3" /> 7 dias grátis, sem cartão
+            <Sparkles className="h-3 w-3" /> Escolha seu plano
           </>
         }
-        title="Experimente antes de assinar"
-        description="Comece com acesso completo ao LandMap Pro. Cancele quando quiser."
+        title="Comece a analisar o mercado agora"
+        description="Cancele quando quiser. Sem fidelidade."
         maxWidth="5xl"
       >
         <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -143,7 +139,8 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
   }
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-24 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-28 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Header — 1:1 Lovable plans (voltar → onboarding, wordmark, spacer) */}
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
         <Link
           href={`/${locale}/onboarding`}
@@ -156,59 +153,62 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         <div className="w-9" />
       </header>
 
-      <div className="px-4 pt-8 sm:px-6">
+      {/* Hero — copy exata da Lovable plans */}
+      <div className="px-6 pt-8">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          <Sparkles className="h-3 w-3" /> 7 dias grátis, sem cartão
+          <Sparkles className="h-3 w-3" /> Escolha seu plano
         </div>
         <h1 className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight">
-          Experimente antes de assinar
+          Comece a analisar o mercado agora
         </h1>
         <p className="mt-2 text-sm text-foreground/60">
-          Comece com acesso completo ao LandMap Pro. Cancele quando quiser.
+          Cancele quando quiser. Sem fidelidade.
         </p>
-        <button
-          type="button"
-          onClick={mobileSubscribe}
-          className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-primary bg-primary/5 px-4 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary/10"
-        >
-          Começar gratuitamente por 7 dias
-        </button>
       </div>
 
-      <Stagger className="mt-6 flex flex-col gap-3 px-4 sm:px-6" stagger={0.18} y={30}>
-        {PLANS.map((p) => {
-          const isPro = p.highlight;
+      {/* Cards de plano selecionáveis — 1:1 Lovable */}
+      <Stagger className="mt-6 flex flex-col gap-3 px-6" stagger={0.18} y={30}>
+        {PLANS.filter((p) => p.id !== 'free').map((p) => {
+          const isSelected = p.id === selected;
           return (
-            <div key={p.id}>
-              <button
-                type="button"
-                onClick={() => handleSubscribe(p.id)}
-                className={
-                  isPro
-                    ? 'relative w-full rounded-2xl border-2 border-primary bg-primary/5 p-5 text-left shadow-[var(--shadow-card)] transition-all'
-                    : 'relative w-full rounded-2xl border border-border bg-card p-5 text-left transition-all hover:border-primary/40'
-                }
-              >
-                {isPro && (
-                  <span className="absolute -top-2 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-primary-foreground">
-                    {p.tagline}
-                  </span>
-                )}
-
-                <div className="flex items-start justify-between gap-3">
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => setSelected(p.id)}
+              aria-pressed={isSelected}
+              className={cn(
+                'relative rounded-2xl border p-5 text-left transition-all',
+                isSelected
+                  ? 'border-primary bg-primary/5 shadow-[var(--shadow-card)]'
+                  : 'border-border bg-card hover:border-primary/40',
+              )}
+            >
+              {p.highlight && (
+                <span className="absolute -top-2 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground">
+                  {p.tagline}
+                </span>
+              )}
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
                   <h3 className="truncate text-lg font-bold">{p.name}</h3>
-                  <span className="shrink-0 rounded-full bg-primary px-3 py-1 text-[10px] font-semibold text-primary-foreground">
-                    Assinar
-                  </span>
                 </div>
-
-                <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-xs text-foreground/50">R$</span>
-                  <span className="font-display text-2xl font-bold tracking-tight">{formatBRL(p.priceBRL)}</span>
-                  <span className="text-sm text-foreground/50">/mês</span>
+                <div
+                  aria-hidden
+                  className={cn(
+                    'grid h-6 w-6 shrink-0 place-items-center rounded-full border-2',
+                    isSelected ? 'border-primary bg-primary' : 'border-border',
+                  )}
+                >
+                  {isSelected && <Check className="h-3.5 w-3.5 text-primary-foreground" />}
                 </div>
-
-                <ul className="mt-4 space-y-2">
+              </div>
+              <div className="mt-3 flex items-baseline gap-1">
+                <span className="text-xs text-foreground/50">R$</span>
+                <span className="font-display text-2xl font-bold tracking-tight">{formatBRL(p.priceBRL)}</span>
+                <span className="text-sm text-foreground/50">/mês</span>
+              </div>
+              {isSelected && (
+                <ul className="mt-4 space-y-2 border-t border-border/60 pt-4">
                   {(p.features ?? []).map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-foreground/75">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -216,56 +216,34 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
                     </li>
                   ))}
                 </ul>
-              </button>
-
-              {isPro && (
-                <div className="mt-3 flex flex-col gap-2 px-1">
-                  <p className="text-center text-sm italic text-foreground/70">
-                    “Quero tomar decisões melhores e encontrar oportunidades.”
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => handleSubscribe('pro')}
-                    className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-                  >
-                    Assinar LandMap Pro
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleSubscribe('pro')}
-                    className="w-full text-center text-sm font-medium text-primary underline-offset-4 hover:underline"
-                  >
-                    Iniciar teste
-                  </button>
-                </div>
               )}
-            </div>
+            </button>
           );
         })}
       </Stagger>
 
-      <section className="mx-4 mt-8 rounded-2xl border border-border bg-card p-5 sm:mx-6">
-        <h2 className="font-display text-lg font-bold">Precisa de uma solução para sua empresa?</h2>
-        <p className="mt-1 text-sm text-foreground/60">
-          Tem uma imobiliária, loteadora, incorporadora ou equipe comercial? Oferecemos planos
-          personalizados com múltiplos usuários, painel administrativo, relatórios com a identidade
-          da sua empresa e soluções sob medida.
-        </p>
-        <a
-          href="mailto:business@landmap.com.br"
-          className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-        >
-          Falar com nossa equipe
-        </a>
-      </section>
-
-      <div className="mt-6 px-4 text-center sm:px-6">
+      <div className="mt-6 px-6 text-center">
         <Link href={`/${locale}/auth`} className="text-sm text-foreground/60 hover:text-foreground">
           Já tem conta? <span className="font-medium text-primary">Entrar</span>
         </Link>
       </div>
 
-      <div className="h-6" />
+      {/* Sticky CTA — 1:1 Lovable */}
+      <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md border-t border-border bg-background/95 px-6 py-4 backdrop-blur">
+        <button
+          type="button"
+          onClick={() => handleSubscribe(selected)}
+          className={cn(
+            buttonVariants({ variant: 'default', size: 'lg' }),
+            'w-full bg-primary text-primary-foreground hover:bg-primary/90',
+          )}
+        >
+          Assinar {selectedPlan.name} — R$ {formatBRL(selectedPlan.priceBRL)}/mês
+        </button>
+        <p className="mt-2 text-center text-[11px] text-foreground/40">
+          Pagamento não ativado — fluxo de demonstração.
+        </p>
+      </div>
     </div>
   );
 }

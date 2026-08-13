@@ -11,13 +11,17 @@ const variants: Record<NonNullable<SkeletonProps['variant']>, string> = {
   circle: 'h-12 w-12 rounded-full',
 };
 
-/** Shimmer loading placeholder. The `.skeleton` shimmer is defined in CSS (globals.css). */
+/** Pulse shimmer placeholder (aligned to shadcn reference: animate-pulse + primary/10). */
 export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
   ({ variant = 'rect', className, ...props }, ref) => (
     <div
       ref={ref}
       aria-hidden
-      className={cn('skeleton', variants[variant], className)}
+      className={cn(
+        'animate-pulse rounded-md bg-[var(--primary)]/10',
+        variants[variant],
+        className,
+      )}
       {...props}
     />
   ),

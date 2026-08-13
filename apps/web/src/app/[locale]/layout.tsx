@@ -17,7 +17,7 @@ import '../../app/globals.css';
 export const dynamic = 'force-dynamic';
 
 export const viewport = {
-  themeColor: '#4F46E5',
+  themeColor: '#003594',
   colorScheme: 'light dark',
 };
 

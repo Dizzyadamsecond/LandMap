@@ -728,5 +728,54 @@
       "pending": "{count} acción(es) esperando conexión",
       "cta": "Sincronizar"
     }
+  },
+  "publicRoutes": {
+    "onboarding": {
+      "skip": "Saltar",
+      "goToPlans": "Ver planes",
+      "continue": "Continuar",
+      "alreadyHaveAccount": "Ya tengo cuenta",
+      "slideLabel": "Ir al slide {n}"
+    },
+    "plans": {
+      "eyebrow": "Elige tu plan",
+      "title": "Empieza a analizar el mercado ahora",
+      "subtitle": "Cancela cuando quieras. Sin fidelidad.",
+      "alreadyMember": "¿Ya tienes cuenta?",
+      "signIn": "Entrar",
+      "subscribe": "Suscribir {name} — R$ {price}/mes",
+      "demoNote": "Pago no activado — flujo de demostración.",
+      "plan": "plan"
+    },
+    "auth": {
+      "login": "Entrar",
+      "signup": "Crear cuenta",
+      "loginTitle": "Entrar",
+      "loginSubtitle": "Accede a la plataforma con tu cuenta.",
+      "signupTitle": "Crear cuenta",
+      "signupSubtitle": "Completa tus datos para empezar a usar LandMap.",
+      "or": "o",
+      "guest": "Entrar sin registrarse",
+      "backToSite": "← Volver al sitio",
+      "brandTitle": "Inteligencia de terrenos, del mapa a la decisión.",
+      "brandSubtitle": "Precios verificados, comparación de regiones e historial — en una sola plataforma.",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "fullName": "Nombre completo",
+      "phone": "Teléfono",
+      "phonePlaceholder": "(11) 98765-4321",
+      "userType": "Tipo de usuario",
+      "userTypePlaceholder": "Selecciona tu perfil",
+      "userTypeCorretor": "Corredor",
+      "userTypeConstrutora": "Constructora",
+      "userTypeInvestidor": "Inversor",
+      "userTypeEmpresario": "Empresario",
+      "passwordMin": "Mínimo 8 caracteres",
+      "passwordSpecial": "Al menos 1 carácter especial",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
+      "loginLoading": "Entrando...",
+      "signupLoading": "Enviando..."
+    }
   }
 }
