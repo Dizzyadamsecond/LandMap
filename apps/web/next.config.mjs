@@ -66,6 +66,23 @@ const nextConfig = {
           { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' },
         ],
       },
+      {
+        // Service worker: nunca cachear (skill nextjs-pwa) — sem isso o browser
+        // pode servir SW stale e usuários nunca recebem updates do app.
+        source: '/sw.js',
+        headers: [
+          { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+          { key: 'Service-Worker-Allowed', value: '/' },
+        ],
+      },
+      {
+        // Manifest: MIME correto + no-cache (skill nextjs-pwa)
+        source: '/manifest.json',
+        headers: [
+          { key: 'Content-Type', value: 'application/manifest+json' },
+          { key: 'Cache-Control', value: 'no-cache' },
+        ],
+      },
     ];
   },
 };
