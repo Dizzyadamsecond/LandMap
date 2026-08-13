@@ -21,6 +21,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale?: 
       description: 'Escolha o plano LandMap ideal: Access, Plus, Pro ou Business.',
       images: [LANDMAP_OG_IMAGE],
     },
+    alternates: {
+      canonical: `${siteUrl}/${locale}/plans`,
+      languages: {
+        'pt-BR': `${siteUrl}/pt-BR/plans`,
+        'en-US': `${siteUrl}/en-US/plans`,
+        'es-ES': `${siteUrl}/es-ES/plans`,
+        'x-default': `${siteUrl}/pt-BR/plans`,
+      },
+    },
   };
 }
 
