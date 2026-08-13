@@ -51,16 +51,6 @@ export async function generateMetadata({
       type: 'website',
       locale: l,
     },
-    other: {
-      'application/ld+json': JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'LandMap', item: `${siteUrl}/${l}` },
-          { '@type': 'ListItem', position: 2, name: 'History40', item: `${siteUrl}/${l}/history40` },
-        ],
-      }),
-    },
   };
 }
 

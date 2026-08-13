@@ -10,6 +10,7 @@ import { InstallPrompt } from '../../components/InstallPrompt';
 import { OfflineBanner } from '../../components/OfflineBanner';
 import { UpdateBanner } from '../../components/UpdateBanner';
 import { SyncStatus } from '../../components/SyncStatus';
+import { StructuredData } from '../../components/StructuredData';
 import '@landmap/ui/styles.css';
 import '../../app/globals.css';
 
@@ -99,33 +100,8 @@ export async function generateMetadata({
         'x-default': `${siteUrl}/pt-BR`,
       },
     },
-    // Structured data: Organization (identidade da entidade) + WebSite.
-    other: {
-      'application/ld+json': JSON.stringify([
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'LandMap',
-          url: siteUrl,
-          logo: `${siteUrl}/icons/icon-512.png`,
-          description: seo.description,
-          sameAs: [],
-        },
-        {
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: 'LandMap',
-          url: siteUrl,
-          inLanguage: locale || 'pt-BR',
-          description: seo.description,
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: `${siteUrl}/${locale}/map?q={search_term_string}`,
-            'query-input': 'required name=search_term_string',
-          },
-        },
-      ]),
-    },
+    // JSON-LD (Organization/WebSite/BreadcrumbList) é injetado pelo componente
+    // <StructuredData /> no body — o metadata `other` do Next 14 não emite ld+json.
   };
 }
 
@@ -173,6 +149,8 @@ export default async function RootLayout({
                 <ErrorBoundary>{children}</ErrorBoundary>
               </ToastProvider>
             </ShellSwitch>
+            {/* SEO: JSON-LD (Organization/WebSite/BreadcrumbList) */}
+            <StructuredData />
             {/* PWA expert (skill pwa-expert): install prompt, offline banner, update banner, sync status */}
             <InstallPrompt />
             <OfflineBanner />
