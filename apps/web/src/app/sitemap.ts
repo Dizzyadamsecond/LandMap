@@ -46,6 +46,8 @@ const PUBLIC_ROUTES = [
   "resources",
   "world",
   "world-3d",
+  "worldmonitor",
+  "history40",
   "kpis",
   "launch",
   "developers",
@@ -90,6 +92,8 @@ const PRIORITY_BY_ROUTE: Record<string, number> = {
   dashboard: 0.5,
   "world-3d": 0.5,
   world: 0.5,
+  worldmonitor: 0.6,
+  history40: 0.6,
   "property": 0.7,
 };
 

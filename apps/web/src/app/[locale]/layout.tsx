@@ -88,6 +88,44 @@ export async function generateMetadata({
       index: true,
       follow: true,
     },
+    // Canonical + hreflang (i18n pt-BR/en-US/es-ES) — previne duplicatas e
+    // sinaliza ao Google a versão canônica por locale.
+    alternates: {
+      canonical: `${siteUrl}/${locale}`,
+      languages: {
+        'pt-BR': `${siteUrl}/pt-BR`,
+        'en-US': `${siteUrl}/en-US`,
+        'es-ES': `${siteUrl}/es-ES`,
+        'x-default': `${siteUrl}/pt-BR`,
+      },
+    },
+    // Structured data: Organization (identidade da entidade) + WebSite.
+    other: {
+      'application/ld+json': JSON.stringify([
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'LandMap',
+          url: siteUrl,
+          logo: `${siteUrl}/icons/icon-512.png`,
+          description: seo.description,
+          sameAs: [],
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'LandMap',
+          url: siteUrl,
+          inLanguage: locale || 'pt-BR',
+          description: seo.description,
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: `${siteUrl}/${locale}/map?q={search_term_string}`,
+            'query-input': 'required name=search_term_string',
+          },
+        },
+      ]),
+    },
   };
 }
 

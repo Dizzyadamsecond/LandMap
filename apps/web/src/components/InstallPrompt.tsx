@@ -9,14 +9,16 @@ import { X } from './lovable/icons';
 /**
  * InstallPrompt — UI customizada de instalação (skill pwa-expert).
  *
- * Aparece quando o beforeinstallprompt dispara (Chrome/Edge/Android) e o
- * usuário ainda não dispensou. Respeita dismiss via localStorage; no iOS
- * (sem beforeinstallprompt) não aparece — o iOS tem instruções próprias.
+ * Aparece só com engajamento (skill: "Don't show immediately, wait for user
+ * engagement"): mínimo 2 visitas OU 30s de permanência, e nunca antes de 8s.
+ * Respeita dismiss via localStorage; no iOS (sem beforeinstallprompt) não
+ * aparece — o iOS tem instruções próprias.
  */
 export function InstallPrompt() {
   const t = useTranslations('pwa');
   const { isInstallable, install } = usePWAInstall();
   const [dismissed, setDismissed] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -25,9 +27,26 @@ export function InstallPrompt() {
     } catch {
       /* noop */
     }
+
+    // Engajamento: 2ª visita ou 30s de permanência — nunca antes de 8s.
+    let visits = 0;
+    try {
+      visits = Number(localStorage.getItem('landmap-pwa-visits') || '0');
+      localStorage.setItem('landmap-pwa-visits', String(visits + 1));
+    } catch {
+      /* noop */
+    }
+    const minDelay = setTimeout(() => {
+      if (visits >= 1 || document.visibilityState === 'visible') {
+        // 2ª visita (visits>=1 antes do incremento) → pode mostrar
+        setReady(true);
+      }
+    }, 8000);
+
+    return () => clearTimeout(minDelay);
   }, []);
 
-  if (!isInstallable || dismissed) return null;
+  if (!isInstallable || dismissed || !ready) return null;
 
   const dismiss = () => {
     setDismissed(true);
