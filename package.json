@@ -31,7 +31,7 @@
     "evals:upload:dry": "node evals/upload.mjs --dry-run",
     "dev": "pnpm --filter @landmap/web dev",
     "dev:api": "pnpm --filter @landmap/api dev",
-    "vercel-build": "pnpm --filter @landmap/config build && pnpm --filter @landmap/db build && pnpm --filter @landmap/geo build && pnpm --filter @landmap/integrations build && pnpm --filter @landmap/invest build && pnpm --filter @landmap/llm build && pnpm --filter @landmap/sales build && pnpm --filter @landmap/automation build && pnpm --filter @landmap/billing build && pnpm --filter @landmap/api build && pnpm --filter @landmap/ui build && pnpm --filter @landmap/web run build"
+    "vercel-build": "pnpm --filter @landmap/config build && pnpm --filter @landmap/db build && pnpm --filter @landmap/geo build && pnpm --filter @landmap/integrations build && pnpm --filter @landmap/invest build && pnpm --filter @landmap/llm build && pnpm --filter @landmap/sales build && pnpm --filter @landmap/automation build && pnpm --filter @landmap/billing build && pnpm --filter @landmap/scraper build && pnpm --filter @landmap/api build && pnpm --filter @landmap/ui build && pnpm --filter @landmap/web run build"
   },
   "keywords": [
     "real-estate",

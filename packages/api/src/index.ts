@@ -30,6 +30,7 @@ import { createIntegrationsRouter } from './routes/integrations.js';
 import { createAutomationRouter } from './routes/automation.js';
 import { createProductEventsRouter } from './routes/product-events.js';
 import { vcFeaturesRoutes } from './routes/vc-features.js';
+import { createPropertiesScrapeRouter } from './routes/properties-scrape.js';
 import { loadProperties } from './loadJson.js';
 const allPropertiesData = loadProperties();
 import { createGeoRouter, createGeoSource } from '@landmap/geo';
@@ -576,4 +577,8 @@ app.route('/automation', createAutomationRouter());
 
 /* ─── VC-Essential Features (Risk, Compliance, Analytics, Matching, Fraud) ─── */
 app.route('/vc', vcFeaturesRoutes(app as any));
+
+/* ─── Parallel Scraper API (terrains, houses, apartments, auctions) ─── */
+app.route('/properties/scrape', createPropertiesScrapeRouter());
+
 

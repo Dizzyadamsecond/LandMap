@@ -46,6 +46,9 @@
       ],
       "@landmap/automation": [
         "../automation/dist/index.d.ts"
+      ],
+      "@landmap/scraper": [
+        "../scraper/dist/index.d.ts"
       ]
     }
   },
