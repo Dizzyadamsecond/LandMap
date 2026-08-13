@@ -9,7 +9,6 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "vitest",
     "forge:test": "cd src/contracts && forge test",
     "forge:build": "cd src/contracts && forge build"
   },
