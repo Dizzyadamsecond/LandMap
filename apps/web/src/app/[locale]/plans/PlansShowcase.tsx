@@ -228,6 +228,26 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         </Link>
       </div>
 
+      {/* Seção enterprise — 1:1 Lovable live */}
+      <div className="mt-10 px-6">
+        <div className="rounded-2xl border border-border bg-card p-6 text-center">
+          <h2 className="text-lg font-bold tracking-tight">Precisa de uma solução para sua empresa?</h2>
+          <p className="mt-1 text-sm text-foreground/60">
+            Planos personalizados para equipes e incorporadoras.
+          </p>
+          <a
+            href="mailto:business@landmap.com.br"
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'lg' }),
+              'mt-4 w-full',
+            )}
+          >
+            Falar com nossa equipe
+          </a>
+          <p className="mt-2 text-xs text-foreground/40">business@landmap.com.br</p>
+        </div>
+      </div>
+
       {/* Sticky CTA — 1:1 Lovable */}
       <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md border-t border-border bg-background/95 px-6 py-4 backdrop-blur">
         <button
