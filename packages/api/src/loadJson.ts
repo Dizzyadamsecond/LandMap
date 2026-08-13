@@ -61,3 +61,58 @@ function buildCandidates(): string[] {
 
   return out;
 }
+
+/**
+ * Loads `data/auctions.json` (leilões / auction lots) following the same
+ * resilient candidate strategy as `loadProperties`. Returns an array of
+ * plain objects; the auctions route validates + seeds them into the store.
+ * Never throws — degrades to an empty array with a warning.
+ */
+export function loadAuctions(): unknown[] {
+  const candidates = buildAuctionCandidates();
+  for (const p of candidates) {
+    try {
+      const raw = readFileSync(p, 'utf-8');
+      const parsed = JSON.parse(raw);
+      const arr: unknown[] = Array.isArray(parsed) ? parsed : (parsed?.auctions ?? []);
+      if (arr.length) return arr;
+    } catch {
+      // try next candidate
+    }
+  }
+  console.warn('[loadAuctions] Could not locate auctions.json — serving empty auction set.');
+  return [];
+}
+
+function buildAuctionCandidates(): string[] {
+  const out: string[] = [];
+  const here = typeof __dirname !== 'undefined' ? __dirname : process.cwd();
+
+  const bases = [process.cwd(), here];
+  const rels = [
+    ['data', 'auctions.json'],
+    ['src', 'data', 'auctions.json'],
+    ['dist', 'data', 'auctions.json'],
+    ['..', 'packages', 'api', 'src', 'data', 'auctions.json'],
+    ['..', 'packages', 'api', 'dist', 'data', 'auctions.json'],
+    ['..', '..', 'packages', 'api', 'src', 'data', 'auctions.json'],
+    ['..', '..', 'packages', 'api', 'dist', 'data', 'auctions.json'],
+  ];
+  for (const base of bases) {
+    for (const rel of rels) out.push(join(base, ...rel));
+  }
+
+  for (const start of [process.cwd(), here]) {
+    let dir = start;
+    for (let i = 0; i < 8; i++) {
+      out.push(join(dir, 'data', 'auctions.json'));
+      out.push(join(dir, 'packages', 'api', 'src', 'data', 'auctions.json'));
+      out.push(join(dir, 'packages', 'api', 'dist', 'data', 'auctions.json'));
+      const parent = dirname(dir);
+      if (parent === dir) break;
+      dir = parent;
+    }
+  }
+
+  return out;
+}

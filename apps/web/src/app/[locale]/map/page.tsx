@@ -559,15 +559,31 @@ function MapPageInner() {
     if (auctionLayerRef.current) map.removeLayer(auctionLayerRef.current);
     const markers = auctionPoints
       .filter((item) => item.latitude != null && item.longitude != null)
-      .map((item) => L.circleMarker([item.latitude, item.longitude], {
-        radius: 7,
-        fillColor: resolveVar('--warning', FALLBACK_WARNING),
-        color: '#ffffff',
-        weight: 2,
-        fillOpacity: 0.95,
-      }).bindPopup(
-        `<strong>${escapePopupText(item.title)}</strong><br/>${escapePopupText(item.city)}/${item.state} · ${escapePopupText(item.type)}<br/><small>Fonte: ${escapePopupText(item.source)}</small>`,
-      ));
+      .map((item) => {
+        const gradeColor: Record<string, string> = {
+          A: '#34d399',
+          B: '#22d3ee',
+          C: '#fbbf24',
+          D: '#fb923c',
+          E: '#f87171',
+          F: '#ef4444',
+        };
+        const fill = item.grade
+          ? (gradeColor[item.grade] ?? resolveVar('--warning', FALLBACK_WARNING))
+          : resolveVar('--warning', FALLBACK_WARNING);
+        const discount = item.discountPct != null ? `${item.discountPct}%` : '—';
+        return L.circleMarker([item.latitude, item.longitude], {
+          radius: 7,
+          fillColor: fill,
+          color: '#ffffff',
+          weight: 2,
+          fillOpacity: 0.95,
+        }).bindPopup(
+          `<strong>${escapePopupText(item.title)}</strong><br/>${escapePopupText(item.city)}/${item.state} · ${escapePopupText(item.type)}` +
+          (item.grade ? `<br/>Grade: <b>${escapePopupText(item.grade)}</b>` : '') +
+          `<br/>Desconto: ${discount}<br/><small>Fonte: ${escapePopupText(item.source)}</small>`,
+        );
+      });
     if (!markers.length) {
       auctionLayerRef.current = null;
       return;
@@ -693,12 +709,16 @@ function MapPageInner() {
                 </span>
               </div>
               {auctionPoints.length > 0 && (
-                <div className="hidden items-center gap-1 rounded-full border border-[var(--warning)]/40 bg-[var(--warning)]/15 px-2 py-1 shadow-sm backdrop-blur sm:flex">
+                <Link
+                  href={lh('/leiloes')}
+                  aria-label="Ver leilões"
+                  className="hidden items-center gap-1 rounded-full border border-[var(--warning)]/40 bg-[var(--warning)]/15 px-2 py-1 shadow-sm backdrop-blur transition hover:bg-[var(--warning)]/25 sm:flex"
+                >
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]" />
                   <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--foreground)]">
                     {auctionPoints.length} BR
                   </span>
-                </div>
+                </Link>
               )}
               <button
                 type="button"

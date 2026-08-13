@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import type { Env } from '../index.js';
+import { loadAuctions } from '../loadJson.js';
 
 export const BRAZIL_STATES = [
   'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG',
@@ -8,20 +9,51 @@ export const BRAZIL_STATES = [
 ] as const;
 export const NORTHEAST_STATES = ['AL', 'BA', 'CE', 'MA', 'PB', 'PE', 'PI', 'RN', 'SE'] as const;
 
+export type AuctionCategory = 'terreno' | 'casa' | 'apartamento' | 'comercial' | 'rural' | 'outro';
+export type AuctionType = 'judicial' | 'extrajudicial' | 'bank' | 'public';
+export type AuctionLotStatus = 'open' | 'scheduled' | 'closed' | 'unknown';
+export type AuctionGrade = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+
+/**
+ * A single auction lot (imóvel em leilão). Covers casas, apartamentos,
+ * terrenos e comerciais, de leilão judicial, extrajudicial ou de banco.
+ * `discountPct` (desconto do lance vs. avaliação de mercado) and `grade`
+ * (oportunidade LandMap A–F) make it directly comparable to residential data.
+ */
 export type AuctionOpportunity = {
   id: string;
   source: string;
   sourceUrl?: string;
   title: string;
+  description?: string;
   city: string;
   state: (typeof BRAZIL_STATES)[number];
-  type: 'terreno' | 'casa' | 'apartamento' | 'comercial' | 'rural' | 'outro';
+  neighborhood?: string;
+  street?: string;
+  category: AuctionCategory;
+  auctionType: AuctionType;
+  type: AuctionCategory;
   auctionDate?: string;
   price?: number;
+  marketPrice?: number;
+  discountPct?: number;
   areaM2?: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  suites?: number;
+  parkingSpaces?: number;
+  floor?: number;
   latitude?: number;
   longitude?: number;
-  status: 'open' | 'scheduled' | 'closed' | 'unknown';
+  status: AuctionLotStatus;
+  matricula?: string;
+  editalUrl?: string;
+  origemDivida?: string;
+  grade?: AuctionGrade;
+  score?: number;
+  risks?: string[];
+  drivers?: string[];
+  tags?: string[];
   updatedAt: string;
 };
 
@@ -30,16 +62,36 @@ const auctionSchema = z.object({
   source: z.string().min(1),
   sourceUrl: z.string().url().optional(),
   title: z.string().min(1),
+  description: z.string().optional(),
   city: z.string().min(1),
   state: z.enum(BRAZIL_STATES),
-  type: z.enum(['terreno', 'casa', 'apartamento', 'comercial', 'rural', 'outro']).default('outro'),
-  auctionDate: z.string().datetime().optional(),
+  neighborhood: z.string().optional(),
+  street: z.string().optional(),
+  category: z.enum(['terreno', 'casa', 'apartamento', 'comercial', 'rural', 'outro']).default('outro'),
+  auctionType: z.enum(['judicial', 'extrajudicial', 'bank', 'public']).default('bank'),
+  type: z.enum(['terreno', 'casa', 'apartamento', 'comercial', 'rural', 'outro']).optional(),
+  auctionDate: z.string().datetime().optional().or(z.string().min(1).optional()),
   price: z.number().nonnegative().optional(),
+  marketPrice: z.number().nonnegative().optional(),
+  discountPct: z.number().min(-100).max(100).optional(),
   areaM2: z.number().positive().optional(),
+  bedrooms: z.number().int().nonnegative().optional(),
+  bathrooms: z.number().int().nonnegative().optional(),
+  suites: z.number().int().nonnegative().optional(),
+  parkingSpaces: z.number().int().nonnegative().optional(),
+  floor: z.number().int().optional(),
   latitude: z.number().min(-35).max(6).optional(),
   longitude: z.number().min(-75).max(-30).optional(),
   status: z.enum(['open', 'scheduled', 'closed', 'unknown']).default('unknown'),
-  updatedAt: z.string().datetime().optional(),
+  matricula: z.string().optional(),
+  editalUrl: z.string().url().optional(),
+  origemDivida: z.string().optional(),
+  grade: z.enum(['A', 'B', 'C', 'D', 'E', 'F']).optional(),
+  score: z.number().min(0).max(100).optional(),
+  risks: z.array(z.string()).optional(),
+  drivers: z.array(z.string()).optional(),
+  tags: z.array(z.string()).optional(),
+  updatedAt: z.string().datetime().optional().or(z.string().min(1).optional()),
 });
 
 const ingestSchema = z.object({
@@ -60,6 +112,16 @@ export function subscribeAuctionStream(listener: (item: AuctionOpportunity) => v
   return () => listeners.delete(listener);
 }
 
+function toOpportunity(raw: z.infer<typeof auctionSchema>): AuctionOpportunity {
+  const type = raw.type ?? raw.category;
+  return {
+    ...raw,
+    type,
+    status: raw.status ?? 'unknown',
+    updatedAt: raw.updatedAt ?? new Date().toISOString(),
+  } as AuctionOpportunity;
+}
+
 export function getAuctionSnapshot(state?: string, limit = 100, region?: string) {
   const normalizedState = state?.trim().toUpperCase();
   return [...store.values()]
@@ -69,15 +131,42 @@ export function getAuctionSnapshot(state?: string, limit = 100, region?: string)
     .slice(0, Math.min(Math.max(limit, 1), 500));
 }
 
-function upsert(item: z.infer<typeof auctionSchema>): AuctionOpportunity {
-  const normalized = {
-    ...item,
-    updatedAt: item.updatedAt ?? new Date().toISOString(),
-  } as AuctionOpportunity;
+function upsert(raw: z.infer<typeof auctionSchema>): AuctionOpportunity {
+  const normalized = toOpportunity(raw);
   store.set(normalized.id, normalized);
-  for (const listener of listeners) listener(normalized);
+  listeners.forEach((listener) => listener(normalized));
   return normalized;
 }
+
+/**
+ * Seed the in-memory store from `data/auctions.json` (real Brazilian auction
+ * lots). Runs once at module load so `GET /auctions`, the `/ws/auctions`
+ * snapshot and the `/map` layer never serve an empty set even before any
+ * `/ingest` call. Never throws — an unreadable dataset degrades to warnings.
+ */
+function seedFromDataset() {
+  let rows: unknown[] = [];
+  try {
+    // loadAuctions may be bundled into a sibling chunk after tsup/esbuild.
+    rows = loadAuctions();
+  } catch {
+    rows = [];
+  }
+  if (!Array.isArray(rows) || rows.length === 0) return;
+  let accepted = 0;
+  rows.forEach((row) => {
+    const parsed = auctionSchema.safeParse(row);
+    if (!parsed.success) return;
+    upsert(parsed.data);
+    accepted++;
+  });
+  if (accepted) console.log(`[auctions] seeded ${accepted} lotes de leilão de data/auctions.json`);
+}
+
+// Populate the in-memory store once at module load so GET /auctions, the
+// /ws/auctions snapshot and the /map layer serve real data without a prior
+// /ingest call. Runs after the store + listeners are defined above.
+seedFromDataset();
 
 export const auctionsApp = new Hono<Env>();
 

@@ -13,6 +13,7 @@ const PUBLIC_ROUTES = [
   "",
   "search",
   "map",
+  "leiloes",
   "regions",
   "plans",
   "insights",
