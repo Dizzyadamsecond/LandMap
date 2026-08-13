@@ -511,6 +511,13 @@ body {
   filter: none;
 }
 
+/* Quando o basemap ativo é OSM (source primário resiliente), aplicamos um
+   filtro dark para manter a estética premium dark/indigo da marca — OSM é
+   claro por padrão. CARTO dark (fallback) NÃO recebe filtro (já é dark). */
+.landmap-tiles.basemap-osm-dark .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(1.02);
+}
+
 .landmap-tiles .leaflet-container {
   background: var(--background);
 }

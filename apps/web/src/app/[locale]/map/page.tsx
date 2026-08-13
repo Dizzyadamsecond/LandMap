@@ -312,19 +312,115 @@ function MapPageInner() {
           attributionControl: true,
         });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        // Basemap Lovable-style: CARTO Dark Matter — canvas escuro/neutro de alta
-        // fidelidade, combinando com o chrome dark/indigo da marca (paridade 1:1
-        // com o Google Maps dark do Lovable). O indigo da marca fica no
-        // chrome/marcadores/heat (--primary), NÃO no basemap. O CSS em
-        // globals.css (.landmap-tiles .leaflet-tile-pane { filter: none }) garante
-        // zero tint de marca no tile — só escurecemos o canvas, sem viés de cor.
-        const baseUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-        L.tileLayer(baseUrl, {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: 'abcd',
-          maxZoom: 20,
-        }).addTo(map);
+        // Basemap: OSM é o source PRIMÁRIO (rock-solid, sem rate-limit, carrega
+        // em praticamente qualquer rede — inclusive quando o CARTO é throttleado
+        // com 503, que era a causa do mapa em branco). CARTO Dark Matter fica
+        // como fallback premium. Para manter a paridade estética dark/indigo
+        // da marca, aplicamos um filtro dark no tile pane quando o source ativo
+        // é OSM (CARTO já é dark por si). Robustez: sondamos com Image() e também
+        // trocamos em tileerror (na camada, que dispara de forma confiável).
+        const baseSources = [
+          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+          'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+        ];
+        const tileAttribution =
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+        const applyBasemapStyle = (idx: number) => {
+          // idx 0 = OSM (precisa de filtro dark); demais = já são dark.
+          const el = map.getContainer();
+          if (idx === 0) el.classList.add('basemap-osm-dark');
+          else el.classList.remove('basemap-osm-dark');
+        };
+        const probeTile = (url: string) =>
+          new Promise<boolean>((resolve) => {
+            const sUrl = url
+              .replace('{s}', 'a')
+              .replace('{z}', '12')
+              .replace('{x}', '1609')
+              .replace('{y}', '2090')
+              .replace('{r}', '');
+            const img = new Image();
+            let done = false;
+            const finish = (v: boolean) => {
+              if (done) return;
+              done = true;
+              resolve(v);
+            };
+            img.onload = () => finish(img.naturalWidth > 0);
+            img.onerror = () => finish(false);
+            img.src = sUrl;
+            // Timeout generoso: OSM pode demorar mais que CARTO em algumas redes;
+            // um timeout curto falsearia OSM e cairia no CARTO instável.
+            setTimeout(() => finish(false), 8000);
+          });
+        let baseLayer: any = null;
+        let activeBaseIdx = 0;
+        let swapped = false;
+        const addBase = (idx: number) => {
+          activeBaseIdx = idx;
+          applyBasemapStyle(idx);
+          baseLayer = L.tileLayer(baseSources[idx], {
+            attribution: tileAttribution,
+            subdomains: 'abc',
+            maxZoom: 20,
+          });
+          baseLayer.on('tileerror', () => {
+            if (swapped) return;
+            if (activeBaseIdx >= baseSources.length - 1) {
+              console.error('[MAP] Todos os basemaps falharam (tileerror).');
+              setMapError(true);
+              return;
+            }
+            swapped = true;
+            try {
+              map.removeLayer(baseLayer);
+            } catch {
+              /* ignore */
+            }
+            addBase(activeBaseIdx + 1);
+          });
+          baseLayer.addTo(map);
+          try {
+            map.invalidateSize({ animate: false });
+          } catch {
+            /* ignore */
+          }
+          // Rede de segurança por POLLING (independente do evento tileerror):
+          // se após 3.5s nenhum tile carregou, troca para o próximo source.
+          // Garante recuperação mesmo que o evento tileerror não dispare.
+          if (idx < baseSources.length - 1) {
+            setTimeout(() => {
+              if (swapped) return;
+              const pane = map.getPane('tilePane') as any;
+              const imgs = pane ? Array.from(pane.querySelectorAll('img')) : [];
+              const loaded = imgs.filter((t: any) => t.complete && t.naturalWidth > 0).length;
+              if (loaded === 0) {
+                swapped = true;
+                try {
+                  map.removeLayer(baseLayer);
+                } catch {
+                  /* ignore */
+                }
+                addBase(idx + 1);
+              }
+            }, 3500);
+          }
+        };
+        // Pre-sonda para escolher um source saudável de imediato.
+        (async () => {
+          for (let i = 0; i < baseSources.length; i++) {
+            const ok = await probeTile(baseSources[i]);
+            if (ok) {
+              addBase(i);
+              return;
+            }
+          }
+          // Nenhum source respondeu à sonda a tempo — usa OSM (idx 0) como
+          // padrão resiliente em vez de ficar em branco.
+          addBase(0);
+          console.error('[MAP] Nenhum basemap respondeu à sonda inicial; usando OSM.');
+        })();
         mapInstance.current = map;
         setMapReady(true);
         setTimeout(() => {
