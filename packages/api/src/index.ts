@@ -31,9 +31,13 @@ import { createAutomationRouter } from './routes/automation.js';
 import { createProductEventsRouter } from './routes/product-events.js';
 import { vcFeaturesRoutes } from './routes/vc-features.js';
 import { createPropertiesScrapeRouter } from './routes/properties-scrape.js';
+import govRoutes from './routes/government-integration.js';
+import energyRoutes from './routes/energy-systems.js';
+import aiRoutes from './routes/property-ai-agent.js';
 import { loadProperties } from './loadJson.js';
 const allPropertiesData = loadProperties();
 import { createGeoRouter, createGeoSource } from '@landmap/geo';
+
 
 
 export type Env = {
@@ -580,5 +584,11 @@ app.route('/vc', vcFeaturesRoutes(app as any));
 
 /* ─── Parallel Scraper API (terrains, houses, apartments, auctions) ─── */
 app.route('/properties/scrape', createPropertiesScrapeRouter());
+
+/* ─── Platform Expansion Layers (Government Integration, Energy Systems, AI Agent) ─── */
+app.route('/gov', govRoutes);
+app.route('/energy', energyRoutes);
+app.route('/ai-agent', aiRoutes);
+
 
 
