@@ -32,15 +32,40 @@ export default function PwaRegister() {
     const register = () => {
       navigator.serviceWorker
         .register('/sw.js', { scope: '/' })
-        .then((reg) => {
+        .then(async (reg) => {
           window.__landmapPwaRegistered = true;
           console.log('[PWA] ✅ Service Worker registered:', reg.scope);
           // SW novo esperando → ativa na hora (app sempre atualizado)
           if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-          if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission().catch(() => {
-              console.log('[PWA] Notification permission denied by user');
-            });
+
+          // Web Push: pede permissão e inscreve no pushManager (VAPID do app).
+          if ('Notification' in window && 'pushManager' in reg) {
+            try {
+              const perm = await Notification.requestPermission();
+              if (perm === 'granted') {
+                const vapidRes = await fetch('/api/push/vapid').then((r) => (r.ok ? r.json() : null));
+                const publicKey = vapidRes?.publicKey as string | undefined;
+                if (!publicKey) return;
+                const existing = await reg.pushManager.getSubscription();
+                const sub =
+                  existing ||
+                  (await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: publicKey,
+                  }));
+                await fetch('/api/push/subscribe', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    endpoint: sub.endpoint,
+                    keys: { p256dh: sub.getKey?.('p256dh') ? btoa(String.fromCharCode(...new Uint8Array(await sub.getKey('p256dh')!))) : '', auth: sub.getKey?.('auth') ? btoa(String.fromCharCode(...new Uint8Array(await sub.getKey('auth')!))) : '' },
+                  }),
+                }).catch(() => {});
+                console.log('[PWA] ✅ Push subscription enviada.');
+              }
+            } catch (e) {
+              console.warn('[PWA] Push subscribe falhou:', (e as Error)?.message);
+            }
           }
         })
         .catch((err) => {

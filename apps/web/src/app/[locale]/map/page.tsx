@@ -319,41 +319,27 @@ function MapPageInner() {
         // da marca, aplicamos um filtro dark no tile pane quando o source ativo
         // é OSM (CARTO já é dark por si). Robustez: sondamos com Image() e também
         // trocamos em tileerror (na camada, que dispara de forma confiável).
+        // Basemap servido pelo NOSSO domínio (proxy server-side /api/tiles).
+        // Elimina a dependência de CDN de tiles externo, que é bloqueado/
+        // throttleado em boa parte das redes BR (causa do mapa em branco).
+        // O proxy faz failover entre CARTO Dark Matter, OSM e ArcGIS e entrega
+        // sempre pelo landmapprod.vercel.app (permitido pelo CSP img-src 'self').
         const baseSources = [
-          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-          'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+          '/api/tiles?src=carto&z={z}&x={x}&y={y}&r={r}',
+          '/api/tiles?src=osm&z={z}&x={x}&y={y}&r={r}',
+          '/api/tiles?src=arcgis&z={z}&x={x}&y={y}&r={r}',
         ];
         const tileAttribution =
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a> &copy; <a href="https://www.esri.com">Esri</a>';
         const applyBasemapStyle = (idx: number) => {
-          // idx 0 = OSM (precisa de filtro dark); demais = já são dark.
+          // idx 0 = CARTO via proxy (já dark); idx 1 = OSM via proxy (claro → filtro dark);
+          // idx 2 = ArcGIS dark. Aplicamos filtro dark só no OSM.
           const el = map.getContainer();
-          if (idx === 0) el.classList.add('basemap-osm-dark');
+          if (idx === 1) el.classList.add('basemap-osm-dark');
           else el.classList.remove('basemap-osm-dark');
         };
-        const probeTile = (url: string) =>
-          new Promise<boolean>((resolve) => {
-            const sUrl = url
-              .replace('{s}', 'a')
-              .replace('{z}', '12')
-              .replace('{x}', '1609')
-              .replace('{y}', '2090')
-              .replace('{r}', '');
-            const img = new Image();
-            let done = false;
-            const finish = (v: boolean) => {
-              if (done) return;
-              done = true;
-              resolve(v);
-            };
-            img.onload = () => finish(img.naturalWidth > 0);
-            img.onerror = () => finish(false);
-            img.src = sUrl;
-            // Timeout generoso: OSM pode demorar mais que CARTO em algumas redes;
-            // um timeout curto falsearia OSM e cairia no CARTO instável.
-            setTimeout(() => finish(false), 8000);
-          });
+        // (probeTile externo removido: o proxy /api/tiles faz failover server-side.)
+
         let baseLayer: any = null;
         let activeBaseIdx = 0;
         let swapped = false;
@@ -364,6 +350,7 @@ function MapPageInner() {
             attribution: tileAttribution,
             subdomains: 'abc',
             maxZoom: 20,
+            detectRetina: true,
           });
           baseLayer.on('tileerror', () => {
             if (swapped) return;
@@ -407,20 +394,11 @@ function MapPageInner() {
             }, 3500);
           }
         };
-        // Pre-sonda para escolher um source saudável de imediato.
-        (async () => {
-          for (let i = 0; i < baseSources.length; i++) {
-            const ok = await probeTile(baseSources[i]);
-            if (ok) {
-              addBase(i);
-              return;
-            }
-          }
-          // Nenhum source respondeu à sonda a tempo — usa OSM (idx 0) como
-          // padrão resiliente em vez de ficar em branco.
-          addBase(0);
-          console.error('[MAP] Nenhum basemap respondeu à sonda inicial; usando OSM.');
-        })();
+        // O proxy /api/tiles já faz failover server-side (CARTO→OSM→ArcGIS),
+        // então não sondamos CDNs externos (que são bloqueados na rede do usuário).
+        // Usamos o proxy idx 0 (CARTO via proxy); o tileerror/tileerror-polling
+        // fazem failover para osm/arcgis dentro do próprio proxy se preciso.
+        addBase(0);
         mapInstance.current = map;
         setMapReady(true);
         setTimeout(() => {
