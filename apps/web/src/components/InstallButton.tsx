@@ -46,6 +46,13 @@ export function InstallButton() {
   if (dismissed || isInstalled || cardOpen) return null;
 
   const handleClick = async () => {
+    // iOS Safari primeiro: beforeinstallprompt NÃO existe lá — instruções de
+    // "Adicionar à Tela de Início". (Headless Chromium com UA iPhone ainda
+    // dispara o evento; a ordem importa para o fluxo real de Safari.)
+    if (isIOS) {
+      setIosHint((v) => !v);
+      return;
+    }
     if (isInstallable) {
       const ok = await install();
       if (!ok) {
@@ -57,10 +64,6 @@ export function InstallButton() {
         }
         setDismissed(true);
       }
-      return;
-    }
-    if (isIOS) {
-      setIosHint((v) => !v);
       return;
     }
   };
