@@ -125,6 +125,20 @@ function MapPageInner() {
   heatRef.current = showHeat;
   mapErrorRef.current = mapError;
 
+  // Trava o scroll de fundo (html/body) enquanto o mapa fullscreen está montado.
+  // O AppShell adiciona pt-16/pb-96 no <main>; sem isso, o body estoura a viewport
+  // e aparece uma scrollbar quebrada (bug de "identação"/scroll no mapa).
+  useEffect(() => {
+    const prevHtml = document.documentElement.style.overflow;
+    const prevBody = document.body.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.documentElement.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+    };
+  }, []);
+
   const localSuggestions = useMemo(() => filterRegions(query).slice(0, 8), [query]);
   const suggestions = useMemo(() => {
     const seen = new Set<string>();
