@@ -18,6 +18,7 @@ export function InstallButton() {
   const { isInstallable, isInstalled, install } = usePWAInstall();
   const [iosHint, setIosHint] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [cardOpen, setCardOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -26,6 +27,15 @@ export function InstallButton() {
     } catch {
       /* noop */
     }
+    // Card do InstallPrompt visível → pill fica oculto (evita sobreposição)
+    const open = () => setCardOpen(true);
+    const close = () => setCardOpen(false);
+    window.addEventListener('landmap-install-prompt-open', open);
+    window.addEventListener('landmap-install-prompt-close', close);
+    return () => {
+      window.removeEventListener('landmap-install-prompt-open', open);
+      window.removeEventListener('landmap-install-prompt-close', close);
+    };
   }, []);
 
   const isIOS =
@@ -33,7 +43,7 @@ export function InstallButton() {
     /iPad|iPhone|iPod/.test(navigator.userAgent) &&
     !(window as any).MSStream;
 
-  if (dismissed || isInstalled) return null;
+  if (dismissed || isInstalled || cardOpen) return null;
 
   const handleClick = async () => {
     if (isInstallable) {

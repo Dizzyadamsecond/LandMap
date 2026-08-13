@@ -40,6 +40,17 @@ export function InstallPrompt() {
     };
   }, []);
 
+  // Comunica ao InstallButton que o card está visível (evita sobreposição)
+  useEffect(() => {
+    if (!isInstallable || dismissed || !ready) return;
+    window.dispatchEvent(new CustomEvent('landmap-install-prompt-open'));
+    const t = setTimeout(() => window.dispatchEvent(new CustomEvent('landmap-install-prompt-close')), 8000);
+    return () => {
+      clearTimeout(t);
+      window.dispatchEvent(new CustomEvent('landmap-install-prompt-close'));
+    };
+  }, [isInstallable, dismissed, ready]);
+
   if (!isInstallable || dismissed || !ready) return null;
 
   const dismiss = () => {
