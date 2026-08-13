@@ -82,20 +82,24 @@ function CameraGlyph({ size = 24, className }: { size?: number; className?: stri
   );
 }
 
-// Ordem 1:1 com a Lovable (telas compartilhadas na mesma sequência da referência):
-// Regiões → Favoritos → Comparar → Dashboard → Mapa → Insights → Perfil →
-// Onboarding → Planos → Sobre → Metodologia → Buscar. Depois, nossos diferenciais
-// LandMap (mantidos no fim, sem reordenar o produto).
-// Navegação completa — telas compartilhadas na ordem literal da Lovable,
-// depois todas as páginas produto LandMap (agrupadas por área).
+// Ordem 1:1 com a Lovable (NAV literal do reference-lovable/src/routes/_authenticated/route.tsx):
+// Mapa → Dashboard → Comparador → Favoritos → Alertas → Relatórios → IA LandMap → Configurações.
+// No Lovable o "Mapa" é o /dashboard (o mapa vive no dashboard; map.tsx redireciona).
+// Aqui /map é página própria (paridade do mapa) e /dashboard é a home autenticada —
+// a ORDEM é literal; os destinos usam nossas rotas reais (todas existem).
 const navItems: { href: string; label: string; Icon: IconComponent; emBreve?: boolean; tour?: string }[] =
   [
     // ─── Telas compartilhadas (ordem literal Lovable) ───
-    { href: 'regions', label: 'Regiões', Icon: MapPin },
-    { href: 'favorites', label: 'Favoritos', Icon: Star },
-    { href: 'compare', label: 'Comparar', Icon: GitCompare },
-    { href: 'dashboard', label: 'Dashboard', Icon: LayoutGrid },
     { href: 'map', label: 'Mapa', Icon: Map, tour: 'map' },
+    { href: 'dashboard', label: 'Dashboard', Icon: LayoutGrid },
+    { href: 'compare', label: 'Comparador', Icon: GitCompare },
+    { href: 'favorites', label: 'Favoritos', Icon: Star },
+    { href: 'alerts', label: 'Alertas', Icon: Bell },
+    { href: 'reports', label: 'Relatórios', Icon: BarChart },
+    { href: 'assistant', label: 'IA LandMap', Icon: Sparkles },
+    { href: 'settings', label: 'Configurações', Icon: Settings },
+    // ─── Complementares LandMap (após a ordem Lovable, sem reordenar o produto) ───
+    { href: 'regions', label: 'Regiões', Icon: MapPin },
     { href: 'insights', label: 'Insights', Icon: BellRing },
     { href: 'profile', label: 'Perfil', Icon: User },
     { href: 'onboarding', label: 'Onboarding', Icon: ArrowRight },
