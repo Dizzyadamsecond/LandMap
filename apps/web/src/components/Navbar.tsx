@@ -24,57 +24,98 @@ const primaryLinks = [
   { href: 'plans', labelKey: 'Planos' },
 ];
 
+// ============================================================================
+// ORDEM 1:1 LOVABLE (Mapa → Dashboard → Comparador → Favoritos → Alertas → Relatórios → IA LandMap → Configurações)
+// + ROTAS COMPLEMENTARES LANDMAP (não removidas, apenas após as principais)
+// ============================================================================
 const marketLinks = [
+  // 1. MAPA & MERCADO (Lovable)
+  { href: 'map', labelKey: 'Mapa' },
+
+  // 2. DASHBOARD & ANALYTICS (Lovable)
+  { href: 'dashboard', labelKey: 'Dashboard' },
+
+  // 3. COMPARADOR (Lovable)
+  { href: 'compare', labelKey: 'Comparador' },
+
+  // 4. FAVORITOS (Lovable)
+  { href: 'favorites', labelKey: 'Favoritos' },
+
+  // 5. ALERTAS (Lovable)
+  { href: 'alerts', labelKey: 'Alertas' },
+
+  // 6. RELATÓRIOS (Lovable)
+  { href: 'reports', labelKey: 'Relatórios' },
+
+  // 7. IA LANDMAP (Lovable)
+  { href: 'chat', labelKey: 'IA LandMap' },
+
+  // 8. CONFIGURAÇÕES (Lovable)
+  { href: 'settings', labelKey: 'Configurações' },
+
+  // ============================================================================
+  // COMPLEMENTARES LANDMAP (não removidas — todas as features extras)
+  // ============================================================================
+
+  // Análise & Dados
+  { href: 'kpis', labelKey: 'KPIs' },
+  { href: 'insights', labelKey: 'Insights' },
   { href: 'regions', labelKey: 'Regiões' },
   { href: 'cities', labelKey: 'Cidades' },
   { href: 'neighborhoods', labelKey: 'Bairros' },
   { href: 'market', labelKey: 'Mercado' },
   { href: 'valorization', labelKey: 'Valorização' },
-  { href: 'favorites', labelKey: 'Favoritos' },
-  { href: 'compare', labelKey: 'Comparar' },
-  { href: 'dashboard', labelKey: 'Dashboard' },
-  { href: 'kpis', labelKey: 'KPIs' },
-  { href: 'insights', labelKey: 'Insights' },
-  { href: 'sales', labelKey: 'Terrenos' },
-  { href: 'live', labelKey: 'Ao vivo' },
-  { href: 'studio', labelKey: 'Studio' },
+  { href: 'watchlist', labelKey: 'Monitoradas' },
+
+  // Produtos Inovadores LandMap
   { href: 'world', labelKey: 'Mundo 3D' },
   { href: 'world-3d', labelKey: 'Atlas vivo' },
   { href: 'worldmonitor', labelKey: 'WorldMonitor' },
   { href: 'history40', labelKey: 'History40' },
-  { href: 'v2', labelKey: 'Atlas' },
-  { href: 'terrenos', labelKey: 'Terrenos (legado)' },
+  { href: 'terrenos', labelKey: 'Terrenos' },
+
+  // Studio & Ferramentas
+  { href: 'studio', labelKey: 'Studio' },
   { href: 'calculator', labelKey: 'Calculadora' },
-  { href: 'alerts', labelKey: 'Alertas' },
-  { href: 'resources', labelKey: 'Recursos' },
-  { href: 'developers', labelKey: 'Desenvolvedores' },
-  { href: 'pricing', labelKey: 'Preços' },
-  { href: 'reports', labelKey: 'Relatório' },
-  { href: 'watchlist', labelKey: 'Monitoradas' },
-  { href: 'api-keys', labelKey: 'API & Webhooks' },
-  { href: 'team', labelKey: 'Equipe' },
-  { href: 'radar', labelKey: 'Radar' },
-  { href: 'heatmap', labelKey: 'Heatmap' },
-  { href: 'activity', labelKey: 'Atividade' },
-  { href: 'notifications', labelKey: 'Notificações' },
-  { href: 'settings', labelKey: 'Configurações' },
-  { href: 'developers/api-reference', labelKey: 'API' },
-  { href: 'brasil', labelKey: 'APIs Brasil' },
-  { href: 'portfolio', labelKey: 'Carteira' },
-  { href: 'leads', labelKey: 'Leads' },
-  { href: 'glossary', labelKey: 'Glossário' },
+  { href: 'sales', labelKey: 'Vendas' },
+  { href: 'live', labelKey: 'Ao Vivo' },
+
+  // IA Avançada
   { href: 'assistant', labelKey: 'Assistente IA' },
-  { href: 'chat', labelKey: 'LandBot' },
   { href: 'writer', labelKey: 'Redator IA' },
   { href: 'rag', labelKey: 'Base RAG' },
   { href: 'automations', labelKey: 'Automações' },
-  { href: 'agents', labelKey: 'Agentes' },
-  { href: 'recommendations', labelKey: 'Recomendações' },
   { href: 'pipeline', labelKey: 'Pipeline IA' },
   { href: 'knowledge', labelKey: 'Conhecimento' },
+  { href: 'recommendations', labelKey: 'Recomendações' },
   { href: 'workflows', labelKey: 'Fluxos' },
+  { href: 'agents', labelKey: 'Agentes' },
+
+  // Gerenciamento & Admin
+  { href: 'portfolio', labelKey: 'Carteira' },
+  { href: 'leads', labelKey: 'Leads' },
+  { href: 'team', labelKey: 'Equipe' },
+  { href: 'api-keys', labelKey: 'API & Webhooks' },
   { href: 'integrations', labelKey: 'Integrações' },
+  { href: 'notifications', labelKey: 'Notificações' },
+  { href: 'activity', labelKey: 'Atividade' },
+
+  // Analytics & Insights Avançados
+  { href: 'radar', labelKey: 'Radar' },
+  { href: 'heatmap', labelKey: 'Heatmap' },
+  { href: 'inspect', labelKey: 'Inspetor' },
+
+  // Documentação & Recursos
+  { href: 'glossary', labelKey: 'Glossário' },
+  { href: 'resources', labelKey: 'Recursos' },
+  { href: 'developers', labelKey: 'Desenvolvedores' },
+  { href: 'developers/api-reference', labelKey: 'API Docs' },
+  { href: 'brasil', labelKey: 'APIs Brasil' },
   { href: 'status', labelKey: 'Status' },
+
+  // Legacy
+  { href: 'v2', labelKey: 'Atlas (v2)' },
+  { href: 'pricing', labelKey: 'Preços Legado' },
 ];
 
 // Every navigable destination, used by the mobile sheet.
