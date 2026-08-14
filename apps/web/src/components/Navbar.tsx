@@ -29,15 +29,17 @@ const primaryLinks = [
 // + TODAS as rotas complementares LandMap (preservadas, não removidas)
 // ============================================================================
 const marketLinks = [
-  // ========== ORDEM LOVABLE (1:1) ==========
-  { href: 'dashboard', labelKey: 'Mapa' },           // 1. Mapa (em /dashboard no Lovable)
-  { href: 'dashboard', labelKey: 'Dashboard' },      // 2. Dashboard (ainda em desenvolvimento)
-  { href: 'compare', labelKey: 'Comparador' },       // 3. Comparador
-  { href: 'favorites', labelKey: 'Favoritos' },      // 4. Favoritos
-  { href: 'alerts', labelKey: 'Alertas' },           // 5. Alertas
-  { href: 'reports', labelKey: 'Relatórios' },       // 6. Relatórios
-  { href: 'chat', labelKey: 'IA LandMap' },          // 7. IA LandMap
-  { href: 'settings', labelKey: 'Configurações' },   // 8. Configurações
+  // ========== ORDEM LOVABLE EXATA (1:1) ==========
+  // Nota: Lovable marca items 2, 5, 6, 7, 8 como soon:true (desabilitados)
+  // Mas LandMap tem essas rotas ativas. Mantemos visíveis com soon:true para paridade.
+  { href: 'dashboard', labelKey: 'Mapa' },                    // 1. Mapa (em /dashboard no Lovable)
+  { href: 'dashboard', labelKey: 'Dashboard', soon: true },   // 2. Dashboard (soon: true no Lovable)
+  { href: 'compare', labelKey: 'Comparador' },                // 3. Comparador
+  { href: 'favorites', labelKey: 'Favoritos' },               // 4. Favoritos
+  { href: 'alerts', labelKey: 'Alertas', soon: true },        // 5. Alertas (soon: true no Lovable)
+  { href: 'reports', labelKey: 'Relatórios', soon: true },    // 6. Relatórios (soon: true no Lovable)
+  { href: 'chat', labelKey: 'IA LandMap', soon: true },       // 7. IA LandMap (soon: true no Lovable)
+  { href: 'settings', labelKey: 'Configurações', soon: true }, // 8. Configurações (soon: true no Lovable)
 
   // ========== COMPLEMENTARES LANDMAP (não removidas) ==========
 
@@ -251,7 +253,19 @@ export function Navbar() {
               {marketLinks.map((link) => {
                 const href = `/${locale}/${link.href}`;
                 const isActive = pathname === href || pathname.startsWith(href + '/');
-                return (
+                const isSoon = (link as any).soon === true;
+
+                return isSoon ? (
+                  // "Em breve" — desabilitado (como no Lovable)
+                  <div
+                    key={link.href}
+                    className="block rounded-xl px-3 py-2 text-sm text-[var(--muted-foreground)]/50 cursor-not-allowed opacity-50"
+                    title="Em breve"
+                  >
+                    {link.labelKey} <span className="text-xs">🔜</span>
+                  </div>
+                ) : (
+                  // Ativo — navegável
                   <Link
                     key={link.href}
                     href={href}
@@ -259,8 +273,8 @@ export function Navbar() {
                     role="menuitem"
                     aria-current={isActive ? 'page' : undefined}
                     className={`block rounded-xl px-3 py-2 text-sm transition ${focusRing} ${
-                      isActive 
-                      ? 'bg-[var(--primary)]/10 text-[var(--primary)]' 
+                      isActive
+                      ? 'bg-[var(--primary)]/10 text-[var(--primary)]'
                       : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
                     }`}
                   >
