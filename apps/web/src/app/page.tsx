@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
 export default function RootRedirect() {
-  redirect('/pt-BR/splash');
+  // Redirecionar exatamente como Lovable: / → /dashboard (com locale padrão)
+  redirect('/pt-BR/dashboard');
 }
