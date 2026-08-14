@@ -127,7 +127,7 @@ export default function SplashPage() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero — 100% Lovable Parity (Minimal Splash) */}
       <section className="relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div className="aurora" />
@@ -135,7 +135,7 @@ export default function SplashPage() {
           <div className="glow-dual orb-float" style={{ bottom: '-15%', right: '-8%', width: '40vw', height: '40vw' }} />
           <div className="grain" />
         </div>
-        <div className="mx-auto max-w-6xl px-6 py-20 text-center md:py-28">
+        <div className="mx-auto flex max-w-6xl min-h-[calc(100dvh-80px)] flex-col items-center justify-center px-6 text-center">
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -179,143 +179,6 @@ export default function SplashPage() {
             </span>
           </motion.div>
         </div>
-      </section>
-
-      {/* Feature grid */}
-      <section className="mx-auto max-w-6xl px-6 pb-10">
-        <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-[var(--foreground)]">
-          O que você passa a enxergar
-        </h2>
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={{ show: { transition: { staggerChildren: 0.07 } } }}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
-        >
-          {FEATURES.map((f) => (
-            <motion.div
-              key={f.title}
-              variants={{
-                hidden: { opacity: 0, y: 16 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-              }}
-              className="group rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 transition hover:border-[var(--primary)] hover:shadow-[var(--shadow-card)]"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--primary)] transition group-hover:scale-110">
-                <f.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-4 text-sm font-semibold text-[var(--foreground)]">{f.title}</h3>
-              <p className="mt-2 text-sm text-[var(--muted-foreground)]">{f.desc}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* How it works */}
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-[var(--foreground)]">Como funciona</h2>
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={{ show: { transition: { staggerChildren: 0.1 } } }}
-          className="grid grid-cols-1 gap-6 md:grid-cols-3"
-        >
-          {STEPS.map((s, i) => (
-            <motion.div
-              key={s.title}
-              variants={{
-                hidden: { opacity: 0, y: 16 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-              }}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 transition hover:border-[var(--primary)]"
-            >
-              <div className="flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold text-[var(--primary-foreground)]">
-                  {i + 1}
-                </span>
-                <s.icon className="h-5 w-5 text-[var(--primary)]" />
-              </div>
-              <h3 className="mt-4 text-base font-semibold text-[var(--foreground)]">{s.title}</h3>
-              <p className="mt-2 text-sm text-[var(--muted-foreground)]">{s.desc}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* LandMap Score */}
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="grid items-center gap-8 rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 md:grid-cols-2"
-        >
-          <div>
-            <div className="flex items-center gap-2 text-sm font-medium text-[var(--muted-foreground)]">
-              <Star className="h-4 w-4 text-[var(--primary)]" />
-              LandMap Score
-            </div>
-            <h3 className="mt-3 text-2xl font-bold tracking-tight text-[var(--foreground)]">
-              Potencial de uma região em um número.
-            </h3>
-            <p className="mt-3 text-sm text-[var(--muted-foreground)]">
-              Cada região recebe um Score de 0 a 100 que combina valorização, risco e atratividade — para você decidir com dados, não com feeling.
-            </p>
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center rounded-2xl border border-[var(--primary)] bg-[var(--background)] px-10 py-8">
-              <span className="text-6xl font-bold text-[var(--primary)]">92</span>
-              <span className="mt-1 text-sm font-medium text-[var(--foreground)]">Jardim Paulista, São Paulo</span>
-              <div className="mt-4 flex gap-6 text-center text-sm">
-                <div>
-                  <div className="font-semibold text-[var(--foreground)]">+8,3%</div>
-                  <div className="text-[var(--muted-foreground)]">preço/m²</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-[var(--foreground)]">−18%</div>
-                  <div className="text-[var(--muted-foreground)]">tempo de venda</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-[var(--foreground)]">12</div>
-                  <div className="text-[var(--muted-foreground)]">fontes</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="rounded-3xl bg-[var(--primary)] px-8 py-12 text-center"
-        >
-          <h2 className="text-2xl font-bold tracking-tight text-[var(--primary-foreground)]">Experimente antes de assinar.</h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-[var(--primary-foreground)]/80">
-            7 dias com acesso completo ao LandMap Pro. Sem pagamento antecipado, sem fidelidade.
-          </p>
-          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href={href('/auth')}
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--card)] px-6 py-3 text-sm font-semibold text-[var(--foreground)] shadow-sm transition hover:opacity-90"
-            >
-              Começar gratuitamente por 7 dias
-            </Link>
-            <Link
-              href={href('/plans')}
-              className="text-sm font-medium text-[var(--primary-foreground)] underline-offset-4 hover:underline"
-            >
-              Ver planos
-            </Link>
-          </div>
-        </motion.div>
       </section>
 
       {/* Footer */}
