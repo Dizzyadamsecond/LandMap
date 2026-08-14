@@ -25,51 +25,38 @@ const primaryLinks = [
 ];
 
 // ============================================================================
-// ORDEM 1:1 LOVABLE (Mapa → Dashboard → Comparador → Favoritos → Alertas → Relatórios → IA LandMap → Configurações)
-// + ROTAS COMPLEMENTARES LANDMAP (não removidas, apenas após as principais)
+// ORDEM EXATA LOVABLE: Mapa → Dashboard → Comparador → Favoritos → Alertas → Relatórios → IA LandMap → Configurações
+// + TODAS as rotas complementares LandMap (preservadas, não removidas)
 // ============================================================================
 const marketLinks = [
-  // 1. MAPA & MERCADO (Lovable)
-  { href: 'map', labelKey: 'Mapa' },
+  // ========== ORDEM LOVABLE (1:1) ==========
+  { href: 'dashboard', labelKey: 'Mapa' },           // 1. Mapa (em /dashboard no Lovable)
+  { href: 'dashboard', labelKey: 'Dashboard' },      // 2. Dashboard (ainda em desenvolvimento)
+  { href: 'compare', labelKey: 'Comparador' },       // 3. Comparador
+  { href: 'favorites', labelKey: 'Favoritos' },      // 4. Favoritos
+  { href: 'alerts', labelKey: 'Alertas' },           // 5. Alertas
+  { href: 'reports', labelKey: 'Relatórios' },       // 6. Relatórios
+  { href: 'chat', labelKey: 'IA LandMap' },          // 7. IA LandMap
+  { href: 'settings', labelKey: 'Configurações' },   // 8. Configurações
 
-  // 2. DASHBOARD & ANALYTICS (Lovable)
-  { href: 'dashboard', labelKey: 'Dashboard' },
+  // ========== COMPLEMENTARES LANDMAP (não removidas) ==========
 
-  // 3. COMPARADOR (Lovable)
-  { href: 'compare', labelKey: 'Comparador' },
-
-  // 4. FAVORITOS (Lovable)
-  { href: 'favorites', labelKey: 'Favoritos' },
-
-  // 5. ALERTAS (Lovable)
-  { href: 'alerts', labelKey: 'Alertas' },
-
-  // 6. RELATÓRIOS (Lovable)
-  { href: 'reports', labelKey: 'Relatórios' },
-
-  // 7. IA LANDMAP (Lovable)
-  { href: 'chat', labelKey: 'IA LandMap' },
-
-  // 8. CONFIGURAÇÕES (Lovable)
-  { href: 'settings', labelKey: 'Configurações' },
-
-  // ============================================================================
-  // COMPLEMENTARES LANDMAP (não removidas — todas as features extras)
-  // ============================================================================
-
-  // Análise & Dados
-  { href: 'kpis', labelKey: 'KPIs' },
-  { href: 'insights', labelKey: 'Insights' },
+  // Mapa & Análise Geográfica
+  { href: 'map', labelKey: 'Mapa Interativo' },
   { href: 'regions', labelKey: 'Regiões' },
   { href: 'cities', labelKey: 'Cidades' },
   { href: 'neighborhoods', labelKey: 'Bairros' },
   { href: 'market', labelKey: 'Mercado' },
   { href: 'valorization', labelKey: 'Valorização' },
+
+  // Analytics & KPIs
+  { href: 'kpis', labelKey: 'KPIs' },
+  { href: 'insights', labelKey: 'Insights' },
   { href: 'watchlist', labelKey: 'Monitoradas' },
 
   // Produtos Inovadores LandMap
   { href: 'world', labelKey: 'Mundo 3D' },
-  { href: 'world-3d', labelKey: 'Atlas vivo' },
+  { href: 'world-3d', labelKey: 'Atlas Vivo' },
   { href: 'worldmonitor', labelKey: 'WorldMonitor' },
   { href: 'history40', labelKey: 'History40' },
   { href: 'terrenos', labelKey: 'Terrenos' },
@@ -91,7 +78,7 @@ const marketLinks = [
   { href: 'workflows', labelKey: 'Fluxos' },
   { href: 'agents', labelKey: 'Agentes' },
 
-  // Gerenciamento & Admin
+  // Gerenciamento
   { href: 'portfolio', labelKey: 'Carteira' },
   { href: 'leads', labelKey: 'Leads' },
   { href: 'team', labelKey: 'Equipe' },
@@ -100,7 +87,7 @@ const marketLinks = [
   { href: 'notifications', labelKey: 'Notificações' },
   { href: 'activity', labelKey: 'Atividade' },
 
-  // Analytics & Insights Avançados
+  // Analytics Avançado
   { href: 'radar', labelKey: 'Radar' },
   { href: 'heatmap', labelKey: 'Heatmap' },
   { href: 'inspect', labelKey: 'Inspetor' },
