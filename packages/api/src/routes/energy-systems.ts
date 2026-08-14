@@ -173,7 +173,7 @@ energyRoutes.get('/consumption/:property_id', async (c) => {
     const climateZone = getClimateZone(prop.lat, prop.lon);
 
     // Consumption estimates (kWh per sqm per year) by type and climate
-    const consumptionRates = {
+    const consumptionRates: Record<string, Record<string, number>> = {
       residential: { tropical: 35, temperate: 45, cold: 55 },
       commercial: { tropical: 100, temperate: 120, cold: 140 },
       office: { tropical: 80, temperate: 100, cold: 120 },
@@ -181,7 +181,7 @@ energyRoutes.get('/consumption/:property_id', async (c) => {
       industrial: { tropical: 50, temperate: 70, cold: 90 },
     };
 
-    const baseConsumption = consumptionRates[prop.property_type]?.[climateZone] || 50;
+    const baseConsumption = (consumptionRates[prop.property_type as string] as Record<string, number>)?.[climateZone as string] || 50;
     const adjustedConsumption = baseConsumption * (prop.size_m2 / 100); // Scale for size
 
     return c.json({
@@ -383,7 +383,7 @@ function getClimateZone(lat: number, lon: number): string {
 }
 
 function estimatePeakDemand(propertyType: string, size_sqm: number): number {
-  const peakDensity = { residential: 0.5, commercial: 2, office: 1.5, retail: 2.5, industrial: 1 };
+  const peakDensity: Record<string, number> = { residential: 0.5, commercial: 2, office: 1.5, retail: 2.5, industrial: 1 };
   return ((peakDensity[propertyType] || 1) * size_sqm) / 1000; // kW
 }
 

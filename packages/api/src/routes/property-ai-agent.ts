@@ -251,7 +251,7 @@ aiRoutes.post('/analyze-portfolio', async (c) => {
   try {
     // Analyze each property
     const analyses = await Promise.all(
-      property_ids.map((id) =>
+      property_ids.map((id: string) =>
         aiValuation(c.env.db, c.env.ai, id, {}).then((v) => ({ property_id: id, valuation: v }))
       )
     );
@@ -288,16 +288,16 @@ aiRoutes.post('/compare-properties', async (c) => {
   try {
     // Analyze each property
     const reports = await Promise.all(
-      property_ids.map((id) => aiValuation(c.env.db, c.env.ai, id, {}))
+      property_ids.map((id: string) => aiValuation(c.env.db, c.env.ai, id, {}))
     );
 
     return c.json({
       properties: property_ids,
       comparison_table: {
-        price: property_ids.map((id, i) => ({ property_id: id, price: reports[i].current_market_value })),
-        price_per_sqm: reports.map((r, i) => ({ property_id: property_ids[i], price_per_sqm: r.current_market_value / 100 })),
-        estimated_rental_yield: reports.map((r, i) => ({ property_id: property_ids[i], yield: 0.05 })),
-        risk_score: reports.map((r, i) => ({ property_id: property_ids[i], risk: 50 })),
+        price: property_ids.map((id: string, i: number) => ({ property_id: id, price: reports[i].current_market_value })),
+        price_per_sqm: reports.map((r: any, i: number) => ({ property_id: property_ids[i], price_per_sqm: r.current_market_value / 100 })),
+        estimated_rental_yield: reports.map((r: any, i: number) => ({ property_id: property_ids[i], yield: 0.05 })),
+        risk_score: reports.map((r: any, i: number) => ({ property_id: property_ids[i], risk: 50 })),
       },
       recommendation: { best_value: property_ids[0], best_growth: property_ids[1] },
     });
@@ -318,7 +318,12 @@ async function fetchPropertyData(db: any, property_id: string) {
   return result.rows[0];
 }
 
-async function aiValuation(db: any, ai: any, property_id: string, propData: any) {
+async function aiValuation(db: any, ai: any, property_id: string, propData: any): Promise<{
+  current_market_value: number;
+  confidence_interval: [number, number];
+  valuation_method: { method: string; result: number }[];
+  comparable_properties: { id: string; similarity: number; price: number }[];
+}> {
   // Comparable sales analysis (hedonic pricing)
   // Approach: find similar properties that sold recently, adjust for differences
   const comparables = await db.query(
@@ -326,7 +331,7 @@ async function aiValuation(db: any, ai: any, property_id: string, propData: any)
     [propData.property_type]
   );
 
-  const basePrice = comparables.rows.reduce((sum, r) => sum + r.price_usd, 0) / comparables.rows.length;
+  const basePrice = comparables.rows.reduce((sum: number, r: any) => sum + r.price_usd, 0) / comparables.rows.length;
 
   // Adjustments (property-specific factors)
   const adjustments = {
@@ -335,16 +340,16 @@ async function aiValuation(db: any, ai: any, property_id: string, propData: any)
     location: propData.neighborhood_premium || 0,
   };
 
-  const valuedPrice = basePrice + Object.values(adjustments).reduce((a, b) => a + b, 0);
+  const valuedPrice = basePrice + Object.values(adjustments).reduce((a: number, b: any) => a + b, 0);
 
   return {
     current_market_value: valuedPrice,
-    confidence_interval: [valuedPrice * 0.85, valuedPrice * 1.15],
+    confidence_interval: [valuedPrice * 0.85, valuedPrice * 1.15] as [number, number],
     valuation_method: [
       { method: 'comparable_sales', result: valuedPrice },
       { method: 'income_approach', result: valuedPrice * 0.95 },
     ],
-    comparable_properties: comparables.rows.slice(0, 3).map((r, i) => ({
+    comparable_properties: comparables.rows.slice(0, 3).map((r: any, i: number) => ({
       id: `comp_${i}`,
       similarity: 0.85,
       price: r.price_usd,
@@ -352,7 +357,14 @@ async function aiValuation(db: any, ai: any, property_id: string, propData: any)
   };
 }
 
-async function aiCashFlowAnalysis(db: any, ai: any, property_id: string, propData: any, investor: any) {
+async function aiCashFlowAnalysis(db: any, ai: any, property_id: string, propData: any, investor: any): Promise<{
+  annual_rental_income: number;
+  annual_expenses: number;
+  annual_net_cf: number;
+  monthly_cf_breakdown: Record<string, number>;
+  cf_projections_20yr: number[];
+  cf_stability_score: number;
+}> {
   const annualRental = propData.rental_yield ? propData.price_usd * propData.rental_yield : propData.price_usd * 0.04;
   const annualExpenses = annualRental * 0.3; // 30% of rental (maintenance, taxes, insurance)
 
@@ -366,7 +378,14 @@ async function aiCashFlowAnalysis(db: any, ai: any, property_id: string, propDat
   };
 }
 
-async function aiRiskAssessment(db: any, ai: any, property_id: string, propData: any) {
+async function aiRiskAssessment(db: any, ai: any, property_id: string, propData: any): Promise<{
+  climate_risk_score: number;
+  regulatory_risk_score: number;
+  market_risk_score: number;
+  liquidity_risk_score: number;
+  overall_risk_score: number;
+  risk_factors: { factor: string; severity: string }[];
+}> {
   return {
     climate_risk_score: 30,
     regulatory_risk_score: 20,
@@ -380,7 +399,14 @@ async function aiRiskAssessment(db: any, ai: any, property_id: string, propData:
   };
 }
 
-async function aiMarketAnalysis(db: any, ai: any, property_id: string, propData: any) {
+async function aiMarketAnalysis(db: any, ai: any, property_id: string, propData: any): Promise<{
+  price_per_sqm_trend: { year: number; price: number }[];
+  rental_yield_avg: number;
+  cap_rate_market: number;
+  cap_rate_this_property: number;
+  absorption_rate_months: number;
+  market_direction: string;
+}> {
   return {
     price_per_sqm_trend: Array(5).fill(0).map((_, i) => ({ year: 2020 + i, price: 3000 + i * 100 })),
     rental_yield_avg: 0.04,
@@ -391,7 +417,13 @@ async function aiMarketAnalysis(db: any, ai: any, property_id: string, propData:
   };
 }
 
-async function aiGrowthForecast(db: any, ai: any, property_id: string, propData: any) {
+async function aiGrowthForecast(db: any, ai: any, property_id: string, propData: any): Promise<{
+  five_year_appreciation: [number, number, number];
+  ten_year_appreciation: [number, number, number];
+  gentrification_probability: number;
+  gentrification_timeline_years: number | null;
+  infrastructure_impact: { project: string; impact_value_pct: number; year: number }[];
+}> {
   return {
     five_year_appreciation: [0.08, 0.12, 0.16],
     ten_year_appreciation: [0.18, 0.28, 0.38],
