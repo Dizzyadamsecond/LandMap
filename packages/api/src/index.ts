@@ -34,6 +34,7 @@ import { createPropertiesScrapeRouter } from './routes/properties-scrape.js';
 import govRoutes from './routes/government-integration.js';
 import energyRoutes from './routes/energy-systems.js';
 import aiRoutes from './routes/property-ai-agent.js';
+import agentphoneRouter from './routes/agentphone.js';
 import { loadProperties } from './loadJson.js';
 const allPropertiesData = loadProperties();
 import { createGeoRouter, createGeoSource } from '@landmap/geo';
@@ -573,6 +574,9 @@ app.get('/kpi', (c) => {
     generatedAt: new Date().toISOString(),
   });
 });
+
+/* ─── AgentPhone (AI voice agents with real phone numbers) ─── */
+app.route('/agentphone', agentphoneRouter);
 
 export default app;
 

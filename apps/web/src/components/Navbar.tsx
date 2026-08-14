@@ -169,7 +169,7 @@ export function Navbar() {
   }, [marketOpen]);
 
   return (
-    <header className="sticky top-3 z-50 mx-3 flex w-full max-w-5xl items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card)]/85 px-4 py-2.5 backdrop-blur-xl [backdrop-filter:saturate(150%)] shadow-[0_8px_40px_-12px_color-mix(in_srgb,var(--primary)_18%,transparent)] md:mx-auto">
+    <header className="sticky top-0 z-50 mx-3 flex w-full max-w-5xl items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card)]/85 px-4 py-2.5 backdrop-blur-xl [backdrop-filter:saturate(150%)] shadow-[0_8px_40px_-12px_color-mix(in_srgb,var(--primary)_18%,transparent)] md:mx-auto">
       <Link
         href={`/${locale}`}
         prefetch={false}
@@ -185,9 +185,12 @@ export function Navbar() {
         />
       </Link>
 
-      <span className="hidden lg:block">
-        <MacroTicker variant="bar" />
-      </span>
+      {/* MacroTicker: visível apenas se autenticado (LandMap feature) */}
+      {user && (
+        <span className="hidden lg:block">
+          <MacroTicker variant="bar" />
+        </span>
+      )}
 
       <nav
         aria-label="Navegação principal"
@@ -213,78 +216,81 @@ export function Navbar() {
           );
         })}
 
-        <div ref={marketRef} className="relative">
-          <button
-            type="button"
-            ref={marketBtnRef}
-            aria-haspopup="true"
-            aria-expanded={marketOpen}
-            aria-label="Abrir menu Mercado"
-            onClick={() => setMarketOpen((v) => !v)}
-            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 transition ${focusRing} ${
-              marketOpen || marketActive
-                ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
-                : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
-            }`}
-          >
-            Mercado
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-              className={`transition-transform duration-200 ${marketOpen ? 'rotate-180' : ''}`}
+        {/* Mercado dropdown: visível apenas se autenticado (LandMap feature) */}
+        {user && (
+          <div ref={marketRef} className="relative">
+            <button
+              type="button"
+              ref={marketBtnRef}
+              aria-haspopup="true"
+              aria-expanded={marketOpen}
+              aria-label="Abrir menu Mercado"
+              onClick={() => setMarketOpen((v) => !v)}
+              className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 transition ${focusRing} ${
+                marketOpen || marketActive
+                  ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
+                  : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
+              }`}
             >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </button>
+              Mercado
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+                className={`transition-transform duration-200 ${marketOpen ? 'rotate-180' : ''}`}
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
 
-          {marketOpen && (
-            <div
-              role="menu"
-              aria-label="Mercado"
-              className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-2xl border border-[var(--border)] bg-[var(--card)]/95 p-2 backdrop-blur-xl shadow-[0_24px_60px_-24px_color-mix(in_srgb,var(--primary)_22%,transparent)]"
-            >
-              {marketLinks.map((link) => {
-                const href = `/${locale}/${link.href}`;
-                const isActive = pathname === href || pathname.startsWith(href + '/');
-                const isSoon = (link as any).soon === true;
+            {marketOpen && (
+              <div
+                role="menu"
+                aria-label="Mercado"
+                className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-2xl border border-[var(--border)] bg-[var(--card)]/95 p-2 backdrop-blur-xl shadow-[0_24px_60px_-24px_color-mix(in_srgb,var(--primary)_22%,transparent)]"
+              >
+                {marketLinks.map((link) => {
+                  const href = `/${locale}/${link.href}`;
+                  const isActive = pathname === href || pathname.startsWith(href + '/');
+                  const isSoon = (link as any).soon === true;
 
-                return isSoon ? (
-                  // "Em breve" — desabilitado (como no Lovable)
-                  <div
-                    key={link.href}
-                    className="block rounded-xl px-3 py-2 text-sm text-[var(--muted-foreground)]/50 cursor-not-allowed opacity-50"
-                    title="Em breve"
-                  >
-                    {link.labelKey} <span className="text-xs">🔜</span>
-                  </div>
-                ) : (
-                  // Ativo — navegável
-                  <Link
-                    key={link.href}
-                    href={href}
-                    prefetch={false}
-                    role="menuitem"
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`block rounded-xl px-3 py-2 text-sm transition ${focusRing} ${
-                      isActive
-                      ? 'bg-[var(--primary)]/10 text-[var(--primary)]'
-                      : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
-                    }`}
-                  >
-                    {link.labelKey}
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                  return isSoon ? (
+                    // "Em breve" — desabilitado (como no Lovable)
+                    <div
+                      key={link.href}
+                      className="block rounded-xl px-3 py-2 text-sm text-[var(--muted-foreground)]/50 cursor-not-allowed opacity-50"
+                      title="Em breve"
+                    >
+                      {link.labelKey} <span className="text-xs">🔜</span>
+                    </div>
+                  ) : (
+                    // Ativo — navegável
+                    <Link
+                      key={link.href}
+                      href={href}
+                      prefetch={false}
+                      role="menuitem"
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`block rounded-xl px-3 py-2 text-sm transition ${focusRing} ${
+                        isActive
+                        ? 'bg-[var(--primary)]/10 text-[var(--primary)]'
+                        : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]'
+                      }`}
+                    >
+                      {link.labelKey}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
       </nav>
 
       <div className="flex items-center gap-2">
@@ -292,10 +298,12 @@ export function Navbar() {
           <NotificationCenter />
         </span>
 
-        {/* XP Badge (Gamificação) */}
-        <div className="hidden items-center gap-1.5 rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/5 px-3 py-1 md:flex">
-          <span className="text-xs font-semibold text-[var(--primary)]">⭐ 120 XP</span>
-        </div>
+        {/* XP Badge (Gamificação — visível apenas se autenticado) */}
+        {user && (
+          <div className="hidden items-center gap-1.5 rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/5 px-3 py-1 md:flex">
+            <span className="text-xs font-semibold text-[var(--primary)]">⭐ 120 XP</span>
+          </div>
+        )}
 
         <PlanBadge />
 
