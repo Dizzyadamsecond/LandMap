@@ -183,7 +183,7 @@ export function getPostAuthRedirect(returnTo?: string, locale = 'pt-BR'): string
     if (!c || c === '/' || c.startsWith('//') || /^[a-z]+:\/\//i.test(c)) continue;
     return `/${locale}${stripLocale(c)}`;
   }
-  return `/${locale}/map`;
+  return `/${locale}/dashboard`;
 }
 
 /** Persists the page the user should return to after auth (locale-prefixed path). */

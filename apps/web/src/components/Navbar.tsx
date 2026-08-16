@@ -20,7 +20,7 @@ const locales = [
 ];
 
 const primaryLinks = [
-  { href: 'map', labelKey: 'Mapa grátis' },
+  { href: 'dashboard', labelKey: 'Mapa' },
   { href: 'plans', labelKey: 'Planos' },
 ];
 
@@ -30,16 +30,15 @@ const primaryLinks = [
 // ============================================================================
 const marketLinks = [
   // ========== ORDEM LOVABLE EXATA (1:1) ==========
-  // Nota: Lovable marca items 2, 5, 6, 7, 8 como soon:true (desabilitados)
-  // Mas LandMap tem essas rotas ativas. Mantemos visíveis com soon:true para paridade.
+  // Nota: Lovable marca items 2, 5, 6, 7, 8 como soon:true (desabilitados, SEM HREF)
   { href: 'dashboard', labelKey: 'Mapa' },                    // 1. Mapa (em /dashboard no Lovable)
-  { href: 'dashboard', labelKey: 'Dashboard', soon: true },   // 2. Dashboard (soon: true no Lovable)
+  { labelKey: 'Dashboard', soon: true },                      // 2. Dashboard (soon: true, SEM HREF no Lovable)
   { href: 'compare', labelKey: 'Comparador' },                // 3. Comparador
   { href: 'favorites', labelKey: 'Favoritos' },               // 4. Favoritos
-  { href: 'alerts', labelKey: 'Alertas', soon: true },        // 5. Alertas (soon: true no Lovable)
-  { href: 'reports', labelKey: 'Relatórios', soon: true },    // 6. Relatórios (soon: true no Lovable)
-  { href: 'chat', labelKey: 'IA LandMap', soon: true },       // 7. IA LandMap (soon: true no Lovable)
-  { href: 'settings', labelKey: 'Configurações', soon: true }, // 8. Configurações (soon: true no Lovable)
+  { labelKey: 'Alertas', soon: true },                        // 5. Alertas (soon: true, SEM HREF no Lovable)
+  { labelKey: 'Relatórios', soon: true },                     // 6. Relatórios (soon: true, SEM HREF no Lovable)
+  { labelKey: 'IA LandMap', soon: true },                     // 7. IA LandMap (soon: true, SEM HREF no Lovable)
+  { labelKey: 'Configurações', soon: true },                  // 8. Configurações (soon: true, SEM HREF no Lovable)
 
   // ========== COMPLEMENTARES LANDMAP (não removidas) ==========
 
@@ -256,14 +255,15 @@ export function Navbar() {
                 className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-2xl border border-[var(--border)] bg-[var(--card)]/95 p-2 backdrop-blur-xl shadow-[0_24px_60px_-24px_color-mix(in_srgb,var(--primary)_22%,transparent)]"
               >
                 {marketLinks.map((link) => {
-                  const href = `/${locale}/${link.href}`;
-                  const isActive = pathname === href || pathname.startsWith(href + '/');
                   const isSoon = (link as any).soon === true;
+                  const hasHref = link.href && link.href.trim().length > 0;
+                  const href = hasHref ? `/${locale}/${link.href}` : '';
+                  const isActive = hasHref && (pathname === href || pathname.startsWith(href + '/'));
 
-                  return isSoon ? (
+                  return isSoon || !hasHref ? (
                     // "Em breve" — desabilitado (como no Lovable)
                     <div
-                      key={link.href}
+                      key={link.labelKey}
                       className="block rounded-xl px-3 py-2 text-sm text-[var(--muted-foreground)]/50 cursor-not-allowed opacity-50"
                       title="Em breve"
                     >

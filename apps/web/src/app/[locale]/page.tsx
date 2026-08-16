@@ -1,66 +1,32 @@
-import type { Metadata } from 'next';
-import { LANDMAP_OG_IMAGE } from '../../lib/og-image';
+'use client';
+
+import { useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { readMockUser } from '../../lib/mockAuth';
 
 /**
- * Home pública (`/`) — no Lovable a raiz renderiza o splash
- * ("Conheça o LandMap"). Mantemos o mesmo conteúdo e metadata autoritativos.
+ * Root locale page (/{locale}) — segue o fluxo exato 1:1 do Lovable (src/routes/index.tsx):
+ * - Se autenticado ou modo visitante (guest_mode="1"): redireciona para /{locale}/dashboard (Mapa)
+ * - Se não autenticado: redireciona para /{locale}/onboarding (Tutorial/Slides)
  */
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale?: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  // Lovable home title shell = product brand, localized (1:1 with message files)
-  const SEO: Record<string, { title: string; description: string }> = {
-    'pt-BR': {
-      title: 'LandMap — Inteligência de terrenos',
-      description:
-        'LandMap: mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.',
-    },
-    'en-US': {
-      title: 'LandMap — Land intelligence',
-      description:
-        'LandMap: appreciation map, region ranking and price-per-m² history for smarter land decisions in Brazil.',
-    },
-    'es-ES': {
-      title: 'LandMap — Inteligencia de terrenos',
-      description:
-        'LandMap: mapa de valorización, ranking de regiones e historial de precio por m² para decisiones de terreno en Brasil.',
-    },
-  };
-  const seo = SEO[locale || 'pt-BR'] || SEO['pt-BR'];
-  const title = seo.title;
-  const description = seo.description;
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: `/${locale || 'pt-BR'}`,
-      type: 'website',
-      locale: locale || 'pt-BR',
-      images: [
-        {
-          url: LANDMAP_OG_IMAGE,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [LANDMAP_OG_IMAGE],
-    },
-  };
-}
+export default function LocaleIndexPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params?.locale as string) || 'pt-BR';
 
-import SplashPage from './splash/page';
+  useEffect(() => {
+    const isGuest =
+      typeof window !== 'undefined' &&
+      (window.localStorage.getItem('guest_mode') === '1' ||
+        window.localStorage.getItem('landmap:guest_mode') === '1');
+    const user = readMockUser();
 
-export default async function LocaleHomePage() {
-  return <SplashPage />;
+    if (user || isGuest) {
+      router.replace(`/${locale}/dashboard`);
+    } else {
+      router.replace(`/${locale}/onboarding`);
+    }
+  }, [router, locale]);
+
+  return null;
 }

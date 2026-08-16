@@ -28,7 +28,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
     // Free plan = no-paywall path → entra direto no mapa (CLAUDE.md regra 6).
     // Planos pagos mantêm o checkout como vitrine de produto.
     if (planId === 'free') {
-      router.push(`/${locale}/auth?returnTo=/map`);
+      router.push(`/${locale}/auth?returnTo=/dashboard`);
       return;
     }
     router.push(`/${locale}/auth?returnTo=/checkout?plan=${planId}`);
@@ -41,7 +41,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
   if (variant === 'desktop') {
     return (
       <ProductPageShell
-        backHref="/map"
+        backHref="/dashboard"
         eyebrow={
           <>
             <Sparkles className="h-3 w-3" /> Escolha seu plano
