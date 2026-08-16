@@ -1,391 +1,520 @@
 'use client';
 
-/**
- * Dashboard = atalho para o Mapa Intelligence (paridade Lovable:
- * a superfície "Mapa — LandMap" é o mapa full-bleed em /map).
- * Mantém overview KPI + CTA para o mapa.
- *
- * Integração de mercado: consome /api/opportunities (lib/opportunities.ts)
- * — dados vivos do dataset (properties.json), não constantes estáticas.
- */
-
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
-import { useLocale } from 'next-intl';
-import { RequireAuth } from '../../../components/RequireAuth';
-import { RecommendationWidget } from '../../../components/RecommendationWidget';
-import { LiveTicker } from '../../../components/LiveTicker';
+import { useParams, useRouter } from 'next/navigation';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import {
-  LandMapWordmark,
+  Search,
+  Layers as LayersIcon,
+  Flame,
+  X,
   TrendingUp,
+  TrendingDown,
+  Minus,
+  Star,
+  ChevronRight,
+  Sparkles,
   MapPin,
   Activity,
-  ArrowLeft,
-  Layers,
-  BellRing,
-  GitCompare,
-  FileText,
-  Flame,
   Gem,
+  Award,
   Satellite,
+  BarChart3,
+  Plus,
+  Minus as MinusIcon,
+  FileBarChart,
+  GitCompare,
 } from '../../../components/lovable/icons';
-import { Card, Badge, Sparkline, buttonVariants, cn } from '@landmap/ui';
 import {
-  getOpportunities,
-  type Opportunity,
-  type KpiSnapshot,
-} from '../../../lib/api';
-import { type Aggregates } from '../../../lib/opportunities';
-import { getRecentlyViewed, clearRecentlyViewed } from '../../../lib/recently-viewed';
-import {
-  INTELLIGENCE_REGIONS,
+  REGIONS,
+  LAYERS,
+  FORTALEZA_CENTER,
+  scoreToFillColor,
   scoreLabel,
-  fmtPriceSqm,
-} from '../../../lib/mapIntelligence';
+  type LayerId,
+  type RegionInsight,
+} from '../../../lib/landmap-regions';
+import { RequireAuth } from '../../../components/RequireAuth';
+import { addFavorite, removeFavorite, isFavorite } from '../../../lib/favorites';
 
-function fmtPct(n: number): string {
-  return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+export default function DashboardPage() {
+  return (
+    <RequireAuth>
+      <DashboardMapInner />
+    </RequireAuth>
+  );
 }
 
-function DashboardInner() {
-  const locale = useLocale();
-  const lh = (p: string) => `/${locale}${p}`;
+function DashboardMapInner() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params?.locale as string) || 'pt-BR';
 
-  const [kpis, setKpis] = useState<KpiSnapshot | null>(null);
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const markersRef = useRef<L.Marker[]>([]);
+  const circlesRef = useRef<L.Circle[]>([]);
+  const heatmapRef = useRef<L.Circle[]>([]);
+
+  const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [aggregates, setAggregates] = useState<Aggregates | null>(null);
-  const [recent, setRecent] = useState<ReturnType<typeof getRecentlyViewed>>([]);
+  const [selected, setSelected] = useState<RegionInsight | null>(null);
+  const [layersOpen, setLayersOpen] = useState(false);
+  const [heatmapOn, setHeatmapOn] = useState(true);
+  const [activeLayer, setActiveLayer] = useState<LayerId>('valorization');
+  const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    setRecent(getRecentlyViewed());
+  // Derived indicators — Bloomberg-style ticker
+  const indicators = useMemo(() => {
+    const avgPrice = REGIONS.reduce((s, r) => s + r.priceSqm, 0) / REGIONS.length;
+    const avgDelta = REGIONS.reduce((s, r) => s + r.priceSqmDelta12m, 0) / REGIONS.length;
+    const hottest = [...REGIONS].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m)[0];
+    const bestOpp = [...REGIONS].sort((a, b) => b.score - a.score)[0];
+    const indexLandmap = Math.round(
+      REGIONS.reduce((s, r) => s + r.score, 0) / REGIONS.length,
+    );
+    return { avgPrice, avgDelta, hottest, bestOpp, indexLandmap };
   }, []);
 
-  useEffect(() => {
-    let active = true;
-    setLoading(true);
-    setError(null);
-    getOpportunities()
-      .then((data) => {
-        if (!active) return;
-        setKpis(data.kpis);
-        setOpportunities(data.opportunities ?? []);
-        setAggregates((data as unknown as { aggregates?: Aggregates }).aggregates ?? null);
-      })
-      .catch((e) => {
-        if (active) setError((e as Error)?.message || 'Falha ao carregar o mercado.');
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-    return () => {
-      active = false;
+  const rankings = useMemo(() => {
+    const byDelta = [...REGIONS].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m);
+    const byScore = [...REGIONS].sort((a, b) => b.score - a.score);
+    return {
+      topDelta: byDelta.slice(0, 5),
+      topScore: byScore.slice(0, 5),
     };
   }, []);
 
-  // Refresh Brazil macro/aggregates every 60s.
+  const searchResults = useMemo(() => {
+    if (!search.trim()) return [];
+    const q = search.trim().toLowerCase();
+    return REGIONS.filter(
+      (r) =>
+        r.name.toLowerCase().includes(q) ||
+        r.city.toLowerCase().includes(q) ||
+        r.zoning.toLowerCase().includes(q),
+    ).slice(0, 6);
+  }, [search]);
+
+  // Initialize Map
   useEffect(() => {
-    let active = true;
-    let timer: ReturnType<typeof setInterval> | null = null;
-    const refresh = async () => {
-      try {
-        const res = await fetch('/api/market/aggregates', { headers: { accept: 'application/json' } });
-        if (!res.ok) return;
-        const data = (await res.json()) as { aggregates?: Aggregates };
-        if (active) setAggregates(data.aggregates ?? null);
-      } catch {
-        // silent
+    if (!containerRef.current || mapRef.current) return;
+
+    try {
+      const map = L.map(containerRef.current, {
+        center: FORTALEZA_CENTER,
+        zoom: 12,
+        minZoom: 4,
+        maxZoom: 19,
+        zoomControl: false,
+        attributionControl: false,
+      });
+
+      // CartoDB Voyager clean light tile layer
+      L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        {
+          maxZoom: 19,
+          subdomains: 'abcd',
+        },
+      ).addTo(map);
+
+      mapRef.current = map;
+      setReady(true);
+
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 150);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Falha ao inicializar o mapa');
+    }
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
       }
     };
-    refresh();
-    timer = setInterval(refresh, 60_000);
-    return () => {
-      active = false;
-      if (timer) clearInterval(timer);
-    };
   }, []);
 
-  const avgPrice = kpis?.avgPricePerSqm ?? 0;
-  const spark = useMemo(
-    () => Array.from({ length: 7 }, (_, i) => Math.round(avgPrice * (0.72 + i * 0.045))),
-    [avgPrice],
-  );
-  // Bloomberg-style indicators (paridade com dashboard Lovable 37KB) —
-  // derivados do dataset de inteligência territorial (INTELLIGENCE_REGIONS).
-  const indicators = useMemo(() => {
-    const regions = INTELLIGENCE_REGIONS;
-    const avgPrice = regions.reduce((s, r) => s + r.priceSqm, 0) / regions.length;
-    const avgDelta = regions.reduce((s, r) => s + r.priceSqmDelta12m, 0) / regions.length;
-    const hottest = [...regions].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m)[0];
-    const bestOpp = [...regions].sort((a, b) => b.score - a.score)[0];
-    const indexLandmap = Math.round(regions.reduce((s, r) => s + r.score, 0) / regions.length);
-    const timeLabel = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    return { avgPrice, avgDelta, hottest, bestOpp, indexLandmap, timeLabel };
-  }, []);
+  // Update Region Markers and Layer Circles
+  useEffect(() => {
+    if (!ready || !mapRef.current) return;
+    const map = mapRef.current;
 
-  const topVal = useMemo(
-    () =>
-      [...opportunities]
-        .filter((o) => o.type === 'valorizacao_yoy')
-        .sort((a, b) => (b.deltaPct ?? 0) - (a.deltaPct ?? 0))
-        .slice(0, 3),
-    [opportunities],
-  );
-  const topOpp = useMemo(
-    () => [...opportunities].sort((a, b) => b.score - a.score).slice(0, 3),
-    [opportunities],
-  );
-  const hubLinks = [
-    { href: lh('/map'), icon: Layers, title: 'Mapa', desc: 'Camadas, heatmap e score ao vivo' },
-    { href: lh('/compare'), icon: GitCompare, title: 'Comparador', desc: 'Regiões lado a lado' },
-    { href: lh('/alerts'), icon: BellRing, title: 'Alertas', desc: 'Gatilhos e riscos' },
-    { href: lh('/reports'), icon: FileText, title: 'Relatórios', desc: 'Dossiês e PDFs' },
-  ];
+    // Clear old circles and markers
+    circlesRef.current.forEach((c) => c.remove());
+    markersRef.current.forEach((m) => m.remove());
+    circlesRef.current = [];
+    markersRef.current = [];
 
-  const investorTools = [
-    { href: lh('/viabilidade'), icon: Activity, title: 'Viabilidade Construtiva', desc: 'Estudo de potencial e valor residual' },
-    { href: lh('/compare/opportunities'), icon: GitCompare, title: 'Comparar Oportunidades', desc: 'Cap Rate e ROI de múltiplos ativos' },
-    { href: lh('/copilot'), icon: FileText, title: 'AI Copilot Scanner', desc: 'OCR de matrículas e fotos de campo' },
-    { href: lh('/risk-radar'), icon: BellRing, title: 'Radar de Risco', desc: 'Restrições ambientais e topografia' },
-    { href: lh('/market-index'), icon: TrendingUp, title: 'Índice Regional', desc: 'Evolução do preço por m² no Brasil' },
-    { href: lh('/investment-memo'), icon: FileText, title: 'Investment Memo', desc: 'Dossiês e comitê de investimentos' },
-    { href: lh('/zoning'), icon: Layers, title: 'Zoneamento', desc: 'Consulta de leis de uso de solo' },
-    { href: lh('/syndicate'), icon: Layers, title: 'Sindicatos de LPs', desc: 'Co-investimento coletivo estruturado' },
-    { href: lh('/underwriting'), icon: Activity, title: 'Underwriting & Estresse', desc: 'Sensibilidade de TIR e Selic' },
-  ];
+    REGIONS.forEach((region) => {
+      const layerScore = region.layerScores[activeLayer];
+      const color = scoreToFillColor(layerScore);
+
+      // Layer score circle
+      const circle = L.circle([region.lat, region.lng], {
+        radius: 900 + layerScore * 12,
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.22,
+        weight: 1.25,
+        interactive: false,
+      }).addTo(map);
+      circlesRef.current.push(circle);
+
+      // Custom DivIcon marker with official score badge
+      const icon = L.divIcon({
+        className: 'landmap-custom-marker',
+        html: `
+          <div style="
+            width: 32px;
+            height: 32px;
+            border-radius: 9999px;
+            background-color: ${scoreToFillColor(region.score)};
+            border: 2.5px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 53, 148, 0.28);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: system-ui, -apple-system, sans-serif;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+          " onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
+            ${region.score}
+          </div>
+        `,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+      });
+
+      const marker = L.marker([region.lat, region.lng], { icon, title: `${region.name} · Score ${region.score}` }).addTo(map);
+      marker.on('click', () => {
+        setSelected(region);
+        map.flyTo([region.lat, region.lng], 14, { duration: 0.8 });
+      });
+      markersRef.current.push(marker);
+    });
+  }, [ready, activeLayer]);
+
+  // Update Heatmap Concentric Rings
+  useEffect(() => {
+    if (!ready || !mapRef.current) return;
+    const map = mapRef.current;
+
+    heatmapRef.current.forEach((c) => c.remove());
+    heatmapRef.current = [];
+
+    if (!heatmapOn) return;
+
+    const rings: L.Circle[] = [];
+    REGIONS.forEach((r) => {
+      const weight = r.layerScores[activeLayer] / 100;
+      const color = scoreToFillColor(r.layerScores[activeLayer]);
+      [2600, 1800, 1100].forEach((radius, i) => {
+        const ring = L.circle([r.lat, r.lng], {
+          radius,
+          stroke: false,
+          fillColor: color,
+          fillOpacity: 0.08 + weight * 0.12 * (1 - i * 0.25),
+          interactive: false,
+        }).addTo(map);
+        rings.push(ring);
+      });
+    });
+    heatmapRef.current = rings;
+  }, [ready, heatmapOn, activeLayer]);
+
+  function focusRegion(r: RegionInsight) {
+    setSelected(r);
+    setSearch('');
+    if (mapRef.current) {
+      mapRef.current.flyTo([r.lat, r.lng], 14, { duration: 0.8 });
+    }
+  }
+
+  function zoom(delta: number) {
+    if (!mapRef.current) return;
+    mapRef.current.setZoom(mapRef.current.getZoom() + delta);
+  }
+
+  const now = new Date();
+  const timeLabel = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <main className="min-h-[100dvh] bg-background">
-      <header className="sticky top-0 z-10 border-b border-[var(--border)] bg-background/90 backdrop-blur">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-2">
-            <Link href={lh('/')} aria-label="Início" className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted">
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-            <LandMapWordmark />
-            <span className="hidden text-sm text-muted-foreground sm:inline">Mapa</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 shadow-sm backdrop-blur md:flex">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
-              </span>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-success">
-                Mercado vivo
-              </span>
-            </div>
-            <Link href={lh('/map')} className={cn(buttonVariants({ size: 'sm' }), 'min-h-9')}>
-              <Layers className="mr-1.5 h-3.5 w-3.5" />
-              Abrir mapa
-            </Link>
+    <div className="relative h-[calc(100dvh-4rem)] w-full overflow-hidden bg-[#f8fafc]">
+      {/* Container Leaflet */}
+      <div ref={containerRef} className="absolute inset-0 z-0" />
+
+      {/* Watermark LandMap */}
+      <div className="pointer-events-none absolute bottom-3 left-3 z-10 md:bottom-4 md:left-4">
+        <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/40 bg-white/90 px-3 py-1.5 shadow-md backdrop-blur">
+          <span className="h-2 w-2 rounded-full bg-[#003594]" />
+          <span className="font-display text-xs font-bold tracking-tight text-[#003594]">
+            LandMap
+          </span>
+        </div>
+      </div>
+
+      {!ready && !error && (
+        <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center bg-white/50 backdrop-blur-sm">
+          <div className="flex items-center gap-2.5 rounded-full bg-white/95 px-5 py-2.5 text-sm font-medium text-foreground/80 shadow-lg backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-70" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
+            Carregando inteligência territorial…
           </div>
         </div>
-      </header>
+      )}
 
-      <div className="mx-auto grid max-w-[1400px] gap-6 px-4 py-6 sm:px-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
-        <aside className="space-y-3 self-start">
-          <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
-              Hub LandMap
-            </p>
-            <h1 className="mt-2 font-display text-2xl font-semibold">Visão geral do mercado</h1>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Abra o mapa para ver camadas, score e heatmap ao vivo por bairro.
-            </p>
+      {error && (
+        <div className="absolute inset-0 z-20 grid place-items-center p-6 bg-white/70">
+          <div className="max-w-sm rounded-2xl border border-destructive/20 bg-white p-5 text-sm shadow-xl">
+            <p className="font-semibold text-destructive">Falha ao carregar o mapa</p>
+            <p className="mt-1 text-foreground/70">{error}</p>
           </div>
+        </div>
+      )}
 
-          <div className="rounded-3xl border border-border/50 bg-card p-4 shadow-sm backdrop-blur">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">
-              Navegação
-            </p>
-            <div className="mt-3 space-y-2">
-              {hubLinks.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flex items-start gap-3 rounded-2xl border border-border/50 bg-background/70 p-3 transition hover:border-primary/30 hover:bg-primary/5"
+      {/* TOP INDICATOR TICKER — Bloomberg-style */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 px-3 pt-3 md:px-6 md:pt-4">
+        <div className="pointer-events-auto mx-auto grid max-w-[1400px] grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
+          <TickerCard
+            icon={<TrendingUp className="h-3.5 w-3.5" />}
+            label="Valorização média"
+            value={`R$ ${Math.round(indicators.avgPrice).toLocaleString('pt-BR')}/m²`}
+            delta={`↑ ${indicators.avgDelta.toFixed(1)}%`}
+            deltaPositive
+          />
+          <TickerCard
+            icon={<Flame className="h-3.5 w-3.5" />}
+            label="Região mais aquecida"
+            value={indicators.hottest.name}
+            hint={`${indicators.hottest.city} · +${indicators.hottest.priceSqmDelta12m.toFixed(1)}%`}
+            accent
+          />
+          <TickerCard
+            icon={<Gem className="h-3.5 w-3.5" />}
+            label="Melhor oportunidade"
+            value={indicators.bestOpp.name}
+            hint={`Score ${indicators.bestOpp.score}`}
+          />
+          <TickerCard
+            icon={<Activity className="h-3.5 w-3.5" />}
+            label="Índice LandMap"
+            value={String(indicators.indexLandmap)}
+            hint={scoreLabel(indicators.indexLandmap)}
+            large
+          />
+          <TickerCard
+            icon={<Satellite className="h-3.5 w-3.5" />}
+            label="Atualização"
+            value={timeLabel}
+            hint="Hoje · tempo real"
+          />
+        </div>
+
+        {/* Search + layers controls */}
+        <div className="pointer-events-auto mx-auto mt-2.5 flex max-w-[1400px] items-start justify-between gap-3">
+          <div className="relative w-full max-w-md">
+            <div className="flex items-center gap-2 rounded-full border border-border/60 bg-white/95 pl-4 pr-3 py-2 shadow-md backdrop-blur">
+              <Search className="h-4 w-4 text-foreground/50 shrink-0" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar bairro, cidade, CEP ou zoneamento…"
+                className="w-full bg-transparent text-xs sm:text-sm outline-none placeholder:text-foreground/45"
+              />
+            </div>
+            {searchResults.length > 0 && (
+              <div className="absolute inset-x-0 top-full mt-2 overflow-hidden rounded-2xl border border-border/50 bg-white/98 shadow-xl animate-in fade-in z-30">
+                {searchResults.map((r) => (
+                  <button
+                    key={r.id}
+                    onClick={() => focusRegion(r)}
+                    className="flex w-full items-center gap-3 border-b border-border/40 px-4 py-2.5 text-left last:border-0 hover:bg-muted/60 transition"
                   >
-                    <span className="mt-0.5 grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-primary">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block text-sm font-semibold text-foreground">{item.title}</span>
-                      <span className="mt-0.5 block text-xs leading-snug text-foreground/55">
-                        {item.desc}
-                      </span>
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </aside>
-
-        <section className="space-y-6">
-          {error ? (
-            <div className="rounded-xl border border-border bg-card p-6 text-center">
-              <p className="text-sm font-medium text-destructive">Falha ao carregar o mercado</p>
-              <p className="mt-1 text-xs text-muted-foreground">{error}</p>
-            </div>
-          ) : (
-            <>
-              <section className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-5">
-                <TickerCard
-                  icon={<TrendingUp className="h-4 w-4" />}
-                  label="Valorização média"
-                  value={fmtPriceSqm(Math.round(indicators.avgPrice))}
-                  delta={`↑ ${indicators.avgDelta.toFixed(1)}%`}
-                  deltaPositive
-                />
-                <TickerCard
-                  icon={<Flame className="h-4 w-4" />}
-                  label="Região mais aquecida"
-                  value={indicators.hottest.name}
-                  hint={`${indicators.hottest.city} · +${indicators.hottest.priceSqmDelta12m.toFixed(1)}%`}
-                  accent
-                />
-                <TickerCard
-                  icon={<Gem className="h-4 w-4" />}
-                  label="Melhor oportunidade"
-                  value={indicators.bestOpp.name}
-                  hint={`Score ${indicators.bestOpp.score}`}
-                />
-                <TickerCard
-                  icon={<Activity className="h-4 w-4" />}
-                  label="Índice LandMap"
-                  value={String(indicators.indexLandmap)}
-                  hint={scoreLabel(indicators.indexLandmap)}
-                  large
-                />
-                <TickerCard
-                  icon={<Satellite className="h-4 w-4" />}
-                  label="Atualização"
-                  value={indicators.timeLabel}
-                  hint="Hoje · tempo real"
-                />
-              </section>
-
-              <div className="mt-6">
-                <h2 className="text-sm font-semibold mb-3">📊 Regiões em alta (tempo real)</h2>
-                <LiveTicker locale={locale} />
+                    <MapPin className="h-4 w-4 text-primary shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold">{r.name}</p>
+                      <p className="truncate text-xs text-foreground/50">
+                        {r.city} · {r.state} · {r.zoning}
+                      </p>
+                    </div>
+                    <ScoreBadge score={r.score} />
+                  </button>
+                ))}
               </div>
-
-              {topOpp.length > 0 && (
-                <RecommendationWidget
-                  locale={locale}
-                  recommendations={topOpp.map((o) => ({
-                    id: (o as any).id || 'opp-1',
-                    name: (o as any).name || (o as any).region || 'Região',
-                    city: (o as any).city || '—',
-                    score: o.score,
-                    trend: o.deltaPct ?? 0,
-                  }))}
-                />
-              )}
-
-              <Card className="p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-primary" />
-                  <h2 className="text-sm font-semibold">Fluxo do índice</h2>
-                  <Badge variant="outline">Últimos 7 anos</Badge>
-                </div>
-                <Sparkline data={spark} width={320} height={56} />
-              </Card>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Card className="p-4">
-                  <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
-                    <TrendingUp className="h-3.5 w-3.5 text-primary" />
-                    Top valorização (12m)
-                  </h2>
-                  <ul className="space-y-2">
-                    {loading ? (
-                      <li className="space-y-2">
-                        {[1, 2, 3].map((i) => (
-                          <div key={i} className="h-8 animate-pulse rounded-2xl bg-muted/60" />
-                        ))}
-                      </li>
-                    ) : topVal.length === 0 ? (
-                      <li className="text-sm text-muted-foreground">Sem dados de valorização.</li>
-                    ) : (
-                      topVal.map((o) => (
-                        <li key={o.id} className="flex justify-between text-sm">
-                          <span>{o.city}</span>
-                          <span className="font-medium text-primary">{fmtPct(o.deltaPct ?? 0)}</span>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </Card>
-                <Card className="p-4">
-                  <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
-                    <MapPin className="h-3.5 w-3.5 text-primary" />
-                    Top oportunidades
-                  </h2>
-                  <ul className="space-y-2">
-                    {loading ? (
-                      <li className="space-y-2">
-                        {[1, 2, 3].map((i) => (
-                          <div key={i} className="h-8 animate-pulse rounded-2xl bg-muted/60" />
-                        ))}
-                      </li>
-                    ) : topOpp.length === 0 ? (
-                      <li className="text-sm text-muted-foreground">Sem oportunidades.</li>
-                    ) : (
-                      topOpp.map((o) => (
-                        <li key={o.id} className="flex justify-between text-sm">
-                          <span>{o.neighborhood || o.city}</span>
-                          <Badge variant="outline">{o.score}</Badge>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </Card>
-              </div>
-              <Card className="p-6 space-y-4">
-                <div>
-                  <h2 className="text-base font-semibold text-[var(--foreground)]">Ferramentas de Investimento Avançadas (YC-Spec)</h2>
-                  <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Modelagem financeira, auditoria territorial e ferramentas de inteligência em tempo real</p>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {investorTools.map((tool) => {
-                    const Icon = tool.icon;
-                    return (
-                      <Link
-                        key={tool.href}
-                        href={tool.href}
-                        className="flex flex-col justify-between rounded-2xl border border-border/50 bg-background/50 p-4 transition hover:border-primary/30 hover:bg-primary/5 text-left"
-                      >
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="grid h-7 w-7 place-items-center rounded-full bg-primary/10 text-primary shrink-0">
-                            <Icon className="h-3.5 w-3.5" />
-                          </span>
-                          <span className="text-sm font-semibold text-[var(--foreground)] line-clamp-1">{tool.title}</span>
-                        </div>
-                        <p className="text-[11px] text-[var(--muted-foreground)] leading-snug">{tool.desc}</p>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </Card>
-            </>
-          )}
-
-          <div className="mt-6 flex flex-wrap gap-2">
-            <Link href={lh('/map')} className={cn(buttonVariants({ size: 'lg' }))}>
-              Abrir mapa
-            </Link>
-            <Link href={lh('/plans')} className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}>
-              Planos
-            </Link>
+            )}
           </div>
-        </section>
+
+          <button
+            type="button"
+            onClick={() => setLayersOpen((v) => !v)}
+            className={`flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-xs font-semibold shadow-md backdrop-blur transition ${
+              layersOpen ? 'bg-primary text-primary-foreground border-primary' : 'bg-white/95 text-foreground hover:bg-white'
+            }`}
+          >
+            <LayersIcon className="h-4 w-4" />
+            Camadas
+          </button>
+        </div>
       </div>
-    </main>
+
+      {/* LAYERS PANEL */}
+      {layersOpen && (
+        <div className="absolute right-3 top-[calc(1rem+110px)] z-20 w-[290px] sm:w-[320px] rounded-2xl border border-border/50 bg-white/98 p-4 shadow-2xl backdrop-blur animate-in fade-in zoom-in-95 md:right-6">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="font-display text-sm font-semibold">Camadas de inteligência</p>
+            <button
+              type="button"
+              onClick={() => setLayersOpen(false)}
+              className="grid h-6 w-6 place-items-center rounded-full text-foreground/50 hover:bg-muted"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          <div className="mb-3 flex items-center justify-between rounded-xl bg-muted/60 px-3 py-2">
+            <div className="flex items-center gap-2">
+              <Flame className="h-4 w-4 text-[#dc2626]" />
+              <span className="text-sm font-medium">Heatmap</span>
+            </div>
+            <ToggleSwitch checked={heatmapOn} onChange={setHeatmapOn} />
+          </div>
+
+          <div className="space-y-1">
+            {LAYERS.map((layer) => {
+              const active = activeLayer === layer.id;
+              return (
+                <button
+                  key={layer.id}
+                  type="button"
+                  onClick={() => setActiveLayer(layer.id)}
+                  className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium transition ${
+                    active ? 'bg-primary text-primary-foreground' : 'text-foreground/75 hover:bg-muted'
+                  }`}
+                >
+                  <span>{layer.label}</span>
+                  {active && <Sparkles className="h-3.5 w-3.5" />}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 rounded-xl bg-muted/40 p-3">
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+              Escala do heatmap
+            </p>
+            <div className="h-2 w-full rounded-full bg-gradient-to-r from-[#dc2626] via-[#eab308] to-[#003594]" />
+            <div className="mt-1 flex justify-between text-[10px] text-foreground/50">
+              <span>Crítico</span>
+              <span>Médio</span>
+              <span>Excepcional</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* BOTTOM RANKINGS */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-3 pb-3 md:px-6 md:pb-6">
+        <div className="pointer-events-auto mx-auto grid max-w-[1400px] gap-3 md:grid-cols-2 lg:grid-cols-3">
+          <RankCard
+            title="Top valorização (12m)"
+            icon={<TrendingUp className="h-3.5 w-3.5" />}
+            items={rankings.topDelta.map((r) => ({
+              id: r.id,
+              name: r.name,
+              hint: r.city,
+              value: `+${r.priceSqmDelta12m.toFixed(1)}%`,
+              tone: 'positive' as const,
+              onClick: () => focusRegion(r),
+            }))}
+          />
+          <RankCard
+            title="Top oportunidades"
+            icon={<Award className="h-3.5 w-3.5" />}
+            items={rankings.topScore.map((r) => ({
+              id: r.id,
+              name: r.name,
+              hint: `${r.city} · ${r.zoning}`,
+              value: String(r.score),
+              tone: 'neutral' as const,
+              onClick: () => focusRegion(r),
+            }))}
+          />
+          <div className="hidden lg:block">
+            <MiniPanel
+              title="Fluxo do índice"
+              subtitle="Últimos 7 anos"
+              icon={<BarChart3 className="h-3.5 w-3.5" />}
+            >
+              <TrendSparkline
+                data={REGIONS[0].priceHistory.map((p) => p.value)}
+                labels={REGIONS[0].priceHistory.map((p) => String(p.year))}
+              />
+            </MiniPanel>
+          </div>
+        </div>
+      </div>
+
+      {/* Zoom controls */}
+      <div className="absolute right-3 bottom-[calc(1rem+160px)] z-10 flex flex-col overflow-hidden rounded-xl border border-border/50 bg-white/95 shadow-md backdrop-blur md:right-6 md:bottom-6">
+        <button
+          type="button"
+          onClick={() => zoom(1)}
+          className="grid h-9 w-9 place-items-center border-b border-border/50 text-foreground/70 hover:bg-muted hover:text-foreground transition"
+          aria-label="Aproximar"
+        >
+          <Plus className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={() => zoom(-1)}
+          className="grid h-9 w-9 place-items-center text-foreground/70 hover:bg-muted hover:text-foreground transition"
+          aria-label="Afastar"
+        >
+          <MinusIcon className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* REGION DETAIL PANEL */}
+      {selected && (
+        <RegionDetail
+          region={selected}
+          locale={locale}
+          onClose={() => setSelected(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ------------------------- SUBCOMPONENTS ------------------------- */
+
+function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+        checked ? 'bg-primary' : 'bg-muted-foreground/30'
+      }`}
+    >
+      <span
+        className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+          checked ? 'translate-x-4' : 'translate-x-0'
+        }`}
+      />
+    </button>
   );
 }
 
@@ -410,44 +539,499 @@ function TickerCard({
 }) {
   return (
     <div
-      className={cn(
-        'group relative overflow-hidden rounded-2xl border border-border/50 bg-card p-3 shadow-sm backdrop-blur transition hover:border-primary/25 hover:shadow-elegant sm:p-4',
-        accent && 'ring-1 ring-primary/15',
-      )}
+      className={`group relative overflow-hidden rounded-2xl border border-border/50 bg-white/95 px-3.5 py-2.5 shadow-sm backdrop-blur transition hover:border-primary/25 hover:shadow-md ${
+        accent ? 'ring-1 ring-primary/15' : ''
+      }`}
     >
       <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/45">
-        <span className="grid h-5 w-5 place-items-center rounded-md bg-primary/10 text-primary">
+        <span className="grid h-5 w-5 place-items-center rounded-md bg-primary/8 text-primary shrink-0">
           {icon}
         </span>
-        {label}
+        <span className="truncate">{label}</span>
       </div>
       <p
-        className={cn(
-          'mt-1.5 font-display font-bold tabular-nums leading-tight',
-          large ? 'text-2xl' : 'text-lg',
-        )}
+        className={`mt-1 font-display font-bold tabular-nums leading-tight truncate ${
+          large ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'
+        }`}
       >
         {value}
       </p>
       {(delta || hint) && (
-        <p className="mt-0.5 flex items-center gap-1.5 text-[11px] font-medium">
+        <p className="mt-0.5 flex items-center gap-1.5 text-[11px] font-medium truncate">
           {delta && (
-            <span className={cn('font-semibold', deltaPositive ? 'text-primary' : 'text-destructive')}>
+            <span className={`font-semibold ${deltaPositive ? 'text-primary' : 'text-destructive'}`}>
               {delta}
             </span>
           )}
-          {hint && <span className="text-foreground/50">{hint}</span>}
+          {hint && <span className="text-foreground/50 truncate">{hint}</span>}
         </p>
       )}
-      <div className="pointer-events-none absolute -bottom-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br from-primary/10 to-transparent opacity-0 transition group-hover:opacity-100" />
     </div>
   );
 }
 
-export default function DashboardPage() {
+function RankCard({
+  title,
+  icon,
+  items,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  items: Array<{
+    id: string;
+    name: string;
+    hint: string;
+    value: string;
+    tone: 'positive' | 'neutral';
+    onClick: () => void;
+  }>;
+}) {
   return (
-    <RequireAuth>
-      <DashboardInner />
-    </RequireAuth>
+    <div className="rounded-2xl border border-border/50 bg-white/95 p-3.5 shadow-sm backdrop-blur">
+      <div className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/45">
+        <span className="grid h-5 w-5 place-items-center rounded-md bg-primary/8 text-primary">
+          {icon}
+        </span>
+        {title}
+      </div>
+      <ul className="divide-y divide-border/50">
+        {items.map((item, i) => (
+          <li key={item.id}>
+            <button
+              type="button"
+              onClick={item.onClick}
+              className="flex w-full items-center gap-2.5 py-1.5 text-left transition hover:opacity-80"
+            >
+              <span className="w-4 shrink-0 text-[11px] font-semibold text-foreground/40 tabular-nums">
+                {i + 1}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-xs font-semibold text-foreground">
+                  {item.name}
+                </span>
+                <span className="block truncate text-[10px] text-foreground/45">
+                  {item.hint}
+                </span>
+              </span>
+              <span
+                className={`shrink-0 text-xs font-bold tabular-nums ${
+                  item.tone === 'positive' ? 'text-primary' : 'text-foreground'
+                }`}
+              >
+                {item.value}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function MiniPanel({
+  title,
+  subtitle,
+  icon,
+  children,
+}: {
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-border/50 bg-white/95 p-3.5 shadow-sm backdrop-blur">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/45">
+          <span className="grid h-5 w-5 place-items-center rounded-md bg-primary/8 text-primary">
+            {icon}
+          </span>
+          {title}
+        </div>
+        <span className="text-[10px] text-foreground/45">{subtitle}</span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function TrendSparkline({ data, labels }: { data: number[]; labels: string[] }) {
+  const w = 260;
+  const h = 64;
+  const pad = 4;
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min || 1;
+  const points = data.map((v, i) => {
+    const x = pad + (i * (w - pad * 2)) / (data.length - 1);
+    const y = h - pad - ((v - min) / range) * (h - pad * 2);
+    return [x, y] as const;
+  });
+  const path = points
+    .map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`)
+    .join(' ');
+  const area = `${path} L${(w - pad).toFixed(1)},${(h - pad).toFixed(1)} L${pad},${(h - pad).toFixed(1)} Z`;
+
+  return (
+    <div>
+      <svg viewBox={`0 0 ${w} ${h}`} className="h-16 w-full">
+        <defs>
+          <linearGradient id="lm-spark-gradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#003594" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#003594" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={area} fill="url(#lm-spark-gradient)" />
+        <path
+          d={path}
+          fill="none"
+          stroke="#003594"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <div className="mt-0.5 flex justify-between text-[9px] text-foreground/45">
+        {labels.map((l) => (
+          <span key={l}>{l}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ScoreBadge({ score }: { score: number }) {
+  return (
+    <div
+      className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-[10px] font-bold text-white shadow-sm"
+      style={{ backgroundColor: scoreToFillColor(score) }}
+    >
+      {score}
+    </div>
+  );
+}
+
+function RegionDetail({
+  region,
+  locale,
+  onClose,
+}: {
+  region: RegionInsight;
+  locale: string;
+  onClose: () => void;
+}) {
+  const router = useRouter();
+  const [favorited, setFavorited] = useState(false);
+
+  useEffect(() => {
+    setFavorited(isFavorite(region.id));
+  }, [region.id]);
+
+  const toggleFav = () => {
+    if (favorited) {
+      removeFavorite(region.id);
+      setFavorited(false);
+    } else {
+      addFavorite({
+        id: region.id,
+        address: `${region.name}, ${region.city}`,
+        totalPrice: region.priceSqm * 250,
+        pricePerSqm: region.priceSqm,
+        regionName: region.name,
+        confidence: region.score,
+      });
+      setFavorited(true);
+    }
+  };
+
+  const trend = region.priceSqmDelta12m;
+  const TrendIcon = trend > 1 ? TrendingUp : trend < -1 ? TrendingDown : Minus;
+  const trendColor =
+    trend > 1 ? 'text-primary' : trend < -1 ? 'text-destructive' : 'text-foreground/60';
+
+  const priceMax = Math.max(...region.priceHistory.map((p) => p.value));
+  const priceMin = Math.min(...region.priceHistory.map((p) => p.value));
+
+  return (
+    <div className="pointer-events-auto absolute inset-x-0 bottom-0 z-30 max-h-[85%] overflow-y-auto rounded-t-3xl border-t border-border/60 bg-white shadow-2xl animate-in slide-in-from-bottom duration-300 md:inset-y-0 md:right-0 md:left-auto md:max-h-none md:w-[440px] md:rounded-none md:rounded-l-3xl md:border-l md:border-t-0">
+      <div className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-border/50 bg-white/95 px-5 pb-3 pt-5 backdrop-blur">
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-wider text-foreground/50">
+            <MapPin className="h-3 w-3 text-primary" /> {region.city} · {region.state}
+          </p>
+          <h2 className="mt-0.5 truncate font-display text-2xl font-bold tracking-tight text-foreground">
+            {region.name}
+          </h2>
+        </div>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={toggleFav}
+            className={`grid h-8 w-8 place-items-center rounded-full transition ${
+              favorited ? 'text-[#eab308] bg-[#eab308]/10' : 'text-foreground/50 hover:bg-muted'
+            }`}
+            aria-label="Salvar aos favoritos"
+          >
+            <Star className="h-4 w-4" fill={favorited ? 'currentColor' : 'none'} />
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="grid h-8 w-8 place-items-center rounded-full text-foreground/50 hover:bg-muted"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-4 px-5 py-4">
+        {/* Score hero */}
+        <div className="flex items-center gap-4 rounded-2xl bg-gradient-to-br from-primary/6 via-primary/[0.02] to-transparent p-4 ring-1 ring-primary/10">
+          <div
+            className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl text-white shadow-md"
+            style={{ backgroundColor: scoreToFillColor(region.score) }}
+          >
+            <span className="font-display text-2xl font-black leading-none">
+              {region.score}
+            </span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-foreground/50">
+              Score LandMap
+            </p>
+            <p className="font-display text-lg font-bold">{scoreLabel(region.score)}</p>
+            <p className="mt-0.5 text-xs text-foreground/60">
+              Índice composto de valorização, infra e crescimento.
+            </p>
+          </div>
+        </div>
+
+        {/* Rankings row */}
+        <div className="grid grid-cols-2 gap-2">
+          <PillMetric label="Ranking estadual" value={`#${Math.max(1, Math.round(100 - region.score) + 1)}`} />
+          <PillMetric label="Ranking nacional" value={`#${Math.max(1, Math.round((100 - region.score) * 4))}`} />
+        </div>
+
+        {/* Metrics */}
+        <div className="grid grid-cols-2 gap-3">
+          <Metric
+            label="Preço médio m²"
+            value={`R$ ${region.priceSqm.toLocaleString('pt-BR')}`}
+            trailing={
+              <span className={`inline-flex items-center gap-0.5 text-xs font-semibold ${trendColor}`}>
+                <TrendIcon className="h-3 w-3" />
+                {trend > 0 ? '+' : ''}
+                {trend.toFixed(1)}%
+              </span>
+            }
+          />
+          <Metric label="Liquidez" value={region.liquidity} capitalize />
+          <Metric label="População" value={region.population.toLocaleString('pt-BR')} />
+          <Metric label="Renda média" value={`R$ ${region.incomeAvg.toLocaleString('pt-BR')}`} />
+          <Metric label="IDH" value={region.hdi.toFixed(3)} />
+          <Metric label="PIB (cresc.)" value={`${region.gdpGrowth > 0 ? '+' : ''}${region.gdpGrowth.toFixed(1)}%`} />
+        </div>
+
+        {/* Price chart */}
+        <section className="rounded-2xl border border-border/60 bg-white p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="font-display text-sm font-semibold">Histórico do m²</p>
+            <span className="text-[11px] text-foreground/50">2019 – 2025</span>
+          </div>
+          <PriceChart data={region.priceHistory} max={priceMax} min={priceMin} />
+        </section>
+
+        {/* Layer breakdown */}
+        <section className="rounded-2xl border border-border/60 bg-white p-4">
+          <p className="mb-3 font-display text-sm font-semibold">Composição por camada</p>
+          <div className="space-y-2">
+            {LAYERS.map((l) => {
+              const v = region.layerScores[l.id];
+              return (
+                <div key={l.id} className="flex items-center gap-3">
+                  <span className="w-36 shrink-0 truncate text-xs text-foreground/70">
+                    {l.label}
+                  </span>
+                  <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="absolute inset-y-0 left-0 rounded-full transition-all"
+                      style={{ width: `${v}%`, backgroundColor: scoreToFillColor(v) }}
+                    />
+                  </div>
+                  <span className="w-8 text-right text-xs font-semibold tabular-nums">
+                    {v}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="grid grid-cols-3 gap-2">
+          <PillMetric label="Zoneamento" value={region.zoning} />
+          <PillMetric label="Risco ambiental" value={region.environmentalRisk} capitalize />
+          <PillMetric label="Risco enchente" value={region.floodRisk} capitalize />
+        </section>
+
+        {region.timeline.length > 0 && (
+          <section className="rounded-2xl border border-border/60 bg-white p-4">
+            <p className="mb-3 font-display text-sm font-semibold">Linha do tempo</p>
+            <ol className="relative space-y-3 border-l border-border/60 pl-4">
+              {region.timeline.map((ev, i) => (
+                <li key={i} className="relative">
+                  <span className="absolute -left-[21px] top-1 grid h-3 w-3 place-items-center rounded-full bg-primary ring-4 ring-primary/10" />
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">
+                    {ev.year}
+                  </p>
+                  <p className="text-xs text-foreground/80">{ev.title}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        <section>
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-foreground/50">
+            Destaques
+          </p>
+          <ul className="space-y-1.5">
+            {region.highlights.map((h, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-foreground/80">
+                <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                {h}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <div className="flex flex-wrap gap-2 pt-2 pb-6">
+          <button
+            type="button"
+            onClick={toggleFav}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition"
+          >
+            <Star className="h-3.5 w-3.5" fill={favorited ? 'currentColor' : 'none'} />
+            {favorited ? 'Salvo' : 'Salvar'}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push(`/${locale}/compare?a=${region.id}`)}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/80 bg-white px-4 py-2.5 text-xs font-semibold text-foreground hover:bg-muted transition"
+          >
+            <GitCompare className="h-3.5 w-3.5 text-primary" />
+            Comparar
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push(`/${locale}/reports`)}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/80 bg-white px-4 py-2.5 text-xs font-semibold text-foreground hover:bg-muted transition"
+          >
+            <FileBarChart className="h-3.5 w-3.5 text-primary" />
+            Relatório
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Metric({
+  label,
+  value,
+  trailing,
+  capitalize,
+}: {
+  label: string;
+  value: string;
+  trailing?: React.ReactNode;
+  capitalize?: boolean;
+}) {
+  return (
+    <div className="rounded-xl border border-border/60 bg-white p-3">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
+        {label}
+      </p>
+      <div className="mt-1 flex items-baseline justify-between gap-2">
+        <p className={`font-display text-sm sm:text-base font-bold tabular-nums ${capitalize ? 'capitalize' : ''}`}>
+          {value}
+        </p>
+        {trailing}
+      </div>
+    </div>
+  );
+}
+
+function PillMetric({
+  label,
+  value,
+  capitalize,
+}: {
+  label: string;
+  value: string;
+  capitalize?: boolean;
+}) {
+  return (
+    <div className="rounded-xl bg-muted/60 p-2.5 text-center">
+      <p className="text-[9px] font-semibold uppercase tracking-wider text-foreground/50">
+        {label}
+      </p>
+      <p className={`mt-0.5 text-xs font-semibold text-foreground/85 ${capitalize ? 'capitalize' : ''}`}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function PriceChart({
+  data,
+  max,
+  min,
+}: {
+  data: { year: number; value: number }[];
+  max: number;
+  min: number;
+}) {
+  const w = 320;
+  const h = 90;
+  const pad = 8;
+  const range = max - min || 1;
+  const points = data.map((d, i) => {
+    const x = pad + (i * (w - pad * 2)) / (data.length - 1);
+    const y = h - pad - ((d.value - min) / range) * (h - pad * 2);
+    return [x, y] as const;
+  });
+  const path = points
+    .map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`)
+    .join(' ');
+  const area = `${path} L${(w - pad).toFixed(1)},${(h - pad).toFixed(1)} L${pad},${(h - pad).toFixed(1)} Z`;
+
+  return (
+    <div>
+      <svg viewBox={`0 0 ${w} ${h}`} className="h-20 w-full">
+        <defs>
+          <linearGradient id="lm-gradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#003594" stopOpacity="0.30" />
+            <stop offset="100%" stopColor="#003594" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={area} fill="url(#lm-gradient)" />
+        <path
+          d={path}
+          fill="none"
+          stroke="#003594"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {points.map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r={2.5} fill="#003594" />
+        ))}
+      </svg>
+      <div className="mt-1 flex justify-between text-[10px] text-foreground/50">
+        {data.map((d) => (
+          <span key={d.year}>{d.year}</span>
+        ))}
+      </div>
+    </div>
   );
 }
