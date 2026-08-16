@@ -122,28 +122,37 @@ export function resolveVar(name: string, fallback?: string): string {
   return fallback ?? '';
 }
 
-// Valores Lovable indigo (globals.css :root/.dark) — fallback semântico.
-export const FALLBACK_PRIMARY = 'oklch(62% .2 265)'; // dark primary
-export const FALLBACK_RING = 'oklch(62% .2 265)';
-export const FALLBACK_WARNING = 'oklch(70% .15 70)';
-export const FALLBACK_DESTRUCTIVE = 'oklch(58% .22 25)';
+// Paleta oficial LandMap (Lovable parity):
+// Score >= 80: #003594 (Azul Royal LandMap)
+// Score >= 65: #3b82f6 (Azul Vibrante)
+// Score >= 50: #eab308 (Âmbar / Amarelo)
+// Score >= 35: #f97316 (Laranja)
+// Score < 35: #dc2626 (Vermelho Crítico)
 
-/**
- * Cor do score por banda — 100% tokenizada com a marca Lovable (indigo).
- * Bandas: primary (≥80) · ring (≥65) · warning (≥50) · warning saturado (≥35) · destructive.
- * Sem hex de marca externa; tudo vem de var(--*) do design system.
- */
+export const FALLBACK_PRIMARY = '#003594';
+export const FALLBACK_RING = '#3b82f6';
+export const FALLBACK_WARNING = '#eab308';
+export const FALLBACK_DESTRUCTIVE = '#dc2626';
+
 export function scoreColor(score: number): string {
-  if (score >= 80) return resolveVar('--primary', FALLBACK_PRIMARY);
-  if (score >= 65) return resolveVar('--ring', FALLBACK_RING);
-  if (score >= 50) return resolveVar('--warning', FALLBACK_WARNING);
-  if (score >= 35) return resolveVar('--warning', FALLBACK_WARNING);
-  return resolveVar('--destructive', FALLBACK_DESTRUCTIVE);
+  if (score >= 80) return '#003594';
+  if (score >= 65) return '#3b82f6';
+  if (score >= 50) return '#eab308';
+  if (score >= 35) return '#f97316';
+  return '#dc2626';
 }
 
-/** Gradiente escala heatmap — alinhado às cores Lovable (destructive → warning → primary, indigo). */
+export function scoreToFillColor(score: number): string {
+  if (score >= 80) return '#003594';
+  if (score >= 65) return '#3b82f6';
+  if (score >= 50) return '#eab308';
+  if (score >= 35) return '#f97316';
+  return '#dc2626';
+}
+
+/** Gradiente escala heatmap — alinhado à paleta LandMap oficial */
 export function heatScaleGradient(): string {
-  return 'linear-gradient(90deg, var(--destructive) 0%, var(--warning) 50%, var(--primary) 100%)';
+  return 'linear-gradient(90deg, #dc2626 0%, #f97316 25%, #eab308 50%, #3b82f6 75%, #003594 100%)';
 }
 
 function scores(

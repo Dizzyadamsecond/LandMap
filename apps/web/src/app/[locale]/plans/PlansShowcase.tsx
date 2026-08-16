@@ -14,8 +14,8 @@ import { trackCta } from '../../../track';
 export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const locale = useLocale();
   const router = useRouter();
-  const [selected, setSelected] = useState<string>('pro');
-  const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[0];
+  const [selected, setSelected] = useState<string>('plus');
+  const selectedPlan = PLANS.find((p) => p.id === selected) ?? PLANS[1] ?? PLANS[0];
 
   const handleSubscribe = (planId: string) => {
     try {
@@ -25,8 +25,6 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
     }
     // Track CTA click
     trackCta('pricing_plan_select', 'click', { variant: planId });
-    // Free plan = no-paywall path → entra direto no mapa (CLAUDE.md regra 6).
-    // Planos pagos mantêm o checkout como vitrine de produto.
     if (planId === 'free') {
       router.push(`/${locale}/auth?returnTo=/dashboard`);
       return;
@@ -47,33 +45,40 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
             <Sparkles className="h-3 w-3" /> Escolha seu plano
           </>
         }
-        title="Experimente antes de assinar"
-        description="7 dias com acesso completo ao LandMap Pro. Sem pagamento antecipado, sem fidelidade."
+        title="Comece a analisar o mercado agora"
+        description="Acesso completo aos dados de inteligência territorial do Brasil. Cancele quando quiser."
         maxWidth="5xl"
       >
-        <Reveal className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          {PLANS.map((pl) => (
+        <Reveal className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {PLANS.filter((p) => p.id !== 'free').map((pl) => (
             <Card
               key={pl.id}
               variant={pl.highlight ? 'highlight' : 'interactive'}
               className={cn(
-                'flex min-w-0 flex-col p-4',
-                pl.highlight && 'shadow-[var(--shadow-card)]',
-                'ring-1 ring-transparent transition hover:ring-[var(--primary)]/30',
+                'flex min-w-0 flex-col p-5 rounded-2xl relative transition',
+                pl.highlight
+                  ? 'border-primary bg-primary/[0.03] shadow-lg ring-1 ring-primary/25'
+                  : 'border-border/70 hover:border-primary/40',
               )}
             >
+              {pl.highlight && (
+                <span className="absolute -top-2.5 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground shadow-sm">
+                  {pl.tagline}
+                </span>
+              )}
               <div className="flex items-center justify-between">
-                <p className="font-semibold">{pl.name}</p>
-                {pl.highlight && <Badge variant="default">{pl.tagline}</Badge>}
+                <p className="font-bold text-lg">{pl.name}</p>
               </div>
-              <p className="mt-2 font-display text-2xl font-bold">
-                R$ {formatBRL(pl.priceBRL)}
-                <span className="text-sm font-normal text-muted-foreground">/mês</span>
+              <p className="mt-2 font-display text-2xl font-bold tracking-tight">
+                <span className="text-xs font-normal text-muted-foreground mr-1">R$</span>
+                {formatBRL(pl.priceBRL)}
+                <span className="text-xs font-normal text-muted-foreground">/mês</span>
               </p>
-              <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm">
+              <p className="text-xs text-muted-foreground mt-1">{pl.tagline}</p>
+              <ul className="mt-5 flex flex-1 flex-col gap-2.5 text-xs text-foreground/80 border-t border-border/50 pt-4">
                 {(pl.features ?? []).map((f) => (
                   <li key={f} className="flex items-start gap-2">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                     <span className="min-w-0 break-words">{f}</span>
                   </li>
                 ))}
@@ -83,41 +88,16 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
                 onClick={() => handleDesktopPlan(pl.id)}
                 className={cn(
                   buttonVariants({ variant: pl.highlight ? 'default' : 'outline' }),
-                  'mt-4 w-full',
+                  'mt-5 w-full font-semibold',
                 )}
               >
-                {pl.id === 'free' ? 'Assinar LandMap Free' : `Assinar ${pl.name}`}
+                Assinar {pl.name.replace('LandMap ', '')}
               </button>
-              {pl.highlight && (
-                <button
-                  type="button"
-                  onClick={() => handleDesktopPlan(pl.id)}
-                  className="mt-2 w-full text-sm font-medium text-primary underline-offset-4 hover:underline"
-                >
-                  Iniciar teste
-                </button>
-              )}
             </Card>
           ))}
         </Reveal>
 
-        <div className="mt-8 flex flex-col items-center gap-4">
-          <button
-            type="button"
-            onClick={() => handleDesktopPlan('pro')}
-            className={cn(
-              buttonVariants({ variant: 'outline' }),
-              'min-h-11 rounded-xl border-primary px-6 text-sm font-semibold text-primary hover:bg-primary/10',
-            )}
-          >
-            Começar gratuitamente por 7 dias
-          </button>
-          <blockquote className="max-w-md text-center text-sm italic text-foreground/70">
-            “Quero tomar decisões melhores e encontrar oportunidades.”
-          </blockquote>
-        </div>
-
-        <section className="mt-8 rounded-2xl border border-border bg-card p-6 text-center">
+        <section className="mt-10 rounded-2xl border border-border bg-card p-6 text-center">
           <h2 className="font-display text-xl font-bold">Precisa de uma solução para sua empresa?</h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-foreground/60">
             Tem uma imobiliária, loteadora, incorporadora ou equipe comercial? Oferecemos planos
@@ -140,7 +120,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
 
   return (
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden bg-background pb-28 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Header — 1:1 Lovable plans (voltar → onboarding, wordmark, spacer) */}
+      {/* Header — 1:1 Lovable plans */}
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
         <Link
           href={`/${locale}/onboarding`}
@@ -153,21 +133,21 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         <div className="w-9" />
       </header>
 
-      {/* Hero — copy exata da Lovable plans */}
+      {/* Hero — 1:1 Lovable plans */}
       <div className="px-6 pt-8">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <Sparkles className="h-3 w-3" /> Escolha seu plano
         </div>
         <h1 className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight">
-          Experimente antes de assinar
+          Comece a analisar o mercado agora
         </h1>
         <p className="mt-2 text-sm text-foreground/60">
-          7 dias com acesso completo ao LandMap Pro. Sem pagamento antecipado, sem fidelidade.
+          Cancele quando quiser. Sem fidelidade.
         </p>
       </div>
 
-      {/* Cards de plano selecionáveis — 1:1 Lovable */}
-      <Stagger className="mt-6 flex flex-col gap-3 px-6" stagger={0.18} y={30}>
+      {/* Cards de plano selecionáveis — 1:1 Lovable (Access, Plus, Pro, Business) */}
+      <Stagger className="mt-6 flex flex-col gap-3 px-6" stagger={0.15} y={25}>
         {PLANS.filter((p) => p.id !== 'free').map((p) => {
           const isSelected = p.id === selected;
           return (
@@ -179,12 +159,12 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
               className={cn(
                 'relative rounded-2xl border p-5 text-left transition-all',
                 isSelected
-                  ? 'border-primary bg-primary/5 shadow-[var(--shadow-card)]'
+                  ? 'border-primary bg-primary/5 shadow-md ring-1 ring-primary/20'
                   : 'border-border bg-card hover:border-primary/40',
               )}
             >
               {p.highlight && (
-                <span className="absolute -top-2 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground">
+                <span className="absolute -top-2.5 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground shadow-sm">
                   {p.tagline}
                 </span>
               )}
@@ -228,40 +208,39 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
         </Link>
       </div>
 
-      {/* Seção enterprise — 1:1 Lovable live */}
-      <div className="mt-10 px-6">
+      {/* Seção enterprise */}
+      <div className="mt-8 px-6">
         <div className="rounded-2xl border border-border bg-card p-6 text-center">
-          <h2 className="text-lg font-bold tracking-tight">Precisa de uma solução para sua empresa?</h2>
-          <p className="mt-1 text-sm text-foreground/60">
-            Planos personalizados para equipes e incorporadoras.
+          <h2 className="text-base font-bold tracking-tight">Precisa de uma solução sob medida?</h2>
+          <p className="mt-1 text-xs text-foreground/60">
+            Planos personalizados para grandes loteadoras, incorporadoras e fundos imobiliários.
           </p>
           <a
             href="mailto:business@landmap.com.br"
             className={cn(
-              buttonVariants({ variant: 'outline', size: 'lg' }),
-              'mt-4 w-full',
+              buttonVariants({ variant: 'outline', size: 'sm' }),
+              'mt-3 w-full',
             )}
           >
-            Falar com nossa equipe
+            Falar com consultor
           </a>
-          <p className="mt-2 text-xs text-foreground/40">business@landmap.com.br</p>
         </div>
       </div>
 
-      {/* Sticky CTA — 1:1 Lovable */}
+      {/* Sticky CTA */}
       <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md border-t border-border bg-background/95 px-6 py-4 backdrop-blur">
         <button
           type="button"
           onClick={() => handleSubscribe(selected)}
           className={cn(
             buttonVariants({ variant: 'default', size: 'lg' }),
-            'w-full bg-primary text-primary-foreground hover:bg-primary/90',
+            'w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold',
           )}
         >
           Assinar {selectedPlan.name} — R$ {formatBRL(selectedPlan.priceBRL)}/mês
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
-          Pagamento não ativado — fluxo de demonstração.
+          Pagamento seguro · Cancele quando quiser
         </p>
       </div>
     </div>

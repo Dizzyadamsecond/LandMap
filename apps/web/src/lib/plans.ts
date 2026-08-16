@@ -1,16 +1,15 @@
 // Plan tiers for LandMap — single source of truth (mirrors pricing/plans pages).
-// Paridade com o Lovable LIVE (landmap-insight.lovable.app, medido ao vivo 2026-08-12):
-// Starter R$39,90 · Pro R$89,90 (Mais popular, destaque) · Elite R$119,90.
-// Demo-mode: "paid" plan is selected in localStorage, never enforced server-side.
-// 'free' permanece como plano de referência (regra CLAUDE.md: no-paywall).
+// 100% alinhado ao Lovable oficial (src/routes/plans.tsx):
+// Access R$ 69,90 · Plus R$ 119,90 (Mais popular) · Pro R$ 249,90 · Business R$ 699,90 (Equipes).
 
-export type PlanId = 'free' | 'starter' | 'pro' | 'elite';
+export type PlanId = 'free' | 'access' | 'plus' | 'pro' | 'business';
 
 export const PLAN_TIER: Record<PlanId, number> = {
   free: 0,
-  starter: 1,
-  pro: 2,
-  elite: 3,
+  access: 1,
+  plus: 2,
+  pro: 3,
+  business: 4,
 };
 
 export type PlanMeta = {
@@ -19,65 +18,81 @@ export type PlanMeta = {
   priceBRL: number;
   tagline: string;
   highlight?: boolean;
-  features?: string[];
+  features: string[];
 };
 
 export const PLANS: PlanMeta[] = [
   {
-    id: 'starter',
-    name: 'LandMap Starter',
-    priceBRL: 39.9,
-    tagline: 'Ideal para quem está começando a analisar terrenos',
+    id: 'access',
+    name: 'LandMap Access',
+    priceBRL: 69.9,
+    tagline: 'Comece com o essencial',
     highlight: false,
     features: [
-      'Mapa de calor',
-      'Histórico do preço por m²',
-      'Tendências de valorização',
-      'Busca por cidade, bairro e região',
-      'Ranking das regiões',
-      'Até 10 áreas favoritas',
+      'Acesso a todas as cidades do Brasil',
+      'Mapa de valorização e desvalorização',
+      'Mapa de calor básico',
+      'Ranking das regiões mais valorizadas',
+      'Ranking das regiões em queda',
+      'Histórico de preço por m²',
+      'Busca por bairro, cidade e região',
+      'Salvar até 10 áreas favoritas',
+      'Tendência: subindo, estável ou caindo',
+    ],
+  },
+  {
+    id: 'plus',
+    name: 'LandMap Plus',
+    priceBRL: 119.9,
+    tagline: 'Mais popular',
+    highlight: true,
+    features: [
+      'Tudo do Access',
+      'Radar de oportunidades LandMap',
+      'Alertas inteligentes de valorização',
+      'Alertas de queda de preço',
+      'Ranking de oportunidades por cidade',
+      'Comparação entre regiões',
+      'Notas automáticas sobre potencial da área',
+      'Salvar até 25 áreas favoritas',
     ],
   },
   {
     id: 'pro',
     name: 'LandMap Pro',
-    priceBRL: 89.9,
-    tagline: 'Mais popular',
-    highlight: true,
+    priceBRL: 249.9,
+    tagline: 'Para profissionais',
+    highlight: false,
     features: [
-      'Tudo do Starter',
-      'Radar de oportunidades',
-      'Comparação entre regiões',
-      'Alertas inteligentes',
-      'Alertas de valorização',
-      'Alertas de queda de preço',
+      'Tudo do Plus',
+      'Acompanhar áreas monitoradas (salvas)',
+      'Salvar até 50 regiões favoritas',
       'Histórico completo da área',
-      'Avaliação automática do terreno',
-      'Relatórios mensais',
-      'Até 50 áreas favoritas',
+      'Relatório mensal geral',
+      'Avaliação do seu terreno',
+      'Exportação em PDF e Excel',
+      'Acesso prioritário a dados e suporte',
     ],
   },
   {
-    id: 'elite',
-    name: 'LandMap Elite',
-    priceBRL: 119.9,
-    tagline: 'Para quem quer toda a inteligência da LandMap e economizar tempo',
+    id: 'business',
+    name: 'LandMap Business',
+    priceBRL: 699.9,
+    tagline: 'Para equipes e incorporadoras',
     highlight: false,
     features: [
       'Tudo do Pro',
-      'IA explicando o potencial da região',
-      'Score LandMap',
-      'Exportação em PDF',
-      'Exportação em Excel',
-      'Relatórios ilimitados',
-      'Favoritos ilimitados',
-      'Acesso antecipado a novas funcionalidades',
-      'Suporte prioritário',
+      'Até 5 usuários inclusos',
+      'Painel de equipe compartilhado',
+      'Relatório white-label com marca da empresa',
+      'Histórico e auditoria de análise da equipe',
+      'Suporte dedicado com SLA prioritário',
+      'Integração via API & Webhooks',
     ],
   },
 ];
 
-/** Plano gratuito (referência; NÃO exibido no grid de /plans — Lovable live não tem Free no grid). */
+/** Plano gratuito (modo visitante / teste). */
 export const FREE_PLAN: PlanMeta = {
   id: 'free',
   name: 'LandMap Free',
@@ -96,9 +111,10 @@ export const FREE_PLAN: PlanMeta = {
 
 export const PLAN_REQUIREMENTS: Record<string, PlanId> = {
   free: 'free',
-  starter: 'starter',
+  access: 'access',
+  plus: 'plus',
   pro: 'pro',
-  elite: 'elite',
+  business: 'business',
 };
 
 export function planTier(plan: PlanId | undefined | null): number {
