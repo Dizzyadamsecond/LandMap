@@ -135,24 +135,24 @@ export const FALLBACK_WARNING = '#eab308';
 export const FALLBACK_DESTRUCTIVE = '#dc2626';
 
 export function scoreColor(score: number): string {
-  if (score >= 80) return '#003594';
-  if (score >= 65) return '#3b82f6';
+  if (score >= 80) return '#16a34a';
+  if (score >= 65) return '#22c55e';
   if (score >= 50) return '#eab308';
   if (score >= 35) return '#f97316';
   return '#dc2626';
 }
 
 export function scoreToFillColor(score: number): string {
-  if (score >= 80) return '#003594';
-  if (score >= 65) return '#3b82f6';
+  if (score >= 80) return '#16a34a';
+  if (score >= 65) return '#22c55e';
   if (score >= 50) return '#eab308';
   if (score >= 35) return '#f97316';
   return '#dc2626';
 }
 
-/** Gradiente escala heatmap — alinhado à paleta LandMap oficial */
+/** Gradiente escala heatmap — alinhado à paleta verde autêntica */
 export function heatScaleGradient(): string {
-  return 'linear-gradient(90deg, #dc2626 0%, #f97316 25%, #eab308 50%, #3b82f6 75%, #003594 100%)';
+  return 'linear-gradient(90deg, #dc2626 0%, #f97316 25%, #eab308 50%, #22c55e 75%, #16a34a 100%)';
 }
 
 function scores(

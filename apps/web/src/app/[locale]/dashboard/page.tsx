@@ -412,7 +412,7 @@ function DashboardMapInner() {
             <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
               Escala do heatmap
             </p>
-            <div className="h-2 w-full rounded-full bg-gradient-to-r from-[#dc2626] via-[#eab308] to-[#003594]" />
+            <div className="h-2 w-full rounded-full bg-gradient-to-r from-[#dc2626] via-[#eab308] to-[#16a34a]" />
             <div className="mt-1 flex justify-between text-[10px] text-foreground/50">
               <span>Crítico</span>
               <span>Médio</span>
