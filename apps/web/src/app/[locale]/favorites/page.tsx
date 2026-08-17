@@ -124,7 +124,7 @@ function FavoritesPageInner() {
         </div>
         <div className="flex items-center gap-3">
           <Link
-            href={lh('/map')}
+            href={lh('/dashboard')}
             className="inline-flex h-10 items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--muted)] px-4 text-sm font-medium text-[var(--foreground)] transition hover:bg-[var(--muted)]/70"
           >
             <Layers className="h-4 w-4 text-[var(--primary)]" />
@@ -192,7 +192,7 @@ function FavoritesPageInner() {
                       <ConfidenceStars value={fav.confidence || 0} />
                     </div>
                     <Link
-                      href={`${lh('/map')}?fav=${encodeURIComponent(fav.id)}`}
+                      href={`${lh('/dashboard')}?fav=${encodeURIComponent(fav.id)}`}
                       className="inline-flex items-center gap-1 text-xs font-medium text-[var(--primary)] transition hover:underline"
                     >
                       <Layers className="h-3 w-3" />
