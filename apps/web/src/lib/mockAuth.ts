@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import type { PlanId } from './plans';
 
 /**
  * Autenticação MOCKADA do Google.
@@ -17,8 +18,12 @@ export type MockUser = {
   name: string;
   email: string;
   provider: 'google' | 'email' | 'guest';
-  /** Plano efetivo — guest/free liberam o produto sem paywall. */
-  plan?: 'free' | 'starter' | 'pro' | 'elite';
+  /**
+   * Plano efetivo — guest/free liberam o produto sem paywall.
+   * Usa `PlanId` (free · access · plus · pro · business) para não divergir
+   * de `lib/plans.ts`, a fonte única da taxonomia de planos.
+   */
+  plan?: PlanId;
   userType?: UserType;
 };
 

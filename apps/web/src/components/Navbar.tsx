@@ -107,7 +107,12 @@ const marketLinks = [
 ];
 
 // Every navigable destination, used by the mobile sheet.
-const allLinks = [...primaryLinks, ...marketLinks];
+// Itens "em breve" do Lovable não têm href — incluí-los geraria links para
+// `/{locale}/undefined` e keys React duplicadas (que descartam/reordenam itens).
+const allLinks = [...primaryLinks, ...marketLinks].filter(
+  (l): l is { href: string; labelKey: string } =>
+    typeof l.href === 'string' && l.href.trim().length > 0,
+);
 
 export function Navbar() {
   const params = useParams();

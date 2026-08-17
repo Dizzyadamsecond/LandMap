@@ -37,12 +37,84 @@ export function isFavoriteId(id: string): boolean {
   return readIds().includes(id);
 }
 
+/** Alias imperativo de `isFavoriteId` (usado fora de React, ex.: mapa do dashboard). */
+export const isFavorite = isFavoriteId;
+
+/**
+ * Item rico enviado pelo mapa do dashboard. Só o `id` entra no índice de
+ * favoritos; os demais campos ficam em cache para render otimista enquanto
+ * `/api/favorites` não responde.
+ */
+export type FavoriteSeed = {
+  id: string;
+  address?: string;
+  totalPrice?: number;
+  pricePerSqm?: number;
+  regionName?: string;
+  confidence?: number;
+};
+
+const SEED_KEY = 'landmap_favorites_seed';
+
+function readSeeds(): Record<string, FavoriteSeed> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(SEED_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, FavoriteSeed>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeSeeds(seeds: Record<string, FavoriteSeed>) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(SEED_KEY, JSON.stringify(seeds));
+  } catch {
+    /* quota — o índice de ids continua válido */
+  }
+}
+
+/** Metadados em cache de um favorito (vazio quando só temos o id). */
+export function getFavoriteSeed(id: string): FavoriteSeed | undefined {
+  return readSeeds()[id];
+}
+
+/** Adiciona um favorito (id ou item completo). Retorna a lista atualizada. */
+export function addFavorite(fav: string | FavoriteSeed): string[] {
+  const seed: FavoriteSeed = typeof fav === 'string' ? { id: fav } : fav;
+  if (!seed?.id) return readIds();
+
+  const current = readIds();
+  const next = current.includes(seed.id) ? current : [...current, seed.id];
+  writeIds(next);
+
+  if (typeof fav !== 'string') {
+    writeSeeds({ ...readSeeds(), [seed.id]: seed });
+  }
+  return next;
+}
+
+/** Remove um favorito pelo id. Retorna a lista atualizada. */
+export function removeFavorite(id: string): string[] {
+  const next = readIds().filter((x) => x !== id);
+  writeIds(next);
+
+  const seeds = readSeeds();
+  if (seeds[id]) {
+    delete seeds[id];
+    writeSeeds(seeds);
+  }
+  return next;
+}
+
 export function getFavoriteIds(): string[] {
   return readIds();
 }
 
 export function clearFavorites(): void {
   writeIds([]);
+  writeSeeds({});
 }
 
 /* ------------------------------------------------------------------ */

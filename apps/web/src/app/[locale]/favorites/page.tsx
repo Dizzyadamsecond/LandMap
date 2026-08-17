@@ -6,7 +6,7 @@ import { RequireAuth } from '../../../components/RequireAuth';
 import { useLocale } from 'next-intl';
 import { Card, EmptyState } from '@landmap/ui';
 import { Building2, MapPin, Star, X, Layers } from '../../../components/lovable/icons';
-import { useFavorites } from '../../../lib/favorites';
+import { useFavorites, getFavoriteSeed } from '../../../lib/favorites';
 
 type FavoriteProperty = {
   id: string;
@@ -93,11 +93,26 @@ function FavoritesPageInner() {
     };
   }, [ids]);
 
+  // `/api/favorites` só resolve IDs de imóveis do catálogo. Regiões favoritadas
+  // no mapa do dashboard não existem lá — caem no cache local para não sumirem.
   const regions = useMemo(
     () =>
       ids
-        .map((id) => items[id])
-        .filter((it): it is ApiFavorite => Boolean(it)),
+        .map((id): FavoriteProperty | null => {
+          const item = items[id];
+          if (item) return toFavorite(item);
+          const seed = getFavoriteSeed(id);
+          if (!seed) return null;
+          return {
+            id: seed.id,
+            address: seed.address || seed.regionName || seed.id,
+            totalPrice: seed.totalPrice ?? 0,
+            pricePerSqm: seed.pricePerSqm ?? 0,
+            regionName: seed.regionName || '',
+            confidence: seed.confidence ?? 0,
+          };
+        })
+        .filter((it): it is FavoriteProperty => Boolean(it)),
     [ids, items],
   );
 
@@ -153,8 +168,7 @@ function FavoritesPageInner() {
               <EmptyState title="Nenhum terreno favoritado ainda." />
             </div>
           ) : (
-            regions.map((item) => {
-              const fav = toFavorite(item);
+            regions.map((fav) => {
               return (
                 <Card key={fav.id}>
                   <div className="flex items-start justify-between gap-2">

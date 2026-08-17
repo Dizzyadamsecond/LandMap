@@ -174,7 +174,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <main className="min-w-0 flex-1 pt-16 pb-[96px] md:pb-0 md:pt-0">{children}</main>
       </div>
 
-      {/* Bottom Nav Mobile Modular (5 colunas) */}
+      {/* Bottom Nav Mobile Modular (4 colunas — Lovable usa 3 + 1 vazia; aqui o 4º slot é o Admin) */}
       <MobileBottomNav locale={locale} isActive={isActive} />
 
       {/* Drawer mobile de funcionalidades */}
@@ -214,25 +214,48 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   Principais
                 </h3>
                 <div className="space-y-0.5">
-                  {lovableNavItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={`/${locale}/${item.href}`}
-                      prefetch={false}
-                      aria-current={isActive(item.href) ? 'page' : undefined}
-                      onClick={() => setMobileDrawerOpen(false)}
-                      className={cn(
-                        'flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition',
-                        isActive(item.href)
-                          ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-semibold'
-                          : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]',
-                        focusRing,
-                      )}
-                    >
-                      <item.Icon size={18} className="shrink-0" />
-                      <span className="truncate">{item.label}</span>
-                    </Link>
-                  ))}
+                  {/* Chave = label+href: "Mapa" e "Dashboard" apontam para o mesmo
+                      href no Lovable, e uma key duplicada faz o React descartar/
+                      reordenar itens da lista. */}
+                  {lovableNavItems.map((item) => {
+                    const Icon = item.Icon;
+                    const active = !item.emBreve && isActive(item.href);
+
+                    if (item.emBreve) {
+                      return (
+                        <div
+                          key={`${item.label}-${item.href}`}
+                          aria-disabled
+                          title="Em breve"
+                          className="flex cursor-not-allowed select-none items-center gap-3 rounded-xl px-3 py-2 text-sm text-[var(--muted-foreground)] opacity-40"
+                        >
+                          <Icon size={18} className="shrink-0" />
+                          <span className="truncate">{item.label}</span>
+                          <span className="ml-auto shrink-0 text-[10px] font-normal">em breve</span>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <Link
+                        key={`${item.label}-${item.href}`}
+                        href={`/${locale}/${item.href}`}
+                        prefetch={false}
+                        aria-current={active ? 'page' : undefined}
+                        onClick={() => setMobileDrawerOpen(false)}
+                        className={cn(
+                          'flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition',
+                          active
+                            ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-semibold'
+                            : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]',
+                          focusRing,
+                        )}
+                      >
+                        <Icon size={18} className="shrink-0" />
+                        <span className="truncate">{item.label}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
 

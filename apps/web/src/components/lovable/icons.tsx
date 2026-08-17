@@ -359,6 +359,30 @@ export function BarChart({ size = 24, ...p }: IconProps) {
   );
 }
 
+/** Alias lucide `BarChart3` — mesmo glifo do `BarChart` (mantido para paridade de nomes). */
+export function BarChart3({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M3 3v18h18" />
+      <path d="M18 17V9" />
+      <path d="M13 17V5" />
+      <path d="M8 17v-3" />
+    </svg>
+  );
+}
+
+export function FileBarChart({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+      <path d="M14 2v5h5" />
+      <path d="M8 18v-2" />
+      <path d="M12 18v-5" />
+      <path d="M16 18v-3" />
+    </svg>
+  );
+}
+
 export function Flame({ size = 24, ...p }: IconProps) {
   return (
     <svg {...base(size, p)} aria-hidden>

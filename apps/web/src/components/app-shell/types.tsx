@@ -96,10 +96,16 @@ export const extraCategories: NavCategory[] = [
   {
     title: 'Inteligência & Mercado',
     items: [
+      { href: 'map', label: 'Mapa Interativo', Icon: Map },
       { href: 'regions', label: 'Regiões', Icon: MapPin },
       { href: 'insights', label: 'Insights', Icon: BellRing },
+      // Páginas reais do LandMap que a trilha principal marca "em breve" por
+      // paridade Lovable — ficam acessíveis aqui para não virarem órfãs.
+      { href: 'alerts', label: 'Alertas', Icon: Bell },
       { href: 'heatmap', label: 'Heatmap', Icon: Flame },
       { href: 'market', label: 'Mercado', Icon: LineChart },
+      { href: 'worldmonitor', label: 'WorldMonitor', Icon: Satellite },
+      { href: 'history40', label: 'History40', Icon: LineChart },
       { href: 'market-index', label: 'Índice Regional', Icon: TrendingUp },
       { href: 'neighborhoods', label: 'Bairros', Icon: MapPin },
       { href: 'cities', label: 'Cidades', Icon: Building2 },
@@ -115,6 +121,7 @@ export const extraCategories: NavCategory[] = [
   {
     title: 'Ferramentas & Análise',
     items: [
+      { href: 'assistant', label: 'Assistente IA', Icon: Sparkles },
       { href: 'calculator', label: 'Calculadora', Icon: PenLine },
       { href: 'compare/opportunities', label: 'Comparar Oportunidades', Icon: ArrowLeftRight },
       { href: 'copilot', label: 'IA Field Copilot Scanner', Icon: CameraGlyph },
@@ -123,8 +130,10 @@ export const extraCategories: NavCategory[] = [
       { href: 'live', label: 'Ao Vivo', Icon: Radio },
       { href: 'pipeline', label: 'Pipeline', Icon: Workflow },
       { href: 'radar', label: 'Radar', Icon: Radio },
+      { href: 'radar-insights', label: 'Radar Insights', Icon: BellRing },
       { href: 'rag', label: 'RAG', Icon: Sparkles },
       { href: 'recommendations', label: 'Recomendações', Icon: Sparkles },
+      { href: 'reports', label: 'Relatórios', Icon: BarChart },
       { href: 'studio', label: 'Studio', Icon: Wand2 },
       { href: 'workflows', label: 'Workflows', Icon: Workflow },
       { href: 'world', label: 'Mundo 3D', Icon: MapPinned },
@@ -139,6 +148,7 @@ export const extraCategories: NavCategory[] = [
       { href: 'investment-memo', label: 'Investment Memo', Icon: FileText },
       { href: 'investor', label: 'Investidor', Icon: Briefcase },
       { href: 'leads', label: 'Leads', Icon: Users },
+      { href: 'leiloes', label: 'Leilões', Icon: Briefcase },
       { href: 'plans', label: 'Planos', Icon: Briefcase },
       { href: 'plans/manage', label: 'Gestão de Planos', Icon: CreditCard },
       { href: 'portfolio', label: 'Portfólio', Icon: Briefcase },
@@ -156,6 +166,7 @@ export const extraCategories: NavCategory[] = [
       { href: 'agents', label: 'Agentes', Icon: Bot },
       { href: 'api-keys', label: 'API Keys', Icon: Lock },
       { href: 'automations', label: 'Automações', Icon: Workflow },
+      { href: 'brasil', label: 'APIs Brasil', Icon: Plug },
       { href: 'chat', label: 'Chat', Icon: MessageSquare },
       { href: 'checkout', label: 'Checkout', Icon: CreditCard },
       { href: 'cockpit', label: 'Cockpit', Icon: Radio },
@@ -179,7 +190,9 @@ export const extraCategories: NavCategory[] = [
     title: 'Institucional & Legal',
     items: [
       { href: 'profile', label: 'Perfil', Icon: User },
+      { href: 'settings', label: 'Configurações', Icon: Settings },
       { href: 'onboarding', label: 'Onboarding', Icon: ArrowRight },
+      { href: 'intro', label: 'Introdução', Icon: ArrowRight },
       { href: 'sobre', label: 'Sobre', Icon: FileText },
       { href: 'metodologia', label: 'Metodologia', Icon: Layers },
       { href: 'aviso-legal', label: 'Aviso Legal', Icon: ShieldCheck },

@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowLeft, Check, Copy, LandMapWordmark, QrCode, CreditCard } from '../../../components/lovable/icons';
 import { Card, Badge, buttonVariants, cn, Input } from '@landmap/ui';
-import { PLANS, formatBRL, type PlanId } from '../../../lib/plans';
+import { PLANS, FREE_PLAN, PLAN_TIER, formatBRL, type PlanId } from '../../../lib/plans';
 
 type CheckoutMethod = 'pix' | 'card';
 
@@ -22,19 +22,21 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
-    const qp = params.get('plan') as PlanId | null;
-    if (qp && ['free', 'starter', 'pro', 'elite'].includes(qp)) {
+    const isPlanId = (v: string | null): v is PlanId => !!v && v in PLAN_TIER;
+
+    const qp = params.get('plan');
+    if (isPlanId(qp)) {
       setPlanId(qp);
     }
     try {
-      const saved = window.localStorage.getItem('landmap:selected_plan') as PlanId | null;
-      if (saved) setPlanId(saved);
+      const saved = window.localStorage.getItem('landmap:selected_plan');
+      if (isPlanId(saved)) setPlanId(saved);
     } catch {
       // ignore
     }
   }, []);
 
-  const plan = PLANS.find((p) => p.id === planId) ?? PLANS[0];
+  const plan = [FREE_PLAN, ...PLANS].find((p) => p.id === planId) ?? FREE_PLAN;
   const pixCode = `00020126360014BR.GOV.BCB.PIX0114${plan.id.toUpperCase()}520400005303986540${plan.priceBRL.toFixed(2)}5802BR5925LandMap Inteligencia6009SAO PAULO62070503***63041D3D`;
 
   const onSubmit = (e: React.FormEvent) => {
