@@ -112,9 +112,9 @@ function DashboardMapInner() {
         attributionControl: false,
       });
 
-      // CartoDB Voyager clean light tile layer
+      // CartoDB Positron clean light tile layer (exact LandMap style #f8fafc + white roads)
       L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
         {
           maxZoom: 19,
           subdomains: 'abcd',
