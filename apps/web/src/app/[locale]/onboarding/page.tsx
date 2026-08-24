@@ -56,7 +56,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-foreground/5">
+      <header>
         <div className="mx-auto flex max-w-md items-center justify-between px-6 py-4">
           <LandMapWordmark />
           <Link href={lh('/plans')} className="text-sm text-foreground/70 hover:text-foreground">
@@ -65,9 +65,9 @@ export default function OnboardingPage() {
         </div>
       </header>
 
-      <section className="mx-auto flex min-h-[80vh] max-w-md flex-col px-6 py-10">
+      <section className="mx-auto flex min-h-screen max-w-md flex-col px-6 py-6">
         <main className="flex flex-1 flex-col items-center justify-center text-center">
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col items-center">
+          <div key={index} className="animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col items-center">
             <div className="mb-8 grid h-24 w-24 place-items-center rounded-3xl bg-primary/10">
               <Icon className="h-11 w-11 text-primary" strokeWidth={1.8} aria-hidden />
             </div>

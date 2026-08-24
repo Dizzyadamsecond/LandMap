@@ -62,14 +62,14 @@ describe('scoreLabel — band alignment', () => {
   });
 });
 
-// scoreColor alinhado à paleta autêntica (#dc2626, #f97316, #eab308, #22c55e, #16a34a)
+// scoreColor alinhado à paleta Lovable (#c0281f, #d97706, #c7a012, #2563eb, #003594)
 describe('scoreColor — band thresholds', () => {
   it.each([
-    [20, '#dc2626'], // <35 critical
-    [40, '#f97316'], // 35-49 low
-    [55, '#eab308'], // 50-64 medium
-    [70, '#22c55e'], // 65-79 high potential
-    [90, '#16a34a'], // >=80 exceptional
+    [20, '#c0281f'], // <35 critical
+    [40, '#d97706'], // 35-49 low
+    [55, '#c7a012'], // 50-64 medium
+    [70, '#2563eb'], // 65-79 high potential
+    [90, '#003594'], // >=80 exceptional
   ])('score %i -> %s', (score, expected) => {
     expect(scoreColor(score)).toBe(expected);
   });

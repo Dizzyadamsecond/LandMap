@@ -12,43 +12,36 @@
    "buttons": [
     "Entrar",
     "Criar conta",
+    "Esqueci minha senha",
     "Entrar",
     "Continuar com Google",
     "Continuar com Apple",
-    "Entrar sem cadastro",
     "← Voltar para o site",
     "Edit with"
    ]
   },
   "prod": {
    "title": "Mapa — LandMap",
-   "h1": [
-    "Visão geral do mercado"
-   ],
+   "h1": [],
    "h2": [
-    "📊 Regiões em alta (tempo real)",
-    "Fluxo do índice",
-    "Top valorização (12m)",
-    "Top oportunidades",
-    "Ferramentas de Investimento Avançadas (YC-Spec)",
     "Busca global"
    ],
    "buttons": [
     "Pular para o conteúdo",
-    "LandMap",
     "Mapa",
-    "Dashboard",
     "Comparador",
     "Favoritos",
-    "Alertas",
-    "Relatórios",
-    "IA LandMap",
-    "Configurações",
-    "Regiões",
-    "Insights",
-    "Perfil",
-    "Onboarding",
-    "Planos"
+    "⌘K",
+    "Camadas",
+    "1 Eusébio Centro Eusébio +18.6%",
+    "2 Sapiranga Fortaleza +15.2%",
+    "3 Cocó Fortaleza +13.8%",
+    "4 Meireles Fortaleza +11.4%",
+    "5 Cambeba Fortaleza +10.4%",
+    "1 Meireles Fortaleza · ZR-2 / ZC-3 92",
+    "2 Aldeota Fortaleza · ZR-3 89",
+    "3 Cocó Fortaleza · ZR-2 / APA Cocó 84",
+    "4 Eusébio Centro Eusébio · ZM / ZE 81"
    ]
   }
  },
@@ -65,10 +58,10 @@
    "buttons": [
     "Entrar",
     "Criar conta",
+    "Esqueci minha senha",
     "Entrar",
     "Continuar com Google",
     "Continuar com Apple",
-    "Entrar sem cadastro",
     "← Voltar para o site",
     "Edit with"
    ]
@@ -83,20 +76,18 @@
    ],
    "buttons": [
     "Pular para o conteúdo",
-    "LandMap",
     "Mapa",
-    "Dashboard",
     "Comparador",
     "Favoritos",
+    "⌘K",
+    "Mapa",
     "Alertas",
     "Relatórios",
-    "IA LandMap",
-    "Configurações",
-    "Regiões",
-    "Insights",
-    "Perfil",
-    "Onboarding",
-    "Planos"
+    "Comparar",
+    "Pular",
+    "Próximo",
+    "Agora não",
+    "Instalar"
    ]
   }
  },
@@ -113,10 +104,10 @@
    "buttons": [
     "Entrar",
     "Criar conta",
+    "Esqueci minha senha",
     "Entrar",
     "Continuar com Google",
     "Continuar com Apple",
-    "Entrar sem cadastro",
     "← Voltar para o site",
     "Edit with"
    ]
@@ -127,24 +118,18 @@
     "Comparar duas regiões"
    ],
    "h2": [
+    "Tendência histórica de preço por m²",
     "Busca global"
    ],
    "buttons": [
     "Pular para o conteúdo",
-    "LandMap",
     "Mapa",
-    "Dashboard",
     "Comparador",
     "Favoritos",
-    "Alertas",
-    "Relatórios",
-    "IA LandMap",
-    "Configurações",
-    "Regiões",
-    "Insights",
-    "Perfil",
-    "Onboarding",
-    "Planos"
+    "⌘K",
+    "Pular",
+    "Próximo",
+    "Instalar"
    ]
   }
  },
@@ -161,10 +146,10 @@
    "buttons": [
     "Entrar",
     "Criar conta",
+    "Esqueci minha senha",
     "Entrar",
     "Continuar com Google",
     "Continuar com Apple",
-    "Entrar sem cadastro",
     "← Voltar para o site",
     "Edit with"
    ]
@@ -180,20 +165,14 @@
    ],
    "buttons": [
     "Pular para o conteúdo",
-    "LandMap",
     "Mapa",
-    "Dashboard",
     "Comparador",
     "Favoritos",
-    "Alertas",
-    "Relatórios",
-    "IA LandMap",
-    "Configurações",
-    "Regiões",
-    "Insights",
-    "Perfil",
-    "Onboarding",
-    "Planos"
+    "⌘K",
+    "Ver no mapa",
+    "Pular",
+    "Próximo",
+    "Instalar"
    ]
   }
  },
@@ -209,33 +188,39 @@
    ],
    "buttons": [
     "Começar gratuitamente por 7 dias",
-    "LandMap Starter Ideal para quem está começando a analisar terrenos. R$ 39,90 /mês",
+    "LandMap Starter Ideal para quem está começando a analisar terrenos. R$ 39,90 /mês “Estou aprendendo a investir em terrenos.” Mapa de calor Histórico do preço por m² Tendências de valorização Busca por cidade, bairro e região Ranking das regiões Até 10 áreas favoritas",
+    "Assinar LandMap Starter",
     "MAIS POPULAR LandMap Pro A melhor escolha para investidores e corretores. R$ 89,90 /mês “Quero tomar decisões melhores e encontrar oportunidades.” Tudo do Starter Radar de oportunidades Comparação entre regiões Alertas inteligentes Alertas de valorização Alertas de queda de preço Histórico completo da área Avaliação automática do terreno Relatórios mensais Até 50 áreas favoritas",
     "Assinar LandMap Pro",
     "Iniciar teste",
-    "LandMap Elite Para quem quer toda a inteligência da LandMap e economizar tempo. R$ 119,90 /mês",
-    "business@landmap.com.br",
+    "LandMap Elite Para quem quer toda a inteligência da LandMap e economizar tempo. R$ 119,90 /mês “Quero a máxima inteligência disponível.” Tudo do Pro IA explicando o potencial da região Score LandMap Exportação em PDF Exportação em Excel Relatórios ilimitados Favoritos ilimitados Acesso antecipado a novas funcionalidades Suporte prioritário",
+    "Assinar LandMap Elite",
+    "comercial@landmap.com.br",
     "Falar com nossa equipe",
     "Já tem conta? Entrar",
-    "Edit with"
+    "Sobre",
+    "Como funciona",
+    "Cobertura",
+    "Metodologia"
    ]
   },
   "prod": {
    "title": "Planos — LandMap",
    "h1": [
-    "Experimente antes de assinar"
+    "Comece a analisar o mercado agora"
    ],
    "h2": [
-    "Precisa de uma solução para sua empresa?"
+    "Precisa de uma solução sob medida?"
    ],
    "buttons": [
     "Pular para o conteúdo",
-    "LandMap Starter R$ 39,90 /mês",
-    "MAIS POPULAR LandMap Pro R$ 89,90 /mês Tudo do Starter Radar de oportunidades Comparação entre regiões Alertas inteligentes Alertas de valorização Alertas de queda de preço Histórico completo da área Avaliação automática do terreno Relatórios mensais Até 50 áreas favoritas",
-    "LandMap Elite R$ 119,90 /mês",
+    "LandMap Access R$ 69,90 /mês",
+    "MAIS POPULAR LandMap Plus R$ 119,90 /mês Tudo do Access Radar de oportunidades LandMap Alertas inteligentes de valorização Alertas de queda de preço Ranking de oportunidades por cidade Comparação entre regiões Notas automáticas sobre potencial da área Salvar até 25 áreas favoritas",
+    "LandMap Pro R$ 249,90 /mês",
+    "LandMap Business R$ 699,90 /mês",
     "Já tem conta? Entrar",
-    "Falar com nossa equipe",
-    "Assinar LandMap Pro — R$ 89,90/mês",
+    "Falar com consultor",
+    "Assinar LandMap Plus — R$ 119,90/mês",
     "Instalar"
    ]
   }

@@ -122,12 +122,12 @@ export function resolveVar(name: string, fallback?: string): string {
   return fallback ?? '';
 }
 
-// Paleta oficial LandMap (Lovable parity):
-// Score >= 80: #003594 (Azul Royal LandMap)
-// Score >= 65: #3b82f6 (Azul Vibrante)
-// Score >= 50: #eab308 (Âmbar / Amarelo)
-// Score >= 35: #f97316 (Laranja)
-// Score < 35: #dc2626 (Vermelho Crítico)
+// Paleta oficial LandMap (Lovable parity indigo hue 265, RED-YELLOW-BLUE):
+// Score >= 80: #003594 (Azul Royal — primário marca)
+// Score >= 65: #3b82f6 (Azul Vibrante — accent Lovable)
+// Score >= 50: #eab308 (Amarelo — Lovable parity)
+// Score >= 35: #f97316 (Laranja — Lovable parity)
+// Score < 35: #dc2626 (Vermelho Crítico — alerta/perda)
 
 export const FALLBACK_PRIMARY = '#003594';
 export const FALLBACK_RING = '#3b82f6';
@@ -135,24 +135,26 @@ export const FALLBACK_WARNING = '#eab308';
 export const FALLBACK_DESTRUCTIVE = '#dc2626';
 
 export function scoreColor(score: number): string {
-  if (score >= 80) return '#16a34a';
-  if (score >= 65) return '#22c55e';
+  // Lovable parity paleta: RED-YELLOW-BLUE (quente-frio traditional)
+  if (score >= 80) return '#003594';
+  if (score >= 65) return '#3b82f6';
   if (score >= 50) return '#eab308';
   if (score >= 35) return '#f97316';
   return '#dc2626';
 }
 
 export function scoreToFillColor(score: number): string {
-  if (score >= 80) return '#16a34a';
-  if (score >= 65) return '#22c55e';
+  // Lovable parity paleta: RED-YELLOW-BLUE (quente-frio traditional)
+  if (score >= 80) return '#003594';
+  if (score >= 65) return '#3b82f6';
   if (score >= 50) return '#eab308';
   if (score >= 35) return '#f97316';
   return '#dc2626';
 }
 
-/** Gradiente escala heatmap — alinhado à paleta verde autêntica */
+/** Gradiente escala heatmap — Lovable parity RED-YELLOW-BLUE */
 export function heatScaleGradient(): string {
-  return 'linear-gradient(90deg, #dc2626 0%, #f97316 25%, #eab308 50%, #22c55e 75%, #16a34a 100%)';
+  return 'linear-gradient(90deg, #dc2626 0%, #eab308 50%, #003594 100%)';
 }
 
 function scores(

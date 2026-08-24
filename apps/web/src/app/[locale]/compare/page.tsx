@@ -60,12 +60,14 @@ function CompareInner() {
       </header>
 
       {/* Selectors */}
-      <div className="grid gap-4 rounded-2xl border border-border/60 bg-white p-6 shadow-sm sm:grid-cols-2">
+      <div className="grid gap-4 rounded-2xl border border-border/60 bg-[var(--card)] p-6 shadow-sm sm:grid-cols-2">
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">
+          <label htmlFor="region-a" className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">
             Região A
           </label>
           <select
+            id="region-a"
+            aria-label="Selecione a região A para comparação"
             value={aId}
             onChange={(e) => setAId(e.target.value)}
             className="w-full rounded-xl border border-border/80 bg-background px-4 py-2.5 text-sm font-semibold text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -79,10 +81,12 @@ function CompareInner() {
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">
+          <label htmlFor="region-b" className="text-xs font-semibold text-foreground/70 uppercase tracking-wider">
             Região B
           </label>
           <select
+            id="region-b"
+            aria-label="Selecione a região B para comparação"
             value={bId}
             onChange={(e) => setBId(e.target.value)}
             className="w-full rounded-xl border border-border/80 bg-background px-4 py-2.5 text-sm font-semibold text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -104,7 +108,7 @@ function CompareInner() {
           </div>
 
           {/* Historic Trend Chart */}
-          <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-border/60 bg-[var(--card)] p-6 shadow-sm">
             <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div>
                 <h2 className="font-display text-lg font-bold text-foreground">
@@ -114,11 +118,11 @@ function CompareInner() {
               </div>
               <div className="flex items-center gap-4 text-xs font-semibold">
                 <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-[#003594]" />
+                  <span className="h-3 w-3 rounded-full bg-[var(--chart-1)]" aria-hidden="true" />
                   <span>{a.name}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-[#3b82f6]" />
+                  <span className="h-3 w-3 rounded-full bg-[var(--chart-2)]" aria-hidden="true" />
                   <span>{b.name}</span>
                 </div>
               </div>
@@ -136,7 +140,7 @@ function CompareInner() {
           </div>
         </>
       ) : (
-        <div className="rounded-2xl border border-border/60 bg-white p-12 text-center text-muted-foreground">
+        <div className="rounded-2xl border border-border/60 bg-[var(--card)] p-12 text-center text-muted-foreground">
           Selecione duas regiões para começar a comparação.
         </div>
       )}
@@ -147,7 +151,7 @@ function CompareInner() {
 function RegionCard({ region, color }: { region: RegionInsight; color: string }) {
   const infraScore = region.layerScores.infrastructure;
   return (
-    <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm space-y-4">
+    <div className="rounded-2xl border border-border/60 bg-[var(--card)] p-6 shadow-sm space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -271,26 +275,26 @@ function DualSparkline({
         <path
           d={pathA}
           fill="none"
-          stroke="#003594"
+          stroke="var(--chart-1)"
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         {pointsA.map(([x, y], i) => (
-          <circle key={`a-${i}`} cx={x} cy={y} r={4} fill="#003594" stroke="#ffffff" strokeWidth="2" />
+          <circle key={`a-${i}`} cx={x} cy={y} r={4} fill="var(--chart-1)" stroke="white" strokeWidth="2" />
         ))}
 
         {/* Path B */}
         <path
           d={pathB}
           fill="none"
-          stroke="#3b82f6"
+          stroke="var(--chart-2)"
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         {pointsB.map(([x, y], i) => (
-          <circle key={`b-${i}`} cx={x} cy={y} r={4} fill="#3b82f6" stroke="#ffffff" strokeWidth="2" />
+          <circle key={`b-${i}`} cx={x} cy={y} r={4} fill="var(--chart-2)" stroke="white" strokeWidth="2" />
         ))}
       </svg>
 

@@ -5,7 +5,7 @@ import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Eye, EyeOff, LandMapWordmark } from '../../../components/lovable/icons';
-import { Briefcase, Building2, Gem, TrendingUp, User } from '../../../components/lovable/icons';
+import { Briefcase, Building2, TrendingUp, User } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';
 import {
   useMockUser,
@@ -19,13 +19,12 @@ import { track, trackCta } from '../../../track';
 const USER_TYPE_OPTIONS: { id: UserType; label: string; icon: React.ReactNode; hint: string }[] = [
   { id: 'corretor', label: 'Corretor', icon: <Briefcase size={18} />, hint: 'Comissão e carteira de clientes' },
   { id: 'investidor', label: 'Investidor', icon: <TrendingUp size={18} />, hint: 'Valorização e ROI de terrenos' },
-  { id: 'fundo', label: 'Fundo de investimento', icon: <Gem size={18} />, hint: 'Gestão de portfólio institucional' },
   { id: 'incorporadora', label: 'Construtora', icon: <Building2 size={18} />, hint: 'Aquisição e desenvolvimento' },
-  { id: 'comprador', label: 'Comprador', icon: <User size={18} />, hint: 'Busca direta de terreno' },
+  { id: 'empresa', label: 'Empresário', icon: <User size={18} />, hint: 'Gestão e oportunidades' },
 ];
 
 const fieldClass =
-  'w-full rounded-lg border bg-[var(--background)] px-3 py-2.5 text-sm text-[var(--foreground)] outline-none transition focus:border-[var(--primary)]';
+  'w-full rounded-lg border bg-[var(--background)] px-3 py-2.5 text-sm text-[var(--foreground)] outline-none transition focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--ring)]';
 
 function Field({
   label,
@@ -49,7 +48,7 @@ function Field({
             type="button"
             onClick={() => setShow((s) => !s)}
             aria-label={show ? 'Ocultar senha' : 'Mostrar senha'}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--muted)] hover:text-foreground focus-visible:ring-1 focus-visible:ring-[var(--ring)]"
           >
             {show ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
@@ -167,7 +166,9 @@ function AuthPageInner() {
           className="pointer-events-none absolute inset-0 opacity-30"
           style={{ backgroundImage: 'var(--primary-glow)' }}
         />
-        <LandMapWordmark />
+        <div className="h-12">
+          <LandMapWordmark />
+        </div>
         <div className="relative">
           <h2 className="max-w-md font-display text-4xl font-bold leading-tight">
             Inteligência de terrenos, do mapa à decisão.
@@ -183,7 +184,7 @@ function AuthPageInner() {
 
       <main className="flex items-center justify-center bg-[var(--background)] p-6 md:p-12">
         <Reveal className="w-full max-w-md" y={24}>
-          <div className="mb-8 lg:hidden">
+          <div className="mb-8 h-12 lg:hidden">
             <LandMapWordmark />
           </div>
 
@@ -202,11 +203,12 @@ function AuthPageInner() {
                 type="button"
                 role="tab"
                 aria-selected={tab === t.id}
+                aria-controls={`tabcontent-${t.id}`}
                 onClick={() => {
                   setTab(t.id);
                   setError('');
                 }}
-                className="rounded-md px-3 py-1.5 transition"
+                className="rounded-md px-3 py-1.5 transition focus-visible:ring-1 focus-visible:ring-[var(--ring)]"
                 style={{
                   backgroundColor: tab === t.id ? 'var(--background)' : 'transparent',
                   color: tab === t.id ? 'var(--foreground)' : 'var(--muted-foreground)',
@@ -219,7 +221,7 @@ function AuthPageInner() {
           </div>
 
           {tab === 'login' && (
-            <form onSubmit={onLogin} className="mt-8 space-y-4">
+            <form id="tabcontent-login" onSubmit={onLogin} className="mt-8 space-y-4">
               <h1 className="text-2xl font-bold tracking-tight">Entrar</h1>
               <p className="mt-1 text-sm text-[var(--muted-foreground)]">
                 Acesse a plataforma com sua conta.
@@ -235,7 +237,7 @@ function AuthPageInner() {
               <Field label="Senha" type="password" autoComplete="current-password" required />
               <button
                 type="submit"
-                className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-[var(--primary)] text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-card)] transition hover:bg-[color:color-mix(in_srgb,var(--primary)_90%,transparent)]"
+                className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-[var(--primary)] text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-card)] transition hover:bg-[color:color-mix(in_srgb,var(--primary)_90%,transparent)] focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
               >
                 {loginLoading ? 'Entrando...' : 'Entrar'}
               </button>
@@ -243,7 +245,7 @@ function AuthPageInner() {
           )}
 
           {tab === 'signup' && (
-            <form onSubmit={onSignup} className="mt-8 space-y-4">
+            <form id="tabcontent-signup" onSubmit={onSignup} className="mt-8 space-y-4">
               <h1 className="text-2xl font-bold tracking-tight">Criar conta</h1>
               <p className="mt-1 text-xs text-[var(--muted-foreground)]">
                 Preencha seus dados para começar a usar o LandMap.
@@ -276,7 +278,7 @@ function AuthPageInner() {
                         key={t.id}
                         type="button"
                         onClick={() => setUserType(t.id)}
-                        className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition ${
+                        className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition focus-visible:ring-1 focus-visible:ring-[var(--ring)] ${
                           active
                             ? 'border-[var(--primary)] bg-[var(--primary)]/10'
                             : 'border-[var(--border)] bg-[var(--card)] hover:border-[var(--primary)]'
@@ -332,7 +334,7 @@ function AuthPageInner() {
               {error && <p className="text-sm text-[var(--destructive)]">{error}</p>}
               <button
                 type="submit"
-                className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-[var(--primary)] text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-card)] transition hover:bg-[color:color-mix(in_srgb,var(--primary)_90%,transparent)]"
+                className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-[var(--primary)] text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-card)] transition hover:bg-[color:color-mix(in_srgb,var(--primary)_90%,transparent)] focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
               >
                 {signupLoading ? 'Enviando...' : 'Criar conta'}
               </button>
@@ -348,7 +350,7 @@ function AuthPageInner() {
           <button
             type="button"
             onClick={guest}
-            className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg border text-sm font-semibold transition hover:bg-[var(--muted)]"
+            className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg border text-sm font-semibold transition hover:bg-[var(--muted)] focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
             style={{ borderColor: 'var(--border)', color: 'var(--foreground)' }}
           >
             Entrar sem cadastro
