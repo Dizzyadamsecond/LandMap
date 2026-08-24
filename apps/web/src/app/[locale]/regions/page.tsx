@@ -158,7 +158,7 @@ function RegionsPageInner() {
 
             <div className="hidden overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] md:block">
               <div className="w-full overflow-x-auto">
-                <table className="w-full caption-bottom text-sm">
+                <table className="w-full caption-bottom text-sm" aria-label="Tabela de regiões monitoradas com preços e confiança">
                   <thead className="[&_tr]:border-b">
                     <tr>
                       <th className="h-10 w-10 px-2 text-left align-middle font-medium text-[var(--muted-foreground)]">

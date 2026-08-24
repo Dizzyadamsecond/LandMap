@@ -500,21 +500,17 @@ export const LAYERS = [
 
 export type LayerId = typeof LAYERS[number]["id"];
 
-export function scoreToColor(score: number): string {
-  // Verde (Top Oportunidade) -> Verde Claro -> Âmbar -> Laranja -> Vermelho
-  if (score >= 80) return "#16a34a";
-  if (score >= 65) return "#22c55e";
-  if (score >= 50) return "#eab308";
-  if (score >= 35) return "#f97316";
-  return "#dc2626";
-}
+// Re-export do canônico mapIntelligence para evitar duplicação
+export { scoreToFillColor, scoreLabel as scoreLabelMapIntel } from "./mapIntelligence";
 
-export function scoreToFillColor(score: number): string {
-  if (score >= 80) return "#16a34a";
-  if (score >= 65) return "#22c55e";
-  if (score >= 50) return "#eab308";
-  if (score >= 35) return "#f97316";
-  return "#dc2626";
+export function scoreToColor(score: number): string {
+  // Azul LandMap -> azul claro -> âmbar -> vermelho
+  // Nota: scoreToColor() mantém paleta Lovable parity mista (com âmbar/laranja)
+  if (score >= 80) return "#003594";
+  if (score >= 65) return "#2563eb";
+  if (score >= 50) return "#c7a012";
+  if (score >= 35) return "#d97706";
+  return "#c0281f";
 }
 
 export function scoreLabel(score: number): string {

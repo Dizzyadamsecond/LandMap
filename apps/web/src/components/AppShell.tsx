@@ -171,7 +171,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Conteúdo */}
-        <main className="min-w-0 flex-1 pt-16 pb-[96px] md:pb-0 md:pt-0">{children}</main>
+        <main className="min-w-0 flex-1">{children}</main>
       </div>
 
       {/* Bottom Nav Mobile Modular (4 colunas — Lovable usa 3 + 1 vazia; aqui o 4º slot é o Admin) */}
