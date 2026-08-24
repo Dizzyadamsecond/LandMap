@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { getLocale } from 'next-intl/server';
 import { LANDMAP_OG_IMAGE } from '../lib/og-image';
+import { Providers } from './providers';
 
 // NOTE: We intentionally do NOT use `next/font` (nor the `geist` package it
 // wraps). On this Windows + Node 24 environment, next/font's loader imports a
@@ -81,6 +82,7 @@ export default async function RootLayout({
       </head>
       <body>
         {children}
+        <Providers />
         <PwaRegister />
       </body>
     </html>

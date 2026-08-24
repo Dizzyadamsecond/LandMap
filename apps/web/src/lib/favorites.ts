@@ -6,6 +6,32 @@ import type { Property } from './api';
 const STORAGE_KEY = 'landmap_favorites';
 
 /* ------------------------------------------------------------------ */
+/*  Type helpers                                                      */
+/* ------------------------------------------------------------------ */
+
+export type FavoriteType = 'property' | 'region';
+
+function makeFavoritId(type: FavoriteType, id: string): string {
+  return `${type}_${id}`;
+}
+
+export function parseFavoriteId(fav: string): { type: FavoriteType; id: string } | null {
+  if (fav.startsWith('property_')) {
+    return { type: 'property', id: fav.slice(9) };
+  }
+  if (fav.startsWith('region_')) {
+    return { type: 'region', id: fav.slice(7) };
+  }
+  // fallback: assume legacy format is property
+  return { type: 'property', id: fav };
+}
+
+export function isFavoritType(fav: string, type: FavoriteType): boolean {
+  const parsed = parseFavoriteId(fav);
+  return parsed?.type === type;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Raw storage helpers (works outside React too)                     */
 /* ------------------------------------------------------------------ */
 
@@ -110,6 +136,10 @@ export function removeFavorite(id: string): string[] {
 
 export function getFavoriteIds(): string[] {
   return readIds();
+}
+
+export function getFavoriteIdsByType(type: FavoriteType): string[] {
+  return readIds().filter((id) => isFavoritType(id, type));
 }
 
 export function clearFavorites(): void {

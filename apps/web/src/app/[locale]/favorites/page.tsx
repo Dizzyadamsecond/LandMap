@@ -7,6 +7,7 @@ import { useLocale } from 'next-intl';
 import { Card, EmptyState } from '@landmap/ui';
 import { Building2, MapPin, Star, X, Layers } from '../../../components/lovable/icons';
 import { useFavorites, getFavoriteSeed } from '../../../lib/favorites';
+import { toast } from 'sonner';
 
 type FavoriteProperty = {
   id: string;
@@ -15,6 +16,16 @@ type FavoriteProperty = {
   pricePerSqm: number;
   regionName: string;
   confidence: number;
+  dataPoints?: number;
+};
+
+type FavoriteRegion = {
+  id: string;
+  name: string;
+  state?: string;
+  pricePerSqm: number;
+  confidence: number;
+  dataPoints?: number;
 };
 
 type ApiFavorite = {
@@ -56,6 +67,7 @@ function toFavorite(item: ApiFavorite): FavoriteProperty {
     pricePerSqm: item.pricePerM2 || 0,
     regionName: item.neighborhood || item.city,
     confidence: 0,
+    dataPoints: undefined,
   };
 }
 
@@ -93,28 +105,47 @@ function FavoritesPageInner() {
     };
   }, [ids]);
 
-  // `/api/favorites` só resolve IDs de imóveis do catálogo. Regiões favoritadas
-  // no mapa do dashboard não existem lá — caem no cache local para não sumirem.
-  const regions = useMemo(
-    () =>
-      ids
-        .map((id): FavoriteProperty | null => {
-          const item = items[id];
-          if (item) return toFavorite(item);
-          const seed = getFavoriteSeed(id);
-          if (!seed) return null;
-          return {
+  // Separa regiões de terrenos baseado nos metadados do seed
+  // Regiões: têm regionName mas não têm address de propriedade
+  // Terrenos: têm address de propriedade
+  const { properties, regions: regionFavs } = useMemo(() => {
+    const props: FavoriteProperty[] = [];
+    const regs: FavoriteRegion[] = [];
+
+    for (const id of ids) {
+      const item = items[id];
+      const seed = getFavoriteSeed(id);
+
+      if (item) {
+        // Vem do catálogo de imóveis — é sempre propriedade
+        props.push(toFavorite(item));
+      } else if (seed) {
+        // Decidir se é região ou propriedade baseado nos metadados
+        const isRegion = seed.regionName && !seed.address;
+
+        if (isRegion) {
+          regs.push({
+            id: seed.id,
+            name: seed.regionName || '',
+            pricePerSqm: seed.pricePerSqm ?? 0,
+            confidence: seed.confidence ?? 0,
+            dataPoints: undefined,
+          });
+        } else {
+          props.push({
             id: seed.id,
             address: seed.address || seed.regionName || seed.id,
             totalPrice: seed.totalPrice ?? 0,
             pricePerSqm: seed.pricePerSqm ?? 0,
             regionName: seed.regionName || '',
             confidence: seed.confidence ?? 0,
-          };
-        })
-        .filter((it): it is FavoriteProperty => Boolean(it)),
-    [ids, items],
-  );
+          });
+        }
+      }
+    }
+
+    return { properties: props, regions: regs };
+  }, [ids, items]);
 
   if (!hydrated) {
     return (
@@ -127,6 +158,11 @@ function FavoritesPageInner() {
       </div>
     );
   }
+
+  const handleRemoveFavorite = (id: string) => {
+    toggle(id);
+    toast.success('Removido dos favoritos');
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -151,6 +187,63 @@ function FavoritesPageInner() {
         </div>
       </header>
 
+      {/* Regiões favoritas */}
+      <section>
+        <div className="flex items-center gap-2">
+          <Layers className="h-5 w-5" />
+          <h2 className="text-base font-semibold">Regiões favoritas</h2>
+        </div>
+        <div className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {regionFavs.length === 0 ? (
+            <div className="col-span-full">
+              <p className="text-sm text-[var(--muted-foreground)]">Nenhuma região favoritada ainda.</p>
+            </div>
+          ) : (
+            regionFavs.map((fav) => (
+              <Card
+                key={fav.id}
+                className="group flex flex-col hover:border-[var(--primary)]/40 hover:shadow-lg transition-all"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-[var(--foreground)] truncate">
+                      {fav.name}
+                    </p>
+                    {fav.state && (
+                      <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                        {fav.state}
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFavorite(fav.id)}
+                    aria-label="Remover região dos favoritos"
+                    className="rounded-md p-2 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--muted)] hover:text-[var(--destructive)]"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="font-semibold text-[var(--foreground)]">
+                    {fmtPerSqm(fav.pricePerSqm)}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <ConfidenceStars value={fav.confidence || 0} />
+                  {fav.dataPoints && (
+                    <span className="text-xs text-[var(--muted-foreground)]">
+                      {fav.dataPoints} dados
+                    </span>
+                  )}
+                </div>
+              </Card>
+            ))
+          )}
+        </div>
+      </section>
+
+      {/* Terrenos favoritos */}
       <section>
         <div className="flex items-center gap-2">
           <Building2 className="h-5 w-5" />
@@ -163,59 +256,57 @@ function FavoritesPageInner() {
                 <div key={i} className="h-24 animate-pulse rounded-2xl bg-muted/60" />
               ))}
             </div>
-          ) : regions.length === 0 ? (
+          ) : properties.length === 0 ? (
             <div className="col-span-full">
-              <EmptyState title="Nenhum terreno favoritado ainda." />
+              <p className="text-sm text-[var(--muted-foreground)]">Nenhum terreno favoritado ainda.</p>
             </div>
           ) : (
-            regions.map((fav) => {
-              return (
-                <Card key={fav.id}>
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <Building2 className="h-4 w-4 shrink-0 text-[var(--muted-foreground)]" />
-                        <p className="truncate font-semibold text-[var(--foreground)]">
-                          {fav.address}
-                        </p>
-                      </div>
-                      <p className="mt-1 flex items-center gap-1 text-sm text-[var(--muted-foreground)]">
-                        <MapPin className="h-3 w-3 shrink-0" />
-                        {fav.regionName}
+            properties.map((fav) => (
+              <Card key={fav.id}>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <Building2 className="h-4 w-4 shrink-0 text-[var(--muted-foreground)]" />
+                      <p className="truncate font-semibold text-[var(--foreground)]">
+                        {fav.address}
                       </p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => toggle(fav.id)}
-                      aria-label="Remover terreno dos favoritos"
-                      className="rounded-md p-2 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--muted)] hover:text-[var(--destructive)]"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
+                    <p className="mt-1 flex items-center gap-1 text-sm text-[var(--muted-foreground)]">
+                      <MapPin className="h-3 w-3 shrink-0" />
+                      {fav.regionName}
+                    </p>
                   </div>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="font-semibold text-[var(--foreground)]">
-                      {fmtBRL(fav.totalPrice)}
-                    </span>
-                    <span className="text-sm text-[var(--muted-foreground)]">
-                      {fav.totalPrice > 0 ? `${fmtPerSqm(fav.pricePerSqm)} /m²` : '—'}
-                    </span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFavorite(fav.id)}
+                    aria-label="Remover terreno dos favoritos"
+                    className="rounded-md p-2 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--muted)] hover:text-[var(--destructive)]"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="font-semibold text-[var(--foreground)]">
+                    {fmtBRL(fav.totalPrice)}
+                  </span>
+                  <span className="text-sm text-[var(--muted-foreground)]">
+                    {fav.totalPrice > 0 ? `${fmtPerSqm(fav.pricePerSqm)} /m²` : '—'}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-0.5">
+                    <ConfidenceStars value={fav.confidence || 0} />
                   </div>
-                  <div className="mt-2 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-0.5">
-                      <ConfidenceStars value={fav.confidence || 0} />
-                    </div>
-                    <Link
-                      href={`${lh('/dashboard')}?fav=${encodeURIComponent(fav.id)}`}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-[var(--primary)] transition hover:underline"
-                    >
-                      <Layers className="h-3 w-3" />
-                      Ver no mapa
-                    </Link>
-                  </div>
-                </Card>
-              );
-            })
+                  <Link
+                    href={`${lh('/dashboard')}?fav=${encodeURIComponent(fav.id)}`}
+                    className="inline-flex items-center gap-1 text-xs font-medium text-[var(--primary)] transition hover:underline"
+                  >
+                    <Layers className="h-3 w-3" />
+                    Ver no mapa
+                  </Link>
+                </div>
+              </Card>
+            ))
           )}
         </div>
       </section>
