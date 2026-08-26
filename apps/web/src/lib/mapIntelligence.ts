@@ -122,39 +122,37 @@ export function resolveVar(name: string, fallback?: string): string {
   return fallback ?? '';
 }
 
-// Paleta oficial LandMap (Lovable parity indigo hue 265, RED-YELLOW-BLUE):
-// Score >= 80: #003594 (Azul Royal — primário marca)
-// Score >= 65: #3b82f6 (Azul Vibrante — accent Lovable)
-// Score >= 50: #eab308 (Amarelo — Lovable parity)
-// Score >= 35: #f97316 (Laranja — Lovable parity)
-// Score < 35: #dc2626 (Vermelho Crítico — alerta/perda)
+// Paleta oficial LandMap (Verde Emerald + Amber + Red):
+// Score >= 80: #10b981 (Verde Emerald — Excepcional)
+// Score >= 65: #34d399 (Verde Claro — Alto Potencial)
+// Score >= 50: #eab308 (Amarelo — Médio)
+// Score >= 35: #f97316 (Laranja — Baixo)
+// Score < 35: #dc2626 (Vermelho Crítico — Alerta)
 
-export const FALLBACK_PRIMARY = '#003594';
-export const FALLBACK_RING = '#3b82f6';
+export const FALLBACK_PRIMARY = '#10b981';
+export const FALLBACK_RING = '#34d399';
 export const FALLBACK_WARNING = '#eab308';
 export const FALLBACK_DESTRUCTIVE = '#dc2626';
 
 export function scoreColor(score: number): string {
-  // Lovable parity paleta: RED-YELLOW-BLUE (quente-frio traditional)
-  if (score >= 80) return '#003594';
-  if (score >= 65) return '#3b82f6';
+  if (score >= 80) return '#10b981';
+  if (score >= 65) return '#34d399';
   if (score >= 50) return '#eab308';
   if (score >= 35) return '#f97316';
   return '#dc2626';
 }
 
 export function scoreToFillColor(score: number): string {
-  // Lovable parity paleta: RED-YELLOW-BLUE (quente-frio traditional)
-  if (score >= 80) return '#003594';
-  if (score >= 65) return '#3b82f6';
+  if (score >= 80) return '#10b981';
+  if (score >= 65) return '#34d399';
   if (score >= 50) return '#eab308';
   if (score >= 35) return '#f97316';
   return '#dc2626';
 }
 
-/** Gradiente escala heatmap — Lovable parity RED-YELLOW-BLUE */
+/** Gradiente escala heatmap — Verde/Emerald -> Amarelo -> Vermelho */
 export function heatScaleGradient(): string {
-  return 'linear-gradient(90deg, #dc2626 0%, #eab308 50%, #003594 100%)';
+  return 'linear-gradient(90deg, #dc2626 0%, #eab308 50%, #10b981 100%)';
 }
 
 function scores(

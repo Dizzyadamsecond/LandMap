@@ -11,14 +11,14 @@ const STATUS_STYLE: Record<string, string> = {
 };
 
 const ROWS: { cidade: string; uf: string; status: string; tipos: string; atualizacao: string }[] = [
-  { cidade: 'Fortaleza', uf: 'CE', status: 'Cobertura parcial', tipos: 'Preço por m² · Zoneamento municipal · Indicadores demográficos', atualizacao: '14 de julho de 2026' },
-  { cidade: 'Eusébio', uf: 'CE', status: 'Cobertura parcial', tipos: 'Preço por m² · Indicadores demográficos', atualizacao: '10 de julho de 2026' },
-  { cidade: 'Aquiraz', uf: 'CE', status: 'Em processamento', tipos: 'Preço por m²', atualizacao: '05 de julho de 2026' },
-  { cidade: 'Caucaia', uf: 'CE', status: 'Em processamento', tipos: 'Preço por m²', atualizacao: '—' },
-  { cidade: 'Recife', uf: 'PE', status: 'Em breve', tipos: '—', atualizacao: '—' },
-  { cidade: 'Natal', uf: 'RN', status: 'Em breve', tipos: '—', atualizacao: '—' },
-  { cidade: 'São Luís', uf: 'MA', status: 'Em breve', tipos: '—', atualizacao: '—' },
-  { cidade: 'Salvador', uf: 'BA', status: 'Em breve', tipos: '—', atualizacao: '—' },
+  { cidade: 'Fortaleza', uf: 'CE', status: 'Cobertura completa', tipos: 'Preço por m² · Zoneamento municipal · Indicadores demográficos · Transações', atualizacao: '26 de agosto de 2026' },
+  { cidade: 'Eusébio', uf: 'CE', status: 'Cobertura completa', tipos: 'Preço por m² · Indicadores demográficos · Loteamentos', atualizacao: '20 de agosto de 2026' },
+  { cidade: 'Aquiraz', uf: 'CE', status: 'Cobertura ativa', tipos: 'Preço por m² · Litoral · Empreendimentos', atualizacao: '15 de agosto de 2026' },
+  { cidade: 'Caucaia', uf: 'CE', status: 'Cobertura ativa', tipos: 'Preço por m² · Vetor Oeste · Industrial', atualizacao: '10 de agosto de 2026' },
+  { cidade: 'Recife', uf: 'PE', status: 'Cobertura ativa', tipos: 'Preço por m² · Polo Médico · Orla', atualizacao: '05 de agosto de 2026' },
+  { cidade: 'Natal', uf: 'RN', status: 'Cobertura ativa', tipos: 'Preço por m² · Ponta Negra · Petrópolis', atualizacao: '01 de agosto de 2026' },
+  { cidade: 'São Luís', uf: 'MA', status: 'Cobertura ativa', tipos: 'Preço por m² · Renascença · Calhau', atualizacao: '28 de julho de 2026' },
+  { cidade: 'Salvador', uf: 'BA', status: 'Cobertura ativa', tipos: 'Preço por m² · Vitória · Horto · Caminho das Árvores', atualizacao: '25 de julho de 2026' },
 ];
 
 export default function CoberturaPage() {

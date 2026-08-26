@@ -504,11 +504,10 @@ export type LayerId = typeof LAYERS[number]["id"];
 export { scoreToFillColor, scoreLabel as scoreLabelMapIntel } from "./mapIntelligence";
 
 export function scoreToColor(score: number): string {
-  // Azul LandMap -> azul claro -> âmbar -> vermelho
-  // Nota: scoreToColor() mantém paleta Lovable parity mista (com âmbar/laranja)
-  if (score >= 80) return "#003594";
-  if (score >= 65) return "#2563eb";
-  if (score >= 50) return "#c7a012";
+  // Verde Emerald -> Verde Claro -> Âmbar -> Laranja -> Vermelho
+  if (score >= 80) return "#10b981";
+  if (score >= 65) return "#34d399";
+  if (score >= 50) return "#eab308";
   if (score >= 35) return "#d97706";
   return "#c0281f";
 }

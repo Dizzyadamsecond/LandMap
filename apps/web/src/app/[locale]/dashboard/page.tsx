@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import L from 'leaflet';
+import type * as LeafletType from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {
   Search,
@@ -53,10 +53,11 @@ function DashboardMapInner() {
   const locale = (params?.locale as string) || 'pt-BR';
 
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<L.Map | null>(null);
-  const markersRef = useRef<L.Marker[]>([]);
-  const circlesRef = useRef<L.Circle[]>([]);
-  const heatmapRef = useRef<L.Circle[]>([]);
+  const leafletModuleRef = useRef<typeof LeafletType | null>(null);
+  const mapRef = useRef<LeafletType.Map | null>(null);
+  const markersRef = useRef<LeafletType.Marker[]>([]);
+  const circlesRef = useRef<LeafletType.Circle[]>([]);
+  const heatmapRef = useRef<LeafletType.Circle[]>([]);
 
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -98,40 +99,54 @@ function DashboardMapInner() {
     ).slice(0, 6);
   }, [search]);
 
-  // Initialize Map
+  // Initialize Map dynamically on client side
   useEffect(() => {
+    let isMounted = true;
     if (!containerRef.current || mapRef.current) return;
 
-    try {
-      const map = L.map(containerRef.current, {
-        center: FORTALEZA_CENTER,
-        zoom: 12,
-        minZoom: 4,
-        maxZoom: 19,
-        zoomControl: false,
-        attributionControl: false,
+    import('leaflet')
+      .then((LModule) => {
+        if (!isMounted || !containerRef.current) return;
+        const L = (LModule.default || LModule) as typeof LeafletType;
+        leafletModuleRef.current = L;
+
+        try {
+          const map = L.map(containerRef.current, {
+            center: [-14.235, -51.925], // Visão ampla Brasil com foco inteligente
+            zoom: 4,
+            minZoom: 4,
+            maxZoom: 19,
+            zoomControl: false,
+            attributionControl: false,
+          });
+
+          // CartoDB Positron clean light tile layer (estilo limpo #f8fafc + vias claras)
+          L.tileLayer(
+            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            {
+              maxZoom: 19,
+              subdomains: 'abcd',
+            },
+          ).addTo(map);
+
+          mapRef.current = map;
+          setReady(true);
+
+          setTimeout(() => {
+            if (isMounted && map) {
+              map.invalidateSize();
+            }
+          }, 200);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'Falha ao inicializar o mapa');
+        }
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : 'Falha ao carregar biblioteca do mapa');
       });
 
-      // CartoDB Positron clean light tile layer (exact LandMap style #f8fafc + white roads)
-      L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-        {
-          maxZoom: 19,
-          subdomains: 'abcd',
-        },
-      ).addTo(map);
-
-      mapRef.current = map;
-      setReady(true);
-
-      setTimeout(() => {
-        map.invalidateSize();
-      }, 150);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Falha ao inicializar o mapa');
-    }
-
     return () => {
+      isMounted = false;
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
@@ -141,7 +156,8 @@ function DashboardMapInner() {
 
   // Update Region Markers and Layer Circles
   useEffect(() => {
-    if (!ready || !mapRef.current) return;
+    const L = leafletModuleRef.current;
+    if (!ready || !mapRef.current || !L) return;
     const map = mapRef.current;
 
     // Clear old circles and markers
@@ -175,7 +191,7 @@ function DashboardMapInner() {
             border-radius: 9999px;
             background-color: ${scoreToFillColor(region.score)};
             border: 2.5px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 53, 148, 0.28);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -204,7 +220,8 @@ function DashboardMapInner() {
 
   // Update Heatmap Concentric Rings
   useEffect(() => {
-    if (!ready || !mapRef.current) return;
+    const L = leafletModuleRef.current;
+    if (!ready || !mapRef.current || !L) return;
     const map = mapRef.current;
 
     heatmapRef.current.forEach((c) => c.remove());
@@ -212,7 +229,7 @@ function DashboardMapInner() {
 
     if (!heatmapOn) return;
 
-    const rings: L.Circle[] = [];
+    const rings: LeafletType.Circle[] = [];
     REGIONS.forEach((r) => {
       const weight = r.layerScores[activeLayer] / 100;
       const color = scoreToFillColor(r.layerScores[activeLayer]);
@@ -254,8 +271,8 @@ function DashboardMapInner() {
       {/* Watermark LandMap */}
       <div className="pointer-events-none absolute bottom-3 left-3 z-10 md:bottom-4 md:left-4">
         <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/40 bg-white/90 px-3 py-1.5 shadow-md backdrop-blur">
-          <span className="h-2 w-2 rounded-full bg-[#003594]" />
-          <span className="font-display text-xs font-bold tracking-tight text-[#003594]">
+          <span className="h-2 w-2 rounded-full bg-[var(--primary)]" />
+          <span className="font-display text-xs font-bold tracking-tight text-[var(--primary)]">
             LandMap
           </span>
         </div>
@@ -412,7 +429,7 @@ function DashboardMapInner() {
             <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-foreground/50">
               Escala do heatmap
             </p>
-            <div className="h-2 w-full rounded-full bg-gradient-to-r from-[#dc2626] via-[#eab308] to-[#003594]" />
+            <div className="h-2 w-full rounded-full bg-gradient-to-r from-destructive via-amber-500 to-primary" />
             <div className="mt-1 flex justify-between text-[10px] text-foreground/50">
               <span>Crítico</span>
               <span>Médio</span>

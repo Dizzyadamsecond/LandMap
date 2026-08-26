@@ -62,14 +62,14 @@ describe('scoreLabel — band alignment', () => {
   });
 });
 
-// scoreColor alinhado à paleta Lovable RED-YELLOW-BLUE (#dc2626, #f97316, #eab308, #3b82f6, #003594)
+// scoreColor alinhado à paleta verde/emerald (#dc2626, #f97316, #eab308, #34d399, #10b981)
 describe('scoreColor — band thresholds', () => {
   it.each([
     [20, '#dc2626'], // <35 critical (RED)
     [40, '#f97316'], // 35-49 low (ORANGE)
     [55, '#eab308'], // 50-64 medium (YELLOW)
-    [70, '#3b82f6'], // 65-79 high potential (BLUE)
-    [90, '#003594'], // >=80 exceptional (DARK BLUE)
+    [70, '#34d399'], // 65-79 high potential (LIGHT GREEN)
+    [90, '#10b981'], // >=80 exceptional (EMERALD GREEN)
   ])('score %i -> %s', (score, expected) => {
     expect(scoreColor(score)).toBe(expected);
   });
