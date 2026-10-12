@@ -157,3 +157,6 @@ data/worldmonitor/dbg.*
 # Paridade Lovable — material de referência (zip + extração)
 reference-lovable/
 landmap-complete.zip
+
+.vercel
+.env*
