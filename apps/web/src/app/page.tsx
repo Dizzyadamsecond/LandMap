@@ -66,7 +66,8 @@ export default function RootRedirect() {
       (window.localStorage.getItem('guest_mode') === '1' ||
         window.localStorage.getItem('landmap:guest_mode') === '1');
     const user = readMockUser();
-    const destination = user || isGuest ? '/pt-BR/dashboard' : '/pt-BR/onboarding';
+    const isAuthed = (user && user.provider !== 'guest') || isGuest;
+    const destination = isAuthed ? '/pt-BR/dashboard' : '/pt-BR/onboarding';
 
     const fadeTimer = setTimeout(() => {
       setFadeOut(true);

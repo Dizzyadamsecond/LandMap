@@ -95,7 +95,7 @@ export const PLANS: PlanMeta[] = [
 /** Plano gratuito (modo visitante / teste). */
 export const FREE_PLAN: PlanMeta = {
   id: 'free',
-  name: 'LandMap Free',
+  name: 'Gratuito',
   priceBRL: 0,
   tagline: 'Comece sem custo',
   highlight: false,

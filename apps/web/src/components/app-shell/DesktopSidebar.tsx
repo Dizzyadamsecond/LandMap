@@ -25,7 +25,7 @@ export function DesktopSidebar({
       className="sticky top-0 hidden h-[100dvh] w-[68px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--sidebar)] py-4 items-center md:flex"
     >
       <Link
-        href={`/${locale}`}
+        href={`/${locale}/dashboard`}
         aria-label="LandMap"
         prefetch={false}
         className={`grid h-10 w-10 place-items-center rounded-xl bg-white/5 ring-1 ring-white/10 transition hover:bg-white/10 ${focusRing}`}

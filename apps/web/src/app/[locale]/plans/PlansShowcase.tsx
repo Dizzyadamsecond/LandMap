@@ -25,11 +25,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
     }
     // Track CTA click
     trackCta('pricing_plan_select', 'click', { variant: planId });
-    if (planId === 'free') {
-      router.push(`/${locale}/auth?returnTo=/dashboard`);
-      return;
-    }
-    router.push(`/${locale}/auth?returnTo=/checkout?plan=${planId}`);
+    router.push(`/${locale}/auth?mode=request`);
   };
 
   const handleDesktopPlan = (planId: string) => {
@@ -240,7 +236,7 @@ export function PlansShowcase({ variant = 'mobile' }: { variant?: 'mobile' | 'de
           Assinar {selectedPlan.name} — R$ {formatBRL(selectedPlan.priceBRL)}/mês
         </button>
         <p className="mt-2 text-center text-[11px] text-foreground/40">
-          Pagamento seguro · Cancele quando quiser
+          Pagamento não ativado — fluxo de demonstração.
         </p>
       </div>
     </div>

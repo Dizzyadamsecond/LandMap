@@ -146,7 +146,11 @@ export function ensureFreeAccess(): MockUser {
 }
 
 export function signOutMock(): void {
-  if (typeof window !== 'undefined') window.localStorage.removeItem(STORAGE_KEY);
+  if (typeof window !== 'undefined') {
+    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem('guest_mode');
+    window.localStorage.removeItem('landmap:guest_mode');
+  }
 }
 
 const LOCALE_PREFIX = /^\/(pt-BR|en-US|es-ES)(?=\/|$)/;

@@ -15,6 +15,7 @@ import {
   focusRing,
   NavItem,
 } from './app-shell/types';
+import { readMockUser, signOutMock } from '../lib/mockAuth';
 
 const TOUR_STEPS = [
   {
@@ -56,6 +57,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [extraMenuOpen, setExtraMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [tourOpen, setTourOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<ReturnType<typeof readMockUser>>(null);
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const isGuest =
+      typeof window !== 'undefined' &&
+      (window.localStorage.getItem('guest_mode') === '1' ||
+        window.localStorage.getItem('landmap:guest_mode') === '1');
+    const user = readMockUser();
+    setCurrentUser(user);
+    const isAuthed = (user && user.provider !== 'guest') || isGuest;
+
+    if (!isAuthed) {
+      router.replace(`/${locale}/auth`);
+    } else {
+      setAuthorized(true);
+    }
+  }, [pathname, router, locale]);
+
+  const handleSignOut = () => {
+    signOutMock();
+    router.replace(`/${locale}/auth`);
+    router.refresh();
+  };
 
   const isActive = (href: string) => {
     const full = `/${locale}/${href}`;
@@ -162,16 +188,61 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="relative">
             <button
               type="button"
-              aria-label="Conta"
-              className={`inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--primary)]/15 text-[var(--primary)] ring-1 ring-[var(--border)] ${focusRing}`}
+              onClick={() => setProfileOpen((o) => !o)}
+              aria-label="Perfil"
+              aria-expanded={profileOpen}
+              className="flex items-center gap-2 rounded-full py-1 pl-1 pr-3 transition hover:bg-[var(--muted)]"
             >
-              <User size={18} />
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-[var(--primary)] text-[13px] font-semibold text-white">
+                {(currentUser?.email?.[0] ?? 'L').toUpperCase()}
+              </span>
+              <span className="hidden text-left md:block">
+                <span className="block text-[11px] leading-tight text-[var(--muted-foreground)]">
+                  Conta
+                </span>
+                <span className="block max-w-[140px] truncate text-xs font-semibold leading-tight text-[var(--foreground)]">
+                  {currentUser?.email ?? 'Visitante'}
+                </span>
+              </span>
             </button>
+
+            {profileOpen && (
+              <div
+                className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-[var(--border)] bg-[var(--card)] p-1.5 shadow-xl ring-1 ring-black/5 z-50 animate-in fade-in zoom-in-95 duration-150"
+                role="menu"
+              >
+                <div className="px-3 py-2 text-xs text-[var(--muted-foreground)] border-b border-[var(--border)] truncate">
+                  {currentUser?.email ?? 'Modo visitante'}
+                </div>
+                <Link
+                  href={`/${locale}/plans`}
+                  onClick={() => setProfileOpen(false)}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[var(--foreground)] transition hover:bg-[var(--muted)]"
+                >
+                  <User size={14} /> Alterar plano
+                </Link>
+                <Link
+                  href={`/${locale}/admin`}
+                  onClick={() => setProfileOpen(false)}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[var(--foreground)] transition hover:bg-[var(--muted)]"
+                >
+                  Admin
+                </Link>
+                <div className="my-1 h-px bg-[var(--border)]" />
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[var(--destructive)] transition hover:bg-[var(--muted)]"
+                >
+                  Sair
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
         {/* Conteúdo */}
-        <main className="min-w-0 flex-1">{children}</main>
+        <main className="min-w-0 flex-1">{authorized === false ? null : children}</main>
       </div>
 
       {/* Bottom Nav Mobile Modular (4 colunas — Lovable usa 3 + 1 vazia; aqui o 4º slot é o Admin) */}

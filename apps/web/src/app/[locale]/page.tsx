@@ -73,7 +73,8 @@ export default function LocaleIndexPage() {
       (window.localStorage.getItem('guest_mode') === '1' ||
         window.localStorage.getItem('landmap:guest_mode') === '1');
     const user = readMockUser();
-    const destination = user || isGuest ? `/${locale}/dashboard` : `/${locale}/onboarding`;
+    const isAuthed = (user && user.provider !== 'guest') || isGuest;
+    const destination = isAuthed ? `/${locale}/dashboard` : `/${locale}/onboarding`;
 
     const fadeTimer = setTimeout(() => {
       setFadeOut(true);

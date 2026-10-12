@@ -9,6 +9,7 @@ import { Briefcase, Building2, TrendingUp, User } from '../../../components/lova
 import { Reveal } from '../../../components/Motion';
 import {
   useMockUser,
+  readMockUser,
   storeUserType,
   getPostAuthRedirect,
   type UserType,
@@ -69,6 +70,13 @@ function AuthPageInner() {
 
   /** Where to land after auth: honors ?returnTo=, persisted post-auth return, else /map. */
   const postAuth = () => getPostAuthRedirect(params.get('returnTo') ?? undefined, locale);
+
+  useEffect(() => {
+    const user = readMockUser();
+    if (user && user.provider !== 'guest') {
+      router.replace(`/${locale}/dashboard`);
+    }
+  }, [router, locale]);
 
   const [loginLoading, setLoginLoading] = useState(false);
   const [signupLoading, setSignupLoading] = useState(false);
