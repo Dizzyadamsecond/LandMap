@@ -81,15 +81,23 @@ export interface NavCategory {
   items: NavItem[];
 }
 
+/**
+ * Trilha principal do shell = ORDEM LITERAL da landmap-insight.lovable.app LIVE.
+ *
+ * A versão publicada do Lovable hoje tem 4 itens na sidebar (extraídos do chunk
+ * do layout autenticado, array `Q`):
+ *   Radar(/insights) → Mapa(/dashboard) → Favoritos(/favorites) → Perfil(/profile)
+ *
+ * O zip antigo do Lovable tinha 8 itens (Dashboard/Comparador/Alertas/…), mas o
+ * site ao vivo evoluiu — esta é a fonte de verdade. Nenhuma página nossa foi
+ * removida: todas continuam acessíveis pelo menu "Mais Recursos" (extraCategories)
+ * e pelo drawer mobile.
+ */
 export const lovableNavItems: NavItem[] = [
+  { href: 'insights', label: 'Radar', Icon: BarChart },
   { href: 'dashboard', label: 'Mapa', Icon: Map, tour: 'map' },
-  { href: 'dashboard', label: 'Dashboard', Icon: LayoutGrid, emBreve: true },
-  { href: 'compare', label: 'Comparador', Icon: GitCompare },
   { href: 'favorites', label: 'Favoritos', Icon: Star },
-  { href: 'alerts', label: 'Alertas', Icon: Bell, emBreve: true },
-  { href: 'reports', label: 'Relatórios', Icon: BarChart, emBreve: true },
-  { href: 'assistant', label: 'IA LandMap', Icon: Sparkles, emBreve: true },
-  { href: 'settings', label: 'Configurações', Icon: Settings, emBreve: true },
+  { href: 'profile', label: 'Perfil', Icon: User },
 ];
 
 export const extraCategories: NavCategory[] = [

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Map, GitCompare, Star, ShieldCheck } from '../lovable/icons';
+import { BarChart, Map, Star, User } from '../lovable/icons';
 import { focusRing } from './types';
 import { cn } from '@landmap/ui';
 
@@ -10,11 +10,16 @@ interface MobileBottomNavProps {
   isActive: (href: string) => boolean;
 }
 
+/**
+ * Nav inferior mobile = MESMA trilha da sidebar e da Lovable LIVE (array `Q`):
+ * Radar(/insights) → Mapa(/dashboard) → Favoritos(/favorites) → Perfil(/profile).
+ * O resto das páginas do produto fica no drawer "Recursos LandMap" (menu do topo).
+ */
 const bottomItems = [
+  { href: 'insights', label: 'Radar', Icon: BarChart },
   { href: 'dashboard', label: 'Mapa', Icon: Map },
-  { href: 'compare', label: 'Comparador', Icon: GitCompare },
   { href: 'favorites', label: 'Favoritos', Icon: Star },
-  { href: 'admin', label: 'Admin', Icon: ShieldCheck },
+  { href: 'profile', label: 'Perfil', Icon: User },
 ];
 
 export function MobileBottomNav({ locale, isActive }: MobileBottomNavProps) {
@@ -31,13 +36,17 @@ export function MobileBottomNav({ locale, isActive }: MobileBottomNavProps) {
             key={item.href}
             href={`/${locale}/${item.href}`}
             prefetch={false}
+            aria-current={active ? 'page' : undefined}
             className={cn(
-              "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
+              'relative flex flex-col items-center gap-0.5 py-2 text-[10px] font-semibold transition-colors',
               focusRing,
-              active ? 'text-[var(--primary)]' : 'text-[var(--foreground)]/50'
+              active ? 'text-[var(--primary)]' : 'text-[var(--foreground)]/45'
             )}
           >
-            <Icon size={20} />
+            {active && (
+              <span className="absolute top-0 h-0.5 w-8 rounded-full bg-[var(--primary)]" />
+            )}
+            <Icon size={20} className={active ? 'stroke-2' : 'stroke-[1.75]'} />
             <span>{item.label}</span>
           </Link>
         );
