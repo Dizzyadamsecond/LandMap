@@ -1,7 +1,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 
-const BASE = "https://landmapprod-2o28u1q7p-dizzys-projects-d5a44b36.vercel.app";
+const BASE = "https://landmapprod-iek10smc7-dizzys-projects-d5a44b36.vercel.app";
 const ROUTES = [
   "/",
   "/pt-BR/plans",

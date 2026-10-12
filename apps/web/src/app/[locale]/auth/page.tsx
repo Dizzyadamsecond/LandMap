@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Eye, EyeOff, LandMapWordmark } from '../../../components/lovable/icons';
 import { Briefcase, Building2, TrendingUp, User } from '../../../components/lovable/icons';
 import { Reveal } from '../../../components/Motion';

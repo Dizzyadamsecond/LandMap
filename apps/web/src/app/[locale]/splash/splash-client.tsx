@@ -1,228 +1,115 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { motion } from 'framer-motion';
-import {
-  MapPinned,
-  Sparkles,
-  Star,
-  Building2,
-  MapPin,
-  Search,
-  GitCompare,
-  LineChart,
-  BarChart,
-  Satellite,
-  Layers,
-  Activity,
-  Bot,
-  LandMapWordmark,
-  BellRing,
-} from '../../../components/lovable/icons';
+import { useEffect, useState, useId } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 
 /**
- * Splash = landing page 1:1 com a Lovable (landmap-insight.lovable.app/splash).
- * Página de marketing completa: hero, grid de 8 features, "Como funciona",
- * LandMap Score e CTAs. Não há auto-redirect — o fluxo de entrada é idêntico
- * ao da Lovable (entra no site e vê a landing, livre, sem parede de login).
- * Links apontam para rotas existentes do LandMap (preserva tudo que já temos).
+ * Exact SVG Vector Paths for the LandMap animated logo mark
+ * extracted 1:1 from Lovable live (landmap-insight.lovable.app/splash)
  */
-
-// 1:1 com a ordem do Lovable live (landmap-insight.lovable.app/splash):
-// "O que você passa a enxergar" = 4 blocos na sequência exata abaixo.
-const FEATURES = [
-  { icon: MapPinned, title: 'Descubra regiões antes delas valorizarem', desc: 'Veja onde a valorização está começando, antes do mercado.' },
-  { icon: Star, title: 'Saiba o potencial da região em um número', desc: 'O LandMap Score resume potencial, risco e atratividade de 0 a 100.' },
-  { icon: GitCompare, title: 'Compare bairros e descubra qual oferece maior potencial', desc: 'Lado a lado, sem planilha: preço, tendência, histórico e risco de cada região.' },
-  { icon: BellRing, title: 'Seja avisado quando a janela abrir', desc: 'Receba notificação quando uma região entrar em alta.' },
+const LOGO_PATHS = [
+  'M3547 11679 c-164 -16 -222 -44 -244 -119 -26 -87 -35 -469 -30 -1295 6 -1067 12 -1114 164 -1353 211 -332 478 -519 913 -642 375 -106 640 -239 810 -410 377 -376 464 -953 217 -1445 -109 -218 -211 -332 -577 -644 -203 -174 -369 -337 -442 -435 -408 -547 -207 -1328 409 -1595 198 -86 249 -88 864 -35 504 43 639 43 782 0 188 -56 374 -173 542 -341 180 -180 225 -264 431 -815 233 -623 366 -789 661 -822 156 -18 2435 -18 2546 -1 144 23 194 69 224 204 32 140 21 1393 -12 1481 -15 39 -43 32 -450 -102 -421 -138 -585 -173 -820 -174 -162 0 -262 14 -395 56 -414 132 -662 385 -968 993 -145 287 -209 385 -337 510 -193 189 -378 267 -748 315 -87 11 -177 20 -200 20 -23 0 -47 4 -53 8 -11 8 -35 1979 -34 2910 l0 492 -76 156 c-181 370 -291 475 -804 764 -504 284 -763 512 -970 856 -235 388 -325 709 -364 1294 l-11 175 -470 1 c-259 1 -510 -2 -558 -7z',
+  'M5000 11664 c-59 -154 -5 -635 105 -939 145 -403 358 -663 751 -918 221 -143 593 -344 707 -381 136 -45 186 4 217 213 60 408 22 1773 -54 1956 -34 80 -83 85 -1003 92 l-713 5 -10 -28z',
+  'M3254 8143 c-15 -577 -11 -5719 4 -5986 23 -422 20 -418 431 -438 250 -12 3267 -4 3486 9 137 9 136 5 61 179 -30 70 -97 252 -149 403 -198 572 -293 742 -506 899 -246 182 -472 215 -938 137 -370 -61 -472 -66 -688 -30 -567 93 -1025 524 -1140 1071 -77 373 -7 786 186 1083 99 154 293 353 564 580 412 344 557 566 583 887 38 473 -200 772 -758 949 -360 114 -427 137 -503 171 -162 73 -201 100 -548 376 -33 26 -64 47 -68 47 -5 0 -12 -152 -17 -337z',
+  'M8550 4960 c-165 -15 -187 -34 -176 -158 22 -263 216 -730 401 -968 295 -377 718 -445 1360 -219 254 89 424 143 567 179 l133 34 3 404 c4 636 -4 660 -251 715 -81 18 -1845 29 -2037 13z',
 ];
 
-const STEPS = [
-  { icon: Search, title: 'Escolha onde quer olhar', desc: 'Busque por cidade ou bairro direto no mapa.' },
-  { icon: LineChart, title: 'Veja como a região evoluiu', desc: 'Histórico de preço, tendência de 12 meses e comparação com CDI.' },
-  { icon: Bot, title: 'Decida com a explicação da IA', desc: 'A IA transforma os números em linguagem simples.' },
-];
+interface LogoMarkProps {
+  className?: string;
+  size?: number;
+  color?: string;
+  riverColor?: string;
+}
 
-function PushNotificationToggle() {
-  const [isEnabled, setIsEnabled] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  const handleToggle = async () => {
-    setIsLoading(true);
-    try {
-      if ('serviceWorker' in navigator && 'PushManager' in window) {
-        const registration = await navigator.serviceWorker.ready;
-        const subscription = await registration.pushManager.getSubscription();
-
-        if (subscription) {
-          await subscription.unsubscribe();
-          setIsEnabled(false);
-        } else {
-          const newSub = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-          });
-          if (newSub) {
-            await fetch('/api/push/subscribe', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(newSub),
-            });
-            setIsEnabled(true);
-          }
-        }
-      }
-    } catch (e) {
-      console.error('Push toggle failed:', e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+export function LogoMark({ className, size = 120, color = '#ffffff' }: LogoMarkProps) {
+  const rawId = useId();
+  const id = `lm-mask-${rawId.replace(/[^a-zA-Z0-9]/g, '')}`;
 
   return (
-    <button
-      onClick={handleToggle}
-      disabled={isLoading}
-      className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm transition hover:border-[var(--primary)] hover:bg-[var(--card)]"
+    <svg
+      width={size}
+      height={size}
+      viewBox="304 92 800 1038"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className ? `logo-mark ${className}` : 'logo-mark'}
+      role="img"
+      aria-label="LandMap"
     >
-      <BellRing className={`h-4 w-4 ${isEnabled ? 'text-[var(--primary)]' : 'text-[var(--muted-foreground)]'}`} />
-      {isLoading ? 'Configurando...' : isEnabled ? 'Notificações ativas' : 'Ativar notificações'}
-    </button>
+      <defs>
+        <mask id={id} maskUnits="userSpaceOnUse" x="304" y="92" width="800" height="1038">
+          <rect x="304" y="1130" width="800" height="1038" fill="#fff">
+            <animate
+              attributeName="y"
+              from="1130"
+              to="92"
+              dur="1.1s"
+              begin="0.15s"
+              fill="freeze"
+              calcMode="spline"
+              keySplines="0.22 1 0.36 1"
+            />
+          </rect>
+        </mask>
+      </defs>
+      <g mask={`url(#${id})`}>
+        <g transform="translate(0,1281) scale(0.1,-0.1)" fill={color}>
+          {LOGO_PATHS.map((d, i) => (
+            <path key={i} d={d} />
+          ))}
+        </g>
+      </g>
+    </svg>
   );
 }
 
-export default function SplashPage() {
+/**
+ * SplashClient Component
+ * 1:1 Paridade Estrita com Lovable Live (/splash):
+ * 1. Fundo azul escuro `#0d3183`.
+ * 2. Animação de subida suave do logo vetorial com spline bezier.
+ * 3. Fade-out gradual de 500ms aos 1.9s.
+ * 4. Transição fluida de navegação para a Landing page aos 2.3s.
+ */
+export default function SplashClient() {
+  const router = useRouter();
   const params = useParams();
-  const locale = (params.locale as string) || 'pt-BR';
-  const href = (p: string) => `/${locale}${p}`;
+  const locale = (params?.locale as string) || 'pt-BR';
+
+  const [fading, setFading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => {
+      setFading(true);
+    }, 1900);
+
+    const navTimer = setTimeout(() => {
+      router.replace(`/${locale}/landing`);
+    }, 2300);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(navTimer);
+    };
+  }, [router, locale]);
+
+  if (!mounted) return null;
 
   return (
-    <main id="main-content" className="min-h-[100dvh] bg-[var(--background)] text-[var(--foreground)]">
-      {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-          <Link href={href('/splash')} className="flex items-center gap-2">
-            <LandMapWordmark className="h-7 text-[var(--foreground)]" />
-          </Link>
-          <nav className="hidden items-center gap-6 text-sm text-[var(--muted-foreground)] md:flex">
-            <Link href={href('/sobre')} className="transition hover:text-[var(--foreground)]">Sobre</Link>
-            <Link href={href('/metodologia')} className="transition hover:text-[var(--foreground)]">Metodologia</Link>
-            <Link href={href('/cobertura')} className="transition hover:text-[var(--foreground)]">Cobertura</Link>
-            <Link href={href('/plans')} className="transition hover:text-[var(--foreground)]">Planos</Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <PushNotificationToggle />
-            <Link href={href('/auth')} className="text-sm text-[var(--muted-foreground)] transition hover:text-[var(--foreground)]">
-              Entrar
-            </Link>
-            <Link
-              href={href('/auth')}
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-[var(--primary-foreground)] shadow-sm transition hover:opacity-90"
-            >
-              Testar 7 dias grátis
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero — 100% Lovable Parity (Minimal Splash) */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="aurora" />
-          <div className="glow-primary orb-float-slow" style={{ top: '-10%', left: '-5%', width: '45vw', height: '45vw' }} />
-          <div className="glow-dual orb-float" style={{ bottom: '-15%', right: '-8%', width: '40vw', height: '40vw' }} />
-          <div className="grain" />
-        </div>
-        <div className="mx-auto flex max-w-6xl min-h-[calc(100dvh-80px)] flex-col items-center justify-center px-6 text-center">
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs font-medium text-[var(--muted-foreground)]"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-[var(--primary)]" />
-            Inteligência de terrenos no Brasil
-          </motion.span>
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-6 max-w-3xl text-4xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl md:text-6xl"
-          >
-            Veja o futuro do mercado imobiliário{' '}
-            <span className="text-aurora">antes dos outros.</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-5 max-w-2xl text-base text-[var(--muted-foreground)] sm:text-lg"
-          >
-            Descubra regiões antes da valorização, compare bairros, acompanhe tendências e tome decisões com inteligência.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
-          >
-            <Link
-              href={href('/auth')}
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-sm transition hover:opacity-90"
-            >
-              Começar gratuitamente por 7 dias →
-            </Link>
-            <span className="text-xs text-[var(--muted-foreground)]">
-              Sem cartão de crédito. Acesso completo ao LandMap Pro.
-            </span>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-[var(--border)]">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 py-12 md:grid-cols-4">
-          <div>
-            <LandMapWordmark className="h-6 text-[var(--foreground)]" />
-            <p className="mt-3 text-sm text-[var(--muted-foreground)]">Inteligência territorial para decisões imobiliárias.</p>
-          </div>
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Produto</div>
-            <ul className="mt-3 space-y-2 text-sm">
-              <li><Link href={href('/dashboard')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Mapa</Link></li>
-              <li><Link href={href('/insights')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Radar</Link></li>
-              <li><Link href={href('/compare')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Comparar</Link></li>
-              <li><Link href={href('/regions')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Relatórios</Link></li>
-            </ul>
-          </div>
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Transparência</div>
-            <ul className="mt-3 space-y-2 text-sm">
-              <li><Link href={href('/fontes')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Fontes de dados</Link></li>
-              <li><Link href={href('/cobertura')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Atualizações</Link></li>
-              <li><Link href={href('/aviso-legal')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Limitações</Link></li>
-              <li><Link href={href('/metodologia')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Metodologia</Link></li>
-            </ul>
-          </div>
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Legal</div>
-            <ul className="mt-3 space-y-2 text-sm">
-              <li><Link href={href('/terms')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Termos de uso</Link></li>
-              <li><Link href={href('/privacy')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Privacidade</Link></li>
-              <li><Link href={href('/cookies')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Cookies</Link></li>
-              <li><Link href={href('/aviso-legal')} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Aviso legal</Link></li>
-            </ul>
-          </div>
-        </div>
-        <div className="border-t border-[var(--border)]">
-          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-6 text-sm text-[var(--muted-foreground)] md:flex-row">
-            <span>© 2026 LandMap Inteligência Territorial</span>
-            <a href="mailto:comercial@landmap.com.br" className="hover:text-[var(--foreground)]">comercial@landmap.com.br</a>
-          </div>
-        </div>
-      </footer>
-    </main>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ease-in-out ${
+        fading ? 'opacity-0' : 'opacity-100'
+      }`}
+      style={{ backgroundColor: '#0d3183' }}
+    >
+      <div className="logo-mark-container flex items-center justify-center">
+        <LogoMark size={148} color="#ffffff" riverColor="#0d3183" />
+      </div>
+    </div>
   );
 }

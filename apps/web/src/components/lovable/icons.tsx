@@ -791,3 +791,49 @@ export function Radio({ size = 24, ...p }: IconProps) {
   );
 }
 
+export function Gauge({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="m12 14 4-4" />
+      <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+    </svg>
+  );
+}
+
+export function Factory({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M12 16h.01" />
+      <path d="M16 16h.01" />
+      <path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z" />
+      <path d="M8 16h.01" />
+    </svg>
+  );
+}
+
+export function Target({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="12" r="6" />
+      <circle cx="12" cy="12" r="2" />
+    </svg>
+  );
+}
+
+export function Brain({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M12 18V5" />
+      <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" />
+      <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" />
+      <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" />
+      <path d="M18 18a4 4 0 0 0 2-7.464" />
+      <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" />
+      <path d="M6 18a4 4 0 0 1-2-7.464" />
+      <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" />
+    </svg>
+  );
+}
+
+
