@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/cron/worldmonitor",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 6 * * *"
     }
   ]
 }
