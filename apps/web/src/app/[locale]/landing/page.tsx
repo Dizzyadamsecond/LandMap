@@ -9,7 +9,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const SEO: Record<string, { title: string; description: string }> = {
     'pt-BR': {
-      title: 'LandMap — Inteligência de terrenos',
+      title: 'LandMap — Veja o futuro do mercado imobiliário antes dos outros',
       description:
         'LandMap: mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.',
     },
