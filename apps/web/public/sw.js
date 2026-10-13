@@ -1,4 +1,4 @@
-const CACHE = 'landmap-v4';
+const CACHE = 'landmap-v5';
 const PRECACHE = [
   '/',
   '/pt-BR',

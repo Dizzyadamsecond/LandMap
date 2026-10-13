@@ -67,37 +67,58 @@ function DashboardMapInner() {
   const [activeLayer, setActiveLayer] = useState<LayerId>('valorization');
   const [search, setSearch] = useState('');
 
-  // Derived indicators — Bloomberg-style ticker
-  const indicators = useMemo(() => {
-    const avgPrice = REGIONS.reduce((s, r) => s + r.priceSqm, 0) / REGIONS.length;
-    const avgDelta = REGIONS.reduce((s, r) => s + r.priceSqmDelta12m, 0) / REGIONS.length;
-    const hottest = [...REGIONS].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m)[0];
-    const bestOpp = [...REGIONS].sort((a, b) => b.score - a.score)[0];
-    const indexLandmap = Math.round(
-      REGIONS.reduce((s, r) => s + r.score, 0) / REGIONS.length,
-    );
-    return { avgPrice, avgDelta, hottest, bestOpp, indexLandmap };
+  // Insights via API (/api/map/insights) — paridade com a Lovable LIVE, que
+  // hidrata o mapa do mesmo jeito. O dataset estático REGIONS é o fallback:
+  // se a API falhar, o mapa continua completo (nunca vazio).
+  const [regions, setRegions] = useState<RegionInsight[]>(REGIONS);
+
+  useEffect(() => {
+    let alive = true;
+    fetch('/api/map/insights')
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((d) => {
+        if (!alive || !Array.isArray(d?.regions) || d.regions.length === 0) return;
+        setRegions(d.regions as RegionInsight[]);
+      })
+      .catch(() => {
+        /* fallback estático já está no state */
+      });
+    return () => {
+      alive = false;
+    };
   }, []);
 
+  // Derived indicators — Bloomberg-style ticker
+  const indicators = useMemo(() => {
+    const avgPrice = regions.reduce((s, r) => s + r.priceSqm, 0) / regions.length;
+    const avgDelta = regions.reduce((s, r) => s + r.priceSqmDelta12m, 0) / regions.length;
+    const hottest = [...regions].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m)[0];
+    const bestOpp = [...regions].sort((a, b) => b.score - a.score)[0];
+    const indexLandmap = Math.round(
+      regions.reduce((s, r) => s + r.score, 0) / regions.length,
+    );
+    return { avgPrice, avgDelta, hottest, bestOpp, indexLandmap };
+  }, [regions]);
+
   const rankings = useMemo(() => {
-    const byDelta = [...REGIONS].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m);
-    const byScore = [...REGIONS].sort((a, b) => b.score - a.score);
+    const byDelta = [...regions].sort((a, b) => b.priceSqmDelta12m - a.priceSqmDelta12m);
+    const byScore = [...regions].sort((a, b) => b.score - a.score);
     return {
       topDelta: byDelta.slice(0, 5),
       topScore: byScore.slice(0, 5),
     };
-  }, []);
+  }, [regions]);
 
   const searchResults = useMemo(() => {
     if (!search.trim()) return [];
     const q = search.trim().toLowerCase();
-    return REGIONS.filter(
+    return regions.filter(
       (r) =>
         r.name.toLowerCase().includes(q) ||
         r.city.toLowerCase().includes(q) ||
         r.zoning.toLowerCase().includes(q),
     ).slice(0, 6);
-  }, [search]);
+  }, [search, regions]);
 
   // Initialize Map dynamically on client side
   useEffect(() => {
@@ -166,7 +187,7 @@ function DashboardMapInner() {
     circlesRef.current = [];
     markersRef.current = [];
 
-    REGIONS.forEach((region) => {
+    regions.forEach((region) => {
       const layerScore = region.layerScores[activeLayer];
       const color = scoreToFillColor(layerScore);
 
@@ -216,7 +237,7 @@ function DashboardMapInner() {
       });
       markersRef.current.push(marker);
     });
-  }, [ready, activeLayer]);
+  }, [ready, activeLayer, regions]);
 
   // Update Heatmap Concentric Rings
   useEffect(() => {
@@ -230,7 +251,7 @@ function DashboardMapInner() {
     if (!heatmapOn) return;
 
     const rings: LeafletType.Circle[] = [];
-    REGIONS.forEach((r) => {
+    regions.forEach((r) => {
       const weight = r.layerScores[activeLayer] / 100;
       const color = scoreToFillColor(r.layerScores[activeLayer]);
       [2600, 1800, 1100].forEach((radius, i) => {
@@ -245,7 +266,7 @@ function DashboardMapInner() {
       });
     });
     heatmapRef.current = rings;
-  }, [ready, heatmapOn, activeLayer]);
+  }, [ready, heatmapOn, activeLayer, regions]);
 
   function focusRegion(r: RegionInsight) {
     setSelected(r);
@@ -473,8 +494,8 @@ function DashboardMapInner() {
               icon={<BarChart3 className="h-3.5 w-3.5" />}
             >
               <TrendSparkline
-                data={REGIONS[0].priceHistory.map((p) => p.value)}
-                labels={REGIONS[0].priceHistory.map((p) => String(p.year))}
+                data={regions[0].priceHistory.map((p) => p.value)}
+                labels={regions[0].priceHistory.map((p) => String(p.year))}
               />
             </MiniPanel>
           </div>
