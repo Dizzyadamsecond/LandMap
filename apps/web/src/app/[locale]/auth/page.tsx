@@ -72,8 +72,12 @@ function AuthPageInner() {
   const postAuth = () => getPostAuthRedirect(params.get('returnTo') ?? undefined, locale);
 
   useEffect(() => {
+    const isGuest =
+      typeof window !== 'undefined' &&
+      (window.localStorage.getItem('guest_mode') === '1' ||
+        window.localStorage.getItem('landmap:guest_mode') === '1');
     const user = readMockUser();
-    if (user && user.provider !== 'guest') {
+    if (user || isGuest) {
       router.replace(`/${locale}/dashboard`);
     }
   }, [router, locale]);

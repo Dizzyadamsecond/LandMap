@@ -68,7 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         window.localStorage.getItem('landmap:guest_mode') === '1');
     const user = readMockUser();
     setCurrentUser(user);
-    const isAuthed = (user && user.provider !== 'guest') || isGuest;
+    const isAuthed = !!user || isGuest;
 
     if (!isAuthed) {
       router.replace(`/${locale}/auth`);

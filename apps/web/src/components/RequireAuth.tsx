@@ -20,7 +20,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
       (window.localStorage.getItem('guest_mode') === '1' ||
         window.localStorage.getItem('landmap:guest_mode') === '1');
     const user = readMockUser();
-    const isAuthed = (user && user.provider !== 'guest') || isGuest;
+    const isAuthed = !!user || isGuest;
 
     if (!isAuthed) {
       router.replace(`/${locale}/auth`);
