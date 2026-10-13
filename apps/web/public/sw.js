@@ -94,6 +94,10 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
+  // Cross-origin (fonts.googleapis.com, tiles, APIs externas) passa direto:
+  // sem interceptar, sem mascarar erro real com o fallback 503 'Offline'.
+  if (url.origin !== self.location.origin) return;
+
   // Nunca cachear APIs — sempre rede, fallback silencioso em erro.
   if (url.pathname.startsWith('/api/')) {
     e.respondWith(fetch(req).catch(() => caches.match(req)));

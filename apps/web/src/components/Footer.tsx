@@ -4,68 +4,110 @@ import Link from 'next/link';
 import { Logo } from './Logo';
 import { localeHref, useActiveLocale } from '../lib/locale';
 
+/**
+ * Footer — EXTRAÇÃO 1:1 do footer da Lovable LIVE (`landmap-insight.lovable.app`,
+ * medido via DOM/outerHTML em 2026-10-12):
+ *
+ *  - `<footer class="border-t border-foreground/5 bg-background">`
+ *  - 4 colunas (`grid gap-10 md:grid-cols-2 lg:grid-cols-4`):
+ *    **LandMap · Produto · Transparência · Legal** (títulos
+ *    `text-xs font-semibold uppercase tracking-widest text-foreground/50`),
+ *    links `text-sm text-foreground/70 transition hover:text-foreground`;
+ *  - bottom bar (`mt-12 flex flex-col gap-4 border-t border-foreground/5 pt-8
+ *    md:flex-row md:items-center md:justify-between`): logo (h-12) + copyright
+ *    à esquerda; email `mailto:comercial@landmap.com.br` + "Fortaleza — CE,
+ *    Brasil" à direita (`text-xs text-foreground/50`).
+ *
+ * Única adaptação: hrefs prefixados com o locale ativo (`localeHref`) — a
+ * Lovable vive em domínio único sem prefixo.
+ */
+
+type Col = { title: string; links: { label: string; href: string }[] };
+
+const COLUMNS: Col[] = [
+  {
+    title: 'LandMap',
+    links: [
+      { label: 'Sobre', href: '/sobre' },
+      { label: 'Como funciona', href: '/onboarding' },
+      { label: 'Cobertura', href: '/cobertura' },
+      { label: 'Metodologia', href: '/metodologia' },
+    ],
+  },
+  {
+    title: 'Produto',
+    links: [
+      { label: 'Mapa', href: '/dashboard' },
+      { label: 'Radar', href: '/insights' },
+      { label: 'Comparar', href: '/compare' },
+      { label: 'Relatórios', href: '/regions' },
+      { label: 'Planos', href: '/plans' },
+    ],
+  },
+  {
+    title: 'Transparência',
+    links: [
+      { label: 'Fontes de dados', href: '/fontes' },
+      { label: 'Glossário', href: '/glossario' },
+      { label: 'Atualizações', href: '/cobertura' },
+      { label: 'Limitações', href: '/aviso-legal' },
+      { label: 'Aviso legal', href: '/aviso-legal' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Termos de uso', href: '/terms' },
+      { label: 'Política de privacidade', href: '/privacy' },
+      { label: 'Política de cookies', href: '/cookies' },
+      { label: 'Aviso legal', href: '/aviso-legal' },
+    ],
+  },
+];
+
 export function Footer() {
   const year = new Date().getFullYear();
   const locale = useActiveLocale();
-
   const lh = (p: string) => localeHref(p, locale);
 
   return (
-    <footer aria-label="Rodapé do LandMap" className="mx-auto w-full max-w-6xl px-6 py-12 text-xs text-[var(--muted-foreground)]">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent" />
-      <div className="pt-12">
-        <div className="flex flex-col items-start justify-between gap-8 lg:flex-row">
-          <div className="max-w-xs">
-            <div className="flex items-center gap-2 text-sm font-semibold tracking-tight text-[var(--foreground)]">
-              <Logo className="h-5 w-5" />
-              <span>LandMap</span>
-            </div>
-            <p className="mt-3 leading-relaxed">
-              Mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.
-            </p>
-          </div>
-
-          <nav aria-label="Produto" className="grid grid-cols-2 gap-x-10 gap-y-2 sm:grid-cols-3">
-            <Link href={lh('/')} className="transition hover:text-[var(--foreground)]">Início</Link>
-            <Link href={lh('/map')} className="transition hover:text-[var(--foreground)]">Mapa</Link>
-            <Link href={lh('/compare')} className="transition hover:text-[var(--foreground)]">Comparar</Link>
-            <Link href={lh('/favorites')} className="transition hover:text-[var(--foreground)]">Favoritos</Link>
-            <Link href={lh('/regions')} className="transition hover:text-[var(--foreground)]">Regiões</Link>
-            <Link href={lh('/insights')} className="transition hover:text-[var(--foreground)]">Insights</Link>
-            <Link href={lh('/calculator')} className="transition hover:text-[var(--foreground)]">Calculadora</Link>
-            <Link href={lh('/chat')} className="transition hover:text-[var(--foreground)]">Chat IA</Link>
-            <Link href={lh('/plans')} className="transition hover:text-[var(--primary)]">Planos</Link>
-          </nav>
-
-          <nav aria-label="Recursos" className="grid grid-cols-2 gap-x-10 gap-y-2 sm:grid-cols-3">
-            <Link href={lh('/world')} className="transition hover:text-[var(--foreground)]">Mundo 3D</Link>
-            <Link href={lh('/world-3d')} className="transition hover:text-[var(--foreground)]">Atlas vivo</Link>
-            <Link href={lh('/v2')} className="transition hover:text-[var(--foreground)]">Atlas</Link>
-            <Link href={lh('/terrenos')} className="transition hover:text-[var(--foreground)]">Terrenos</Link>
-            <Link href={lh('/metodologia')} className="transition hover:text-[var(--foreground)]">Metodologia</Link>
-            <Link href={lh('/glossary')} className="transition hover:text-[var(--foreground)]">Glossário</Link>
-            <Link href={lh('/sobre')} className="transition hover:text-[var(--foreground)]">Sobre</Link>
-            <Link href={lh('/fontes')} className="transition hover:text-[var(--foreground)]">Fontes</Link>
-            <Link href={lh('/knowledge')} className="transition hover:text-[var(--foreground)]">Conhecimento</Link>
-          </nav>
-
-          <nav aria-label="Admin" className="grid grid-cols-2 gap-x-10 gap-y-2 sm:grid-cols-3">
-            <Link href={lh('/admin')} className="transition hover:text-[var(--foreground)]">Painel Admin</Link>
-          </nav>
-
-          <nav aria-label="Legal" className="grid grid-cols-2 gap-x-10 gap-y-2 sm:grid-cols-3">
-            <Link href={lh('/aviso-legal')} className="transition hover:text-[var(--foreground)]">Aviso legal</Link>
-            <Link href={lh('/privacy')} className="transition hover:text-[var(--foreground)]">Privacidade</Link>
-            <Link href={lh('/terms')} className="transition hover:text-[var(--foreground)]">Termos</Link>
-            <Link href={lh('/cobertura')} className="transition hover:text-[var(--foreground)]">Cobertura</Link>
-            <Link href={lh('/cookies')} className="transition hover:text-[var(--foreground)]">Cookies</Link>
-            <Link href={lh('/consent')} className="transition hover:text-[var(--foreground)]">Consentimento</Link>
-          </nav>
+    <footer aria-label="Rodapé do LandMap" className="border-t border-foreground/5 bg-background">
+      <div className="mx-auto max-w-6xl px-6 py-14">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          {COLUMNS.map((col) => (
+            <nav key={col.title} aria-label={col.title}>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-foreground/50">
+                {col.title}
+              </p>
+              <ul className="space-y-2 text-sm">
+                {col.links.map((l) => (
+                  <li key={l.label + l.href}>
+                    <Link
+                      href={lh(l.href)}
+                      className="text-foreground/70 transition hover:text-foreground"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
-        <div className="mt-10 flex items-center justify-between border-t hairline pt-6">
-          <p>© {year} LandMap — Inteligência de terrenos.</p>
-          <p className="text-[var(--muted-foreground)]">Dados territoriais · decisões com confiança</p>
+        <div className="mt-12 flex flex-col gap-4 border-t border-foreground/5 pt-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-3">
+            <Logo className="h-12 w-12" />
+            <span className="text-xs text-foreground/50">
+              © {year} LandMap Inteligência Territorial. Todos os direitos reservados.
+            </span>
+          </div>
+          <div className="flex flex-col gap-1 text-xs text-foreground/50 md:items-end">
+            <a href="mailto:comercial@landmap.com.br" className="hover:text-foreground">
+              comercial@landmap.com.br
+            </a>
+            <span>Fortaleza — CE, Brasil</span>
+          </div>
         </div>
       </div>
     </footer>

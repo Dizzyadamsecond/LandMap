@@ -77,8 +77,20 @@ export default function PwaRegister() {
     if (document.readyState === 'complete') register();
     else window.addEventListener('load', register, { once: true });
 
-    // SW novo assumiu o controle → recarrega para servir o build fresco
-    const onControllerChange = () => window.location.reload();
+    // SW novo assumiu o controle → recarrega para servir o build fresco.
+    //
+    // EXCEÇÃO (parity 1:1 com a Lovable): só recarrega se a página JÁ estava
+    // controlada por um SW anterior (update real). Na primeira visita o SW é
+    // instalado sem controller e o `clients.claim()` dispara `controllerchange`
+    // — recarregar aqui reiniciaria o splash no meio da animação de entrada
+    // (medido em produção: reload aos ~2,2s, splash recomeçava do zero).
+    const hadController = !!navigator.serviceWorker.controller;
+    let reloading = false;
+    const onControllerChange = () => {
+      if (!hadController || reloading) return;
+      reloading = true;
+      window.location.reload();
+    };
     navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
 
     return () => {
