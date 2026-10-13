@@ -291,6 +291,7 @@ function AuthPageInner() {
                   <option value="broker">Corretor</option>
                   <option value="developer">Construtora</option>
                   <option value="investor">Investidor</option>
+                  <option value="business">Empresário</option>
                 </select>
               </label>
               <Field

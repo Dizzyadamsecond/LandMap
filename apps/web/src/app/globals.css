@@ -12,40 +12,48 @@
 /* ─── Leaflet dark theme (LandMap intelligence map = Lovable dark brand) ───
    Base tiles use CartoDB dark_all; this themes popups/controls/attribution
    so nothing reads as a bright box against the dark canvas. No biocolor palette. */
+/* ─── Leaflet theme (LandMap intelligence map = Lovable 1:1 #f8fafc light background) ─── */
 .landmap-tiles {
-  background: var(--muted, #0a0a0f);
+  background: #f8fafc;
 }
-.leaflet-container,
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  background: #f8fafc !important;
+  font-family: var(--font-sans, 'DM Sans', sans-serif);
+  outline: none;
+}
 .leaflet-container a,
 .leaflet-container .leaflet-control-attribution {
   background: transparent;
-  color: var(--muted-foreground, rgba(255, 255, 255, 0.55));
+  color: var(--muted-foreground, rgba(0, 0, 0, 0.45));
   font-family: var(--font-sans, 'DM Sans', sans-serif);
   font-size: 10px;
 }
 .leaflet-container .leaflet-control-attribution {
-  background: rgba(10, 10, 15, 0.55);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(4px);
 }
 .leaflet-container .leaflet-control-attribution a {
-  color: var(--primary, #6366f1);
+  color: var(--primary, #003594);
 }
 .leaflet-bar,
 .leaflet-bar a {
-  background: rgba(12, 12, 18, 0.9);
-  color: var(--foreground, #fff);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--foreground, #1e293b);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 .leaflet-bar a:hover {
-  background: var(--primary, #6366f1);
-  color: #fff;
+  background: var(--muted, #f1f5f9);
+  color: var(--foreground, #0f172a);
 }
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: var(--card, #15151c);
-  color: var(--foreground, #fff);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  background: #ffffff;
+  color: var(--foreground, #0f172a);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
 }
 .leaflet-popup-content {
   font-family: var(--font-sans, 'DM Sans', sans-serif);
@@ -53,10 +61,10 @@
   line-height: 1.45;
 }
 .leaflet-popup-content b {
-  color: var(--primary, #6366f1);
+  color: var(--primary, #003594);
 }
 .leaflet-popup-close-button {
-  color: var(--muted-foreground, rgba(255, 255, 255, 0.6)) !important;
+  color: var(--muted-foreground, rgba(0, 0, 0, 0.5)) !important;
 }
 
 /* Custom Marker Leaflet 1:1 Paridade */
@@ -510,20 +518,11 @@ body {
 .landmap-tiles .leaflet-tile-pane {
   position: absolute;
   isolation: isolate;
-  transition: filter 0.3s ease;
-  /* Sem filtro de cor: canvas neutro, paridade 1:1 com o Lovable. */
-  filter: none;
-}
-
-/* Quando o basemap ativo é OSM (source primário resiliente), aplicamos um
-   filtro dark para manter a estética premium dark/indigo da marca — OSM é
-   claro por padrão. CARTO dark (fallback) NÃO recebe filtro (já é dark). */
-.landmap-tiles.basemap-osm-dark .leaflet-tile-pane {
-  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(1.02);
+  filter: none !important;
 }
 
 .landmap-tiles .leaflet-container {
-  background: var(--background);
+  background: #f8fafc !important;
 }
 
 /* Reveal suave do mapa (1:1 Lovable): fade + leve zoom-in ao entrar. */

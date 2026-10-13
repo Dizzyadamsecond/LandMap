@@ -350,9 +350,9 @@ function DashboardMapInner() {
   const timeLabel = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <div className="relative h-[calc(100dvh-4rem-3.5rem)] md:h-[calc(100dvh-4rem)] w-full overflow-hidden bg-[#f8fafc]">
+    <div className="relative h-[calc(100dvh-4rem-3.5rem)] md:h-[calc(100dvh-4rem)] w-full overflow-hidden bg-[#f8fafc] landmap-tiles">
       {/* Container Leaflet */}
-      <div ref={containerRef} className="absolute inset-0 z-0" />
+      <div ref={containerRef} className="absolute inset-0 w-full h-full z-0 outline-none" />
 
       {/* Watermark LandMap */}
       <div className="pointer-events-none absolute bottom-3 left-3 z-10 md:bottom-4 md:left-4">
