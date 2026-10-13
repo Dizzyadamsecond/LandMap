@@ -66,11 +66,16 @@ function DashboardMapInner() {
   const [heatmapOn, setHeatmapOn] = useState(true);
   const [activeLayer, setActiveLayer] = useState<LayerId>('valorization');
   const [search, setSearch] = useState('');
-  const [mapMode, setMapMode] = useState<'roadmap' | 'satellite'>(() => {
-    if (typeof window === 'undefined') return 'roadmap';
-    return (window.localStorage.getItem('landmap:map-base') as 'roadmap' | 'satellite') || 'roadmap';
+  const [mapMode, setMapMode] = useState<'green' | 'roadmap' | 'satellite'>(() => {
+    if (typeof window === 'undefined') return 'green';
+    const saved = window.localStorage.getItem('landmap:map-base');
+    if (saved === 'green' || saved === 'roadmap' || saved === 'satellite') return saved;
+    return 'green';
   });
-  const baseTilesRef = useRef<{ [key: string]: LeafletType.TileLayer | LeafletType.LayerGroup }>({});
+  const baseTilesRef = useRef<{
+    [key: string]: LeafletType.TileLayer | LeafletType.LayerGroup;
+  }>({});
+  const tileFailRef = useRef<{ [key: string]: boolean }>({});
 
   // Insights via API (/api/map/insights) — paridade com a Lovable LIVE, que
   // hidrata o mapa do mesmo jeito. O dataset estático REGIONS é o fallback:
@@ -140,43 +145,93 @@ function DashboardMapInner() {
           const map = L.map(containerRef.current, {
             center: [-14.235, -51.925], // Visão ampla Brasil com foco inteligente
             zoom: 4,
-            minZoom: 4,
+            minZoom: 2, // permite visão do mundo completo (z2)
             maxZoom: 19,
             zoomControl: false,
             attributionControl: false,
           });
 
-          // Camada Roadmap (CartoDB Positron 1:1 estilo limpo Lovable #f6f7f9)
-          const roadmapLayer = L.tileLayer(
-            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            {
-              maxZoom: 19,
-              subdomains: 'abcd',
-            },
-          );
+          // ── Base tiles via /api/tiles (proxy) ────────────────────────────
+          // O proxy busca os tiles server-side (CDN acessível no servidor),
+          // serve pelo nosso domínio (permitido no CSP img-src 'self') e faz
+          // failover automático entre provedores. Isso elimina o "mapa em
+          // branco" causado por CDN bloqueado/throttlado na rede do usuário.
+          // Se o proxy estiver fora (offline/HTTP error), cada layer cai no
+          // CDN direto automaticamente — nunca ficamos sem mapa.
 
-          // Camada Satélite / Globo Terrestre tradicional (Esri World Imagery + labels)
-          const satelliteImg = L.tileLayer(
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-            {
+          // URL de tile com failover: tenta o proxy; se a resposta vier como
+          // PNG transparente (fallback do proxy) ou o CDN direto falhar, o
+          // Leaflet pede de novo no CDN original.
+          const proxied = (src: string) =>
+            `/api/tiles?src=${src}&z={z}&x={x}&y={y}{r}`;
+          const directGreen = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
+          const directLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+          const directSat = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+          const directSatLbl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}';
+
+          // Detecta tiles vazios (PNG 1x1 transparente do fallback do proxy)
+          // e troca a layer para o CDN direto — garante mapa real sempre.
+          const tileerror = (mode: string, directUrl: string, subdomains?: string) => {
+            tileFailRef.current[mode] = true;
+            const key = `${mode}:direct`;
+            if (baseTilesRef.current[key]) return;
+            const fallback = L.tileLayer(directUrl, {
               maxZoom: 19,
-              attribution: 'Esri, Maxar, Earthstar Geographics',
-            },
-          );
-          const satelliteLabels = L.tileLayer(
-            'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-            {
-              maxZoom: 19,
-            },
-          );
+              ...(subdomains ? { subdomains } : {}),
+              attribution:
+                mode === 'satellite'
+                  ? 'Esri, Maxar, Earthstar Geographics'
+                  : '© OpenStreetMap contributors',
+            });
+            const old = baseTilesRef.current[mode];
+            if (old && map.hasLayer(old)) map.removeLayer(old);
+            baseTilesRef.current[key] = fallback;
+            if (mapMode === mode) fallback.addTo(map);
+          };
+
+          // Camada Verde (OpenStreetMap — padrão mundial, dados abertos)
+          const greenLayer = L.tileLayer(proxied('green'), {
+            maxZoom: 19,
+            subdomains: 'abc',
+            attribution: '© OpenStreetMap contributors',
+            errorTileUrl: undefined,
+          });
+          (greenLayer as any).options.directUrl = directGreen;
+          greenLayer.on?.('tileerror', () => tileerror('green', directGreen, 'abc'));
+
+          // Camada Mapa (CARTO Positron — claro, estilo Lovable)
+          const roadmapLayer = L.tileLayer(proxied('light'), {
+            maxZoom: 19,
+            subdomains: 'abcd',
+            attribution: '© OpenStreetMap contributors, © CARTO',
+          });
+          (roadmapLayer as any).options.directUrl = directLight;
+          roadmapLayer.on?.('tileerror', () => tileerror('roadmap', directLight, 'abcd'));
+
+          // Camada Satélite (globo terrestre tradicional — Esri World Imagery)
+          const satelliteImg = L.tileLayer(proxied('satellite'), {
+            maxZoom: 19,
+            attribution: 'Esri, Maxar, Earthstar Geographics',
+          });
+          const satelliteLabels = L.tileLayer(proxied('satlabels'), {
+            maxZoom: 19,
+          });
           const satelliteLayer = L.layerGroup([satelliteImg, satelliteLabels]);
+          satelliteImg.on?.('tileerror', () => tileerror('satellite', directSat));
+          satelliteLabels.on?.('tileerror', () => tileerror('satellite', directSatLbl));
 
           baseTilesRef.current = {
+            green: greenLayer,
             roadmap: roadmapLayer,
             satellite: satelliteLayer,
           };
 
-          const initialLayer = mapMode === 'satellite' ? satelliteLayer : roadmapLayer;
+          const initialLayer =
+            mapMode === 'satellite'
+              ? satelliteLayer
+              : mapMode === 'green'
+                ? greenLayer
+                : roadmapLayer;
           initialLayer.addTo(map);
 
           mapRef.current = map;
@@ -228,15 +283,20 @@ function DashboardMapInner() {
       /* ignore */
     }
 
-    const { roadmap, satellite } = baseTilesRef.current;
-    if (roadmap && satellite) {
-      if (mapMode === 'satellite') {
-        if (map.hasLayer(roadmap)) map.removeLayer(roadmap);
-        if (!map.hasLayer(satellite)) satellite.addTo(map);
-      } else {
-        if (map.hasLayer(satellite)) map.removeLayer(satellite);
-        if (!map.hasLayer(roadmap)) roadmap.addTo(map);
-      }
+    const { roadmap, satellite, green } = baseTilesRef.current;
+    if (roadmap && satellite && green) {
+      const target =
+        mapMode === 'satellite' ? satellite : mapMode === 'green' ? green : roadmap;
+      const directKey = `${mapMode}:direct`;
+      const direct = baseTilesRef.current[directKey];
+      // Remove todas as layers base (proxy + direct fallback) e adiciona só a do modo atual
+      Object.entries(baseTilesRef.current).forEach(([key, layer]) => {
+        if (key === 'green' || key === 'roadmap' || key === 'satellite' || key.endsWith(':direct')) {
+          if (map.hasLayer(layer)) map.removeLayer(layer);
+        }
+      });
+      const active = direct && tileFailRef.current[mapMode] ? direct : target;
+      if (!map.hasLayer(active)) active.addTo(map);
     }
   }, [ready, mapMode]);
 
@@ -350,7 +410,10 @@ function DashboardMapInner() {
   const timeLabel = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <div className="relative h-[calc(100dvh-4rem-3.5rem)] md:h-[calc(100dvh-4rem)] w-full overflow-hidden bg-[#f8fafc] landmap-tiles">
+    <div
+      className="relative h-[calc(100dvh-4rem-3.5rem)] md:h-[calc(100dvh-4rem)] w-full overflow-hidden bg-[#f8fafc] landmap-tiles"
+      data-map-mode={mapMode}
+    >
       {/* Container Leaflet */}
       <div ref={containerRef} className="absolute inset-0 w-full h-full z-0 outline-none" />
 
@@ -569,8 +632,21 @@ function DashboardMapInner() {
 
       {/* Map Controls: Base layer toggle (Mapa / Satélite 1:1 Lovable) + Zoom */}
       <div className="absolute right-3 bottom-[calc(1rem+160px)] z-10 flex flex-col items-end gap-2 md:right-6 md:bottom-6">
-        {/* Toggle Mapa / Satélite */}
+        {/* Toggle Verde / Mapa / Satélite */}
         <div className="flex items-center gap-0.5 rounded-2xl border border-border/60 bg-white/95 p-1 shadow-md backdrop-blur">
+          <button
+            type="button"
+            onClick={() => setMapMode('green')}
+            aria-pressed={mapMode === 'green'}
+            title="Mapa verde — OpenStreetMap (mundo completo, dados abertos)"
+            className={`rounded-xl px-2.5 py-1 text-[11px] font-semibold transition ${
+              mapMode === 'green'
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'text-foreground/60 hover:bg-muted'
+            }`}
+          >
+            Verde
+          </button>
           <button
             type="button"
             onClick={() => setMapMode('roadmap')}

@@ -518,7 +518,7 @@ body {
 .landmap-tiles .leaflet-tile-pane {
   position: absolute;
   isolation: isolate;
-  filter: none !important;
+  filter: none;
 }
 
 .landmap-tiles .leaflet-container {

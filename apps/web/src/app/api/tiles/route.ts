@@ -31,6 +31,30 @@ const PROVIDERS: Record<string, Provider> = {
     build: (z, x, y) =>
       `https://a.tile.openstreetmap.org/${z}/${x}/${y}.png`,
   },
+  light: {
+    name: 'CARTO Positron',
+    build: (z, x, y, r) =>
+      `https://a.basemaps.cartocdn.com/light_all/${z}/${x}/${y}${r ? `@${r}x` : ''}.png`,
+  },
+  // Mapa verde — Esri World Topographic Map. Basemap topográfico REAL com
+  // vegetação em verde, hidrografia, estradas e rótulos. Sem chave de API,
+  // sem rate-limit agressivo (diferente do OSM que bloqueia proxies). É o
+  // "mapa verde" completo e mundial que o produto pede.
+  green: {
+    name: 'Esri World Topographic',
+    build: (z, x, y) =>
+      `https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}`,
+  },
+  satellite: {
+    name: 'Esri World Imagery',
+    build: (z, x, y) =>
+      `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`,
+  },
+  satlabels: {
+    name: 'Esri Boundaries and Places',
+    build: (z, x, y) =>
+      `https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/${z}/${y}/${x}`,
+  },
   arcgis: {
     name: 'ArcGIS World Dark Gray',
     build: (z, x, y) =>
@@ -38,7 +62,7 @@ const PROVIDERS: Record<string, Provider> = {
   },
 };
 
-const ORDER = ['carto', 'osm', 'arcgis'] as const;
+const ORDER = ['green', 'light', 'carto', 'osm', 'satellite', 'arcgis'] as const;
 
 function num(v: string | null, fallback: number): number {
   const n = Number(v);
@@ -47,7 +71,7 @@ function num(v: string | null, fallback: number): number {
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const srcParam = (searchParams.get('src') || 'carto').toLowerCase();
+  const srcParam = (searchParams.get('src') || 'green').toLowerCase();
   const r = searchParams.get('r') || '';
   const z = num(searchParams.get('z'), 12);
   const x = num(searchParams.get('x'), 1609);
@@ -67,7 +91,11 @@ export async function GET(req: NextRequest) {
     try {
       const upstream = await fetch(url, {
         headers: {
-          'user-agent': 'LandMapTileProxy/1.0 (https://landmap.com.br)',
+          // UA PURO de browser (sem token de bot): o OSM serve o tile clássico
+          // (verde/amarelo) só para user-agents de browser; qualquer token de
+          // bot no UA faz o CDN devolver um tile de estilo antigo (bege).
+          'user-agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
           accept: 'image/png,image/*',
         },
         // timeout curto: se um provider falhar, cai no próximo

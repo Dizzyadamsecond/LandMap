@@ -27,9 +27,12 @@ export default function MapView({
         attributionControl: false, // hide attribution
       });
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      L.tileLayer('/api/tiles?src=green&z={z}&x={x}&y={y}{r}', {
         maxZoom: 19,
-        subdomains: 'abcd',
+        subdomains: 'abc',
+        attribution: '© OpenStreetMap contributors',
+        // Fallback direto se o proxy estiver fora
+        errorTileUrl: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
       }).addTo(map);
 
       // Optional: add a marker at Fortaleza city center

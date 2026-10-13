@@ -34,7 +34,7 @@ const nextConfig = {
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://*.vercel.app https://*.basemaps.cartocdn.com https://*.cartocdn.com https://*.tile.openstreetmap.org",
+      "img-src 'self' data: blob: https://*.vercel.app https://*.basemaps.cartocdn.com https://*.cartocdn.com https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://server.arcgisonline.com",
       "connect-src 'self'",
       "frame-ancestors 'none'",
       "base-uri 'self'",
