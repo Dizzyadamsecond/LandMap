@@ -59,6 +59,18 @@
   color: var(--muted-foreground, rgba(255, 255, 255, 0.6)) !important;
 }
 
+/* Custom Marker Leaflet 1:1 Paridade */
+.landmap-custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1;
+}
+
 /* ─── Semantic color tokens (1:1 with Lovable lovable_styles.css) ───
    Exposed as `@theme inline` so Tailwind generates native utilities
    (bg-background, text-foreground/60, border-border/60, bg-primary,

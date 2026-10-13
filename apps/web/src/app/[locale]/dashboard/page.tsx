@@ -153,11 +153,25 @@ function DashboardMapInner() {
           mapRef.current = map;
           setReady(true);
 
-          setTimeout(() => {
-            if (isMounted && map) {
-              map.invalidateSize();
-            }
-          }, 200);
+          // Dispara invalidateSize em múltiplos frames para garantir cálculo correto
+          // de dimensões do container (especialmente durante transições de layout / hydration)
+          [100, 300, 600, 1000].forEach((delay) => {
+            setTimeout(() => {
+              if (isMounted && mapRef.current) {
+                mapRef.current.invalidateSize();
+              }
+            }, delay);
+          });
+
+          // ResizeObserver para manter tiles sempre ajustadas ao tamanho do viewport
+          if (typeof ResizeObserver !== 'undefined' && containerRef.current) {
+            const ro = new ResizeObserver(() => {
+              if (isMounted && mapRef.current) {
+                mapRef.current.invalidateSize();
+              }
+            });
+            ro.observe(containerRef.current);
+          }
         } catch (err) {
           setError(err instanceof Error ? err.message : 'Falha ao inicializar o mapa');
         }
