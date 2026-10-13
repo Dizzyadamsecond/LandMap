@@ -278,27 +278,20 @@ function AuthPageInner() {
                 <span className="mb-1.5 block text-xs font-medium text-[var(--muted-foreground)]">
                   Tipo de usuário
                 </span>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                  {USER_TYPE_OPTIONS.map((t) => {
-                    const active = userType === t.id;
-                    return (
-                      <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => setUserType(t.id)}
-                        className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition focus-visible:ring-1 focus-visible:ring-[var(--ring)] ${
-                          active
-                            ? 'border-[var(--primary)] bg-[var(--primary)]/10'
-                            : 'border-[var(--border)] bg-[var(--card)] hover:border-[var(--primary)]'
-                        }`}
-                      >
-                        <span className="text-[var(--primary)]">{t.icon}</span>
-                        <span className="text-sm font-medium text-[var(--foreground)]">{t.label}</span>
-                        <span className="text-xs text-[var(--muted-foreground)]">{t.hint}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                <select
+                  value={userType}
+                  onChange={(e) => setUserType(e.target.value as UserType)}
+                  required
+                  className={`${fieldClass} cursor-pointer`}
+                  style={{ borderColor: 'var(--border)' }}
+                >
+                  <option value="" disabled>
+                    Selecione seu perfil
+                  </option>
+                  <option value="broker">Corretor</option>
+                  <option value="developer">Construtora</option>
+                  <option value="investor">Investidor</option>
+                </select>
               </label>
               <Field
                 label="E-mail"

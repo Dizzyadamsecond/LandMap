@@ -66,6 +66,11 @@ function DashboardMapInner() {
   const [heatmapOn, setHeatmapOn] = useState(true);
   const [activeLayer, setActiveLayer] = useState<LayerId>('valorization');
   const [search, setSearch] = useState('');
+  const [mapMode, setMapMode] = useState<'roadmap' | 'satellite'>(() => {
+    if (typeof window === 'undefined') return 'roadmap';
+    return (window.localStorage.getItem('landmap:map-base') as 'roadmap' | 'satellite') || 'roadmap';
+  });
+  const baseTilesRef = useRef<{ [key: string]: LeafletType.TileLayer | LeafletType.LayerGroup }>({});
 
   // Insights via API (/api/map/insights) — paridade com a Lovable LIVE, que
   // hidrata o mapa do mesmo jeito. O dataset estático REGIONS é o fallback:
@@ -141,14 +146,38 @@ function DashboardMapInner() {
             attributionControl: false,
           });
 
-          // CartoDB Positron clean light tile layer (estilo limpo #f8fafc + vias claras)
-          L.tileLayer(
+          // Camada Roadmap (CartoDB Positron 1:1 estilo limpo Lovable #f6f7f9)
+          const roadmapLayer = L.tileLayer(
             'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
             {
               maxZoom: 19,
               subdomains: 'abcd',
             },
-          ).addTo(map);
+          );
+
+          // Camada Satélite / Globo Terrestre tradicional (Esri World Imagery + labels)
+          const satelliteImg = L.tileLayer(
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            {
+              maxZoom: 19,
+              attribution: 'Esri, Maxar, Earthstar Geographics',
+            },
+          );
+          const satelliteLabels = L.tileLayer(
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+            {
+              maxZoom: 19,
+            },
+          );
+          const satelliteLayer = L.layerGroup([satelliteImg, satelliteLabels]);
+
+          baseTilesRef.current = {
+            roadmap: roadmapLayer,
+            satellite: satelliteLayer,
+          };
+
+          const initialLayer = mapMode === 'satellite' ? satelliteLayer : roadmapLayer;
+          initialLayer.addTo(map);
 
           mapRef.current = map;
           setReady(true);
@@ -188,6 +217,28 @@ function DashboardMapInner() {
       }
     };
   }, []);
+
+  // Alterna dinamicamente entre visual Mapa (CartoDB) e Satélite (Globo tradicional)
+  useEffect(() => {
+    if (!ready || !mapRef.current) return;
+    const map = mapRef.current;
+    try {
+      localStorage.setItem('landmap:map-base', mapMode);
+    } catch {
+      /* ignore */
+    }
+
+    const { roadmap, satellite } = baseTilesRef.current;
+    if (roadmap && satellite) {
+      if (mapMode === 'satellite') {
+        if (map.hasLayer(roadmap)) map.removeLayer(roadmap);
+        if (!map.hasLayer(satellite)) satellite.addTo(map);
+      } else {
+        if (map.hasLayer(satellite)) map.removeLayer(satellite);
+        if (!map.hasLayer(roadmap)) roadmap.addTo(map);
+      }
+    }
+  }, [ready, mapMode]);
 
   // Update Region Markers and Layer Circles
   useEffect(() => {
@@ -516,24 +567,55 @@ function DashboardMapInner() {
         </div>
       </div>
 
-      {/* Zoom controls */}
-      <div className="absolute right-3 bottom-[calc(1rem+160px)] z-10 flex flex-col overflow-hidden rounded-xl border border-border/50 bg-white/95 shadow-md backdrop-blur md:right-6 md:bottom-6">
-        <button
-          type="button"
-          onClick={() => zoom(1)}
-          className="grid h-9 w-9 place-items-center border-b border-border/50 text-foreground/70 hover:bg-muted hover:text-foreground transition"
-          aria-label="Aproximar"
-        >
-          <Plus className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => zoom(-1)}
-          className="grid h-9 w-9 place-items-center text-foreground/70 hover:bg-muted hover:text-foreground transition"
-          aria-label="Afastar"
-        >
-          <MinusIcon className="h-4 w-4" />
-        </button>
+      {/* Map Controls: Base layer toggle (Mapa / Satélite 1:1 Lovable) + Zoom */}
+      <div className="absolute right-3 bottom-[calc(1rem+160px)] z-10 flex flex-col items-end gap-2 md:right-6 md:bottom-6">
+        {/* Toggle Mapa / Satélite */}
+        <div className="flex items-center gap-0.5 rounded-2xl border border-border/60 bg-white/95 p-1 shadow-md backdrop-blur">
+          <button
+            type="button"
+            onClick={() => setMapMode('roadmap')}
+            aria-pressed={mapMode === 'roadmap'}
+            className={`rounded-xl px-2.5 py-1 text-[11px] font-semibold transition ${
+              mapMode === 'roadmap'
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'text-foreground/60 hover:bg-muted'
+            }`}
+          >
+            Mapa
+          </button>
+          <button
+            type="button"
+            onClick={() => setMapMode('satellite')}
+            aria-pressed={mapMode === 'satellite'}
+            className={`rounded-xl px-2.5 py-1 text-[11px] font-semibold transition ${
+              mapMode === 'satellite'
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'text-foreground/60 hover:bg-muted'
+            }`}
+          >
+            Satélite
+          </button>
+        </div>
+
+        {/* Zoom controls */}
+        <div className="flex flex-col overflow-hidden rounded-xl border border-border/50 bg-white/95 shadow-md backdrop-blur">
+          <button
+            type="button"
+            onClick={() => zoom(1)}
+            className="grid h-9 w-9 place-items-center border-b border-border/50 text-foreground/70 hover:bg-muted hover:text-foreground transition"
+            aria-label="Aproximar"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => zoom(-1)}
+            className="grid h-9 w-9 place-items-center text-foreground/70 hover:bg-muted hover:text-foreground transition"
+            aria-label="Afastar"
+          >
+            <MinusIcon className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
       {/* REGION DETAIL PANEL */}

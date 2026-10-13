@@ -210,16 +210,8 @@
 .marquee-track {
   animation: marquee-scroll 30s linear infinite;
 }
+/* prefers-reduced-motion marquee only */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
-
   .marquee-track {
     animation: none;
   }
@@ -719,10 +711,4 @@ body {
   to { transform: scale(1) }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .glow-emerald, .glow-dual, .glow-primary,
-  .aurora, .orb-float, .orb-float-slow,
-  .logo-mark-container, .logo-mark-stroke, .logo-mark-fill {
-    animation: none !important;
-  }
-}
+/* Lovable 1:1 splash animation rules - keep active */
