@@ -6,7 +6,12 @@ import { AppShell } from './AppShell';
 
 // Rotas "bare" (sem AppShell) — espelha o Lovable: funil público + mapa full-page.
 // O resto usa o AppShell autenticado (sidebar 68px + header).
-const PUBLIC_SEGMENTS = ['auth', 'plans', 'pricing', 'onboarding'];
+//
+// `splash` e `landing` PRECISAM estar aqui: são as duas primeiras telas do
+// funil da Lovable (`/` → `/splash` → `/landing`) e são públicas. Sem isso elas
+// caíam no AppShell, que redireciona visitante anônimo para `/auth` — ou seja,
+// a animação de entrada nunca rodava para quem chega sem sessão.
+const PUBLIC_SEGMENTS = ['auth', 'plans', 'pricing', 'onboarding', 'splash', 'landing'];
 
 export function ShellSwitch({ children }: { children: ReactNode }) {
   const pathname = usePathname() || '';

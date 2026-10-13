@@ -42,7 +42,7 @@ const CSS_A = `
   background:radial-gradient(46rem 40rem at 74% 8%, rgba(67,199,238,.12), transparent 62%),
     radial-gradient(40rem 34rem at 12% 96%, rgba(216,178,90,.08), transparent 60%);}
 .atlas-wrap{max-width:78rem;margin:0 auto;padding:0 1.5rem;}
-.atlas-eyebrow{font-family:var(--font-geist-mono),monospace;font-size:11px;letter-spacing:.34em;
+.atlas-eyebrow{font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:.34em;
   text-transform:uppercase;color:var(--survey);display:inline-flex;align-items:center;gap:.6rem;}
 .atlas-eyebrow::before{content:'';width:2.2rem;height:1px;background:linear-gradient(90deg,transparent,var(--survey));}
 .atlas-hero{min-height:100dvh;display:grid;align-items:center;padding:8rem 0 5rem;}
@@ -52,7 +52,7 @@ const CSS_A = `
   -webkit-background-clip:text;background-clip:text;color:transparent;}
 .atlas-lede{margin:1.8rem 0 0;max-width:44ch;font-size:clamp(1.05rem,1.6vw,1.35rem);line-height:1.55;color:#c2ccce;font-weight:300;}
 .atlas-cta{margin-top:2.4rem;display:flex;flex-wrap:wrap;gap:.9rem;align-items:center;}
-.atlas-btn{font-family:var(--font-geist-mono),monospace;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;
+.atlas-btn{font-family:var(--font-mono),monospace;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;
   display:inline-flex;align-items:center;gap:.6rem;height:3rem;padding:0 1.4rem;border-radius:2px;
   transition:transform .3s cubic-bezier(.22,1,.36,1),background .3s,color .3s,border-color .3s;}
 .atlas-btn--solid{background:var(--paper);color:var(--ink);}
@@ -66,33 +66,33 @@ const CSS_B = `
 .atlas-legend{margin-top:3.4rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
   background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;max-width:40rem;}
 .atlas-legend > div{background:var(--ink);padding:1.1rem 1.2rem;}
-.atlas-legend .n{font-family:var(--font-geist-mono),monospace;font-size:1.7rem;color:#fff;}
-.atlas-legend .l{font-family:var(--font-geist-mono),monospace;font-size:10px;letter-spacing:.22em;
+.atlas-legend .n{font-family:var(--font-mono),monospace;font-size:1.7rem;color:#fff;}
+.atlas-legend .l{font-family:var(--font-mono),monospace;font-size:10px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--muted);margin-top:.35rem;}
 .atlas-sec{padding:6rem 0;border-top:1px solid var(--line);}
 .atlas-sec h2{font-weight:400;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.01em;margin:.6rem 0 0;}
-.atlas-sec .sub{color:var(--muted);font-family:var(--font-geist-mono),monospace;font-size:.8rem;
+.atlas-sec .sub{color:var(--muted);font-family:var(--font-mono),monospace;font-size:.8rem;
   letter-spacing:.04em;margin-top:.8rem;max-width:46ch;}
 .atlas-plots{margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:1px;
   background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;}
 .atlas-plot{background:var(--ink);padding:1.5rem 1.4rem 1.4rem;display:flex;flex-direction:column;text-decoration:none;
   min-height:13rem;position:relative;transition:background .35s;}
 .atlas-plot:hover{background:var(--ink2);}
-.atlas-plot .coord{font-family:var(--font-geist-mono),monospace;font-size:10px;letter-spacing:.14em;color:var(--survey);}
+.atlas-plot .coord{font-family:var(--font-mono),monospace;font-size:10px;letter-spacing:.14em;color:var(--survey);}
 .atlas-plot .name{margin-top:.7rem;font-size:1.3rem;line-height:1.2;color:#f2f5f4;}
-.atlas-plot .loc{font-family:var(--font-geist-mono),monospace;font-size:11px;color:var(--muted);
+.atlas-plot .loc{font-family:var(--font-mono),monospace;font-size:11px;color:var(--muted);
   text-transform:uppercase;letter-spacing:.1em;margin-top:.4rem;}
 .atlas-plot .foot{margin-top:auto;display:flex;align-items:baseline;justify-content:space-between;
   padding-top:1.1rem;border-top:1px dashed var(--line);}
-.atlas-plot .price{font-family:var(--font-geist-mono),monospace;font-size:1.05rem;color:#fff;}
-.atlas-plot .area{font-family:var(--font-geist-mono),monospace;font-size:11px;color:var(--muted);}
-.atlas-tag{position:absolute;top:1.3rem;right:1.3rem;font-family:var(--font-geist-mono),monospace;
+.atlas-plot .price{font-family:var(--font-mono),monospace;font-size:1.05rem;color:#fff;}
+.atlas-plot .area{font-family:var(--font-mono),monospace;font-size:11px;color:var(--muted);}
+.atlas-tag{position:absolute;top:1.3rem;right:1.3rem;font-family:var(--font-mono),monospace;
   font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);
   border:1px solid rgba(216,178,90,.3);padding:.18rem .45rem;border-radius:2px;}
 .atlas-close{padding:7rem 0 8rem;border-top:1px solid var(--line);}
 .atlas-close h2{font-weight:400;font-style:italic;font-size:clamp(2.2rem,5vw,4rem);max-width:18ch;line-height:1.05;}
 .atlas-back{margin-top:2.5rem;}
-.atlas-back a{font-family:var(--font-geist-mono),monospace;font-size:.75rem;letter-spacing:.1em;
+.atlas-back a{font-family:var(--font-mono),monospace;font-size:.75rem;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:.2rem;}
 .atlas-back a:hover{color:var(--survey);border-color:var(--survey);}
 @media (max-width:720px){.atlas-legend{grid-template-columns:1fr 1fr;}}
@@ -116,7 +116,16 @@ const ATLAS_LEGEND = [
 export function AtlasLanding({ plots }: { plots: AtlasPlot[] }) {
   return (
     <main className="atlas">
-      <style>{ATLAS_CSS}</style>
+      {/*
+        `dangerouslySetInnerHTML` é obrigatório aqui: como texto filho, o React
+        escapa as aspas do CSS (`'` → `&#x27;`), o que invalidava o
+        `@import url('https://fonts.googleapis.com/...Fraunces...')` (o browser
+        resolvia o valor escapado como URL relativa e recusava a folha —
+        "Refused to apply style") e também podia quebrar declarações com
+        `content:''`. Injetando o CSS cru, o `@import` volta a ser a primeira
+        instrução válida da folha e o único erro de console desta página cai.
+      */}
+      <style dangerouslySetInnerHTML={{ __html: ATLAS_CSS }} />
 
       {/* Decorative layers: survey grid + brand glows. */}
       <div className="atlas-field" aria-hidden />

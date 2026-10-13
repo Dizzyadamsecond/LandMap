@@ -666,9 +666,51 @@ body {
   color: transparent;
 }
 
+/* ─── Logo mark (splash/entry) — EXTRAÇÃO 1:1 do CSS oficial Lovable ───────
+   Fonte autoritativa: https://landmap-insight.lovable.app/assets/styles-*.css
+   (.logo-mark, .logo-mark-container e os keyframes logo-mark-*) pareado com o
+   chunk `splash-B3GsUpSR.js`. Sem estas regras a classe `.logo-mark` é inerte:
+   além de `overflow:visible`/`transform-origin:50%`, é aqui que vive a metade
+   imperativa da animação — o "settle" de 2.6s com o pop de escala aos 95%.
+   Era exatamente esse pedaço que faltava na extração do splash. */
+.logo-mark {
+  transform-origin: 50%;
+  overflow: visible;
+}
+.logo-mark-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1px;
+  animation: 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards logo-mark-draw;
+}
+.logo-mark-stroke-outer {
+  animation-delay: 0s;
+}
+.logo-mark-stroke-inner {
+  animation-delay: 0.55s;
+}
+.logo-mark-fill {
+  animation: 1s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards logo-mark-fill;
+}
+.logo-mark-container {
+  animation: 2.6s ease-out forwards logo-mark-settle;
+}
+@keyframes logo-mark-draw {
+  to { stroke-dashoffset: 0 }
+}
+@keyframes logo-mark-fill {
+  0% { transform: translateY(0) }
+  to { transform: translateY(-200px) }
+}
+@keyframes logo-mark-settle {
+  0%, 90% { transform: scale(1) }
+  95% { transform: scale(1.04) }
+  to { transform: scale(1) }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .glow-emerald, .glow-dual, .glow-primary,
-  .aurora, .orb-float, .orb-float-slow {
+  .aurora, .orb-float, .orb-float-slow,
+  .logo-mark-container, .logo-mark-stroke, .logo-mark-fill {
     animation: none !important;
   }
 }
