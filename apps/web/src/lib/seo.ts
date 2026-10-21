@@ -18,7 +18,7 @@ import { LANDMAP_OG_IMAGE } from './og-image';
  * igual ao padrão do layout raiz, prevenindo duplicatas por locale.
  */
 
-export const LANDMAP_SITE_URL = 'https://landmapprod.vercel.app';
+export const LANDMAP_SITE_URL = 'https://landmapwebprod2.vercel.app';
 export const LOCALES = ['pt-BR', 'en-US', 'es-ES'] as const;
 export type Locale = (typeof LOCALES)[number];
 
@@ -38,6 +38,66 @@ const DEFAULT_DESC: Record<Locale, string> = {
 
 /** Dicionário de rotas públicas indexáveis — adicione aqui novas rotas. */
 export const ROUTE_SEO: Record<string, RouteSeo> = {
+  map: {
+    title: {
+      'pt-BR': 'Mapa de inteligência territorial — calor de valorização | LandMap',
+      'en-US': 'Territorial intelligence map — appreciation heat | LandMap',
+      'es-ES': 'Mapa de inteligencia territorial — calor de valorización | LandMap',
+    },
+    description: {
+      'pt-BR':
+        'Mapa interativo do Brasil com heatmap de valorização, score LandMap por região e análise de terrenos em tempo real.',
+      'en-US':
+        'Interactive Brazil map with appreciation heatmap, LandMap score by region and real-time land analysis.',
+      'es-ES':
+        'Mapa interactivo de Brasil con mapa de calor de valorización, score LandMap por región y análisis de terrenos en tiempo real.',
+    },
+  },
+  dashboard: {
+    title: {
+      'pt-BR': 'Dashboard do mercado — preço médio m² e regiões | LandMap',
+      'en-US': 'Market dashboard — average price per m² and regions | LandMap',
+      'es-ES': 'Panel del mercado — precio medio por m² y regiones | LandMap',
+    },
+    description: {
+      'pt-BR':
+        'Visão geral do mercado: preço médio do m², regiões em destaque e score LandMap em um só painel.',
+      'en-US':
+        'Market overview: average price per m², highlighted regions and the LandMap score in one panel.',
+      'es-ES':
+        'Visión general del mercado: precio medio por m², regiones destacadas y el score LandMap en un solo panel.',
+    },
+  },
+  compare: {
+    title: {
+      'pt-BR': 'Comparador de regiões e imóveis | LandMap',
+      'en-US': 'Region and property comparator | LandMap',
+      'es-ES': 'Comparador de regiones e inmuebles | LandMap',
+    },
+    description: {
+      'pt-BR':
+        'Compare regiões, bairros e imóveis lado a lado por preço do m², valorização, score e potencial de retorno.',
+      'en-US':
+        'Compare regions, neighborhoods and properties side by side by price per m², appreciation, score and return potential.',
+      'es-ES':
+        'Compara regiones, barrios e inmuebles lado a lado por precio por m², valorización, score y potencial de retorno.',
+    },
+  },
+  search: {
+    title: {
+      'pt-BR': 'Buscar terrenos e imóveis no Brasil | LandMap',
+      'en-US': 'Search land and property in Brazil | LandMap',
+      'es-ES': 'Buscar terrenos e inmuebles en Brasil | LandMap',
+    },
+    description: {
+      'pt-BR':
+        'Busque terrenos e imóveis por cidade, bairro ou CEP e encontre oportunidades com grade A–F e valorização.',
+      'en-US':
+        'Search land and property by city, neighborhood or ZIP and find opportunities with A–F grades and appreciation.',
+      'es-ES':
+        'Busca terrenos e inmuebles por ciudad, barrio o CP y encuentra oportunidades con calificación A–F y valorización.',
+    },
+  },
   terrenos: {
     title: {
       'pt-BR': 'Terrenos à venda no Brasil com análise de valorização | LandMap',

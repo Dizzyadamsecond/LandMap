@@ -6,7 +6,7 @@ import { AdminBreadcrumb } from '../../../components/AdminBreadcrumb';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale?: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapprod.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapwebprod2.vercel.app';
   return {
     title: 'Administração — LandMap',
     description: 'LandMap: mapa de valorização, ranking de regiões e histórico de preço por m² para decisões de terreno no Brasil.',

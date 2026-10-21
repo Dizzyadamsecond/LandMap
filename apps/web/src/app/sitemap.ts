@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { i18n } from "../i18n";
 
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://landmapprod.vercel.app"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://landmapwebprod2.vercel.app"
 ).replace(/\/$/, "");
 
 // Rotas públicas indexáveis (LandMap + Lovable-parity). Excluímos intencionalmente

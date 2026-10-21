@@ -11,7 +11,7 @@ import { usePathname } from 'next/navigation';
 export function StructuredData() {
   const locale = useLocale();
   const pathname = usePathname();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapprod.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapwebprod2.vercel.app';
   const path = pathname.replace(`/${locale}`, '') || '/';
 
   const breadcrumbs = [

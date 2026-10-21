@@ -63,7 +63,14 @@ export function LogoMark({
           width="800"
           height="1038"
         >
-          <rect x="304" y="1130" width="800" height="1038" fill="#fff">
+          <rect
+            x="304"
+            y="1130"
+            width="800"
+            height="1038"
+            fill="#fff"
+            className="logo-mark-mask-rect"
+          >
             <animate
               attributeName="y"
               from="1130"
@@ -77,7 +84,7 @@ export function LogoMark({
           </rect>
         </mask>
       </defs>
-      <g mask={`url(#${maskId})`}>
+      <g mask={`url(#${maskId})`} className="logo-mark-reveal-group">
         <g transform="translate(0,1281) scale(0.1,-0.1)" fill={color}>
           {LOGO_PATHS.map((d, i) => (
             <path key={i} d={d} />

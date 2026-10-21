@@ -7,7 +7,7 @@ export const maxDuration = 30;
 /**
  * Proxy de tiles do mapa — elimina a dependência de CDN de tiles externo no
  * cliente. O Vercel busca os tiles server-side (onde a rede alcança os CDNs)
- * e os entrega pelo nosso próprio domínio (landmapprod.vercel.app), que já é
+ * e os entrega pelo nosso próprio domínio (landmapwebprod2.vercel.app), que já é
  * permitido pelo CSP (img-src 'self'). Failover: CARTO Dark Matter → OSM →
  * ArcGIS World Dark Gray. Isso resolve o "mapa em branco" quando a rede do
  * usuário bloqueia/throtta os CDNs de tiles diretos.
@@ -20,53 +20,65 @@ type Provider = {
   build: (z: number, x: number, y: number, r: string) => string;
 };
 
+const gt = (lyrs: string) => (z: number, x: number, y: number) =>
+  `https://mt${(x + y) % 4}.google.com/vt/lyrs=${lyrs}&hl=pt-BR&gl=BR&x=${x}&y=${y}&z=${z}`;
+
 const PROVIDERS: Record<string, Provider> = {
+  green: { name: 'Google Terrain', build: gt('p') },
+  light: { name: 'Google Roadmap', build: gt('m') },
+  satellite: { name: 'Google Hybrid', build: gt('y') },
+  satlabels: { name: 'Google Labels', build: gt('h') },
+  // Cinza escuro (canvas neutro).
+  arcgis: {
+    name: 'Esri Dark Gray Canvas',
+    build: (z, x, y) =>
+      `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/${z}/${y}/${x}`,
+  },
+  // Claro (canvas neutro).
+  lightgray: {
+    name: 'Esri Light Gray Canvas',
+    build: (z, x, y) =>
+      `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}`,
+  },
+  // Aliases legados (carto/osm) redirecionam para equivalentes Esri sem chave,
+  // para não quebrar links antigos; não batem mais em CDN que exige chave.
   carto: {
-    name: 'CARTO Dark Matter',
-    build: (z, x, y, r) =>
-      `https://a.basemaps.cartocdn.com/dark_all/${z}/${x}/${y}${r ? `@${r}x` : ''}.png`,
+    name: 'Esri Dark Gray Canvas',
+    build: (z, x, y) =>
+      `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/${z}/${y}/${x}`,
   },
   osm: {
-    name: 'OpenStreetMap',
-    build: (z, x, y) =>
-      `https://a.tile.openstreetmap.org/${z}/${x}/${y}.png`,
-  },
-  light: {
-    name: 'CARTO Positron',
-    build: (z, x, y, r) =>
-      `https://a.basemaps.cartocdn.com/light_all/${z}/${x}/${y}${r ? `@${r}x` : ''}.png`,
-  },
-  // Mapa verde — Esri World Topographic Map. Basemap topográfico REAL com
-  // vegetação em verde, hidrografia, estradas e rótulos. Sem chave de API,
-  // sem rate-limit agressivo (diferente do OSM que bloqueia proxies). É o
-  // "mapa verde" completo e mundial que o produto pede.
-  green: {
     name: 'Esri World Topographic',
     build: (z, x, y) =>
       `https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}`,
   },
-  satellite: {
-    name: 'Esri World Imagery',
-    build: (z, x, y) =>
-      `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`,
-  },
-  satlabels: {
-    name: 'Esri Boundaries and Places',
-    build: (z, x, y) =>
-      `https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/${z}/${y}/${x}`,
-  },
-  arcgis: {
-    name: 'ArcGIS World Dark Gray',
-    build: (z, x, y) =>
-      `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/${z}/${y}/${x}`,
-  },
 };
 
-const ORDER = ['green', 'light', 'carto', 'osm', 'satellite', 'arcgis'] as const;
+// Ordem de failover (todos Esri = sem chave). Verde primeiro.
+const ORDER = ['green', 'light', 'lightgray', 'satellite', 'arcgis'] as const;
 
 function num(v: string | null, fallback: number): number {
   const n = Number(v);
   return Number.isFinite(n) ? Math.floor(n) : fallback;
+}
+
+/**
+ * Detecta tile de watermark/erro (ex.: "API KEY REQUIRED" do CARTO): PNG
+ * pequeno com paleta de pouquíssimas cores. Tiles de mapa reais têm muitas
+ * cores; um placeholder tem ~2KB e <= 8 cores na paleta PLTE.
+ */
+function isWatermarkTile(buf: ArrayBuffer, contentType: string): boolean {
+  if (!contentType.includes('png')) return false;
+  if (buf.byteLength > 2500) return false;
+  const bytes = new Uint8Array(buf);
+  let colors = Infinity;
+  for (let i = 8; i < bytes.length - 4; i++) {
+    if (bytes[i] === 0x50 && bytes[i + 1] === 0x4c && bytes[i + 2] === 0x54 && bytes[i + 3] === 0x45) {
+      colors = (bytes[i + 4] << 8) | bytes[i + 5];
+      break;
+    }
+  }
+  return colors !== Infinity && colors <= 8;
 }
 
 export async function GET(req: NextRequest) {
@@ -105,6 +117,9 @@ export async function GET(req: NextRequest) {
       const buf = await upstream.arrayBuffer();
       if (!buf.byteLength) continue;
       const contentType = upstream.headers.get('content-type') || 'image/png';
+      // Descarta tiles de watermark/erro (ex.: "API KEY REQUIRED") e tenta o
+      // próximo provedor em vez de entregar um tile inútil ao mapa.
+      if (isWatermarkTile(buf, contentType)) continue;
       return new Response(buf, {
         status: 200,
         headers: {

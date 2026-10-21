@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 
 /**
  * Standalone Leaflet map component that avoids SSR issues.
- * Uses imperative Leaflet API instead of react-leaflet for reliability.
+ * Uses imperative Leaflet API with Google Maps tiles (no API key).
  */
 export default function MapView({
   onError,
@@ -23,26 +23,26 @@ export default function MapView({
       const map = L.map(containerRef.current, {
         center: [-3.7319, -38.5267], // Fortaleza
         zoom: 12,
-        zoomControl: false, // cleaner full-screen look
-        attributionControl: false, // hide attribution
+        zoomControl: false,
+        attributionControl: false,
       });
 
-      L.tileLayer('/api/tiles?src=green&z={z}&x={x}&y={y}{r}', {
-        maxZoom: 19,
-        subdomains: 'abc',
-        attribution: '© OpenStreetMap contributors',
-        // Fallback direto se o proxy estiver fora
-        errorTileUrl: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      }).addTo(map);
+      L.tileLayer(
+        'https://mt{s}.google.com/vt/lyrs=p&hl=pt-BR&gl=BR&x={x}&y={y}&z={z}',
+        {
+          maxZoom: 20,
+          subdomains: '0123',
+          attribution: '© Google',
+          errorTileUrl: '/api/tiles?src=green&z={z}&x={x}&y={y}{r}',
+        },
+      ).addTo(map);
 
-      // Optional: add a marker at Fortaleza city center
       L.marker([-3.7319, -38.5267])
         .addTo(map)
         .bindPopup('Fortaleza');
 
       mapRef.current = map;
 
-      // Invalidate size after mount to fix rendering
       setTimeout(() => map.invalidateSize(), 100);
     } catch (err) {
       onError?.(

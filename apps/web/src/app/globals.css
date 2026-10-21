@@ -16,6 +16,7 @@
 .landmap-tiles {
   background: #f8fafc;
 }
+/* Modo "Verde": relevo Google (lyrs=p), verde natural, sem filtro. */
 .leaflet-container {
   width: 100% !important;
   height: 100% !important;
@@ -711,3 +712,16 @@ body {
 }
 
 /* Lovable 1:1 splash animation rules - keep active */
+
+.logo-mark-mask-rect {
+  transform-box: fill-box;
+  animation: 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards logo-mark-mask-slide;
+}
+.logo-mark-reveal-group {
+  clip-path: inset(100% 0 0 0);
+  animation: 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards splash-wipe;
+}
+@keyframes logo-mark-mask-slide {
+  from { transform: translateY(0); }
+  to { transform: translateY(-1038px); }
+}

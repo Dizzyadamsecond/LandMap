@@ -29,7 +29,7 @@ export default function AdminKanbanPage() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const url = new URL(apiUrl('/api/admin/leads'), 'https://landmapprod.vercel.app');
+      const url = new URL(apiUrl('/api/admin/leads'), 'https://landmapwebprod2.vercel.app');
       const res = await fetch(url.toString(), { cache: 'no-store' });
       const data = await res.json();
       setLeads(data.items || []);

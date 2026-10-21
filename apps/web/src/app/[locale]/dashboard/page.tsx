@@ -143,82 +143,80 @@ function DashboardMapInner() {
 
         try {
           const map = L.map(containerRef.current, {
-            center: [-14.235, -51.925], // Visão ampla Brasil com foco inteligente
+            center: [-14.235, -51.925], // Centro do Brasil — paridade Lovable
             zoom: 4,
-            minZoom: 2, // permite visão do mundo completo (z2)
+            minZoom: 4, // Lovable restringe ao Brasil (minZoom 4)
             maxZoom: 19,
             zoomControl: false,
             attributionControl: false,
+            // Restringe ao território nacional (paridade BRAZIL_BOUNDS da Lovable)
+            maxBounds: [
+              [-33.7, -73.9],
+              [5.2, -34.8],
+            ],
+            maxBoundsViscosity: 1.0,
           });
 
-          // ── Base tiles via /api/tiles (proxy) ────────────────────────────
-          // O proxy busca os tiles server-side (CDN acessível no servidor),
-          // serve pelo nosso domínio (permitido no CSP img-src 'self') e faz
-          // failover automático entre provedores. Isso elimina o "mapa em
-          // branco" causado por CDN bloqueado/throttlado na rede do usuário.
-          // Se o proxy estiver fora (offline/HTTP error), cada layer cai no
-          // CDN direto automaticamente — nunca ficamos sem mapa.
+          // ── Base tiles: CDN Esri direto (sem chave) ──────────────────────
+          // Zero invocação serverless = zero custo de billing. Os tiles vêm
+          // direto do CDN da Esri (permitido no CSP img-src). Se um tile
+          // falhar, o errorTileUrl cai no proxy /api/tiles (failover raro),
+          // que por sua vez tem failover entre provedores — nunca sem mapa.
 
-          // URL de tile com failover: tenta o proxy; se a resposta vier como
-          // PNG transparente (fallback do proxy) ou o CDN direto falhar, o
-          // Leaflet pede de novo no CDN original.
+          // URLs diretas do CDN Esri (padrão, sem custo).
+          // "Verde" = basemap escuro (Esri Dark Gray Canvas) com tint verde
+          // aplicado via CSS (data-map-mode=green + .landmap-green-tiles).
+          // Tiles reais, sem chave, sem custo. Fallback: proxy /api/tiles.
+          // Google Maps tiles (sem chave) — mesmo provedor visual da Lovable
+          // (que usa Google Maps JS). m = mapa, p = relevo verde, y = satélite+rótulos.
+          const g = (lyrs: string) =>
+            `https://mt{s}.google.com/vt/lyrs=${lyrs}&hl=pt-BR&gl=BR&x={x}&y={y}&z={z}`;
+          const directGreen = g('p');
+          const directLight = g('m');
+          const directSat = g('y');
+          const directSatLbl = '';
+
+          // URL do proxy como errorTileUrl de fallback (só em tile com falha).
           const proxied = (src: string) =>
             `/api/tiles?src=${src}&z={z}&x={x}&y={y}{r}`;
-          const directGreen = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
-          const directLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-          const directSat = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-          const directSatLbl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}';
 
-          // Detecta tiles vazios (PNG 1x1 transparente do fallback do proxy)
-          // e troca a layer para o CDN direto — garante mapa real sempre.
-          const tileerror = (mode: string, directUrl: string, subdomains?: string) => {
-            tileFailRef.current[mode] = true;
-            const key = `${mode}:direct`;
-            if (baseTilesRef.current[key]) return;
-            const fallback = L.tileLayer(directUrl, {
-              maxZoom: 19,
-              ...(subdomains ? { subdomains } : {}),
-              attribution:
-                mode === 'satellite'
-                  ? 'Esri, Maxar, Earthstar Geographics'
-                  : '© OpenStreetMap contributors',
-            });
+          // Fallback: se a layer inteira falhar (CDN bloqueado na rede do
+          // usuário), troca para o proxy /api/tiles (server-side alcança o CDN).
+          const tileerror = (mode: string, proxySrc: string) => {
+            const key = `${mode}:proxy`;
+            if (tileFailRef.current[key]) return;
+            tileFailRef.current[key] = true;
             const old = baseTilesRef.current[mode];
             if (old && map.hasLayer(old)) map.removeLayer(old);
+            const fallback = L.tileLayer(proxied(proxySrc), {
+              maxZoom: 19,
+              attribution: '© OpenStreetMap contributors, © Esri',
+            });
             baseTilesRef.current[key] = fallback;
             if (mapMode === mode) fallback.addTo(map);
           };
 
-          // Camada Verde (OpenStreetMap — padrão mundial, dados abertos)
-          const greenLayer = L.tileLayer(proxied('green'), {
-            maxZoom: 19,
-            subdomains: 'abc',
-            attribution: '© OpenStreetMap contributors',
-            errorTileUrl: undefined,
+          // Camada Verde = basemap escuro com tint verde (Esri Dark Gray Canvas)
+          const gOpts = { maxZoom: 20, subdomains: '0123', attribution: '© Google' };
+          const greenLayer = L.tileLayer(directGreen, {
+            ...gOpts,
+            errorTileUrl: proxied('green'),
           });
-          (greenLayer as any).options.directUrl = directGreen;
-          greenLayer.on?.('tileerror', () => tileerror('green', directGreen, 'abc'));
+          greenLayer.on?.('tileerror', () => tileerror('green', 'green'));
 
-          // Camada Mapa (CARTO Positron — claro, estilo Lovable)
-          const roadmapLayer = L.tileLayer(proxied('light'), {
-            maxZoom: 19,
-            subdomains: 'abcd',
-            attribution: '© OpenStreetMap contributors, © CARTO',
+          const roadmapLayer = L.tileLayer(directLight, {
+            ...gOpts,
+            errorTileUrl: proxied('light'),
           });
-          (roadmapLayer as any).options.directUrl = directLight;
-          roadmapLayer.on?.('tileerror', () => tileerror('roadmap', directLight, 'abcd'));
+          roadmapLayer.on?.('tileerror', () => tileerror('roadmap', 'light'));
 
-          // Camada Satélite (globo terrestre tradicional — Esri World Imagery)
-          const satelliteImg = L.tileLayer(proxied('satellite'), {
-            maxZoom: 19,
-            attribution: 'Esri, Maxar, Earthstar Geographics',
+          const satelliteImg = L.tileLayer(directSat, {
+            ...gOpts,
+            errorTileUrl: proxied('satellite'),
           });
-          const satelliteLabels = L.tileLayer(proxied('satlabels'), {
-            maxZoom: 19,
-          });
-          const satelliteLayer = L.layerGroup([satelliteImg, satelliteLabels]);
-          satelliteImg.on?.('tileerror', () => tileerror('satellite', directSat));
-          satelliteLabels.on?.('tileerror', () => tileerror('satellite', directSatLbl));
+          void directSatLbl;
+          const satelliteLayer = L.layerGroup([satelliteImg]);
+          satelliteImg.on?.('tileerror', () => tileerror('satellite', 'satellite'));
 
           baseTilesRef.current = {
             green: greenLayer,
@@ -271,7 +269,7 @@ function DashboardMapInner() {
         mapRef.current = null;
       }
     };
-  }, []);
+  }, [mapMode]);
 
   // Alterna dinamicamente entre visual Mapa (CartoDB) e Satélite (Globo tradicional)
   useEffect(() => {
@@ -287,16 +285,8 @@ function DashboardMapInner() {
     if (roadmap && satellite && green) {
       const target =
         mapMode === 'satellite' ? satellite : mapMode === 'green' ? green : roadmap;
-      const directKey = `${mapMode}:direct`;
-      const direct = baseTilesRef.current[directKey];
-      // Remove todas as layers base (proxy + direct fallback) e adiciona só a do modo atual
-      Object.entries(baseTilesRef.current).forEach(([key, layer]) => {
-        if (key === 'green' || key === 'roadmap' || key === 'satellite' || key.endsWith(':direct')) {
-          if (map.hasLayer(layer)) map.removeLayer(layer);
-        }
-      });
-      const active = direct && tileFailRef.current[mapMode] ? direct : target;
-      if (!map.hasLayer(active)) active.addTo(map);
+      const active = tileFailRef.current[mapMode] ? baseTilesRef.current[`${mapMode}:proxy`] ?? target : target;
+      if (active && !map.hasLayer(active)) active.addTo(map);
     }
   }, [ready, mapMode]);
 
@@ -448,9 +438,10 @@ function DashboardMapInner() {
         </div>
       )}
 
-      {/* TOP INDICATOR TICKER — Bloomberg-style */}
+      {/* TOP INDICATOR TICKER — Bloomberg-style. Oculto no mobile: no celular o
+          mapa é o protagonista; os KPIs vêm pro drawer de detalhe da região. */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 px-3 pt-3 md:px-6 md:pt-4">
-        <div className="pointer-events-auto mx-auto grid max-w-[1400px] grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
+        <div className="pointer-events-auto mx-auto hidden max-w-[1400px] grid-cols-2 gap-2 md:grid md:grid-cols-3 lg:grid-cols-5">
           <TickerCard
             icon={<TrendingUp className="h-3.5 w-3.5" />}
             label="Valorização média"
@@ -588,9 +579,9 @@ function DashboardMapInner() {
         </div>
       )}
 
-      {/* BOTTOM RANKINGS */}
+      {/* BOTTOM RANKINGS — oculto no mobile para o mapa ocupar a tela inteira. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-3 pb-3 md:px-6 md:pb-6">
-        <div className="pointer-events-auto mx-auto grid max-w-[1400px] gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="pointer-events-auto mx-auto hidden max-w-[1400px] gap-3 md:grid md:grid-cols-2 lg:grid-cols-3">
           <RankCard
             title="Top valorização (12m)"
             icon={<TrendingUp className="h-3.5 w-3.5" />}
@@ -631,7 +622,7 @@ function DashboardMapInner() {
       </div>
 
       {/* Map Controls: Base layer toggle (Mapa / Satélite 1:1 Lovable) + Zoom */}
-      <div className="absolute right-3 bottom-[calc(1rem+160px)] z-10 flex flex-col items-end gap-2 md:right-6 md:bottom-6">
+      <div className="absolute bottom-3 right-3 z-10 flex flex-col items-end gap-2 md:bottom-6 md:right-6 md:bottom-[calc(1rem+160px)]">
         {/* Toggle Verde / Mapa / Satélite */}
         <div className="flex items-center gap-0.5 rounded-2xl border border-border/60 bg-white/95 p-1 shadow-md backdrop-blur">
           <button

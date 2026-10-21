@@ -39,7 +39,7 @@ export default function AdminLeadsPage() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const url = new URL(apiUrl('/api/admin/leads'), 'https://landmapprod.vercel.app');
+      const url = new URL(apiUrl('/api/admin/leads'), 'https://landmapwebprod2.vercel.app');
       if (filterStage) url.searchParams.set('stage', filterStage);
       const res = await fetch(url.toString(), { cache: 'no-store' });
       const data = await res.json();

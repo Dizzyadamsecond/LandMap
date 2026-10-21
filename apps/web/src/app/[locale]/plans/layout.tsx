@@ -3,7 +3,7 @@ import { LANDMAP_OG_IMAGE } from '../../../lib/og-image';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale?: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapprod.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapwebprod2.vercel.app';
   return {
     title: 'Planos — LandMap',
     description: 'Escolha o plano LandMap ideal: Access, Plus, Pro ou Business.',

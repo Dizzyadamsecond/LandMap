@@ -11,4 +11,4 @@ export const CITIES: Record<string, Coordinate> = {
 };
 
 export const MAP_TILE_URL = (x: number, y: number, z: number) =>
-  `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/${z}/${x}/${y}${process.env.NODE_ENV === 'development' ? '' : ''}.png`;
+  `https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}`;

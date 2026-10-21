@@ -100,6 +100,20 @@ export const lovableNavItems: NavItem[] = [
   { href: 'profile', label: 'Perfil', Icon: User },
 ];
 
+/**
+ * Features EXCLUSIVAS do LandMap (divergentes da Lovable) — ficam na mesma
+ * sidebar, abaixo de Favoritos/Perfil, separadas por divisor. A trilha
+ * Lovable acima permanece 1:1.
+ */
+export const divergentNavItems: NavItem[] = [
+  { href: 'compare', label: 'Comparador', Icon: GitCompare },
+  { href: 'regions', label: 'Regiões', Icon: MapPin },
+  { href: 'alerts', label: 'Alertas', Icon: Bell },
+  { href: 'reports', label: 'Relatórios', Icon: FileText },
+  { href: 'assistant', label: 'IA LandMap', Icon: Sparkles },
+  { href: 'settings', label: 'Configurações', Icon: Settings },
+];
+
 export const extraCategories: NavCategory[] = [
   {
     title: 'Inteligência & Mercado',

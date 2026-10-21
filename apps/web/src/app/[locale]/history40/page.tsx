@@ -27,7 +27,7 @@ export async function generateMetadata({
   params: Promise<{ locale?: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapprod.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landmapwebprod2.vercel.app';
   const l = locale || 'pt-BR';
   const seo = SEO[l] || SEO['pt-BR'];
 

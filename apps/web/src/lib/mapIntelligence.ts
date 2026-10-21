@@ -122,37 +122,52 @@ export function resolveVar(name: string, fallback?: string): string {
   return fallback ?? '';
 }
 
-// Paleta oficial LandMap (Verde Emerald + Amber + Red):
-// Score >= 80: #10b981 (Verde Emerald — Excepcional)
-// Score >= 65: #34d399 (Verde Claro — Alto Potencial)
-// Score >= 50: #eab308 (Amarelo — Médio)
-// Score >= 35: #f97316 (Laranja — Baixo)
-// Score < 35: #dc2626 (Vermelho Crítico — Alerta)
+// Paleta oficial LandMap = indigo Lovable (tokens CSS). Marcadores/círculos/
+// heat do mapa usam EXCLUSIVAMENTE os tokens da marca (--primary/--ring/
+// --warning/--destructive); resolveVar lê o valor computado em runtime com
+// fallback indigo hue 265 — Leaflet não interpreta var() em SVG. Ver CLAUDE.md §8.
+const LOVABLE_FALLBACK = {
+  primary: '#4f46e5',
+  primaryDark: '#4338ca',
+  ring: '#6366f1',
+  warning: '#f59e0b',
+  destructive: '#ef4444',
+} as const;
 
-export const FALLBACK_PRIMARY = '#10b981';
-export const FALLBACK_RING = '#34d399';
-export const FALLBACK_WARNING = '#eab308';
-export const FALLBACK_DESTRUCTIVE = '#dc2626';
+function tok(name: string, fallback: string): string {
+  const v = resolveVar(name, fallback);
+  return v || fallback;
+}
 
+// Cores resolvidas (cache por chamada; tokens são estáveis em runtime).
+function scoreTokens() {
+  return {
+    primary: tok('--primary', LOVABLE_FALLBACK.primary),
+    primaryDark: tok('--primary', LOVABLE_FALLBACK.primaryDark),
+    ring: tok('--ring', LOVABLE_FALLBACK.ring),
+    warning: tok('--warning', LOVABLE_FALLBACK.warning),
+    destructive: tok('--destructive', LOVABLE_FALLBACK.destructive),
+  };
+}
+
+/** Cor de preenchimento de marcador/círculo por faixa de score (indigo Lovable). */
 export function scoreColor(score: number): string {
-  if (score >= 80) return '#10b981';
-  if (score >= 65) return '#34d399';
-  if (score >= 50) return '#eab308';
-  if (score >= 35) return '#f97316';
-  return '#dc2626';
+  const t = scoreTokens();
+  if (score >= 80) return t.primary;      // Excepcional — indigo cheio
+  if (score >= 65) return t.primaryDark;  // Alto potencial — indigo escuro
+  if (score >= 50) return t.ring;         // Médio — indigo claro
+  if (score >= 35) return t.warning;      // Baixo — amber
+  return t.destructive;                    // Crítico — vermelho
 }
 
 export function scoreToFillColor(score: number): string {
-  if (score >= 80) return '#10b981';
-  if (score >= 65) return '#34d399';
-  if (score >= 50) return '#eab308';
-  if (score >= 35) return '#f97316';
-  return '#dc2626';
+  return scoreColor(score);
 }
 
-/** Gradiente escala heatmap — Verde/Emerald -> Amarelo -> Vermelho */
+/** Gradiente escala heatmap — vermelho -> amber -> indigo (tokens Lovable). */
 export function heatScaleGradient(): string {
-  return 'linear-gradient(90deg, #dc2626 0%, #eab308 50%, #10b981 100%)';
+  const t = scoreTokens();
+  return `linear-gradient(90deg, ${t.destructive} 0%, ${t.warning} 50%, ${t.primary} 100%)`;
 }
 
 function scores(

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, ShieldCheck } from '../lovable/icons';
-import { lovableNavItems, focusRing } from './types';
+import { lovableNavItems, divergentNavItems, focusRing, NavItem } from './types';
 import { cn } from '@landmap/ui';
 
 interface DesktopSidebarProps {
@@ -54,15 +54,24 @@ export function DesktopSidebar({
         <Menu size={18} />
       </button>
 
-      <nav className="mt-8 flex flex-1 flex-col items-center gap-1.5 w-full">
-        {lovableNavItems.map((item) => {
+      <nav className="mt-8 flex flex-1 flex-col items-center gap-1.5 w-full overflow-y-auto no-scrollbar">
+        {[...lovableNavItems, null, ...divergentNavItems].map((item, idx) => {
+          if (!item) {
+            return (
+              <div
+                key={`div-${idx}`}
+                className="my-1.5 h-px w-7 bg-white/10 shrink-0"
+                aria-hidden
+              />
+            );
+          }
           const Icon = item.Icon;
           const active = !item.emBreve && isActive(item.href);
 
           const itemContent = (
             <span
               className={cn(
-                "group relative grid h-11 w-11 place-items-center rounded-xl transition",
+                "group relative grid h-10 w-10 place-items-center rounded-xl transition",
                 active
                   ? "bg-white/10 text-white ring-1 ring-white/15"
                   : "text-white/45 hover:bg-white/5 hover:text-white/80",
