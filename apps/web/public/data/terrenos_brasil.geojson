@@ -1,0 +1,2294 @@
+{
+  "type": "FeatureCollection",
+  "generatedAt": "2026-10-21T18:14:08.048464+00:00",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "bc-barra-sul-sc",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.6253,
+          -27.0028
+        ]
+      },
+      "properties": {
+        "id": "bc-barra-sul-sc",
+        "ibgeId": 4202008,
+        "name": "Barra Sul / Avenida Atlântica",
+        "city": "Balneário Camboriú",
+        "state": "SC",
+        "lat": -27.0028,
+        "lng": -48.6253,
+        "score": 92,
+        "priceSqm": 28200,
+        "priceSqmDelta12m": 21.3,
+        "liquidity": "alta",
+        "population": 139155,
+        "incomeAvg": 13800,
+        "hdi": 0.889,
+        "gdp": 8.6,
+        "gdpGrowth": 12.1,
+        "zoning": "ZACC-I Supertowers",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 6.0,
+        "precip7dMm": 63.0,
+        "areaKm2": 1462.17,
+        "osmWays": 559,
+        "osmAmenities": 292,
+        "layerScores": {
+          "valorization": 99,
+          "growth": 98,
+          "infrastructure": 91,
+          "development": 96,
+          "safety": 78,
+          "mobility": 84,
+          "urbanQuality": 81,
+          "populationDensity": 85
+        },
+        "highlights": [
+          "Valorização de +21.3% em 12m · Liquidez alta",
+          "IBGE #4202008 (SC) · IDH 0.889",
+          "Malha OSM: 559 eixos viários · Elevação DEM 6.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "florianopolis-jurere-sc",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.4981,
+          -27.4398
+        ]
+      },
+      "properties": {
+        "id": "florianopolis-jurere-sc",
+        "ibgeId": 4205407,
+        "name": "Jurerê Internacional / Centro",
+        "city": "Florianópolis",
+        "state": "SC",
+        "lat": -27.4398,
+        "lng": -48.4981,
+        "score": 89,
+        "priceSqm": 19600,
+        "priceSqmDelta12m": 16.4,
+        "liquidity": "alta",
+        "population": 537211,
+        "incomeAvg": 14600,
+        "hdi": 0.915,
+        "gdp": 24.8,
+        "gdpGrowth": 9.2,
+        "zoning": "ARE-5 Resort",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 5.0,
+        "precip7dMm": 35.5,
+        "areaKm2": 136.83,
+        "osmWays": 526,
+        "osmAmenities": 93,
+        "layerScores": {
+          "valorization": 96,
+          "growth": 90,
+          "infrastructure": 91,
+          "development": 93,
+          "safety": 82,
+          "mobility": 68,
+          "urbanQuality": 85,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +16.4% em 12m · Liquidez alta",
+          "IBGE #4205407 (SC) · IDH 0.915",
+          "Malha OSM: 526 eixos viários · Elevação DEM 5.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "vitoria-praia-do-canto-es",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -40.2918,
+          -20.2976
+        ]
+      },
+      "properties": {
+        "id": "vitoria-praia-do-canto-es",
+        "ibgeId": 3205309,
+        "name": "Praia do Canto / Enseada",
+        "city": "Vitória",
+        "state": "ES",
+        "lat": -20.2976,
+        "lng": -40.2918,
+        "score": 89,
+        "priceSqm": 16900,
+        "priceSqmDelta12m": 14.5,
+        "liquidity": "alta",
+        "population": 322869,
+        "incomeAvg": 13400,
+        "hdi": 0.926,
+        "gdp": 31.4,
+        "gdpGrowth": 7.9,
+        "zoning": "ZOC Orla",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 414.1,
+        "precip7dMm": 68.86,
+        "areaKm2": 507.43,
+        "osmWays": 357,
+        "osmAmenities": 382,
+        "layerScores": {
+          "valorization": 94,
+          "growth": 86,
+          "infrastructure": 84,
+          "development": 89,
+          "safety": 84,
+          "mobility": 92,
+          "urbanQuality": 87,
+          "populationDensity": 87
+        },
+        "highlights": [
+          "Valorização de +14.5% em 12m · Liquidez alta",
+          "IBGE #3205309 (ES) · IDH 0.926",
+          "Malha OSM: 357 eixos viários · Elevação DEM 414.1m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "curitiba-batel-pr",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -49.2892,
+          -25.4411
+        ]
+      },
+      "properties": {
+        "id": "curitiba-batel-pr",
+        "ibgeId": 4106902,
+        "name": "Batel / Ecoville",
+        "city": "Curitiba",
+        "state": "PR",
+        "lat": -25.4411,
+        "lng": -49.2892,
+        "score": 89,
+        "priceSqm": 15400,
+        "priceSqmDelta12m": 12.4,
+        "liquidity": "alta",
+        "population": 1773718,
+        "incomeAvg": 12400,
+        "hdi": 0.934,
+        "gdp": 98.0,
+        "gdpGrowth": 6.4,
+        "zoning": "ZR-4 / Eixo Estrutural",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 925.0,
+        "precip7dMm": 96.3,
+        "areaKm2": 1154.88,
+        "osmWays": 636,
+        "osmAmenities": 259,
+        "layerScores": {
+          "valorization": 91,
+          "growth": 82,
+          "infrastructure": 96,
+          "development": 91,
+          "safety": 85,
+          "mobility": 82,
+          "urbanQuality": 88,
+          "populationDensity": 90
+        },
+        "highlights": [
+          "Valorização de +12.4% em 12m · Liquidez alta",
+          "IBGE #4106902 (PR) · IDH 0.934",
+          "Malha OSM: 636 eixos viários · Elevação DEM 925.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sinop-aquarela-mt",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -55.5094,
+          -11.8608
+        ]
+      },
+      "properties": {
+        "id": "sinop-aquarela-mt",
+        "ibgeId": 5107909,
+        "name": "Setor Comercial / Aquarela",
+        "city": "Sinop",
+        "state": "MT",
+        "lat": -11.8608,
+        "lng": -55.5094,
+        "score": 88,
+        "priceSqm": 8900,
+        "priceSqmDelta12m": 21.5,
+        "liquidity": "alta",
+        "population": 196312,
+        "incomeAvg": 10100,
+        "hdi": 0.838,
+        "gdp": 10.9,
+        "gdpGrowth": 13.9,
+        "zoning": "ZCE Expansão",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 376.0,
+        "precip7dMm": 39.1,
+        "areaKm2": 1452.85,
+        "osmWays": 281,
+        "osmAmenities": 386,
+        "layerScores": {
+          "valorization": 99,
+          "growth": 99,
+          "infrastructure": 76,
+          "development": 91,
+          "safety": 70,
+          "mobility": 92,
+          "urbanQuality": 72,
+          "populationDensity": 86
+        },
+        "highlights": [
+          "Valorização de +21.5% em 12m · Liquidez alta",
+          "IBGE #5107909 (MT) · IDH 0.838",
+          "Malha OSM: 281 eixos viários · Elevação DEM 376.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sorriso-centro-mt",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -55.7211,
+          -12.5425
+        ]
+      },
+      "properties": {
+        "id": "sorriso-centro-mt",
+        "ibgeId": 5107925,
+        "name": "Eixo Corporativo BR-163",
+        "city": "Sorriso",
+        "state": "MT",
+        "lat": -12.5425,
+        "lng": -55.7211,
+        "score": 88,
+        "priceSqm": 8600,
+        "priceSqmDelta12m": 21.5,
+        "liquidity": "alta",
+        "population": 110635,
+        "incomeAvg": 10600,
+        "hdi": 0.834,
+        "gdp": 11.4,
+        "gdpGrowth": 14.8,
+        "zoning": "ZIC Agroindustrial",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 376.0,
+        "precip7dMm": 38.8,
+        "areaKm2": 1156.59,
+        "osmWays": 260,
+        "osmAmenities": 383,
+        "layerScores": {
+          "valorization": 99,
+          "growth": 99,
+          "infrastructure": 75,
+          "development": 91,
+          "safety": 69,
+          "mobility": 92,
+          "urbanQuality": 71,
+          "populationDensity": 84
+        },
+        "highlights": [
+          "Valorização de +21.5% em 12m · Liquidez alta",
+          "IBGE #5107925 (MT) · IDH 0.834",
+          "Malha OSM: 260 eixos viários · Elevação DEM 376.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "palmas-orla-14-to",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.3472,
+          -10.1844
+        ]
+      },
+      "properties": {
+        "id": "palmas-orla-14-to",
+        "ibgeId": 1721000,
+        "name": "Graciosa / Orla 14",
+        "city": "Palmas",
+        "state": "TO",
+        "lat": -10.1844,
+        "lng": -48.3472,
+        "score": 88,
+        "priceSqm": 8700,
+        "priceSqmDelta12m": 17.9,
+        "liquidity": "alta",
+        "population": 302692,
+        "incomeAvg": 8600,
+        "hdi": 0.858,
+        "gdp": 10.9,
+        "gdpGrowth": 10.4,
+        "zoning": "Q-Orla Lago",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 226.0,
+        "precip7dMm": 12.7,
+        "areaKm2": 425.06,
+        "osmWays": 566,
+        "osmAmenities": 178,
+        "layerScores": {
+          "valorization": 96,
+          "growth": 93,
+          "infrastructure": 90,
+          "development": 93,
+          "safety": 73,
+          "mobility": 75,
+          "urbanQuality": 75,
+          "populationDensity": 87
+        },
+        "highlights": [
+          "Valorização de +17.9% em 12m · Liquidez alta",
+          "IBGE #1721000 (TO) · IDH 0.858",
+          "Malha OSM: 566 eixos viários · Elevação DEM 226.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "gramado-centro-rs",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.8764,
+          -29.3746
+        ]
+      },
+      "properties": {
+        "id": "gramado-centro-rs",
+        "ibgeId": 4309209,
+        "name": "Centro / Planalto",
+        "city": "Gramado",
+        "state": "RS",
+        "lat": -29.3746,
+        "lng": -50.8764,
+        "score": 88,
+        "priceSqm": 16800,
+        "priceSqmDelta12m": 16.5,
+        "liquidity": "alta",
+        "population": 40134,
+        "incomeAvg": 11500,
+        "hdi": 0.861,
+        "gdp": 3.4,
+        "gdpGrowth": 9.4,
+        "zoning": "ZT-1 Turística",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 732.7,
+        "precip7dMm": 74.93,
+        "areaKm2": 921.44,
+        "osmWays": 639,
+        "osmAmenities": 232,
+        "layerScores": {
+          "valorization": 94,
+          "growth": 90,
+          "infrastructure": 93,
+          "development": 93,
+          "safety": 73,
+          "mobility": 79,
+          "urbanQuality": 76,
+          "populationDensity": 82
+        },
+        "highlights": [
+          "Valorização de +16.5% em 12m · Liquidez alta",
+          "IBGE #4309209 (RS) · IDH 0.861",
+          "Malha OSM: 639 eixos viários · Elevação DEM 732.7m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "joao-pessoa-altiplano-pb",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -34.8256,
+          -7.1292
+        ]
+      },
+      "properties": {
+        "id": "joao-pessoa-altiplano-pb",
+        "ibgeId": 2507507,
+        "name": "Altiplano Cabo Branco / Manaíra",
+        "city": "João Pessoa",
+        "state": "PB",
+        "lat": -7.1292,
+        "lng": -34.8256,
+        "score": 88,
+        "priceSqm": 10200,
+        "priceSqmDelta12m": 16.3,
+        "liquidity": "alta",
+        "population": 833932,
+        "incomeAvg": 8200,
+        "hdi": 0.858,
+        "gdp": 22.2,
+        "gdpGrowth": 9.3,
+        "zoning": "ZA-Orla",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 31.0,
+        "precip7dMm": 11.0,
+        "areaKm2": 1089.86,
+        "osmWays": 641,
+        "osmAmenities": 317,
+        "layerScores": {
+          "valorization": 94,
+          "growth": 90,
+          "infrastructure": 93,
+          "development": 93,
+          "safety": 73,
+          "mobility": 86,
+          "urbanQuality": 75,
+          "populationDensity": 89
+        },
+        "highlights": [
+          "Valorização de +16.3% em 12m · Liquidez alta",
+          "IBGE #2507507 (PB) · IDH 0.858",
+          "Malha OSM: 641 eixos viários · Elevação DEM 31.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sao-paulo-itaim-sp",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.6784,
+          -23.5842
+        ]
+      },
+      "properties": {
+        "id": "sao-paulo-itaim-sp",
+        "ibgeId": 3550308,
+        "name": "Itaim Bibi / Faria Lima",
+        "city": "São Paulo",
+        "state": "SP",
+        "lat": -23.5842,
+        "lng": -46.6784,
+        "score": 88,
+        "priceSqm": 26400,
+        "priceSqmDelta12m": 12.7,
+        "liquidity": "alta",
+        "population": 11451245,
+        "incomeAvg": 18400,
+        "hdi": 0.953,
+        "gdp": 828.9,
+        "gdpGrowth": 6.8,
+        "zoning": "ZEU / Eixo Estruturação",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 736.0,
+        "precip7dMm": 100.1,
+        "areaKm2": 1276.14,
+        "osmWays": 335,
+        "osmAmenities": 348,
+        "layerScores": {
+          "valorization": 93,
+          "growth": 83,
+          "infrastructure": 84,
+          "development": 88,
+          "safety": 89,
+          "mobility": 89,
+          "urbanQuality": 92,
+          "populationDensity": 94
+        },
+        "highlights": [
+          "Valorização de +12.7% em 12m · Liquidez alta",
+          "IBGE #3550308 (SP) · IDH 0.953",
+          "Malha OSM: 335 eixos viários · Elevação DEM 736.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "bh-savassi-lourdes-mg",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.9382,
+          -19.9364
+        ]
+      },
+      "properties": {
+        "id": "bh-savassi-lourdes-mg",
+        "ibgeId": 3106200,
+        "name": "Savassi / Lourdes",
+        "city": "Belo Horizonte",
+        "state": "MG",
+        "lat": -19.9364,
+        "lng": -43.9382,
+        "score": 88,
+        "priceSqm": 14100,
+        "priceSqmDelta12m": 11.4,
+        "liquidity": "alta",
+        "population": 2315560,
+        "incomeAvg": 11900,
+        "hdi": 0.938,
+        "gdp": 105.8,
+        "gdpGrowth": 5.9,
+        "zoning": "ZA Centro-Sul",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 893.0,
+        "precip7dMm": 29.7,
+        "areaKm2": 724.41,
+        "osmWays": 613,
+        "osmAmenities": 212,
+        "layerScores": {
+          "valorization": 90,
+          "growth": 81,
+          "infrastructure": 96,
+          "development": 90,
+          "safety": 86,
+          "mobility": 78,
+          "urbanQuality": 89,
+          "populationDensity": 91
+        },
+        "highlights": [
+          "Valorização de +11.4% em 12m · Liquidez alta",
+          "IBGE #3106200 (MG) · IDH 0.938",
+          "Malha OSM: 613 eixos viários · Elevação DEM 893.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "rio-leblon-rj",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.2231,
+          -22.9844
+        ]
+      },
+      "properties": {
+        "id": "rio-leblon-rj",
+        "ibgeId": 3304557,
+        "name": "Leblon / Ipanema",
+        "city": "Rio de Janeiro",
+        "state": "RJ",
+        "lat": -22.9844,
+        "lng": -43.2231,
+        "score": 88,
+        "priceSqm": 24900,
+        "priceSqmDelta12m": 9.4,
+        "liquidity": "alta",
+        "population": 6211223,
+        "incomeAvg": 17200,
+        "hdi": 0.967,
+        "gdp": 359.6,
+        "gdpGrowth": 4.5,
+        "zoning": "ZR-2 Costeira",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 16.0,
+        "precip7dMm": 32.7,
+        "areaKm2": 1227.67,
+        "osmWays": 601,
+        "osmAmenities": 301,
+        "layerScores": {
+          "valorization": 88,
+          "growth": 77,
+          "infrastructure": 97,
+          "development": 89,
+          "safety": 91,
+          "mobility": 85,
+          "urbanQuality": 94,
+          "populationDensity": 93
+        },
+        "highlights": [
+          "Valorização de +9.4% em 12m · Liquidez alta",
+          "IBGE #3304557 (RJ) · IDH 0.967",
+          "Malha OSM: 601 eixos viários · Elevação DEM 16.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cuiaba-goiabeiras-mt",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -56.0844,
+          -15.5892
+        ]
+      },
+      "properties": {
+        "id": "cuiaba-goiabeiras-mt",
+        "ibgeId": 5103403,
+        "name": "Jardim das Américas / Goiabeiras",
+        "city": "Cuiabá",
+        "state": "MT",
+        "lat": -15.5892,
+        "lng": -56.0844,
+        "score": 87,
+        "priceSqm": 9900,
+        "priceSqmDelta12m": 16.6,
+        "liquidity": "alta",
+        "population": 650877,
+        "incomeAvg": 9800,
+        "hdi": 0.851,
+        "gdp": 29.8,
+        "gdpGrowth": 9.6,
+        "zoning": "ZEX Agro-Capital",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 201.0,
+        "precip7dMm": 22.4,
+        "areaKm2": 396.83,
+        "osmWays": 569,
+        "osmAmenities": 220,
+        "layerScores": {
+          "valorization": 94,
+          "growth": 91,
+          "infrastructure": 90,
+          "development": 92,
+          "safety": 72,
+          "mobility": 78,
+          "urbanQuality": 74,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +16.6% em 12m · Liquidez alta",
+          "IBGE #5103403 (MT) · IDH 0.851",
+          "Malha OSM: 569 eixos viários · Elevação DEM 201.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "fortaleza-coco-ce",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -38.4826,
+          -3.7554
+        ]
+      },
+      "properties": {
+        "id": "fortaleza-coco-ce",
+        "ibgeId": 2304400,
+        "name": "Cocó / Guararapes",
+        "city": "Fortaleza",
+        "state": "CE",
+        "lat": -3.7554,
+        "lng": -38.4826,
+        "score": 87,
+        "priceSqm": 9800,
+        "priceSqmDelta12m": 14.1,
+        "liquidity": "alta",
+        "population": 22800,
+        "incomeAvg": 7900,
+        "hdi": 0.881,
+        "gdp": 16.0,
+        "gdpGrowth": 7.9,
+        "zoning": "ZR-2 / APA Cocó",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 5.0,
+        "precip7dMm": 8.3,
+        "areaKm2": 463.18,
+        "osmWays": 531,
+        "osmAmenities": 330,
+        "layerScores": {
+          "valorization": 91,
+          "growth": 86,
+          "infrastructure": 90,
+          "development": 90,
+          "safety": 77,
+          "mobility": 88,
+          "urbanQuality": 79,
+          "populationDensity": 81
+        },
+        "highlights": [
+          "Valorização de +14.1% em 12m · Liquidez alta",
+          "IBGE #2304400 (CE) · IDH 0.881",
+          "Malha OSM: 531 eixos viários · Elevação DEM 5.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sao-paulo-pinheiros-sp",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.6914,
+          -23.5614
+        ]
+      },
+      "properties": {
+        "id": "sao-paulo-pinheiros-sp",
+        "ibgeId": 3550308,
+        "name": "Pinheiros / Vila Madalena",
+        "city": "São Paulo",
+        "state": "SP",
+        "lat": -23.5614,
+        "lng": -46.6914,
+        "score": 87,
+        "priceSqm": 21800,
+        "priceSqmDelta12m": 13.1,
+        "liquidity": "alta",
+        "population": 95000,
+        "incomeAvg": 15200,
+        "hdi": 0.941,
+        "gdp": 42.0,
+        "gdpGrowth": 7.2,
+        "zoning": "ZEU / ZM",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 750.0,
+        "precip7dMm": 100.1,
+        "areaKm2": 1276.14,
+        "osmWays": 351,
+        "osmAmenities": 215,
+        "layerScores": {
+          "valorization": 93,
+          "growth": 84,
+          "infrastructure": 84,
+          "development": 88,
+          "safety": 87,
+          "mobility": 78,
+          "urbanQuality": 90,
+          "populationDensity": 84
+        },
+        "highlights": [
+          "Valorização de +13.1% em 12m · Liquidez alta",
+          "IBGE #3550308 (SP) · IDH 0.941",
+          "Malha OSM: 351 eixos viários · Elevação DEM 750.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "itapema-meia-praia-sc",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.6042,
+          -27.1264
+        ]
+      },
+      "properties": {
+        "id": "itapema-meia-praia-sc",
+        "ibgeId": 4208203,
+        "name": "Meia Praia",
+        "city": "Itapema",
+        "state": "SC",
+        "lat": -27.1264,
+        "lng": -48.6042,
+        "score": 86,
+        "priceSqm": 21400,
+        "priceSqmDelta12m": 21.5,
+        "liquidity": "alta",
+        "population": 75752,
+        "incomeAvg": 11900,
+        "hdi": 0.862,
+        "gdp": 4.9,
+        "gdpGrowth": 14.3,
+        "zoning": "ZMR Orla Vertical",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 5.0,
+        "precip7dMm": 56.1,
+        "areaKm2": 438.56,
+        "osmWays": 197,
+        "osmAmenities": 98,
+        "layerScores": {
+          "valorization": 99,
+          "growth": 99,
+          "infrastructure": 74,
+          "development": 90,
+          "safety": 74,
+          "mobility": 68,
+          "urbanQuality": 76,
+          "populationDensity": 83
+        },
+        "highlights": [
+          "Valorização de +21.5% em 12m · Liquidez alta",
+          "IBGE #4208203 (SC) · IDH 0.862",
+          "Malha OSM: 197 eixos viários · Elevação DEM 5.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "goiania-setor-marista-go",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -49.2633,
+          -16.7019
+        ]
+      },
+      "properties": {
+        "id": "goiania-setor-marista-go",
+        "ibgeId": 5208707,
+        "name": "Setor Marista / Bueno",
+        "city": "Goiânia",
+        "state": "GO",
+        "lat": -16.7019,
+        "lng": -49.2633,
+        "score": 86,
+        "priceSqm": 11800,
+        "priceSqmDelta12m": 16.6,
+        "liquidity": "alta",
+        "population": 1437366,
+        "incomeAvg": 11200,
+        "hdi": 0.896,
+        "gdp": 59.8,
+        "gdpGrowth": 9.8,
+        "zoning": "ZPA-IV Adensável",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 830.0,
+        "precip7dMm": 11.5,
+        "areaKm2": 274.68,
+        "osmWays": 299,
+        "osmAmenities": 110,
+        "layerScores": {
+          "valorization": 97,
+          "growth": 91,
+          "infrastructure": 80,
+          "development": 90,
+          "safety": 79,
+          "mobility": 69,
+          "urbanQuality": 82,
+          "populationDensity": 90
+        },
+        "highlights": [
+          "Valorização de +16.6% em 12m · Liquidez alta",
+          "IBGE #5208707 (GO) · IDH 0.896",
+          "Malha OSM: 299 eixos viários · Elevação DEM 830.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "nova-lima-vila-da-serra-mg",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.9412,
+          -19.9814
+        ]
+      },
+      "properties": {
+        "id": "nova-lima-vila-da-serra-mg",
+        "ibgeId": 3144805,
+        "name": "Vila da Serra / Vale do Sereno",
+        "city": "Nova Lima",
+        "state": "MG",
+        "lat": -19.9814,
+        "lng": -43.9412,
+        "score": 86,
+        "priceSqm": 16500,
+        "priceSqmDelta12m": 15.3,
+        "liquidity": "alta",
+        "population": 111697,
+        "incomeAvg": 15900,
+        "hdi": 0.897,
+        "gdp": 21.4,
+        "gdpGrowth": 8.9,
+        "zoning": "ZEA Belvedere",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 1135.0,
+        "precip7dMm": 32.3,
+        "areaKm2": 1033.4,
+        "osmWays": 290,
+        "osmAmenities": 211,
+        "layerScores": {
+          "valorization": 95,
+          "growth": 89,
+          "infrastructure": 80,
+          "development": 89,
+          "safety": 79,
+          "mobility": 78,
+          "urbanQuality": 82,
+          "populationDensity": 84
+        },
+        "highlights": [
+          "Valorização de +15.3% em 12m · Liquidez alta",
+          "IBGE #3144805 (MG) · IDH 0.897",
+          "Malha OSM: 290 eixos viários · Elevação DEM 1135.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "belem-umarizal-pa",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.4856,
+          -1.4428
+        ]
+      },
+      "properties": {
+        "id": "belem-umarizal-pa",
+        "ibgeId": 1501402,
+        "name": "Umarizal / Nazaré",
+        "city": "Belém",
+        "state": "PA",
+        "lat": -1.4428,
+        "lng": -48.4856,
+        "score": 86,
+        "priceSqm": 10500,
+        "priceSqmDelta12m": 15.3,
+        "liquidity": "alta",
+        "population": 1303403,
+        "incomeAvg": 8100,
+        "hdi": 0.842,
+        "gdp": 33.4,
+        "gdpGrowth": 8.9,
+        "zoning": "ZAU COP-30",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 7.0,
+        "precip7dMm": 14.3,
+        "areaKm2": 672.9,
+        "osmWays": 481,
+        "osmAmenities": 410,
+        "layerScores": {
+          "valorization": 92,
+          "growth": 89,
+          "infrastructure": 86,
+          "development": 89,
+          "safety": 70,
+          "mobility": 92,
+          "urbanQuality": 72,
+          "populationDensity": 90
+        },
+        "highlights": [
+          "Valorização de +15.3% em 12m · Liquidez alta",
+          "IBGE #1501402 (PA) · IDH 0.842",
+          "Malha OSM: 481 eixos viários · Elevação DEM 7.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "maceio-ponta-verde-al",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -35.7014,
+          -9.6648
+        ]
+      },
+      "properties": {
+        "id": "maceio-ponta-verde-al",
+        "ibgeId": 2704302,
+        "name": "Ponta Verde / Pajuçara",
+        "city": "Maceió",
+        "state": "AL",
+        "lat": -9.6648,
+        "lng": -35.7014,
+        "score": 86,
+        "priceSqm": 11400,
+        "priceSqmDelta12m": 15.0,
+        "liquidity": "alta",
+        "population": 957916,
+        "incomeAvg": 7900,
+        "hdi": 0.844,
+        "gdp": 24.5,
+        "gdpGrowth": 8.7,
+        "zoning": "ZR-5 Marítima",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 0.0,
+        "precip7dMm": 18.9,
+        "areaKm2": 1441.48,
+        "osmWays": 549,
+        "osmAmenities": 364,
+        "layerScores": {
+          "valorization": 91,
+          "growth": 88,
+          "infrastructure": 89,
+          "development": 90,
+          "safety": 71,
+          "mobility": 90,
+          "urbanQuality": 73,
+          "populationDensity": 89
+        },
+        "highlights": [
+          "Valorização de +15.0% em 12m · Liquidez alta",
+          "IBGE #2704302 (AL) · IDH 0.844",
+          "Malha OSM: 549 eixos viários · Elevação DEM 0.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ribeirao-preto-fiusa-sp",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.8156,
+          -21.2114
+        ]
+      },
+      "properties": {
+        "id": "ribeirao-preto-fiusa-sp",
+        "ibgeId": 3543402,
+        "name": "João Fiusa / Zona Sul",
+        "city": "Ribeirão Preto",
+        "state": "SP",
+        "lat": -21.2114,
+        "lng": -47.8156,
+        "score": 86,
+        "priceSqm": 11200,
+        "priceSqmDelta12m": 14.2,
+        "liquidity": "alta",
+        "population": 698642,
+        "incomeAvg": 10800,
+        "hdi": 0.874,
+        "gdp": 39.8,
+        "gdpGrowth": 8.1,
+        "zoning": "ZUE Agro-Polo",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 594.0,
+        "precip7dMm": 34.8,
+        "areaKm2": 820.11,
+        "osmWays": 470,
+        "osmAmenities": 262,
+        "layerScores": {
+          "valorization": 92,
+          "growth": 87,
+          "infrastructure": 87,
+          "development": 89,
+          "safety": 76,
+          "mobility": 82,
+          "urbanQuality": 78,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +14.2% em 12m · Liquidez alta",
+          "IBGE #3543402 (SP) · IDH 0.874",
+          "Malha OSM: 470 eixos viários · Elevação DEM 594.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sjc-aquarius-sp",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -45.9069,
+          -23.2198
+        ]
+      },
+      "properties": {
+        "id": "sjc-aquarius-sp",
+        "ibgeId": 3549904,
+        "name": "Jardim Aquarius / Urbanova",
+        "city": "São José dos Campos",
+        "state": "SP",
+        "lat": -23.2198,
+        "lng": -45.9069,
+        "score": 86,
+        "priceSqm": 12600,
+        "priceSqmDelta12m": 13.4,
+        "liquidity": "alta",
+        "population": 697054,
+        "incomeAvg": 11400,
+        "hdi": 0.882,
+        "gdp": 44.5,
+        "gdpGrowth": 7.6,
+        "zoning": "ZPA Aeroespacial",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 601.0,
+        "precip7dMm": 62.8,
+        "areaKm2": 1457.2,
+        "osmWays": 355,
+        "osmAmenities": 417,
+        "layerScores": {
+          "valorization": 91,
+          "growth": 85,
+          "infrastructure": 82,
+          "development": 87,
+          "safety": 77,
+          "mobility": 92,
+          "urbanQuality": 79,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +13.4% em 12m · Liquidez alta",
+          "IBGE #3549904 (SP) · IDH 0.882",
+          "Malha OSM: 355 eixos viários · Elevação DEM 601.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "brasilia-setor-noroeste-df",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.9114,
+          -15.7448
+        ]
+      },
+      "properties": {
+        "id": "brasilia-setor-noroeste-df",
+        "ibgeId": 5300108,
+        "name": "Setor Noroeste / Asa Sul",
+        "city": "Brasília",
+        "state": "DF",
+        "lat": -15.7448,
+        "lng": -47.9114,
+        "score": 86,
+        "priceSqm": 16200,
+        "priceSqmDelta12m": 10.7,
+        "liquidity": "alta",
+        "population": 2817381,
+        "incomeAvg": 16100,
+        "hdi": 0.942,
+        "gdp": 286.9,
+        "gdpGrowth": 5.7,
+        "zoning": "SQNW Ecológico",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 1053.0,
+        "precip7dMm": 31.6,
+        "areaKm2": 543.42,
+        "osmWays": 487,
+        "osmAmenities": 166,
+        "layerScores": {
+          "valorization": 89,
+          "growth": 80,
+          "infrastructure": 91,
+          "development": 88,
+          "safety": 87,
+          "mobility": 74,
+          "urbanQuality": 90,
+          "populationDensity": 92
+        },
+        "highlights": [
+          "Valorização de +10.7% em 12m · Liquidez alta",
+          "IBGE #5300108 (DF) · IDH 0.942",
+          "Malha OSM: 487 eixos viários · Elevação DEM 1053.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "uberlandia-granada-mg",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.2591,
+          -18.9382
+        ]
+      },
+      "properties": {
+        "id": "uberlandia-granada-mg",
+        "ibgeId": 3170206,
+        "name": "Granja Marileusa / Karaíba",
+        "city": "Uberlândia",
+        "state": "MG",
+        "lat": -18.9382,
+        "lng": -48.2591,
+        "score": 85,
+        "priceSqm": 9800,
+        "priceSqmDelta12m": 13.9,
+        "liquidity": "alta",
+        "population": 713224,
+        "incomeAvg": 9900,
+        "hdi": 0.869,
+        "gdp": 43.7,
+        "gdpGrowth": 8.1,
+        "zoning": "ZM Logístico-Tech",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 663.4,
+        "precip7dMm": 37.19,
+        "areaKm2": 1492.93,
+        "osmWays": 529,
+        "osmAmenities": 123,
+        "layerScores": {
+          "valorization": 91,
+          "growth": 87,
+          "infrastructure": 89,
+          "development": 90,
+          "safety": 75,
+          "mobility": 70,
+          "urbanQuality": 77,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +13.9% em 12m · Liquidez alta",
+          "IBGE #3170206 (MG) · IDH 0.869",
+          "Malha OSM: 529 eixos viários · Elevação DEM 663.4m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poa-moinhos-vento-rs",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.2014,
+          -30.0258
+        ]
+      },
+      "properties": {
+        "id": "poa-moinhos-vento-rs",
+        "ibgeId": 4314902,
+        "name": "Moinhos de Vento / Bela Vista",
+        "city": "Porto Alegre",
+        "state": "RS",
+        "lat": -30.0258,
+        "lng": -51.2014,
+        "score": 85,
+        "priceSqm": 13200,
+        "priceSqmDelta12m": 10.6,
+        "liquidity": "alta",
+        "population": 1332845,
+        "incomeAvg": 12800,
+        "hdi": 0.941,
+        "gdp": 81.5,
+        "gdpGrowth": 5.8,
+        "zoning": "ZOT 08.3-C",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 37.0,
+        "precip7dMm": 16.3,
+        "areaKm2": 701.01,
+        "osmWays": 158,
+        "osmAmenities": 337,
+        "layerScores": {
+          "valorization": 90,
+          "growth": 80,
+          "infrastructure": 76,
+          "development": 83,
+          "safety": 87,
+          "mobility": 88,
+          "urbanQuality": 90,
+          "populationDensity": 90
+        },
+        "highlights": [
+          "Valorização de +10.6% em 12m · Liquidez alta",
+          "IBGE #4314902 (RS) · IDH 0.941",
+          "Malha OSM: 158 eixos viários · Elevação DEM 37.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eusebio-centro-ce",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -38.4506,
+          -3.8898
+        ]
+      },
+      "properties": {
+        "id": "eusebio-centro-ce",
+        "ibgeId": 2304285,
+        "name": "Eusébio Centro / Alphaville",
+        "city": "Eusébio",
+        "state": "CE",
+        "lat": -3.8898,
+        "lng": -38.4506,
+        "score": 84,
+        "priceSqm": 5800,
+        "priceSqmDelta12m": 18.5,
+        "liquidity": "alta",
+        "population": 74170,
+        "incomeAvg": 6800,
+        "hdi": 0.811,
+        "gdp": 4.2,
+        "gdpGrowth": 11.4,
+        "zoning": "ZM / ZE",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 33.0,
+        "precip7dMm": 4.2,
+        "areaKm2": 1150.85,
+        "osmWays": 355,
+        "osmAmenities": 193,
+        "layerScores": {
+          "valorization": 96,
+          "growth": 96,
+          "infrastructure": 79,
+          "development": 90,
+          "safety": 65,
+          "mobility": 76,
+          "urbanQuality": 67,
+          "populationDensity": 83
+        },
+        "highlights": [
+          "Valorização de +18.5% em 12m · Liquidez alta",
+          "IBGE #2304285 (CE) · IDH 0.811",
+          "Malha OSM: 355 eixos viários · Elevação DEM 33.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "vila-velha-itaparica-es",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -40.2849,
+          -20.3478
+        ]
+      },
+      "properties": {
+        "id": "vila-velha-itaparica-es",
+        "ibgeId": 3205200,
+        "name": "Praia da Costa / Itaparica",
+        "city": "Vila Velha",
+        "state": "ES",
+        "lat": -20.3478,
+        "lng": -40.2849,
+        "score": 84,
+        "priceSqm": 12400,
+        "priceSqmDelta12m": 14.7,
+        "liquidity": "alta",
+        "population": 467722,
+        "incomeAvg": 10100,
+        "hdi": 0.865,
+        "gdp": 16.9,
+        "gdpGrowth": 8.8,
+        "zoning": "ZOP Vertical",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 11.0,
+        "precip7dMm": 45.1,
+        "areaKm2": 375.03,
+        "osmWays": 264,
+        "osmAmenities": 234,
+        "layerScores": {
+          "valorization": 93,
+          "growth": 89,
+          "infrastructure": 77,
+          "development": 87,
+          "safety": 74,
+          "mobility": 80,
+          "urbanQuality": 76,
+          "populationDensity": 87
+        },
+        "highlights": [
+          "Valorização de +14.7% em 12m · Liquidez alta",
+          "IBGE #3205200 (ES) · IDH 0.865",
+          "Malha OSM: 264 eixos viários · Elevação DEM 11.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "barueri-alphaville-sp",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.8475,
+          -23.4969
+        ]
+      },
+      "properties": {
+        "id": "barueri-alphaville-sp",
+        "ibgeId": 3505708,
+        "name": "Alphaville / Tamboré",
+        "city": "Barueri",
+        "state": "SP",
+        "lat": -23.4969,
+        "lng": -46.8475,
+        "score": 84,
+        "priceSqm": 14900,
+        "priceSqmDelta12m": 14.2,
+        "liquidity": "alta",
+        "population": 316473,
+        "incomeAvg": 14100,
+        "hdi": 0.886,
+        "gdp": 58.4,
+        "gdpGrowth": 8.4,
+        "zoning": "ZUD / Condominial",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 782.0,
+        "precip7dMm": 85.3,
+        "areaKm2": 598.82,
+        "osmWays": 198,
+        "osmAmenities": 162,
+        "layerScores": {
+          "valorization": 93,
+          "growth": 88,
+          "infrastructure": 75,
+          "development": 86,
+          "safety": 77,
+          "mobility": 74,
+          "urbanQuality": 80,
+          "populationDensity": 87
+        },
+        "highlights": [
+          "Valorização de +14.2% em 12m · Liquidez alta",
+          "IBGE #3505708 (SP) · IDH 0.886",
+          "Malha OSM: 198 eixos viários · Elevação DEM 782.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "londrina-gleba-palhano-pr",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.1792,
+          -23.3344
+        ]
+      },
+      "properties": {
+        "id": "londrina-gleba-palhano-pr",
+        "ibgeId": 4113700,
+        "name": "Gleba Palhano",
+        "city": "Londrina",
+        "state": "PR",
+        "lat": -23.3344,
+        "lng": -51.1792,
+        "score": 84,
+        "priceSqm": 10600,
+        "priceSqmDelta12m": 12.9,
+        "liquidity": "alta",
+        "population": 555965,
+        "incomeAvg": 9600,
+        "hdi": 0.864,
+        "gdp": 25.4,
+        "gdpGrowth": 7.5,
+        "zoning": "ZR-6 Vertical",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 605.0,
+        "precip7dMm": 112.6,
+        "areaKm2": 782.51,
+        "osmWays": 486,
+        "osmAmenities": 212,
+        "layerScores": {
+          "valorization": 90,
+          "growth": 85,
+          "infrastructure": 87,
+          "development": 88,
+          "safety": 74,
+          "mobility": 78,
+          "urbanQuality": 76,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +12.9% em 12m · Liquidez alta",
+          "IBGE #4113700 (PR) · IDH 0.864",
+          "Malha OSM: 486 eixos viários · Elevação DEM 605.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "manaus-ponta-negra-am",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -60.0884,
+          -3.0712
+        ]
+      },
+      "properties": {
+        "id": "manaus-ponta-negra-am",
+        "ibgeId": 1302603,
+        "name": "Ponta Negra / Adrianópolis",
+        "city": "Manaus",
+        "state": "AM",
+        "lat": -3.0712,
+        "lng": -60.0884,
+        "score": 84,
+        "priceSqm": 8900,
+        "priceSqmDelta12m": 12.7,
+        "liquidity": "alta",
+        "population": 2063547,
+        "incomeAvg": 7800,
+        "hdi": 0.848,
+        "gdp": 103.2,
+        "gdpGrowth": 7.4,
+        "zoning": "ZU-Orla / ZFM",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 38.0,
+        "precip7dMm": 27.6,
+        "areaKm2": 15575.79,
+        "osmWays": 582,
+        "osmAmenities": 263,
+        "layerScores": {
+          "valorization": 88,
+          "growth": 85,
+          "infrastructure": 91,
+          "development": 88,
+          "safety": 71,
+          "mobility": 82,
+          "urbanQuality": 73,
+          "populationDensity": 91
+        },
+        "highlights": [
+          "Valorização de +12.7% em 12m · Liquidez alta",
+          "IBGE #1302603 (AM) · IDH 0.848",
+          "Malha OSM: 582 eixos viários · Elevação DEM 38.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "rio-barra-tijuca-rj",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.3659,
+          -23.0004
+        ]
+      },
+      "properties": {
+        "id": "rio-barra-tijuca-rj",
+        "ibgeId": 3304557,
+        "name": "Barra da Tijuca / Península",
+        "city": "Rio de Janeiro",
+        "state": "RJ",
+        "lat": -23.0004,
+        "lng": -43.3659,
+        "score": 84,
+        "priceSqm": 15800,
+        "priceSqmDelta12m": 10.8,
+        "liquidity": "alta",
+        "population": 300823,
+        "incomeAvg": 13900,
+        "hdi": 0.918,
+        "gdp": 48.2,
+        "gdpGrowth": 6.1,
+        "zoning": "ZUM / Subcentro",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 5.0,
+        "precip7dMm": 31.9,
+        "areaKm2": 1227.67,
+        "osmWays": 191,
+        "osmAmenities": 377,
+        "layerScores": {
+          "valorization": 89,
+          "growth": 81,
+          "infrastructure": 76,
+          "development": 83,
+          "safety": 83,
+          "mobility": 91,
+          "urbanQuality": 86,
+          "populationDensity": 86
+        },
+        "highlights": [
+          "Valorização de +10.8% em 12m · Liquidez alta",
+          "IBGE #3304557 (RJ) · IDH 0.918",
+          "Malha OSM: 191 eixos viários · Elevação DEM 5.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "salvador-horto-florestal-ba",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -38.4728,
+          -12.9964
+        ]
+      },
+      "properties": {
+        "id": "salvador-horto-florestal-ba",
+        "ibgeId": 2927408,
+        "name": "Horto Florestal / Caminho das Árvores",
+        "city": "Salvador",
+        "state": "BA",
+        "lat": -12.9964,
+        "lng": -38.4728,
+        "score": 84,
+        "priceSqm": 10400,
+        "priceSqmDelta12m": 10.0,
+        "liquidity": "alta",
+        "population": 2417678,
+        "incomeAvg": 8100,
+        "hdi": 0.876,
+        "gdp": 62.9,
+        "gdpGrowth": 5.5,
+        "zoning": "ZPR Alto Padrão",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 23.0,
+        "precip7dMm": 2.8,
+        "areaKm2": 1359.72,
+        "osmWays": 557,
+        "osmAmenities": 355,
+        "layerScores": {
+          "valorization": 85,
+          "growth": 79,
+          "infrastructure": 91,
+          "development": 86,
+          "safety": 76,
+          "mobility": 90,
+          "urbanQuality": 78,
+          "populationDensity": 91
+        },
+        "highlights": [
+          "Valorização de +10.0% em 12m · Liquidez alta",
+          "IBGE #2927408 (BA) · IDH 0.876",
+          "Malha OSM: 557 eixos viários · Elevação DEM 23.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "campo-grande-chacara-cachoeira-ms",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.5819,
+          -20.4582
+        ]
+      },
+      "properties": {
+        "id": "campo-grande-chacara-cachoeira-ms",
+        "ibgeId": 5002704,
+        "name": "Chácara Cachoeira / Parque dos Poderes",
+        "city": "Campo Grande",
+        "state": "MS",
+        "lat": -20.4582,
+        "lng": -54.5819,
+        "score": 83,
+        "priceSqm": 9600,
+        "priceSqmDelta12m": 13.2,
+        "liquidity": "alta",
+        "population": 898100,
+        "incomeAvg": 9700,
+        "hdi": 0.854,
+        "gdp": 34.7,
+        "gdpGrowth": 7.9,
+        "zoning": "Z1 Corredor Bioceânico",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 571.0,
+        "precip7dMm": 29.1,
+        "areaKm2": 848.89,
+        "osmWays": 201,
+        "osmAmenities": 399,
+        "layerScores": {
+          "valorization": 90,
+          "growth": 86,
+          "infrastructure": 74,
+          "development": 84,
+          "safety": 72,
+          "mobility": 92,
+          "urbanQuality": 74,
+          "populationDensity": 89
+        },
+        "highlights": [
+          "Valorização de +13.2% em 12m · Liquidez alta",
+          "IBGE #5002704 (MS) · IDH 0.854",
+          "Malha OSM: 201 eixos viários · Elevação DEM 571.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "joinville-america-sc",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -48.8569,
+          -26.2954
+        ]
+      },
+      "properties": {
+        "id": "joinville-america-sc",
+        "ibgeId": 4209102,
+        "name": "América / Atiradores",
+        "city": "Joinville",
+        "state": "SC",
+        "lat": -26.2954,
+        "lng": -48.8569,
+        "score": 83,
+        "priceSqm": 10900,
+        "priceSqmDelta12m": 13.1,
+        "liquidity": "alta",
+        "population": 616317,
+        "incomeAvg": 9800,
+        "hdi": 0.875,
+        "gdp": 45.1,
+        "gdpGrowth": 7.8,
+        "zoning": "AUAP Industrial-Prime",
+        "environmentalRisk": "medio",
+        "floodRisk": "medio",
+        "elevationM": 17.0,
+        "precip7dMm": 121.9,
+        "areaKm2": 530.63,
+        "osmWays": 338,
+        "osmAmenities": 157,
+        "layerScores": {
+          "valorization": 91,
+          "growth": 86,
+          "infrastructure": 81,
+          "development": 86,
+          "safety": 76,
+          "mobility": 73,
+          "urbanQuality": 78,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +13.1% em 12m · Liquidez alta",
+          "IBGE #4209102 (SC) · IDH 0.875",
+          "Malha OSM: 338 eixos viários · Elevação DEM 17.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "recife-boa-viagem-pe",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -34.8942,
+          -8.1124
+        ]
+      },
+      "properties": {
+        "id": "recife-boa-viagem-pe",
+        "ibgeId": 2611606,
+        "name": "Boa Viagem / Pina",
+        "city": "Recife",
+        "state": "PE",
+        "lat": -8.1124,
+        "lng": -34.8942,
+        "score": 83,
+        "priceSqm": 10900,
+        "priceSqmDelta12m": 10.6,
+        "liquidity": "alta",
+        "population": 1488920,
+        "incomeAvg": 8400,
+        "hdi": 0.884,
+        "gdp": 54.9,
+        "gdpGrowth": 6.1,
+        "zoning": "ZAN Orla",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 5.0,
+        "precip7dMm": 16.9,
+        "areaKm2": 1252.65,
+        "osmWays": 410,
+        "osmAmenities": 222,
+        "layerScores": {
+          "valorization": 87,
+          "growth": 81,
+          "infrastructure": 84,
+          "development": 85,
+          "safety": 77,
+          "mobility": 78,
+          "urbanQuality": 80,
+          "populationDensity": 90
+        },
+        "highlights": [
+          "Valorização de +10.6% em 12m · Liquidez alta",
+          "IBGE #2611606 (PE) · IDH 0.884",
+          "Malha OSM: 410 eixos viários · Elevação DEM 5.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "maringa-zona-07-pr",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9331,
+          -23.4209
+        ]
+      },
+      "properties": {
+        "id": "maringa-zona-07-pr",
+        "ibgeId": 4115200,
+        "name": "Novo Centro / Zona 01",
+        "city": "Maringá",
+        "state": "PR",
+        "lat": -23.4209,
+        "lng": -51.9331,
+        "score": 82,
+        "priceSqm": 11100,
+        "priceSqmDelta12m": 13.4,
+        "liquidity": "alta",
+        "population": 409657,
+        "incomeAvg": 10200,
+        "hdi": 0.878,
+        "gdp": 23.9,
+        "gdpGrowth": 8.2,
+        "zoning": "ECS Eixo Comércio",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 551.0,
+        "precip7dMm": 114.3,
+        "areaKm2": 773.99,
+        "osmWays": 151,
+        "osmAmenities": 200,
+        "layerScores": {
+          "valorization": 92,
+          "growth": 87,
+          "infrastructure": 72,
+          "development": 84,
+          "safety": 76,
+          "mobility": 77,
+          "urbanQuality": 79,
+          "populationDensity": 87
+        },
+        "highlights": [
+          "Valorização de +13.4% em 12m · Liquidez alta",
+          "IBGE #4115200 (PR) · IDH 0.878",
+          "Malha OSM: 151 eixos viários · Elevação DEM 551.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "campinas-cambui-sp",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.0519,
+          -22.8936
+        ]
+      },
+      "properties": {
+        "id": "campinas-cambui-sp",
+        "ibgeId": 3509502,
+        "name": "Cambuí / Nova Campinas",
+        "city": "Campinas",
+        "state": "SP",
+        "lat": -22.8936,
+        "lng": -47.0519,
+        "score": 82,
+        "priceSqm": 13400,
+        "priceSqmDelta12m": 11.5,
+        "liquidity": "alta",
+        "population": 1139047,
+        "incomeAvg": 11600,
+        "hdi": 0.885,
+        "gdp": 72.9,
+        "gdpGrowth": 6.9,
+        "zoning": "ZM-4 Vertical",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 669.0,
+        "precip7dMm": 70.1,
+        "areaKm2": 750.06,
+        "osmWays": 304,
+        "osmAmenities": 129,
+        "layerScores": {
+          "valorization": 89,
+          "growth": 83,
+          "infrastructure": 80,
+          "development": 85,
+          "safety": 77,
+          "mobility": 71,
+          "urbanQuality": 80,
+          "populationDensity": 89
+        },
+        "highlights": [
+          "Valorização de +11.5% em 12m · Liquidez alta",
+          "IBGE #3509502 (SP) · IDH 0.885",
+          "Malha OSM: 304 eixos viários · Elevação DEM 669.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "fortaleza-meireles-ce",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -38.4986,
+          -3.7275
+        ]
+      },
+      "properties": {
+        "id": "fortaleza-meireles-ce",
+        "ibgeId": 2304400,
+        "name": "Meireles / Beira-Mar",
+        "city": "Fortaleza",
+        "state": "CE",
+        "lat": -3.7275,
+        "lng": -38.4986,
+        "score": 82,
+        "priceSqm": 14800,
+        "priceSqmDelta12m": 10.5,
+        "liquidity": "alta",
+        "population": 2428708,
+        "incomeAvg": 9800,
+        "hdi": 0.912,
+        "gdp": 73.4,
+        "gdpGrowth": 6.2,
+        "zoning": "ZR-2 / ZC-3",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 14.0,
+        "precip7dMm": 5.6,
+        "areaKm2": 463.18,
+        "osmWays": 142,
+        "osmAmenities": 277,
+        "layerScores": {
+          "valorization": 89,
+          "growth": 81,
+          "infrastructure": 73,
+          "development": 82,
+          "safety": 82,
+          "mobility": 83,
+          "urbanQuality": 85,
+          "populationDensity": 91
+        },
+        "highlights": [
+          "Valorização de +10.5% em 12m · Liquidez alta",
+          "IBGE #2304400 (CE) · IDH 0.912",
+          "Malha OSM: 142 eixos viários · Elevação DEM 14.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "aracaju-jardins-se",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -37.0589,
+          -10.9472
+        ]
+      },
+      "properties": {
+        "id": "aracaju-jardins-se",
+        "ibgeId": 2800308,
+        "name": "Jardins / Atalaia",
+        "city": "Aracaju",
+        "state": "SE",
+        "lat": -10.9472,
+        "lng": -37.0589,
+        "score": 81,
+        "priceSqm": 8900,
+        "priceSqmDelta12m": 10.3,
+        "liquidity": "media",
+        "population": 602757,
+        "incomeAvg": 7700,
+        "hdi": 0.848,
+        "gdp": 18.4,
+        "gdpGrowth": 6.2,
+        "zoning": "ZAP-1",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 3.0,
+        "precip7dMm": 5.5,
+        "areaKm2": 1285.59,
+        "osmWays": 416,
+        "osmAmenities": 264,
+        "layerScores": {
+          "valorization": 86,
+          "growth": 81,
+          "infrastructure": 83,
+          "development": 84,
+          "safety": 71,
+          "mobility": 82,
+          "urbanQuality": 73,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +10.3% em 12m · Liquidez media",
+          "IBGE #2800308 (SE) · IDH 0.848",
+          "Malha OSM: 416 eixos viários · Elevação DEM 3.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "niteroi-icarai-rj",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.1089,
+          -22.9068
+        ]
+      },
+      "properties": {
+        "id": "niteroi-icarai-rj",
+        "ibgeId": 3303302,
+        "name": "Icaraí / São Francisco",
+        "city": "Niterói",
+        "state": "RJ",
+        "lat": -22.9068,
+        "lng": -43.1089,
+        "score": 81,
+        "priceSqm": 13900,
+        "priceSqmDelta12m": 9.2,
+        "liquidity": "media",
+        "population": 481749,
+        "incomeAvg": 12300,
+        "hdi": 0.907,
+        "gdp": 52.1,
+        "gdpGrowth": 5.4,
+        "zoning": "ZRO Orla",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 14.0,
+        "precip7dMm": 27.6,
+        "areaKm2": 444.57,
+        "osmWays": 183,
+        "osmAmenities": 203,
+        "layerScores": {
+          "valorization": 87,
+          "growth": 79,
+          "infrastructure": 75,
+          "development": 81,
+          "safety": 81,
+          "mobility": 77,
+          "urbanQuality": 84,
+          "populationDensity": 88
+        },
+        "highlights": [
+          "Valorização de +9.2% em 12m · Liquidez media",
+          "IBGE #3303302 (RJ) · IDH 0.907",
+          "Malha OSM: 183 eixos viários · Elevação DEM 14.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "fortaleza-aldeota-ce",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -38.5023,
+          -3.7385
+        ]
+      },
+      "properties": {
+        "id": "fortaleza-aldeota-ce",
+        "ibgeId": 2304400,
+        "name": "Aldeota",
+        "city": "Fortaleza",
+        "state": "CE",
+        "lat": -3.7385,
+        "lng": -38.5023,
+        "score": 81,
+        "priceSqm": 12300,
+        "priceSqmDelta12m": 9.2,
+        "liquidity": "media",
+        "population": 45200,
+        "incomeAvg": 8600,
+        "hdi": 0.898,
+        "gdp": 21.0,
+        "gdpGrowth": 5.4,
+        "zoning": "ZR-3",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 32.0,
+        "precip7dMm": 5.6,
+        "areaKm2": 463.18,
+        "osmWays": 173,
+        "osmAmenities": 314,
+        "layerScores": {
+          "valorization": 86,
+          "growth": 79,
+          "infrastructure": 74,
+          "development": 80,
+          "safety": 79,
+          "mobility": 86,
+          "urbanQuality": 82,
+          "populationDensity": 82
+        },
+        "highlights": [
+          "Valorização de +9.2% em 12m · Liquidez media",
+          "IBGE #2304400 (CE) · IDH 0.898",
+          "Malha OSM: 173 eixos viários · Elevação DEM 32.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "teresina-joquei-pi",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -42.7892,
+          -5.0719
+        ]
+      },
+      "properties": {
+        "id": "teresina-joquei-pi",
+        "ibgeId": 2211001,
+        "name": "Jóquei / Fátima",
+        "city": "Teresina",
+        "state": "PI",
+        "lat": -5.0719,
+        "lng": -42.7892,
+        "score": 80,
+        "priceSqm": 7800,
+        "priceSqmDelta12m": 9.8,
+        "liquidity": "media",
+        "population": 866300,
+        "incomeAvg": 7100,
+        "hdi": 0.827,
+        "gdp": 23.8,
+        "gdpGrowth": 6.0,
+        "zoning": "ZEU Leste",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 80.0,
+        "precip7dMm": 0.3,
+        "areaKm2": 1197.81,
+        "osmWays": 398,
+        "osmAmenities": 370,
+        "layerScores": {
+          "valorization": 84,
+          "growth": 81,
+          "infrastructure": 81,
+          "development": 82,
+          "safety": 68,
+          "mobility": 91,
+          "urbanQuality": 70,
+          "populationDensity": 89
+        },
+        "highlights": [
+          "Valorização de +9.8% em 12m · Liquidez media",
+          "IBGE #2211001 (PI) · IDH 0.827",
+          "Malha OSM: 398 eixos viários · Elevação DEM 80.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "natal-ponta-negra-rn",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -35.1764,
+          -5.8784
+        ]
+      },
+      "properties": {
+        "id": "natal-ponta-negra-rn",
+        "ibgeId": 2408102,
+        "name": "Ponta Negra / Tirol",
+        "city": "Natal",
+        "state": "RN",
+        "lat": -5.8784,
+        "lng": -35.1764,
+        "score": 80,
+        "priceSqm": 8800,
+        "priceSqmDelta12m": 9.5,
+        "liquidity": "media",
+        "population": 751300,
+        "incomeAvg": 7600,
+        "hdi": 0.846,
+        "gdp": 24.1,
+        "gdpGrowth": 5.8,
+        "zoning": "ZPA-Orla",
+        "environmentalRisk": "baixo",
+        "floodRisk": "baixo",
+        "elevationM": 36.0,
+        "precip7dMm": 18.2,
+        "areaKm2": 261.89,
+        "osmWays": 489,
+        "osmAmenities": 182,
+        "layerScores": {
+          "valorization": 84,
+          "growth": 80,
+          "infrastructure": 86,
+          "development": 84,
+          "safety": 71,
+          "mobility": 75,
+          "urbanQuality": 73,
+          "populationDensity": 89
+        },
+        "highlights": [
+          "Valorização de +9.5% em 12m · Liquidez media",
+          "IBGE #2408102 (RN) · IDH 0.846",
+          "Malha OSM: 489 eixos viários · Elevação DEM 36.0m"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sao-luis-ponta-dareia-ma",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -44.3028,
+          -2.4928
+        ]
+      },
+      "properties": {
+        "id": "sao-luis-ponta-dareia-ma",
+        "ibgeId": 2111300,
+        "name": "Ponta d'Areia / Calhau",
+        "city": "São Luís",
+        "state": "MA",
+        "lat": -2.4928,
+        "lng": -44.3028,
+        "score": 79,
+        "priceSqm": 9100,
+        "priceSqmDelta12m": 10.2,
+        "liquidity": "media",
+        "population": 1037775,
+        "incomeAvg": 7400,
+        "hdi": 0.838,
+        "gdp": 36.5,
+        "gdpGrowth": 6.4,
+        "zoning": "ZORL Costeira",
+        "environmentalRisk": "medio",
+        "floodRisk": "baixo",
+        "elevationM": 4.0,
+        "precip7dMm": 5.8,
+        "areaKm2": 1342.69,
+        "osmWays": 218,
+        "osmAmenities": 219,
+        "layerScores": {
+          "valorization": 85,
+          "growth": 82,
+          "infrastructure": 74,
+          "development": 81,
+          "safety": 70,
+          "mobility": 78,
+          "urbanQuality": 72,
+          "populationDensity": 89
+        },
+        "highlights": [
+          "Valorização de +10.2% em 12m · Liquidez media",
+          "IBGE #2111300 (MA) · IDH 0.838",
+          "Malha OSM: 218 eixos viários · Elevação DEM 4.0m"
+        ]
+      }
+    }
+  ]
+}

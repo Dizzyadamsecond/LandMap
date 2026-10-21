@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-import { REGIONS, LAYERS } from '../../../../lib/landmap-regions';
+import fs from 'node:fs';
+import path from 'node:path';
+import { REGIONS, LAYERS, type RegionInsight } from '../../../../lib/landmap-regions';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -7,23 +9,46 @@ export const dynamic = 'force-dynamic';
 /**
  * GET /api/map/insights — dataset de inteligência territorial do mapa.
  *
- * Mesmo contrato de dados que a Lovable LIVE entrega ao dashboard
- * (`RegionInsight[]` de `lib/landmap-regions`): score, camadas, histórico de
- * preço, timeline e destaques por região. O cliente (dashboard/mapa) busca
- * aqui ao montar e cai para o dataset estático embutido se a API falhar —
- * a UI nunca fica vazia.
- *
- * Substituir o mock por fontes reais (IBGE, prefeituras, APIs geoespaciais)
- * acontece só neste módulo, sem tocar na UI — é exatamente o ponto de
- * integração previsto pelo comentário de cabeçalho de `landmap-regions.ts`.
+ * Lê automaticamente o dataset nacional gerado por `scripts/ingest_terrenos.py`
+ * (`public/data/terrenos_brasil.json` — IBGE + OSM + INPE/DEM + Clima) e o
+ * mescla (sem duplicar IDs) com o conjunto base `REGIONS`, garantindo 100% de
+ * disponibilidade mesmo em ambientes serverless.
  */
+function loadIngestedRegions(): RegionInsight[] {
+  const candidates = [
+    path.join(process.cwd(), 'public', 'data', 'terrenos_brasil.json'),
+    path.join(process.cwd(), 'apps', 'web', 'public', 'data', 'terrenos_brasil.json'),
+  ];
+  for (const file of candidates) {
+    try {
+      if (fs.existsSync(file)) {
+        const raw = fs.readFileSync(file, 'utf-8');
+        const parsed = JSON.parse(raw) as { regions?: RegionInsight[] };
+        if (Array.isArray(parsed.regions) && parsed.regions.length > 0) {
+          return parsed.regions;
+        }
+      }
+    } catch {
+      /* fallback para REGIONS */
+    }
+  }
+  return [];
+}
+
 export function GET() {
+  const ingested = loadIngestedRegions();
+  const byId = new Map<string, RegionInsight>();
+  for (const r of REGIONS) byId.set(r.id, r);
+  for (const r of ingested) byId.set(r.id, r);
+  const merged = Array.from(byId.values()).sort((a, b) => b.score - a.score);
+
   return NextResponse.json(
     {
-      regions: REGIONS,
+      regions: merged,
+      total: merged.length,
       layers: LAYERS,
       updatedAt: new Date().toISOString(),
-      source: 'landmap-core',
+      source: ingested.length > 0 ? 'landmap-ingest-ibge-osm-inpe' : 'landmap-core',
     },
     {
       headers: {
