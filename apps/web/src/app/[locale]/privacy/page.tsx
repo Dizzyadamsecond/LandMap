@@ -1,96 +1,100 @@
 'use client';
 
-import { Lock } from '../../../components/lovable/icons';
-import { ProductPageShell } from '../../../components/ProductPageShell';
-import { Reveal } from '../../../components/Motion';
-import { Card } from '@landmap/ui';
+import { PublicPageShell } from '../../../components/PublicPageShell';
+import { COMPANY } from '../../../lib/public-content';
 
-const SECTIONS: { n: number; title: string; body: string }[] = [
-  {
-    n: 1,
-    title: 'Quem somos',
-    body: 'Esta plataforma é operada pela LandMap Inteligência Territorial Ltda., com sede em Fortaleza/CE, Brasil (LandMap, nós). Esta Política descreve como tratamos dados pessoais em conformidade com a Lei Geral de Proteção de Dados (Lei 13.709/2018 — LGPD).',
-  },
-  {
-    n: 2,
-    title: 'Dados que coletamos',
-    body: 'Coletamos, quando aplicável: Dados de cadastro: nome, e-mail, telefone, empresa. Dados de uso: páginas visitadas, buscas, filtros aplicados, regiões consultadas. Dados técnicos: endereço IP, tipo de dispositivo, navegador, sistema operacional. Dados de pagamento processados por provedores certificados (não armazenamos números de cartão).',
-  },
-  {
-    n: 3,
-    title: 'Base legal e finalidade',
-    body: 'Tratamos dados com base em execução de contrato, cumprimento de obrigação legal, legítimo interesse e consentimento — sempre para prestar o serviço, melhorá-lo, prevenir fraudes e comunicar novidades relevantes.',
-  },
-  {
-    n: 4,
-    title: 'Compartilhamento',
-    body: 'Não vendemos dados pessoais. Compartilhamos com processadores necessários (hospedagem, analytics, pagamentos) sob contratos de confidencialidade e apenas na medida indispensável à operação.',
-  },
-  {
-    n: 5,
-    title: 'Seus direitos',
-    body: 'Você pode solicitar a qualquer tempo: confirmação de tratamento, acesso, correção, anonimização, portabilidade, eliminação e revogação de consentimento. Envie sua solicitação para privacidade@landmap.com.br.',
-  },
-  {
-    n: 6,
-    title: 'Segurança',
-    body: 'Adotamos medidas técnicas e organizacionais razoáveis para proteger dados (criptografia em trânsito, controle de acesso, monitoramento). Nenhum sistema é infalível, e nos comprometemos a comunicar incidentes relevantes na forma da lei.',
-  },
-  {
-    n: 7,
-    title: 'Retenção',
-    body: 'Retemos dados pelo tempo necessário às finalidades declaradas ou por obrigações legais. Encerrada a conta, dados podem ser anonimizados e mantidos apenas em bases agregadas para fins analíticos.',
-  },
-  {
-    n: 8,
-    title: 'Contato do Encarregado (DPO)',
-    body: 'E-mail: dpo@landmap.com.br',
-  },
-];
-
+/**
+ * `/privacy` — paridade 1:1 com a Lovable LIVE
+ * (`landmap-insight.lovable.app/privacy`, chunk `privacy-ciZ5XSih.js`):
+ * header Voltar → `/onboarding`, `article.mx-auto.max-w-3xl.px-6.py-16`,
+ * eyebrow "Legal", H1 "Política de Privacidade", data de atualização, 8 seções
+ * em `div.prose...space-y-8` (lista de dados em `ul.ml-5.list-disc`, mailtos
+ * privacidade@ e dpo@), `<Footer />` 1:1.
+ */
 export default function PrivacyPage() {
   return (
-    <ProductPageShell
-      backHref="/map"
-      eyebrow={<><Lock className="h-3 w-3" /> Privacidade</>}
-      title="Política de Privacidade"
-      description="Última atualização: 16 de julho de 2026"
-    >
-      <section className="space-y-3">
-        {SECTIONS.map((s) => (
-          <Reveal key={s.n}>
-            <Card className="p-5">
-              <h2 className="text-base font-semibold text-[var(--foreground)]">
-                {s.n}. {s.title}
-              </h2>
-              <p className="mt-1 text-sm leading-relaxed text-[var(--muted-foreground)]">
-                {s.body}
-              </p>
-            </Card>
-          </Reveal>
-        ))}
-      </section>
-
-      <div className="mt-8 flex flex-wrap gap-3">
-        <a
-          href="./terms"
-          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-        >
-          Termos de uso
-        </a>
-        <a
-          href="./cookies"
-          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-        >
-          Política de cookies
-        </a>
-        <a
-          href="./map"
-          className="inline-flex h-10 items-center rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
-        >
-          Abrir o mapa
-        </a>
-      </div>
-    </ProductPageShell>
+    <PublicPageShell backHref="/onboarding">
+      <article className="mx-auto max-w-3xl px-6 py-16">
+        <p className="text-xs font-medium uppercase tracking-widest text-primary">Legal</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight">Política de Privacidade</h1>
+        <p className="mt-3 text-sm text-foreground/50">
+          Última atualização: {COMPANY.legalUpdatedAt}
+        </p>
+        <div className="prose prose-neutral dark:prose-invert mt-10 max-w-none space-y-8 text-[15px] leading-relaxed text-foreground/80">
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">1. Quem somos</h2>
+            <p>
+              Esta plataforma é operada pela LandMap Inteligência Territorial Ltda., com sede em
+              Fortaleza/CE, Brasil (&ldquo;LandMap&rdquo;, &ldquo;nós&rdquo;). Esta Política descreve
+              como tratamos dados pessoais em conformidade com a Lei Geral de Proteção de Dados
+              (Lei 13.709/2018 — LGPD).
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">2. Dados que coletamos</h2>
+            <p>Coletamos, quando aplicável:</p>
+            <ul className="ml-5 list-disc space-y-1">
+              <li>Dados de cadastro: nome, e-mail, telefone, empresa.</li>
+              <li>Dados de uso: páginas visitadas, buscas, filtros aplicados, regiões consultadas.</li>
+              <li>Dados técnicos: endereço IP, tipo de dispositivo, navegador, sistema operacional.</li>
+              <li>Dados de pagamento processados por provedores certificados (não armazenamos números de cartão).</li>
+            </ul>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">3. Base legal e finalidade</h2>
+            <p>
+              Tratamos dados com base em execução de contrato, cumprimento de obrigação legal,
+              legítimo interesse e consentimento — sempre para prestar o serviço, melhorá-lo,
+              prevenir fraudes e comunicar novidades relevantes.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">4. Compartilhamento</h2>
+            <p>
+              Não vendemos dados pessoais. Compartilhamos com processadores necessários
+              (hospedagem, analytics, pagamentos) sob contratos de confidencialidade e apenas na
+              medida indispensável à operação.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">5. Seus direitos</h2>
+            <p>
+              Você pode solicitar a qualquer tempo: confirmação de tratamento, acesso, correção,
+              anonimização, portabilidade, eliminação e revogação de consentimento. Envie sua
+              solicitação para{' '}
+              <a href={`mailto:${COMPANY.emailPrivacy}`} className="text-primary hover:underline">
+                {COMPANY.emailPrivacy}
+              </a>
+              .
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">6. Segurança</h2>
+            <p>
+              Adotamos medidas técnicas e organizacionais razoáveis para proteger dados
+              (criptografia em trânsito, controle de acesso, monitoramento). Nenhum sistema é
+              infalível, e nos comprometemos a comunicar incidentes relevantes na forma da lei.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">7. Retenção</h2>
+            <p>
+              Retemos dados pelo tempo necessário às finalidades declaradas ou por obrigações
+              legais. Encerrada a conta, dados podem ser anonimizados e mantidos apenas em bases
+              agregadas para fins analíticos.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">8. Contato do Encarregado (DPO)</h2>
+            <p>
+              E-mail:{' '}
+              <a href={`mailto:${COMPANY.emailDpo}`} className="text-primary hover:underline">
+                {COMPANY.emailDpo}
+              </a>
+            </p>
+          </section>
+        </div>
+      </article>
+    </PublicPageShell>
   );
 }

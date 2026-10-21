@@ -48,6 +48,54 @@ export function MapPinned({ size = 24, ...p }: IconProps) {
   );
 }
 
+/**
+ * Ícones extraídos 1:1 da Lovable LIVE (lucide, usados na página `/metodologia`):
+ * `database`, `funnel`, `ruler`, `scale` — paths copiados do chunk
+ * `metodologia-CvnfjrHg.js` (funnel inline) e dos chunks `database-*`,
+ * `ruler-*`, `scale-*` do build ao vivo.
+ */
+export function Database({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <ellipse cx="12" cy="5" rx="9" ry="3" />
+      <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+      <path d="M3 12A9 3 0 0 0 21 12" />
+    </svg>
+  );
+}
+
+export function Funnel({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z" />
+    </svg>
+  );
+}
+
+export function Ruler({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" />
+      <path d="m14.5 12.5 2-2" />
+      <path d="m11.5 9.5 2-2" />
+      <path d="m8.5 6.5 2-2" />
+      <path d="m17.5 15.5 2-2" />
+    </svg>
+  );
+}
+
+export function Scale({ size = 24, ...p }: IconProps) {
+  return (
+    <svg {...base(size, p)} aria-hidden>
+      <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+      <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+      <path d="M7 21h10" />
+      <path d="M12 3v18" />
+      <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+    </svg>
+  );
+}
+
 export function Sparkles({ size = 24, ...p }: IconProps) {
   return (
     <svg {...base(size, p)} aria-hidden>

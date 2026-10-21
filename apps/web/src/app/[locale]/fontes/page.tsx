@@ -1,81 +1,98 @@
 'use client';
 
-import { Link2 } from '../../../components/lovable/icons';
-import { ProductPageShell } from '../../../components/ProductPageShell';
-import { Card } from '@landmap/ui';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import { Building2 } from '../../../components/lovable/icons';
+import { PublicPageShell } from '../../../components/PublicPageShell';
+import { SOURCES_ROWS } from '../../../lib/public-content';
 
-const ROWS: { fonte: string; categoria: string; regiao: string; frequencia: string; tipo: string; status: string }[] = [
-  { fonte: 'Bases municipais — Nordeste', categoria: 'Dados públicos', regiao: 'CE, PE, RN', frequencia: 'Mensal', tipo: 'Zoneamento, IPTU agregado', status: 'Ativa' },
-  { fonte: 'Bases geográficas abertas', categoria: 'Dados públicos', regiao: 'Brasil', frequencia: 'Trimestral', tipo: 'Geometria e uso do solo', status: 'Ativa' },
-  { fonte: 'Indicadores demográficos e econômicos', categoria: 'Dados públicos', regiao: 'Brasil', frequencia: 'Anual', tipo: 'População, renda, PIB municipal', status: 'Ativa' },
-  { fonte: 'Parceiros imobiliários regionais', categoria: 'Dados de mercado', regiao: 'CE', frequencia: 'Semanal', tipo: 'Anúncios, transações', status: 'Ativa' },
-  { fonte: 'Rede de corretores parceiros', categoria: 'Dados de mercado', regiao: 'CE, PE', frequencia: 'Contínua', tipo: 'Preço praticado, tempo de mercado', status: 'Em integração' },
-  { fonte: 'Camadas processadas LandMap', categoria: 'Dados processados', regiao: 'Cobertura ativa', frequencia: 'Diária', tipo: 'Score, liquidez, comparações', status: 'Ativa' },
-];
-
+/**
+ * `/fontes` — paridade 1:1 com a Lovable LIVE
+ * (`landmap-insight.lovable.app/fontes`, chunk `fontes-BjvUrJ1K.js`):
+ * header Voltar → `/onboarding`, `section.mx-auto.max-w-5xl.px-6.py-16`,
+ * eyebrow "Fontes", H1 "Consulta pública de fontes e atualizações", tabela
+ * (Fonte/Categoria/Região/Frequência/Tipo/Status, badges de status
+ * `inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium`), nota
+ * administrativa, `<Footer />` 1:1.
+ *
+ * Dados: `lib/public-content.ts` (SOURCES_ROWS — mesmos valores da referência).
+ */
 export default function FontesPage() {
-  return (
-    <ProductPageShell
-      backHref="/map"
-      eyebrow={<><Link2 className="h-3 w-3" /> Fontes</>}
-      title="Fontes de dados"
-      description="Consulta pública de fontes e atualizações"
-      maxWidth="5xl"
-    >
-      <p className="mt-4 text-sm leading-relaxed text-[var(--muted-foreground)]">
-        A LandMap processa, padroniza e cruza informações de diferentes fontes. A presença de uma
-        fonte não significa que todos os dados estejam disponíveis para todas as regiões.
-      </p>
+  const locale = useLocale();
+  const lh = (p: string) => `/${locale}${p}`;
 
-      <Card className="mt-6 overflow-hidden p-0">
-        <div className="overflow-x-auto">
+  return (
+    <PublicPageShell backHref="/onboarding" maxWidth="5xl">
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <p className="text-xs font-medium uppercase tracking-widest text-primary">Fontes</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight">
+          Consulta pública de fontes e atualizações
+        </h1>
+        <p className="mt-4 max-w-2xl text-foreground/60">
+          A LandMap processa, padroniza e cruza informações de diferentes fontes. A presença de uma
+          fonte não significa que todos os dados estejam disponíveis para todas as regiões.
+        </p>
+
+        <div className="mt-10 overflow-hidden rounded-2xl border border-foreground/10">
           <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-[var(--border)] text-left text-xs uppercase tracking-wide text-[var(--muted-foreground)]">
-                <th className="px-4 py-3 font-medium">Fonte</th>
-                <th className="px-4 py-3 font-medium">Categoria</th>
-                <th className="px-4 py-3 font-medium">Região</th>
-                <th className="px-4 py-3 font-medium">Frequência</th>
-                <th className="px-4 py-3 font-medium">Tipo</th>
-                <th className="px-4 py-3 font-medium">Status</th>
+            <thead className="bg-foreground/[0.03] text-left text-[11px] font-semibold uppercase tracking-widest text-foreground/50">
+              <tr>
+                <th className="px-4 py-3">Fonte</th>
+                <th className="px-4 py-3">Categoria</th>
+                <th className="px-4 py-3">Região</th>
+                <th className="px-4 py-3">Frequência</th>
+                <th className="px-4 py-3">Tipo</th>
+                <th className="px-4 py-3">Status</th>
               </tr>
             </thead>
-            <tbody>
-              {ROWS.map((r) => (
-                <tr key={r.fonte} className="border-b border-[var(--border)] last:border-0">
-                  <td className="px-4 py-3 font-medium text-[var(--foreground)]">{r.fonte}</td>
-                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.categoria}</td>
-                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.regiao}</td>
-                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.frequencia}</td>
-                  <td className="px-4 py-3 text-[var(--muted-foreground)]">{r.tipo}</td>
-                  <td className={`px-4 py-3 font-medium ${r.status === 'Ativa' ? 'text-[var(--primary)]' : 'text-[var(--muted-foreground)]'}`}>{r.status}</td>
+            <tbody className="divide-y divide-foreground/5">
+              {SOURCES_ROWS.map((r) => (
+                <tr key={r.fonte}>
+                  <td className="px-4 py-3 font-medium">{r.fonte}</td>
+                  <td className="px-4 py-3 text-foreground/70">{r.categoria}</td>
+                  <td className="px-4 py-3 text-foreground/70">{r.regiao}</td>
+                  <td className="px-4 py-3 text-foreground/70">{r.frequencia}</td>
+                  <td className="px-4 py-3 text-foreground/70">{r.tipo}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                        r.status === 'active'
+                          ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+                          : 'bg-amber-500/10 text-amber-700 dark:text-amber-400'
+                      }`}
+                    >
+                      {r.status === 'active' ? 'Ativa' : 'Em integração'}
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </Card>
 
-      <p className="mt-4 text-xs text-[var(--muted-foreground)]">
-        O registro de fontes é mantido pelo time de dados da LandMap. Nomes de terceiros são
-        apresentados apenas quando existe autorização formal. Este conteúdo é editável pelo painel
-        administrativo.
-      </p>
+        <p className="mt-8 text-xs leading-relaxed text-foreground/50">
+          O registro de fontes é mantido pelo time de dados da LandMap. Nomes de terceiros são
+          apresentados apenas quando existe autorização formal. Este conteúdo é editável pelo painel
+          administrativo.
+        </p>
 
-      <div className="mt-6 flex flex-wrap gap-3">
-        <a
-          href="./map"
-          className="inline-flex h-10 items-center rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
-        >
-          Abrir o mapa
-        </a>
-        <a
-          href="./cobertura"
-          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-        >
-          Cobertura
-        </a>
-      </div>
-    </ProductPageShell>
+        {/* Complemento LandMap (fora da referência — atalhos úteis, sem alterar o layout espelhado). */}
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href={lh('/dashboard')}
+            className="inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
+          >
+            <Building2 className="h-4 w-4" />
+            Abrir o mapa
+          </Link>
+          <Link
+            href={lh('/cobertura')}
+            className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
+          >
+            Cobertura
+          </Link>
+        </div>
+      </section>
+    </PublicPageShell>
   );
 }

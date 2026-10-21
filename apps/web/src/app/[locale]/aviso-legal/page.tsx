@@ -1,15 +1,16 @@
 'use client';
 
-import { ShieldCheck, Check } from '../../../components/lovable/icons';
-import { ProductPageShell } from '../../../components/ProductPageShell';
-import { Reveal } from '../../../components/Motion';
-import { Card } from '@landmap/ui';
+import { AlertTriangle as TriangleAlert } from '../../../components/lovable/icons';
+import { PublicPageShell } from '../../../components/PublicPageShell';
 
+/**
+ * `/aviso-legal` — paridade 1:1 com a Lovable LIVE
+ * (`landmap-insight.lovable.app/aviso-legal`, chunk `aviso-legal-D355Qgyi.js`):
+ * header Voltar → `/onboarding`, `article.mx-auto.max-w-3xl.px-6.py-16`,
+ * eyebrow "Legal", H1 "Aviso legal", callout âmbar com o disclaimer principal,
+ * 4 seções em `div.prose...space-y-6`, `<Footer />` 1:1.
+ */
 const SECTIONS: { title: string; body: string }[] = [
-  {
-    title: 'Aviso legal',
-    body: 'A LandMap é uma plataforma de inteligência territorial e organização de dados. As informações apresentadas possuem caráter informativo e não representam garantia de valorização, recomendação individual de investimento, avaliação oficial de imóvel ou substituição de análises jurídicas, ambientais, urbanísticas e financeiras.',
-  },
   {
     title: 'Escopo',
     body: 'A LandMap organiza dados públicos e de mercado para apresentar indicadores territoriais. Nenhum indicador exibido constitui recomendação individualizada, laudo pericial, avaliação oficial de imóvel ou parecer profissional habilitado.',
@@ -30,44 +31,30 @@ const SECTIONS: { title: string; body: string }[] = [
 
 export default function AvisoLegalPage() {
   return (
-    <ProductPageShell
-      backHref="/map"
-      eyebrow={<><ShieldCheck className="h-3 w-3" /> Aviso legal</>}
-      title="Aviso Legal"
-      description="Termos de uso da plataforma LandMap e limitações de responsabilidade."
-    >
-      <section className="space-y-3">
-        {SECTIONS.map((s) => (
-          <Reveal key={s.title}>
-            <Card className="p-5">
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
-                  <Check className="h-4 w-4" />
-                </span>
-                <div>
-                  <h2 className="text-base font-semibold text-[var(--foreground)]">{s.title}</h2>
-                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted-foreground)]">{s.body}</p>
-                </div>
-              </div>
-            </Card>
-          </Reveal>
-        ))}
-      </section>
+    <PublicPageShell backHref="/onboarding">
+      <article className="mx-auto max-w-3xl px-6 py-16">
+        <p className="text-xs font-medium uppercase tracking-widest text-primary">Legal</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight">Aviso legal</h1>
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        <a
-          href="./terms"
-          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-        >
-          Termos de uso
-        </a>
-        <a
-          href="./privacy"
-          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-        >
-          Privacidade
-        </a>
-      </div>
-    </ProductPageShell>
+        <div className="mt-8 flex items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] p-6">
+          <TriangleAlert className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600 dark:text-amber-400" />
+          <p className="text-[15px] leading-relaxed text-foreground/85">
+            A LandMap é uma plataforma de inteligência territorial e organização de dados. As
+            informações apresentadas possuem caráter informativo e não representam garantia de
+            valorização, recomendação individual de investimento, avaliação oficial de imóvel ou
+            substituição de análises jurídicas, ambientais, urbanísticas e financeiras.
+          </p>
+        </div>
+
+        <div className="prose prose-neutral dark:prose-invert mt-10 max-w-none space-y-6 text-[15px] leading-relaxed text-foreground/80">
+          {SECTIONS.map((s) => (
+            <section key={s.title}>
+              <h2 className="text-xl font-semibold text-foreground">{s.title}</h2>
+              <p>{s.body}</p>
+            </section>
+          ))}
+        </div>
+      </article>
+    </PublicPageShell>
   );
 }

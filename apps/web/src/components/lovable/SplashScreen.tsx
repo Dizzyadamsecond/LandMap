@@ -15,19 +15,16 @@ import { LogoMark } from './LogoMark';
  *  - wrapper `fixed inset-0 z-50 flex items-center justify-center` com
  *    `backgroundColor: #0d3183`;
  *  - filho único: `div.logo-mark-container` (é ele que roda o keyframe
- *    `logo-mark-settle` de 2.6s) envolvendo `<LogoMark size={148} color="#ffffff" />`;
- *  - renderiza `null` até montar (mesmo comportamento client-only do original).
+ *    `logo-mark-settle` de 2.6s) envolvendo `<LogoMark size={148} color="#ffffff" />`.
  *
- * A única diferença em relação ao original é o destino, parametrizado por prop:
- * a Lovable manda para `/landing`; o nosso entry manda para o passo seguinte do
- * fluxo (onboarding/dashboard).
+ * Nota sobre SSR:
+ * No SSR e primeiro render estático, renderizamos a casca `#0d3183` com o logo
+ * diretamente, para que o usuário NUNCA veja um flash em branco ou tela vazia
+ * antes da hidratação do React.
  */
 export function SplashScreen({ destination }: { destination: string }) {
   const router = useRouter();
   const [faded, setFaded] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const fadeTimer = setTimeout(() => setFaded(true), 1900);
@@ -38,8 +35,6 @@ export function SplashScreen({ destination }: { destination: string }) {
       clearTimeout(navTimer);
     };
   }, [router, destination]);
-
-  if (!mounted) return null;
 
   return (
     <div

@@ -62,14 +62,14 @@ describe('scoreLabel — band alignment', () => {
   });
 });
 
-// scoreColor alinhado à paleta verde/emerald (#dc2626, #f97316, #eab308, #34d399, #10b981)
+// scoreColor alinhado à paleta Lovable indigo (tokens design system)
 describe('scoreColor — band thresholds', () => {
   it.each([
-    [20, '#dc2626'], // <35 critical (RED)
-    [40, '#f97316'], // 35-49 low (ORANGE)
-    [55, '#eab308'], // 50-64 medium (YELLOW)
-    [70, '#34d399'], // 65-79 high potential (LIGHT GREEN)
-    [90, '#10b981'], // >=80 exceptional (EMERALD GREEN)
+    [20, '#ef4444'], // <35 critical (RED)
+    [40, '#f59e0b'], // 35-49 low (AMBER)
+    [55, '#6366f1'], // 50-64 medium (RING / indigo claro)
+    [70, '#4338ca'], // 65-79 high potential (primaryDark / indigo escuro)
+    [90, '#4f46e5'], // >=80 exceptional (primary / indigo cheio)
   ])('score %i -> %s', (score, expected) => {
     expect(scoreColor(score)).toBe(expected);
   });

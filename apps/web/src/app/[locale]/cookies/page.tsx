@@ -1,69 +1,66 @@
 'use client';
 
-import { BellRing, Check } from '../../../components/lovable/icons';
-import { ProductPageShell } from '../../../components/ProductPageShell';
-import { Reveal } from '../../../components/Motion';
-import { Card } from '@landmap/ui';
+import { PublicPageShell } from '../../../components/PublicPageShell';
 
-const SECTIONS: { title: string; body: string }[] = [
-  {
-    title: '1. O que são cookies',
-    body: 'Cookies são pequenos arquivos armazenados no seu dispositivo que permitem à plataforma reconhecer sua sessão e lembrar preferências. Utilizamos também tecnologias equivalentes como armazenamento local e identificadores de dispositivo.',
-  },
-  {
-    title: '2. Categorias',
-    body: 'Essenciais: necessários para autenticação e operação básica. Não podem ser desativados. Preferências: lembram configurações escolhidas pelo usuário (tema, filtros, região favorita). Medição: ajudam a entender como a plataforma é utilizada, de forma agregada.',
-  },
-  {
-    title: '3. Gerenciamento',
-    body: 'Você pode gerenciar cookies pelo seu navegador. Desativar categorias essenciais pode inviabilizar o uso da plataforma.',
-  },
-  {
-    title: '4. Atualizações',
-    body: 'Esta política pode ser atualizada. Alterações substantivas são informadas na própria plataforma.',
-  },
-];
-
+/**
+ * `/cookies` — paridade 1:1 com a Lovable LIVE
+ * (`landmap-insight.lovable.app/cookies`, chunk `cookies-YTFnWGJL.js`):
+ * header Voltar → `/onboarding`, `article.mx-auto.max-w-3xl.px-6.py-16`,
+ * eyebrow "Legal", H1 "Política de cookies", nota "Estrutura de referência —
+ * sujeita a revisão jurídica.", 4 seções em `div.prose...space-y-6` (seção 2
+ * com `ul.ml-5.list-disc` + `strong` por categoria), `<Footer />` 1:1.
+ */
 export default function CookiesPage() {
   return (
-    <ProductPageShell
-      backHref="/map"
-      eyebrow={<><BellRing className="h-3 w-3" /> Cookies</>}
-      title="Política de Cookies"
-      description="Estrutura de referência — sujeita a revisão jurídica."
-    >
-      <section className="space-y-3">
-        {SECTIONS.map((s) => (
-          <Reveal key={s.title}>
-            <Card className="p-5">
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[var(--primary)]/10 text-[var(--primary)]">
-                  <Check className="h-4 w-4" />
-                </span>
-                <div>
-                  <h2 className="text-base font-semibold text-[var(--foreground)]">{s.title}</h2>
-                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted-foreground)]">{s.body}</p>
-                </div>
-              </div>
-            </Card>
-          </Reveal>
-        ))}
-      </section>
-
-      <div className="mt-8 flex flex-wrap gap-3">
-        <a
-          href="./privacy"
-          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-        >
-          Privacidade
-        </a>
-        <a
-          href="./terms"
-          className="inline-flex h-10 items-center rounded-lg border border-[var(--border)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--primary)]"
-        >
-          Termos de uso
-        </a>
-      </div>
-    </ProductPageShell>
+    <PublicPageShell backHref="/onboarding">
+      <article className="mx-auto max-w-3xl px-6 py-16">
+        <p className="text-xs font-medium uppercase tracking-widest text-primary">Legal</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight">Política de cookies</h1>
+        <p className="mt-3 text-sm text-foreground/50">
+          Estrutura de referência — sujeita a revisão jurídica.
+        </p>
+        <div className="prose prose-neutral dark:prose-invert mt-10 max-w-none space-y-6 text-[15px] leading-relaxed text-foreground/80">
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">1. O que são cookies</h2>
+            <p>
+              Cookies são pequenos arquivos armazenados no seu dispositivo que permitem à
+              plataforma reconhecer sua sessão e lembrar preferências. Utilizamos também
+              tecnologias equivalentes como armazenamento local e identificadores de dispositivo.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">2. Categorias</h2>
+            <ul className="ml-5 list-disc space-y-1">
+              <li>
+                <strong>Essenciais:</strong> necessários para autenticação e operação básica. Não
+                podem ser desativados.
+              </li>
+              <li>
+                <strong>Preferências:</strong> lembram configurações escolhidas pelo usuário (tema,
+                filtros, região favorita).
+              </li>
+              <li>
+                <strong>Medição:</strong> ajudam a entender como a plataforma é utilizada, de forma
+                agregada.
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">3. Gerenciamento</h2>
+            <p>
+              Você pode gerenciar cookies pelo seu navegador. Desativar categorias essenciais pode
+              inviabilizar o uso da plataforma.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-xl font-semibold text-foreground">4. Atualizações</h2>
+            <p>
+              Esta política pode ser atualizada. Alterações substantivas são informadas na própria
+              plataforma.
+            </p>
+          </section>
+        </div>
+      </article>
+    </PublicPageShell>
   );
 }

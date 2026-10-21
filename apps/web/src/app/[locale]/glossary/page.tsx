@@ -1,87 +1,140 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { BookA, Sparkles } from '../../../components/lovable/icons';
-import { ProductPageShell } from '../../../components/ProductPageShell';
-import { Reveal } from '../../../components/Motion';
-import { Card, Badge, Stat } from '@landmap/ui';
-import { INTELLIGENCE_LAYERS } from '../../../lib/mapIntelligence';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import { Search } from '../../../components/lovable/icons';
+import { Input } from '@landmap/ui';
+import { PublicPageShell } from '../../../components/PublicPageShell';
+import {
+  GLOSSARY_GROUPS,
+  GLOSSARY_ORIGIN_LABEL,
+  GLOSSARY_ORIGIN_STYLE,
+  GLOSSARY_TERMS,
+} from '../../../lib/public-content';
 
-const CORE = [
-  { term: 'Score LandMap', def: 'Índice composto de valorização, infraestrutura e crescimento (0–100).', cat: 'plataforma' },
-  { term: 'Valorização m²', def: 'Variação percentual do preço por metro quadrado em um período.', cat: 'mercado' },
-  { term: 'Liquidez', def: 'Facilidade de negociar o ativo sem perda significativa de preço.', cat: 'mercado' },
-  { term: 'Yield', def: 'Retorno anual estimado sobre o capital investido.', cat: 'invest' },
-  { term: 'Cap rate', def: 'Taxa de capitalização: renda líquida anual sobre o valor do imóvel.', cat: 'invest' },
-  { term: 'Zoneamento', def: 'Classificação municipal de uso do solo (ZR, ZC, ZEIS, etc.).', cat: 'técnico' },
-  { term: 'Heatmap', def: 'Camada visual de densidade/intensidade de um indicador no mapa.', cat: 'plataforma' },
-  { term: 'Camada de inteligência', def: 'Indicador territorial (infra, segurança, mobilidade…) sobre o mapa.', cat: 'plataforma' },
-  { term: 'Due diligence', def: 'Investigação jurídica, urbanística e financeira antes da compra.', cat: 'técnico' },
-  { term: 'IDH', def: 'Índice de Desenvolvimento Humano da região.', cat: 'socio' },
-  { term: 'Risco ambiental', def: 'Exposição a contaminação, APP, áreas protegidas ou erosão.', cat: 'risco' },
-  { term: 'Risco enchente', def: 'Probabilidade de alagamento com base em relevo e histórico.', cat: 'risco' },
-  { term: 'Comps', def: 'Imóveis comparáveis usados para ancorar preço de mercado.', cat: 'análise' },
-  { term: 'Radar de oportunidades', def: 'Lista de regiões com score/crescimento acima do limiar.', cat: 'plataforma' },
-];
-
-export default function GlossaryPage() {
+/**
+ * `/glossario` — paridade 1:1 com a Lovable LIVE
+ * (`landmap-insight.lovable.app/glossario`, chunk `glossario-BsIjFowT.js`):
+ * header "Abrir o mapa" → `/dashboard`, `section.mx-auto.max-w-4xl.px-6.py-14`,
+ * eyebrow "Glossário", H1 "O que cada indicador quer dizer", busca de termos
+ * (`relative mt-8 max-w-md` + ícone + `pl-9`), estado vazio "Nenhum termo
+ * encontrado para “…”", grupos com H2 uppercase + cards
+ * (`rounded-2xl border border-foreground/10 p-5`, título + badge de origem +
+ * unidade à direita, `short`, box "Como calculamos"), `<Footer />` 1:1.
+ *
+ * Termos: `lib/public-content.ts` (GLOSSARY_TERMS — os 20 termos 1:1 do
+ * dicionário da referência). Busca normaliza acentos (NFD), igual à ref.
+ */
+export default function GlossarioPage() {
+  const locale = useLocale();
+  const lh = (p: string) => `/${locale}${p}`;
   const [q, setQ] = useState('');
-  const layerTerms = useMemo(
+
+  const norm = (s: string) =>
+    s
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  const query = norm(q.trim());
+
+  const filtered = useMemo(
     () =>
-      INTELLIGENCE_LAYERS.map((l) => ({
-        term: l.label,
-        def: `Camada de inteligência do mapa LandMap: indicador “${l.label}”.`,
-        cat: 'camada',
-      })),
-    [],
+      GLOSSARY_TERMS.filter(
+        (t) =>
+          !query ||
+          norm(t.term).includes(query) ||
+          norm(t.short).includes(query) ||
+          norm(t.how).includes(query),
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query],
   );
-  const all = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    return [...CORE, ...layerTerms].filter(
-      (t) => !s || t.term.toLowerCase().includes(s) || t.def.toLowerCase().includes(s),
-    );
-  }, [q, layerTerms]);
+
+  const groups = GLOSSARY_GROUPS.map((g) => ({
+    ...g,
+    terms: filtered.filter((t) => t.group === g.id),
+  })).filter((g) => g.terms.length > 0);
 
   return (
-    <ProductPageShell
-      backHref="/knowledge"
-      eyebrow={
-        <>
-          <BookA className="h-3 w-3" /> Glossário
-        </>
-      }
-      title="Termos de mercado"
-      description="Vocabulário da plataforma e das camadas do mapa intelligence."
-    >
-      <section className="grid grid-cols-3 gap-3">
-        <Stat label="Termos" value={String(all.length)} />
-        <Stat label="Camadas" value={String(INTELLIGENCE_LAYERS.length)} />
-        <Stat label="Categorias" value="7" />
-      </section>
+    <PublicPageShell backHref="/dashboard" backLabel="Abrir o mapa" maxWidth="4xl">
+      <section className="mx-auto max-w-4xl px-6 py-14">
+        <p className="text-xs font-medium uppercase tracking-widest text-primary">Glossário</p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight">
+          O que cada indicador quer dizer
+        </h1>
+        <p className="mt-4 max-w-2xl text-foreground/60">
+          Escrito para quem está comprando o primeiro terreno. Cada termo mostra o que significa,
+          como chegamos ao número e se ele vem de dado observado ou de estimativa.
+        </p>
 
-      <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Buscar termo…"
-        className="mt-4 w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-sm outline-none focus:border-primary"
-      />
+        <div className="relative mt-8 max-w-md">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40"
+            aria-hidden
+          />
+          <Input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Buscar termo (ex.: liquidez)"
+            aria-label="Buscar termo no glossário"
+            className="pl-9"
+          />
+        </div>
 
-      <Reveal className="mt-6 flex flex-col gap-3">
-        {all.map((t) => (
-          <Card key={t.term} variant="interactive">
-            <div className="flex items-start gap-3">
-              <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="font-semibold">{t.term}</p>
-                  <Badge variant="outline">{t.cat}</Badge>
+        {filtered.length === 0 ? (
+          <p className="mt-10 text-sm text-foreground/60">
+            Nenhum termo encontrado para &ldquo;{q}&rdquo;.
+          </p>
+        ) : (
+          <div className="mt-12 space-y-12">
+            {groups.map((g) => (
+              <div key={g.id}>
+                <h2 className="text-xs font-semibold uppercase tracking-widest text-foreground/50">
+                  {g.label}
+                </h2>
+                <div className="mt-4 space-y-3">
+                  {g.terms.map((t) => (
+                    <article
+                      key={t.id}
+                      className="rounded-2xl border border-foreground/10 p-5"
+                    >
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                        <h3 className="text-base font-semibold">{t.term}</h3>
+                        <span
+                          className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ${GLOSSARY_ORIGIN_STYLE[t.origin]}`}
+                        >
+                          {GLOSSARY_ORIGIN_LABEL[t.origin]}
+                        </span>
+                        {t.unit && (
+                          <span className="ml-auto text-[11px] text-foreground/50">{t.unit}</span>
+                        )}
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-foreground/70">{t.short}</p>
+                      <div className="mt-3 rounded-lg bg-muted/60 p-3">
+                        <p className="text-[10px] font-semibold uppercase tracking-widest text-foreground/50">
+                          Como calculamos
+                        </p>
+                        <p className="mt-1 text-sm leading-relaxed text-foreground/70">{t.how}</p>
+                      </div>
+                    </article>
+                  ))}
                 </div>
-                <p className="mt-1 text-sm text-foreground/70">{t.def}</p>
               </div>
-            </div>
-          </Card>
-        ))}
-      </Reveal>
-    </ProductPageShell>
+            ))}
+          </div>
+        )}
+
+        {/* Complemento LandMap (fora da referência — volta ao mapa). */}
+        <div className="mt-10">
+          <Link
+            href={lh('/dashboard')}
+            className="inline-flex h-10 items-center rounded-lg bg-[var(--primary)] px-5 text-sm font-medium text-[var(--primary-foreground)] transition hover:bg-[var(--primary)]/90"
+          >
+            Abrir o mapa
+          </Link>
+        </div>
+      </section>
+    </PublicPageShell>
   );
 }
