@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { Button } from '@landmap/ui';
@@ -51,6 +52,8 @@ export function InstallPrompt() {
     };
   }, [isInstallable, dismissed, ready]);
 
+  const pathname = usePathname();
+  if (pathname?.includes('/auth') || pathname?.includes('/splash')) return null;
   if (!isInstallable || dismissed || !ready) return null;
 
   const dismiss = () => {

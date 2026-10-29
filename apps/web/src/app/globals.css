@@ -467,6 +467,10 @@
   --shadow-card: 0 1px 3px color-mix(in oklab, oklch(0.24 0.10 265) 12%, transparent), 0 8px 24px -12px color-mix(in oklab, oklch(0.24 0.10 265) 15%, transparent);
 }
 
+.bg-gradient-hero {
+  background-image: var(--gradient-hero);
+}
+
 .dark {
   --background: oklch(0.14 0.05 265);
   --foreground: oklch(0.96 0.01 250);

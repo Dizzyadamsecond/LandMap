@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { Phone } from './lovable/icons';
@@ -43,6 +44,8 @@ export function InstallButton() {
     /iPad|iPhone|iPod/.test(navigator.userAgent) &&
     !(window as any).MSStream;
 
+  const pathname = usePathname();
+  if (pathname?.includes('/auth') || pathname?.includes('/splash')) return null;
   if (dismissed || isInstalled || cardOpen) return null;
 
   const handleClick = async () => {

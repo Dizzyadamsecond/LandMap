@@ -31,7 +31,9 @@ export type UserType =
   | 'corretor'
   | 'investidor'
   | 'incorporadora'
-  | 'empresa';
+  | 'empresa'
+  | 'broker'
+  | 'developer';
 
 const STORAGE_KEY = 'landmap_mock_user';
 const USER_TYPE_KEY = 'landmap_user_type';
